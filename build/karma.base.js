@@ -4,18 +4,16 @@ module.exports = {
         exitOnResourceError: true
     },
 
-    basePath: '../../',
+    basePath: '../',
     singleRun: true,
     frameworks: ['jasmine', 'browserify', 'es5-shim'],
 
     files: [
-        'js/dist/libs.js',
-        'js/tests/test-*.js',
-        'js/src/forms/tests/test-*.js'
+        './test/test-*.js'
     ],
 
     preprocessors: {
-        'test/*.js': ['browserify']
+        './test/*.js': ['browserify']
     },
 
     browserify: {
