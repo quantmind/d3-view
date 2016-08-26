@@ -8,7 +8,7 @@
     },
     "keywords": [],
     "license": "Other/Proprietary",
-    "description": "",
+    "description": "Work in progress :joy:",
     "repository": {
         "type": "git",
         "url": ""
@@ -73,6 +73,8 @@
         "concat": "node js/build/concat.js",
         "minify": "uglifyjs fluidcloud/media/fluidcloud/fluidily.js -c -m -o fluidcloud/media/fluidcloud/fluidily.min.js",
         "unit": "karma start js/build/karma.unit.js",
-        "debug": "karma start js/build/karma.debug.js"
+        "debug": "karma start js/build/karma.debug.js",
+        "prepublish": "npm run test && uglifyjs dist/d3-view.js -c -m -o dist/d3-view.min.js && rm -f dist/d3-view.zip && zip -j dist/d3-view.zip -- LICENSE README.md dist/d3-view.js dist/d3-view.min.js",
+        "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags"
     }
 }

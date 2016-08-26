@@ -15,8 +15,7 @@ module.exports = {
     ],
 
     preprocessors: {
-        'js/tests/*.js': ['browserify'],
-        'js/src/forms/tests/test-*.js': ['browserify']
+        'test/*.js': ['browserify']
     },
 
     browserify: {
@@ -26,12 +25,6 @@ module.exports = {
                 'babelify',
                 {
                     presets: ['es2015']
-                }
-            ],
-            [
-                'aliasify',
-                {
-                    aliases: {'vue': 'vue/dist/vue.js'}
                 }
             ]
         ]
