@@ -1,6 +1,9 @@
 {
     "shell": {
-        "source": ["npm run-script source"]
+        "source": {
+            "command": "npm run-script source",
+            "interactive": true
+        }
     },
     "watch": {
         "js": {
@@ -19,7 +22,7 @@
         "js": {
             "description": "Create the js files",
             "command": [
-                "shell:js"
+                "shell:source"
             ]
         },
         "dev": {
