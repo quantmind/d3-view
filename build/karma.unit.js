@@ -8,7 +8,7 @@ module.exports = function (config) {
         reporters: ['progress']
     });
 
-    if(process.env.TRAVIS) {
+    if(process.env.TRAVIS || process.env.CIRCLECI) {
         options.browsers = ['ChromeNoSandbox', 'Firefox'];
     }
 
