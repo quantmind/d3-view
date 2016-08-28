@@ -17,13 +17,14 @@ AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global i
 <script src="https://d3js.org/d3-view.min.js"></script>
 <script>
 
-var view = d3.View({
-    tag: 'd3-test'
+var view = new d3.View({
+    el: "#my-element"
 });
 
-view.bootstrap();
+view.mount();
 
 </script>
+```
 
 ## API Reference
 

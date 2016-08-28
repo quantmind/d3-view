@@ -22,7 +22,7 @@
     "dependencies": {
         "d3-collection": "1",
         "d3-transition": "1",
-        "d3-let": "../d3-let"
+        "d3-let": "0.1"
     },
     "devDependencies": {
         "aliasify": "2.0",
