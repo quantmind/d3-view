@@ -1,6 +1,6 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import node from 'rollup-plugin-node-resolve';
 
 
 export default {
@@ -14,14 +14,19 @@ export default {
             babelrc: false,
             presets: ['es2015-rollup']
         }),
-        nodeResolve({
-            jsnext: true,
-            main: true,
-            skip: ['axios']
+        node({
+            skip: [
+                'd3-collection',
+                'd3-selection',
+                'd3-transition'
+            ]
         })
     ],
     dest: 'dist/d3-view.js',
     globals: {
+        "d3-collection": "d3",
+        "d3-let": "d3",
+        "d3-selection": "d3",
         "axios": "axios"
     }
 };

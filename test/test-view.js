@@ -30,6 +30,9 @@ describe('View', function() {
         expect(vm.el).toBe(el);
         expect(vm.uid).toBeGreaterThan(0);
         expect(vm.scope.$uid).toBe(vm.uid);
+        expect(vm.parent).toBe(undefined);
+        expect(vm.root).toBe(vm);
+        expect(vm.mounted).toBe(false);
     });
 
 });

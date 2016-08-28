@@ -1,1 +1,1 @@
-export {default as View} from './src/view';
+export {View} from './src/view';

@@ -11,5 +11,6 @@ dependencies:
 
 test:
   override:
+    - npm run-script bundle
     - npm test
     - mv coverage/P* $CIRCLE_ARTIFACTS/coverage

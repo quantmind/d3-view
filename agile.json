@@ -5,6 +5,15 @@
             "interactive": true
         }
     },
+    "httpcopy": {
+        "d3": {
+            "description": "copy d3 index.js for d3 bundle",
+            "src": [
+                "https://raw.githubusercontent.com/d3/d3/master/index.js"
+            ],
+            "target": "{{ repo_path }}/d3.js"
+        }
+    },
     "watch": {
         "js": {
             "files": [
@@ -19,6 +28,10 @@
         }
     },
     "tasks": {
+        "d3": {
+            "description": "copy d3 index.js for d3 bundle",
+            "command": ["httpcopy:d3"]
+        },
         "js": {
             "description": "Create the js files",
             "command": [

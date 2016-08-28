@@ -4,23 +4,24 @@
     <meta charset="utf-8">
     <title>d3-view markdown editor example</title>
     <link rel="stylesheet" href="style.css">
-    <script src="../../dist/d3-view.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+    <script src="../../dist/d3.js"></script>
+    <script src="../../dist/d3-view.js"></script>
 </head>
 <body>
 <section id="editor">
-    <textarea d3-data="input"></textarea>
+    <textarea d3-data="input" d3-value="input"></textarea>
     <div d3-html="html"></div>
 </section>
 
 <script>
 new d3.View({
-    tag: 'd3-editor',
+    el: '#editor',
     data: {
         input: '# hello',
         html: function () {
             return marked(this.input);
         }
     }
-});
+}).mount();
 </script>
