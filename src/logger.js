@@ -1,4 +1,4 @@
-import {logger} from 'd3-utils';
+import {logger} from 'd3-let';
 
 const prefix = '[d3-view]';
 

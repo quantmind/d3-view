@@ -22,7 +22,7 @@
     "dependencies": {
         "d3-collection": "1",
         "d3-transition": "1",
-        "d3-utils": "../d3-utils"
+        "d3-let": "../d3-let"
     },
     "devDependencies": {
         "aliasify": "2.0",
@@ -50,6 +50,7 @@
         "jasmine-core": "2.4",
         "object-assign": "4.1",
         "node-sass": "3.8",
+        "package-preamble": "0.0",
         "phantomjs-prebuilt": "2.1",
         "requirejs": "2.2",
         "rollup": "0.34",
@@ -64,11 +65,11 @@
     },
     "scripts": {
         "test": "npm run-script unit",
-        "rollup": "rollup -c build/rollup.config.js",
-        "source": "npm run-script lint && npm run-script rollup && npm run-script concat && npm run-script cover",
+        "rollup": "rm -rf dist && mkdir dist && rollup -c build/rollup.config.js --banner \"$(preamble)\"",
+        "source": "npm run-script lint && npm run-script rollup && npm run-script cover",
         "build": "npm run-script source && npm run-script minify",
-        "cover": "karma start js/build/karma.cover.js",
-        "lint": "eslint index.js js/tests js/src js/build",
+        "cover": "karma start build/karma.cover.js",
+        "lint": "eslint index.js test src build",
         "annotate": "ng-annotate -a js/dist/fluidily.js -o fluidcloud/media/fluidcloud/fluidily.js",
         "concat": "node js/build/concat.js",
         "minify": "uglifyjs fluidcloud/media/fluidcloud/fluidily.js -c -m -o fluidcloud/media/fluidcloud/fluidily.min.js",

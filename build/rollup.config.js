@@ -17,7 +17,7 @@ export default {
         nodeResolve({
             jsnext: true,
             main: true,
-            skip: ['angular', 'vue', 'axios']
+            skip: ['axios']
         })
     ],
     dest: 'dist/d3-view.js',

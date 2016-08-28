@@ -1,0 +1,30 @@
+{
+    "shell": {
+        "source": ["npm run-script source"]
+    },
+    "watch": {
+        "js": {
+            "files": [
+                "index.js",
+                "src/*.js",
+                "src/**/*.js",
+                "test/*.js"
+            ],
+            "command": [
+                "js"
+            ]
+        }
+    },
+    "tasks": {
+        "js": {
+            "description": "Create the js files",
+            "command": [
+                "shell:js"
+            ]
+        },
+        "dev": {
+            "description": "Start development watch server",
+            "command": ["watch"]
+        }
+    }
+}

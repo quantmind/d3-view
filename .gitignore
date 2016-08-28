@@ -2,6 +2,7 @@
 node_modules
 dist
 
+*.log
 .idea
 .DS_Store
 coverage

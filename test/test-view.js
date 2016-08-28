@@ -1,8 +1,11 @@
+import {isObject, isString} from 'd3-let';
+import {View} from '../';
 
 
 describe('View', function() {
 
-    it('entry', () => {
-        expect(1).toBe(1);
+    it('View class', () => {
+        expect(isString(View.version)).toBe(true);
+        expect(isObject(View.directives)).toBe(true);
     });
 });
