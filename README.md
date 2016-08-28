@@ -30,3 +30,10 @@ view.mount();
 
 ## API Reference
 
+## Other Frameworks
+
+In order of complexity
+
+* [Angular](https://angularjs.org/)
+* [React](https://facebook.github.io/react/)
+* [Vue](http://vuejs.org/)
