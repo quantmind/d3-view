@@ -1,5 +1,7 @@
 # d3-view
 
+[![CircleCI](https://circleci.com/gh/quantmind/d3-view.svg?style=svg&circle-token=f84972c3cf4e8f17d74066ead28544da990115c3)](https://circleci.com/gh/quantmind/d3-view)
+
 This is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
 It provides data-reactive components with a simple and flexible API.
