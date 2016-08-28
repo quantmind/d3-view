@@ -82,7 +82,7 @@ function mount (vm, el) {
     var components = vm.constructor.components,
         dirs = vm.constructor.directives;
 
-    select(el).selectAll(function() {
+    select(el).selectAll('*').each(function() {
         // mount components
         var Component = components[this.tagName];
 
