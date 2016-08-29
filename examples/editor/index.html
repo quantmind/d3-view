@@ -10,17 +10,16 @@
 </head>
 <body>
 <section id="editor">
-    <textarea d3-data="input" d3-value="input"></textarea>
+    <textarea d3-value="input"># hello</textarea>
     <div d3-html="html"></div>
 </section>
 
 <script>
 new d3.View({
     el: '#editor',
-    data: {
-        input: '# hello',
+    model: {
         html: function () {
-            return marked(this.input);
+            return marked(this.input || '');
         }
     }
 }).mount();

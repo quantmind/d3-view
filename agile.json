@@ -20,7 +20,8 @@
                 "index.js",
                 "src/*.js",
                 "src/**/*.js",
-                "test/*.js"
+                "test/*.js",
+                "build/*.js"
             ],
             "command": [
                 "js"

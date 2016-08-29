@@ -2,10 +2,12 @@ import {select} from 'd3-selection';
 import {self} from 'd3-let';
 import {version} from '../package.json';
 import {map} from 'd3-collection';
+import {isFunction} from 'd3-let';
 import Base from './logger';
+import Model from './model';
 import directives from './directives/index';
 
-let uid = 0;
+
 //
 //  d3 view class
 export class View extends Base {
@@ -16,7 +18,8 @@ export class View extends Base {
         var el = options.get('el');
         if (!el) this.warn('"el" element is required when creating a new d3.View');
         else {
-            var element = select(el).node();
+            var d3el = isFunction(el.node) ? el : select(el);
+            var element = d3el.node();
             if (!element) this.warn(`could not find ${el} element`);
             else init.call(this, element, options);
         }
@@ -26,20 +29,20 @@ export class View extends Base {
         return true;
     }
 
-    get scope () {
+    get model () {
         return self.get(this);
     }
 
     get uid () {
-        return this.scope.$uid;
+        return this.model.$uid;
     }
 
     get el () {
-        return this.scope.$el;
+        return this.model.$el;
     }
 
     get parent () {
-        return this.scope.$parent;
+        return this.model.$parent;
     }
 
     get root () {
@@ -49,13 +52,16 @@ export class View extends Base {
     }
 
     get mounted () {
-        return this.scope.$mounted;
+        return this.model.$mounted;
     }
 
     mount () {
-        if (this.mounted) return this.warn('already mounted');
-        this.scope.$mounted = true;
-        mount(this, this.el);
+        if (this.mounted) this.warn('already mounted');
+        else {
+            this.model.$mounted = true;
+            mount(this, this.el);
+        }
+        return this;
     }
 }
 
@@ -66,15 +72,15 @@ View.components = {};
 
 
 function init(element, options) {
-    // scope containing binding data
-    let scope = {};
-    self.set(this, scope);
-    scope.$mounted = false;
-    scope.$el = element;
-    scope.$uid = ++uid;
+    // model containing binding data
+    var model = new Model(this, options.get('model'));
+    self.set(this, model);
+    model.$directives = map();
+    model.$mounted = false;
+    model.$el = element;
     element._d3v_ = this;
     var parent = options.parent;
-    if (parent) scope.$parent = parent.scope;
+    if (parent) model.$parent = parent.model;
 }
 
 
@@ -95,8 +101,11 @@ function mount (vm, el) {
             mount(vm, this);
     });
     // apply directive to this element
-    el.attributes.forEach((attr) => {
-        var directive = dirs[attr.name];
-        if (directive) directive.bind(parent.el);
-    });
+    for (let i=0; i<el.attributes.length; ++i) {
+        let attr = el.attributes[i],
+            dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
+            Directive = dirName ? dirs[dirName] : null;
+        if (Directive)
+            new Directive(vm, el, attr);
+    }
 }
