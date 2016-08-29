@@ -20,11 +20,14 @@ It provides data-reactive components with a simple and flexible API.
 
 - [Installing](#installing)
 - [Getting Started](#getting-started)
+  - [Create the View](#create-the-view)
+- [Directives](#directives)
+- [Components](#components)
+  - [Registration](#registration)
+  - [Reusing](#reusing)
 - [API Reference](#api-reference)
-  - [Directives](#directives)
-  - [Components](#components)
-    - [Registration](#registration)
-    - [Reusing](#reusing)
+  - [Directives](#directives-1)
+  - [Components](#components-1)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -56,6 +59,39 @@ build one on top of it.
 Importantly, this library does not make any choice for you, it is build on top
 of the modular d3 library following very similar design guidelines.
 
+### Create the View
+
+Create a view object for you application, it does not need to be the whole application:
+```javascript
+var d3v = new d3.View({
+    el: '#entry',
+    components: {...},
+    directives: {...}
+});
+// d3v is one view managed by d3.
+// You can create more tan one
+var d3v = new d3.View({
+    el: '#entry2',
+    components: {...},
+    directives: {...}
+});
+```
+
+## Directives
+
+
+## Components
+
+Components help you extend basic HTML elements to encapsulate reusable code.
+At a high level, Components are custom elements that ``d3.View`` attach
+specified behavior to.
+
+### Registration
+
+In order to use components you need to register them with the `view`` object 
+
+### Reusing
+
 
 ## API Reference
 
@@ -63,14 +99,6 @@ of the modular d3 library following very similar design guidelines.
 
 
 ### Components
-
-Components help you extend basic HTML elements to encapsulate reusable code.
-At a high level, Components are custom elements that ``d3.View`` attach
-specified behavior to.
-
-#### Registration
-
-#### Reusing
 
 
 ## Other Frameworks
