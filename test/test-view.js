@@ -28,11 +28,12 @@ describe('View', function() {
     it('Element', () => {
         var vm = new View({'el': el});
         expect(vm.el).toBe(el);
+        expect(vm.isd3).toBe(true);
         expect(vm.uid).toBeGreaterThan(0);
         expect(vm.model.$uid).toBe(vm.uid);
         expect(vm.parent).toBe(undefined);
         expect(vm.root).toBe(vm);
-        expect(vm.mounted).toBe(false);
+        expect(vm.isMounted).toBe(false);
         expect(() => {vm.model.$uid = -5;}).toThrow();
         expect(vm.uid).toBeGreaterThan(0);
     });

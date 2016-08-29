@@ -72,7 +72,7 @@
         "source": "npm run-script lint && npm run-script rollup && npm run-script cover",
         "build": "npm run-script source && npm run-script minify",
         "cover": "karma start build/karma.cover.js",
-        "lint": "eslint index.js test src build",
+        "lint": "eslint index.js test src build examples",
         "annotate": "ng-annotate -a js/dist/fluidily.js -o fluidcloud/media/fluidcloud/fluidily.js",
         "concat": "node js/build/concat.js",
         "minify": "uglifyjs fluidcloud/media/fluidcloud/fluidily.js -c -m -o fluidcloud/media/fluidcloud/fluidily.min.js",

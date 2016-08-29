@@ -1,3 +1,4 @@
+import {map} from 'd3-collection';
 
 
 export default class {
@@ -5,7 +6,12 @@ export default class {
     constructor (vm, el, attr) {
         this.vm = vm;
         this.el = el;
-        this.model.$directives.set(attr.name, this);
+        var directives = el._d3_directives;
+        if (!directives) {
+            directives = map();
+            el._d3_directives = directives;
+        }
+        directives.set(attr.name, this);
         this.mount(attr.value);
         this.el.removeAttribute(attr.name);
     }

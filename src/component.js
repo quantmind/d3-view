@@ -1,7 +1,178 @@
-// import {map} from 'd3-collection';
+import {isFunction, isObject, self, logger} from 'd3-let';
+import {select} from 'd3-selection';
+import {map} from 'd3-collection';
+import Directive from './directive';
+import Model from './model';
+
+const prefix = '[d3-view]';
+
+//
+//  d3 view class
+export class Base {
+
+    constructor(options) {
+        options = map(options);
+        var el = options.get('el');
+        if (!el) this.warn('"el" element is required when creating a new d3.View');
+        else {
+            var d3el = isFunction(el.node) ? el : select(el);
+            var element = d3el.node();
+            if (!element) this.warn(`could not find ${el} element`);
+            else this._init(element, options);
+        }
+    }
+
+    _init(element, options) {
+        init.call(this, element, options);
+    }
+
+    warn(msg) {
+        if (this.parent) this.parent.warn(msg);
+        else logger.warn(`${prefix} ${msg}`);
+    }
+
+    get isd3() {
+        return true;
+    }
+
+    get model () {
+        return self.get(this);
+    }
+
+    get uid () {
+        return this.model.$uid;
+    }
+
+    get el () {
+        return this.model.$el;
+    }
+
+    get parent () {
+        return this.model.$parent;
+    }
+
+    get root () {
+        let parent = this.parent;
+        if (parent) return parent.root;
+        else return this;
+    }
+
+    get isMounted () {
+        return this.model.$mounted;
+    }
+
+    mount () {
+        if (this.isMounted) this.warn('already mounted');
+        else {
+            this.model.$mounted = true;
+            mount(this, this.el);
+        }
+        return this;
+    }
+
+    createElement (tag) {
+        return select(document.createElement(tag));
+    }
+}
+
 
 // d3 view component
-export default class {
+class Component extends Base {
 
-    render () {}
+    init () {}
+
+    created () {}
+
+    beforeMount () {}
+
+    mounted () {}
+
+    mount () {
+        if (this.isMounted) this.warn('already mounted');
+        else {
+            this.beforeMount();
+            this.model.$mounted = true;
+            mount(this, this.el);
+            var el = this.render();
+            if (!el || el.size() !== 1) this.warn('render function must return a single HTML node');
+            var node = el.node();
+            this.el.parentNode.appendChild(node);
+            select(this.el).remove();
+            this.model.$el = node;
+            this.mounted();
+        }
+        return this;
+    }
+}
+
+
+function init(element, options) {
+    // model containing binding data
+    var vm = this;
+    var model = new Model(this, options.get('model'));
+    self.set(this, model);
+    model.$directives = map(this.constructor.directives);
+    model.$components = map(this.constructor.components);
+    model.$mounted = false;
+    model.$el = element;
+    element.__d3view__ = this;
+    var parent = options.parent;
+    if (parent) model.$parent = parent.model;
+    //
+    map(options.get('directives')).each((directive, key) => {
+        // Create a new directive class
+        model.$directives[key] = class extends Directive {
+            mount () {
+                return directive.call(this);
+            }
+        };
+    });
+    //
+    map(options.get('components')).each((component, key) => {
+        if (isFunction(component)) component = {render: component};
+        if (isObject(component) && isFunction(component.render))
+            // Create a new directive class
+            model.$components.set(key, class extends Component {
+
+                _init (element, options) {
+                    for (key in component)
+                        this[key] = component[key];
+
+                    this.init();
+                    init.call(this, element, options);
+                    this.created();
+                }
+
+            });
+        else
+            vm.warn(`"${key}" not a valid component. Must be a function or an object with render function`);
+    });
+
+}
+
+
+function mount (vm, el) {
+    var components = vm.model.$components,
+        dirs = vm.model.$directives;
+
+    select(el).selectAll('*').each(function() {
+        // mount components
+        var Component = components.get(this.tagName.toLowerCase());
+
+        if (Component)
+            new Component({
+                el: this,
+                parent: vm
+            }).mount();
+        else
+            mount(vm, this);
+    });
+    // apply directive to this element
+    for (let i=0; i<el.attributes.length; ++i) {
+        let attr = el.attributes[i],
+            dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
+            Directive = dirs.get(dirName);
+        if (Directive)
+            new Directive(vm, el, attr);
+    }
 }
