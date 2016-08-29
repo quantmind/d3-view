@@ -42,7 +42,31 @@ view.mount();
 </script>
 ```
 
+## Getting Started
+
+``d3.View`` is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
+data driven web interfaces. It is not a framework as such, but you can easily
+build one on top of it.
+
+Importantly, this library does not make any choice for you, it is build on top
+of the modular d3 library following very similar design guidelines.
+
+
 ## API Reference
+
+### Directives
+
+
+### Components
+
+Components help you extend basic HTML elements to encapsulate reusable code.
+At a high level, Components are custom elements that ``d3.View`` attach
+specified behavior to.
+
+#### Registration
+
+#### Reusing
+
 
 ## Other Frameworks
 
