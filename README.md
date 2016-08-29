@@ -19,7 +19,12 @@ It provides data-reactive components with a simple and flexible API.
 
 
 - [Installing](#installing)
+- [Getting Started](#getting-started)
 - [API Reference](#api-reference)
+  - [Directives](#directives)
+  - [Components](#components)
+    - [Registration](#registration)
+    - [Reusing](#reusing)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
