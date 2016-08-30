@@ -49,6 +49,10 @@ export class Base {
         return this.model.$el;
     }
 
+    get sel () {
+        return select(this.el);
+    }
+
     get parent () {
         var p = this.model.$parent;
         return p ? p.$vm : undefined;
@@ -85,35 +89,42 @@ export class Base {
 
     mountElement (el, model) {
         model = model || this.model;
-        if (model !== this.model) {
-            select(el).datum(model);
-            if (model.$vm !== this) this.warn('model of a child element should have the same view object');
-        }
+        // Set the model in the element if required
+        if (model !== this.model && model.$vm !== this) this.warn('model of a child element should have the same view object');
 
         var vm = this,
-            components = model.$components,
-            dirs = model.$directives;
+            components = model.$get('$components'),
+            dirs = model.$get('$directives');
 
-        select(el).selectAll('*').each(function() {
-            // mount components
-            var Component = components.get(this.tagName.toLowerCase());
-
-            if (Component)
-                new Component({
-                    el: this,
-                    parent: model
-                }).mount();
-            else
-                vm.mountElement(this, model);
-        });
-        // apply directive to this element
+        // create directive for this element
+        var directives = [];
         for (let i=0; i<el.attributes.length; ++i) {
             let attr = el.attributes[i],
                 dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
                 Directive = dirs.get(dirName);
-            if (Directive)
-                new Directive(model, el, attr);
+            if (Directive) directives.push(new Directive(model, el, attr));
         }
+        if (directives.length)
+            el.__d3_directives__ = directives.sort((d) => {return -d.priority;});
+
+        if (el.parentNode || el === this.el)
+            select(el).selectAll('*').each(function() {
+                // mount components
+                var Component = components.get(this.tagName.toLowerCase());
+
+                if (Component)
+                    new Component({
+                        el: this,
+                        parent: model
+                    }).mount();
+                else
+                    vm.mountElement(this, model);
+            });
+
+        // mount directive
+        directives.forEach((d) => {
+            d.mount();
+        });
     }
 
     _init (element, options) {
@@ -148,23 +159,28 @@ class Component extends Base {
 function init(element, options) {
     // model containing binding data
     var vm = this;
-    var model = new Model(this, options.get('model'));
-    self.set(this, model);
-    model.$directives = map(this.constructor.directives);
-    model.$components = map(this.constructor.components);
-    model.$mounted = false;
-    model.$el = element;
-    element.__d3view__ = this;
     var parent = options.get('parent');
+    var model = new Model(this, options.get('model'));
     if (parent) model.$parent = parent;
+    model.$el = element;
+    self.set(this, model);
+    //
+    model.$directives = map(parent ? parent.$directives : this.constructor.directives);
+    model.$components = map(parent ? parent.$components : this.constructor.components);
+    model.$mounted = false;
     //
     map(options.get('directives')).each((directive, key) => {
-        // Create a new directive class
-        model.$directives[key] = class extends Directive {
-            mount () {
-                return directive.call(this);
-            }
-        };
+        if (isObject(directive))
+            // Create a new directive class
+            model.$directives.set(key, class extends Directive {
+
+                init () {
+                    for (key in directive)
+                        this[key] = directive[key];
+                }
+            });
+        else
+            vm.warn(`"${key}" not a valid directive. Must be a object with some of "create", "mount" and "destroy" functions`);
     });
     //
     map(options.get('components')).each((component, key) => {

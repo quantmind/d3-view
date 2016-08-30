@@ -1,11 +1,12 @@
 import {dispatch} from 'd3-dispatch';
 import {timeout} from 'd3-timer';
+import {select} from 'd3-selection';
 import {isObject, isFunction} from 'd3-let';
 import {map} from 'd3-collection';
 
 let UID = 0;
 
-// Hierarchical reactive Model
+// Hierarchical Reactive Model
 export default function (vm, initials) {
     var model = this,
         properties = map(),
@@ -89,9 +90,14 @@ export default function (vm, initials) {
         else if (model.$parent) return model.$parent.$get(key);
     }
 
-    function createChild (data) {
+    // create a child model
+    function createChild (data, element) {
         var child = new model.constructor(vm, data);
         child.$parent = model;
+        if (element) {
+            child.$el = element;
+            select(element).datum(child);
+        }
         return child;
     }
 

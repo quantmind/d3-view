@@ -98,6 +98,21 @@ In order to use components you need to register them with the `view`` object
 
 ## API Reference
 
+### Model
+
+At the core of the library we have the Hierarchical Reactive Model.
+The Model comparable to angular scope but its implementation is very different.
+
+<a name="$get" href="#model-$get">#</a> model.<b>$get</b>(<i>attribute</i>) [<>](https://github.com/d3/d3-selection/blob/master/src/selectAll.js "Source")
+
+Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
+it will recursively retrieve it from its [parent](#model-$parent).
+
+<a name="$parent" href="#model-$parent">#</a> model.<b>$parent</b> [<>](https://github.com/d3/d3-selection/blob/master/src/selectAll.js "Source")
+
+Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
+it will recursively retrieve it from its [parent](#model-$parent).
+
 ### Directives
 
 

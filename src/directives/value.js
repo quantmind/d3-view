@@ -6,21 +6,20 @@ import tags from './tags';
 // Two-way data binding for HTML elements supporting the value property
 export default class extends Directive {
 
-    mount (attrName) {
+    mount () {
         var el = select(this.el),
             type = el.attr('type'),
             tag = this.el.tagName.toLowerCase(),
             Tag = tags[type] || tags[tag],
             model = this.model;
-        this.attrName = attrName;
 
         if (!Tag) return this.warn(`Cannot apply d3-value directive to ${tag}`);
-        this.tag = new Tag(this.el, attrName, model);
+        this.tag = new Tag(this.el, this.expression, model);
     }
 
     destroy () {
         select(this.el).on('change.d3Value', null);
-        this.model.off(this.attrName);
+        this.model.off(this.expression);
     }
 }
 

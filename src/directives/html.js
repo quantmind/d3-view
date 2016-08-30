@@ -1,4 +1,5 @@
 import {select} from 'd3-selection';
+import {isString} from 'd3-let';
 import Directive from '../directive';
 
 
@@ -11,14 +12,19 @@ import Directive from '../directive';
 //  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
 export default class extends Directive {
 
-    mount (attrName) {
-        var el = select(this.el),
-            model = this.model;
-        this.attrName = attrName;
-
-        // model => DOM binding
-        model.$on(attrName, function (value) {
-            el.html(value);
+    create () {
+        var dir = this;
+        //model => DOM binding
+        this.model.$on(this.expression, function () {
+            dir.mount();
         });
+    }
+
+    mount () {
+        var value = this.model.$get(this.expression);
+        if (isString(value)) {
+            var el = select(this.el);
+            el.html(value);
+        }
     }
 }

@@ -1,30 +1,47 @@
-import {map} from 'd3-collection';
-
-
+//
+// Directive base class
+//
+// Directives are special attributes with the d3- prefix.
+// Directive attribute values are expected to be binding expressions.
+// A directive’s job is to reactively apply special behavior to the DOM
+// when the value of its expression changes.
+//
+// A directive can implement one or more of the directive methods:
+//
+//  * init
+//  * create
+//  * mount
+//  * destroy
+//
 export default class {
 
     constructor (model, el, attr) {
+        this.init();
         this.model = model;
         this.el = el;
-        var directives = el._d3_directives;
-        if (!directives) {
-            directives = map();
-            el._d3_directives = directives;
-        }
-        directives.set(attr.name, this);
         this.el.removeAttribute(attr.name);
-        this.mount(attr.value);
+        this.expression = attr.value;
+        this.create();
     }
-
-    mount () {}
 
     get vm () {
         return this.model.$vm;
+    }
+    
+    // default to lowest priority
+    get priority () {
+        return 1;
     }
 
     warn (msg) {
         this.vm.warn(msg);
     }
+
+    init () {}
+
+    create () {}
+
+    mount () {}
 
     destroy () {}
 }
