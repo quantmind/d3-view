@@ -57,26 +57,29 @@ data driven web interfaces. It is not a framework as such, but you can easily
 build one on top of it.
 
 Importantly, this library does not make any choice for you, it is build on top
-of the modular d3 library following very similar design guidelines.
+of the modular d3 library following very similar design patterns.
 
 ### Create the View
 
-Create a view object for you application, it does not need to be the whole application:
+Create a view object for you application, it doesn't need to be the whole application:
 ```javascript
-var d3v = new d3.View({
+var v1 = new d3.View({
     el: '#entry',
     components: {...},
     directives: {...}
 });
-// d3v is one view managed by d3.
-// You can create more tan one
-var d3v = new d3.View({
+// v1 is one view managed by d3.View
+
+// You can create more than one if you need to
+var v2 = new d3.View({
     el: '#entry2',
     components: {...},
     directives: {...}
 });
+// v2 is another view managed by d3.View
 ```
 
+Both ``v1`` and ``v2`` are
 ## Directives
 
 

@@ -3,6 +3,10 @@
         "source": {
             "command": "npm run-script source",
             "interactive": true
+        },
+        "lint": {
+            "command": "npm run-script lint",
+            "interactive": true
         }
     },
     "httpcopy": {
@@ -26,6 +30,12 @@
             "command": [
                 "js"
             ]
+        },
+        "examples": {
+            "files": [
+                "examples/**/*.js"
+            ],
+            "command": ["lint"]
         }
     },
     "tasks": {
@@ -38,6 +48,10 @@
             "command": [
                 "shell:source"
             ]
+        },
+        "lint": {
+            "description": "lint js",
+            "command": ["shell:lint"]
         },
         "dev": {
             "description": "Start development watch server",

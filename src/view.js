@@ -9,8 +9,7 @@ export class View extends Base {
 
 }
 
-
+// Global API
 View.version = version;
 View.directives = directives;
 View.components = {};
-

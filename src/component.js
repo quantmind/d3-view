@@ -1,17 +1,17 @@
-import {isFunction, isObject, self, logger} from 'd3-let';
+import {isFunction, isObject, self} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import Directive from './directive';
 import Model from './model';
-
-const prefix = '[d3-view]';
+import {warn} from './utils';
 
 //
-//  d3 view class
+//  d3 base view class
 export class Base {
 
     constructor(options) {
         options = map(options);
+        self.set(this, {});
         var el = options.get('el');
         if (!el) this.warn('"el" element is required when creating a new d3.View');
         else {
@@ -22,13 +22,15 @@ export class Base {
         }
     }
 
-    _init(element, options) {
-        init.call(this, element, options);
-    }
+    created () {}
+
+    beforeMount () {}
+
+    mounted () {}
 
     warn(msg) {
         if (this.parent) this.parent.warn(msg);
-        else logger.warn(`${prefix} ${msg}`);
+        else warn(msg);
     }
 
     get isd3() {
@@ -51,6 +53,10 @@ export class Base {
         return this.model.$parent;
     }
 
+    get components () {
+        return this.model.$components;
+    }
+
     get root () {
         let parent = this.parent;
         if (parent) return parent.root;
@@ -63,9 +69,11 @@ export class Base {
 
     mount () {
         if (this.isMounted) this.warn('already mounted');
-        else {
+        else if (this.el) {
+            this.beforeMount();
             this.model.$mounted = true;
             mount(this, this.el);
+            this.mounted();
         }
         return this;
     }
@@ -73,19 +81,15 @@ export class Base {
     createElement (tag) {
         return select(document.createElement(tag));
     }
+
+    _init (element, options) {
+        init.call(this, element, options);
+    }
 }
 
 
 // d3 view component
 class Component extends Base {
-
-    init () {}
-
-    created () {}
-
-    beforeMount () {}
-
-    mounted () {}
 
     mount () {
         if (this.isMounted) this.warn('already mounted');
@@ -96,6 +100,7 @@ class Component extends Base {
             var el = this.render();
             if (!el || el.size() !== 1) this.warn('render function must return a single HTML node');
             var node = el.node();
+            node.__d3view__ = this;
             this.el.parentNode.appendChild(node);
             select(this.el).remove();
             this.model.$el = node;
@@ -116,7 +121,7 @@ function init(element, options) {
     model.$mounted = false;
     model.$el = element;
     element.__d3view__ = this;
-    var parent = options.parent;
+    var parent = options.get('parent');
     if (parent) model.$parent = parent.model;
     //
     map(options.get('directives')).each((directive, key) => {
@@ -137,17 +142,14 @@ function init(element, options) {
                 _init (element, options) {
                     for (key in component)
                         this[key] = component[key];
-
-                    this.init();
                     init.call(this, element, options);
-                    this.created();
                 }
 
             });
         else
             vm.warn(`"${key}" not a valid component. Must be a function or an object with render function`);
     });
-
+    this.created();
 }
 
 

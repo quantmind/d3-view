@@ -1,46 +1,63 @@
-
+// Navbar component
 var navbar = {
-
-    model: {
-        navbar: [
-            {
-                title: 'one'
-            },
-            {
-                title: 'two'
-            },
-            {
-                title: 'three'
-            }
-        ]
-    },
 
     render: function () {
         var el = this.createElement('navbar'),
             navbar = this.model.navbar,
-            self = this;
+            brand = navbar.brand ? [navbar.brand] : [];
 
-        function show () {
-            var dt = new Date(),
-                next = 1000 - dt.getMilliseconds();
-            el.text(format(dt));
-            self.timer = d3.timeout(show, next);
-        }
+        el.selectAll('a.navbar-brand')
+            .data(brand)
+            .enter()
+            .append('a')
+            .attr('class', 'navbar-brand')
+            .attr('href', (d) => {return d.href || '#';});
 
-        show();
+        el.selectAll('ul')
+            .data([true])
+            .enter()
+            .append('ul')
+            .attr('class', 'nav navbar-nav');
+
+        var items = el.select('ul').selectAll('li').data(navbar.items || []);
+
+        var enter = items.enter()
+            .append('li')
+            .attr('class', 'nav-item')
+            .attr('d3-active', '');
+
+        // add links
+        enter.append('a').attr('class', 'nav-link');
+
+        enter.merge(items)
+            .select('a')
+            .attr('href', (d) => {return d.href || '#';});
+
         return el;
-    },
-
-    destroy: function () {
-        if (this.timer) this.timer.stop();
     }
 
 };
 
 
 new d3.View({
-    el: '#clock',
+    el: '#page',
+    model: {
+        navbar: {
+            brand: "Test",
+            items: [
+                {
+                    title: 'one'
+                },
+                {
+                    title: 'two'
+                },
+                {
+                    title: 'three'
+                }
+            ]
+        }
+    },
     components: {
-        clock: clock
+        navbar: navbar
     }
 }).mount();

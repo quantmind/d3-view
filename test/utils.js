@@ -1,6 +1,9 @@
 import {View} from '../';
 
 
+window.handlebars = require('handlebars');
+
+
 export default class extends View {
 
     get testContext () {
