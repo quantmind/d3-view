@@ -50,7 +50,8 @@ export class Base {
     }
 
     get parent () {
-        return this.model.$parent;
+        var p = this.model.$parent;
+        return p ? p.$vm : undefined;
     }
 
     get components () {
@@ -72,7 +73,7 @@ export class Base {
         else if (this.el) {
             this.beforeMount();
             this.model.$mounted = true;
-            mount(this, this.el);
+            this.mountElement(this.el);
             this.mounted();
         }
         return this;
@@ -80,6 +81,39 @@ export class Base {
 
     createElement (tag) {
         return select(document.createElement(tag));
+    }
+
+    mountElement (el, model) {
+        model = model || this.model;
+        if (model !== this.model) {
+            select(el).datum(model);
+            if (model.$vm !== this) this.warn('model of a child element should have the same view object');
+        }
+
+        var vm = this,
+            components = model.$components,
+            dirs = model.$directives;
+
+        select(el).selectAll('*').each(function() {
+            // mount components
+            var Component = components.get(this.tagName.toLowerCase());
+
+            if (Component)
+                new Component({
+                    el: this,
+                    parent: model
+                }).mount();
+            else
+                vm.mountElement(this, model);
+        });
+        // apply directive to this element
+        for (let i=0; i<el.attributes.length; ++i) {
+            let attr = el.attributes[i],
+                dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
+                Directive = dirs.get(dirName);
+            if (Directive)
+                new Directive(model, el, attr);
+        }
     }
 
     _init (element, options) {
@@ -96,7 +130,7 @@ class Component extends Base {
         else {
             this.beforeMount();
             this.model.$mounted = true;
-            mount(this, this.el);
+            this.mountElement(this.el);
             var el = this.render();
             if (!el || el.size() !== 1) this.warn('render function must return a single HTML node');
             var node = el.node();
@@ -122,7 +156,7 @@ function init(element, options) {
     model.$el = element;
     element.__d3view__ = this;
     var parent = options.get('parent');
-    if (parent) model.$parent = parent.model;
+    if (parent) model.$parent = parent;
     //
     map(options.get('directives')).each((directive, key) => {
         // Create a new directive class
@@ -150,31 +184,4 @@ function init(element, options) {
             vm.warn(`"${key}" not a valid component. Must be a function or an object with render function`);
     });
     this.created();
-}
-
-
-function mount (vm, el) {
-    var components = vm.model.$components,
-        dirs = vm.model.$directives;
-
-    select(el).selectAll('*').each(function() {
-        // mount components
-        var Component = components.get(this.tagName.toLowerCase());
-
-        if (Component)
-            new Component({
-                el: this,
-                parent: vm
-            }).mount();
-        else
-            mount(vm, this);
-    });
-    // apply directive to this element
-    for (let i=0; i<el.attributes.length; ++i) {
-        let attr = el.attributes[i],
-            dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
-            Directive = dirs.get(dirName);
-        if (Directive)
-            new Directive(vm, el, attr);
-    }
 }

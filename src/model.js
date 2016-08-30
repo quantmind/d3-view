@@ -5,12 +5,13 @@ import {map} from 'd3-collection';
 
 let UID = 0;
 
-
+// Hierarchical reactive Model
 export default function (vm, initials) {
     var model = this,
         properties = map(),
         uid = ++UID;
 
+    // event handler for any change in the model
     properties.set('', dispatch('change'));
 
     function property (key, value) {
@@ -62,7 +63,10 @@ export default function (vm, initials) {
         }
         var bits = name.split('.'),
             key = bits[0];
-        if (!properties.has(key)) return vm.warn(`Cannot bind to "${key}" - no such reactive property`);
+        if (!properties.has(key)) {
+            if (!model.$parent) return vm.warn(`Cannot bind to "${key}" - no such reactive property`);
+            return model.$parent.$on(name, callback);
+        }
         bits[0] = 'change';
         return properties.get(key).on(bits.join('.'), callback);
     }
@@ -80,16 +84,36 @@ export default function (vm, initials) {
             Object.defineProperty(model, key, property(key, value));
     }
 
+    function getValue (key) {
+        if (key in model) return model[key];
+        else if (model.$parent) return model.$parent.$get(key);
+    }
+
+    function createChild (data) {
+        var child = new model.constructor(vm, data);
+        child.$parent = model;
+        return child;
+    }
+
     update(initials);
 
     // Public API.
     model.$on = on;
     model.$update = update;
     model.$set = setValue;
+    model.$get = getValue;
+    model.$child = createChild;
+
 
     Object.defineProperty(model, '$uid', {
         get: function () {
             return uid;
+        }
+    });
+
+    Object.defineProperty(model, '$vm', {
+        get: function () {
+            return vm;
         }
     });
 }

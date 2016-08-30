@@ -31,6 +31,7 @@ describe('Create component', function() {
         expect(c.uid).toBeGreaterThan(view.uid);
         expect(c.model).not.toBe(view.model);
         expect(c.model.$parent).toBe(view.model);
+        expect(c.parent).toBe(view);
     });
 
 

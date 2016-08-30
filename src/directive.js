@@ -3,8 +3,8 @@ import {map} from 'd3-collection';
 
 export default class {
 
-    constructor (vm, el, attr) {
-        this.vm = vm;
+    constructor (model, el, attr) {
+        this.model = model;
         this.el = el;
         var directives = el._d3_directives;
         if (!directives) {
@@ -12,14 +12,14 @@ export default class {
             el._d3_directives = directives;
         }
         directives.set(attr.name, this);
-        this.mount(attr.value);
         this.el.removeAttribute(attr.name);
+        this.mount(attr.value);
     }
 
     mount () {}
 
-    get model () {
-        return this.vm.model;
+    get vm () {
+        return this.model.$vm;
     }
 
     warn (msg) {
