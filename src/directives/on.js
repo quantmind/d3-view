@@ -1,6 +1,6 @@
 import {select} from 'd3-selection';
 import Directive from '../directive';
-
+import expression from '../parser';
 
 //
 // Bind an expression to an event
@@ -12,7 +12,13 @@ import Directive from '../directive';
 export default class extends Directive {
 
     mount () {
-        var event = `${this.event}.${this.uid}`;
-        select(this.el).on(event);
+        var event = this.extra || 'click',
+            expr = expression(self.expression),
+            model = this.model;
+        if (!expr) return;
+
+        select(this.el).on(`${event}.${this.uid}`, () => {
+            expr.eval(model);
+        });
     }
 }

@@ -9,11 +9,12 @@ export default class extends Directive {
         return 2000;
     }
 
-    create () {
+    beforeMount () {
         var dir = this,
             model = this.model,
             bits = [];
 
+        this.el.removeAttribute(this.name);
         if (!this.el.parentNode) return this.vm.warn('d3-for requires a parent node');
         this.expression.trim().split(' ').forEach((v) => {v ? bits.push(v) : null;});
 

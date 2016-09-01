@@ -12,13 +12,31 @@ export default function (el) {
     var directives = [];
     for (let i=0; i<el.attributes.length; ++i) {
         let attr = el.attributes[i],
-            dirName = attr.name.substring(0, 3) === 'd3-' ? attr.name.substring(3) : null,
-            Directive = dirs.get(dirName);
-        if (Directive) directives.push(new Directive(model, el, attr));
+            bits = attr.name.split(':'),
+            extra = bits[1],
+            dirName = bits[0].substring(0, 3) === 'd3-' ? bits[0].substring(3) : null;
+
+        if (dirName || (extra && bits[0] === '')) {
+            dirName = dirName || 'attr';
+            var Directive = dirs.get(dirName);
+            if (Directive) directives.push(new Directive(model, el, attr, extra));
+            else model.warn(`cannot find directive ${dirName}. Did you forget to register it?`);
+        }
     }
 
-    if (directives.length)
-        el.__d3_directives__ = directives.sort((d) => {return -d.priority;});
+    if (directives.length) {
+        var d3_dirs = [];
+        el.__d3_directives__ = d3_dirs;
+        directives.sort((d) => {
+            return -d.priority;
+        }).forEach((d) => {
+            if (!el.__template__) {
+                d3_dirs.push(d);
+                d.beforeMount();
+            }
+        });
+        directives = d3_dirs;
+    }
 
     // Mount components
     if (!el.__template__) {
@@ -54,6 +72,6 @@ export default function (el) {
 
     // mount directive
     directives.forEach((d) => {
-        d.mount();
+        d.execute();
     });
 }

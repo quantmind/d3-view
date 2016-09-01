@@ -1,4 +1,6 @@
 import uid from './uid';
+import {warn} from './utils';
+
 //
 // Directive base class
 //
@@ -16,12 +18,13 @@ import uid from './uid';
 //
 export default class {
 
-    constructor (model, el, attr) {
+    constructor (model, el, attr, extra) {
         uid(this).init();
         this.model = model;
         this.el = el;
-        this.el.removeAttribute(attr.name);
+        this.name = attr.name;
         this.expression = attr.value;
+        this.extra = extra;
         this.create();
     }
 
@@ -35,12 +38,19 @@ export default class {
     }
 
     warn (msg) {
-        this.vm.warn(msg);
+        warn(msg);
+    }
+
+    execute () {
+        this.el.removeAttribute(this.name);
+        this.mount();
     }
 
     init () {}
 
     create () {}
+
+    beforeMount () {}
 
     mount () {}
 

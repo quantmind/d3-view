@@ -1,6 +1,7 @@
 // tiny javascript expression parser
 import jsep from './jsep';
 import {evaluate} from './eval';
+import {warn} from '../utils';
 
 
 class Expression {
@@ -17,7 +18,11 @@ class Expression {
 
 
 export function expression (expr) {
-    return new Expression(expr);
+    try {
+        return new Expression(expr);
+    } catch (msg) {
+        warn(msg);
+    }
 }
 
 
