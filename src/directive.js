@@ -1,3 +1,4 @@
+import uid from './uid';
 //
 // Directive base class
 //
@@ -16,7 +17,7 @@
 export default class {
 
     constructor (model, el, attr) {
-        this.init();
+        uid(this).init();
         this.model = model;
         this.el = el;
         this.el.removeAttribute(attr.name);
@@ -27,7 +28,7 @@ export default class {
     get vm () {
         return this.model.$vm;
     }
-    
+
     // default to lowest priority
     get priority () {
         return 1;

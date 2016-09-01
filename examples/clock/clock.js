@@ -3,7 +3,7 @@ var clock = {
 
     render: function () {
         var format = d3.timeFormat("%B %d, %H:%M:%S"),
-            el = this.createElement('span'),
+            el = this.createElement('h1'),
             self = this;
 
         function show () {

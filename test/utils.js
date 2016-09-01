@@ -4,14 +4,23 @@ import {View} from '../';
 window.handlebars = require('handlebars');
 
 
-export default class extends View {
+const logger = {
+    logs: [],
 
-    get testContext () {
-        if (!this._testContext) this._testContext = {warn: []};
-        return this._testContext;
-    }
+    warn: function (msg) {
+        logger.logs.push(msg);
+    },
 
-    warn (msg) {
-        this.testContext.warn.push(msg);
+    pop: function (num) {
+        if (arguments.length === 1)
+            return logger.logs.splice(logger.logs.length-num);
+        else
+            return logger.logs.splice(0);
     }
-}
+};
+
+
+View.providers.logger = logger;
+
+
+export default View;

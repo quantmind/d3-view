@@ -25,6 +25,7 @@ export default class extends Directive {
         this.el = this.el.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
+        this.creator.__template__ = true;
 
         // model => DOM binding
         model.$on(this.attrName, function () {
@@ -38,8 +39,7 @@ export default class extends Directive {
 
         if (!value) return;
 
-        var vm = model.$vm,
-            creator = this.creator,
+        var creator = this.creator,
             itemName = this.itemName,
             items = select(this.el).selectAll(creator.tagName).data(value),
             enter = items.enter().append(() => {
@@ -47,7 +47,7 @@ export default class extends Directive {
             }).each(function (d, index) {
                 var x = {index: index};
                 x[itemName] = d;
-                vm.mountElement(this, model.$child(x, this));
+                model.$child(x).$mount(this);
             });
         enter.merge(items);
     }

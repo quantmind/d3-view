@@ -6,15 +6,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.3/css/bootstrap.min.css">
 </head>
 <body>
-<div id="page" d3-full-page class="container">
-    <navbar></navbar>
+<div id="page" class="container">
+    <navbar d3-model="navbar"></navbar>
     <h1 style="padding-top: 100px">A navbar component</h1>
     <form>
         <fieldset class="form-group">
             <legend>Choose a style</legend>
             <div class="radio" d3-for="theme in themes">
                 <label>
-                    <input class="form-check-input" type="radio" name="theme" d3-on="navbar.theme=theme">
+                    <input class="form-check-input" type="radio" name="theme" d3-on="navbar.$set('theme', theme)">
                     <span d3-html="theme"></span>
                 </label>
             </div>

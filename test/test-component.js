@@ -25,13 +25,9 @@ describe('Create component', function() {
         var span = select(view.el).select('span');
         expect(span.attr('class')).toBe('year');
         expect(span.text()+0).toBeGreaterThan(2015);
-        var c = span.node().__d3view__;
+        var c = span.node().__model__;
         expect(c).toBeTruthy();
-        expect(c.isd3).toBe(true);
-        expect(c.uid).toBeGreaterThan(view.uid);
-        expect(c.model).not.toBe(view.model);
-        expect(c.model.$parent).toBe(view.model);
-        expect(c.parent).toBe(view);
+        expect(c.parent).toBe(view.model);
     });
 
 

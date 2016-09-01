@@ -4,18 +4,13 @@ var navbar = {
     render: function () {
         var vm = this,
             el = this.createElement('nav').attr('class', 'navbar'),
-            navbar = this.model.$get('navbar');
+            model = this.model;
 
-        if (!navbar) {
-            navbar = {};
-            this.warn('navbar component requires a "navbar" entry in the view model');
-        }
-        else
-            this.model.$on('navbar', (value) => {
-                vm.refresh(vm.el, value);
-            });
+        model.$on(() => {
+            vm.refresh(vm.sel);
+        });
 
-        var brand = navbar.brand ? [navbar.brand] : [];
+        var brand = model.brand ? [model.brand] : [];
 
         el.selectAll('a.navbar-brand')
             .data(brand)
@@ -33,17 +28,18 @@ var navbar = {
             .append('ul')
             .attr('class', 'nav navbar-nav');
 
-        this.refresh(el, navbar);
+        this.refresh(el);
         return el;
     },
 
-    refresh: function (el, navbar) {
-        var theme = 'navbar-' + (navbar.theme || 'light bg-faded'),
+    refresh: function (el) {
+        var model = this.model,
+            theme = 'navbar-' + (model.theme || 'light bg-faded'),
             items = el
                 .classed(theme, true)
-                .classed('navbar-fixed-top', navbar.fixedTop)
+                .classed('navbar-fixed-top', model.fixedTop)
                 .select('ul')
-                .selectAll('li').data(navbar.items || []);
+                .selectAll('li').data(model.items || []);
 
         var enter = items.enter()
             .append('li')

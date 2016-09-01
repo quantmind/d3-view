@@ -1,6 +1,7 @@
 import {isObject, isString} from 'd3-let';
 import View from './utils';
 
+var logger = View.providers.logger;
 
 describe('View meta', function() {
 
@@ -10,8 +11,9 @@ describe('View meta', function() {
     });
 
     it('No element', function () {
-        var vm = new View();
-        expect(vm.testContext.warn.length).toBe(1);
+        logger.pop();
+        new View();
+        expect(logger.pop().length).toBe(1);
     });
 
 });
@@ -30,19 +32,21 @@ describe('View', function() {
         expect(vm.el).toBe(el);
         expect(vm.isd3).toBe(true);
         expect(vm.uid).toBeGreaterThan(0);
-        expect(vm.model.$uid).toBe(vm.uid);
+        expect(vm.model.uid).toBe(vm.uid);
         expect(vm.parent).toBe(undefined);
         expect(vm.root).toBe(vm);
         expect(vm.isMounted).toBe(false);
-        expect(() => {vm.model.$uid = -5;}).toThrow();
+        expect(() => {vm.model.uid = -5;}).toThrow();
         expect(vm.uid).toBeGreaterThan(0);
     });
 
     it('view.model.$on warn', () => {
+        logger.pop();
         var vm = new View({'el': el});
         vm.model.$on('bla');
-        expect(vm.testContext.warn.length).toBe(1);
-        expect(vm.testContext.warn[0]).toBe(`Cannot bind to "bla" - no such reactive property`);
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe(`[d3-view] Cannot bind to "bla" - no such reactive property`);
     });
 
     it('view.model.$on', (done) => {
