@@ -12,14 +12,14 @@ import Directive from '../directive';
 //  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
 export default class extends Directive {
 
-    mount () {
+    mount (model) {
         var dir = this;
         //model => DOM binding
-        this.model.$on(this.expression, function () {
+        model.$on(this.expression, function () {
             dir.mount();
         });
 
-        var value = this.model.$get(this.expression);
+        var value = model.$get(this.expression);
         if (isString(value)) {
             var el = select(this.el);
             el.html(value);

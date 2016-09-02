@@ -1,4 +1,4 @@
-import asModel from './as';
+import asModel, {elModel} from './as';
 import $get from './get';
 import $set from './set';
 import $on from './on';
@@ -10,7 +10,10 @@ import mountChildren from './mount';
 import {warn} from '../utils';
 import getdirs from '../getdirs';
 
-
+//
+//  Model class
+//
+//  The model is at the core of d3-view reactive data component
 export default function Model (initials) {
     asModel(this, initials);
 }
@@ -42,10 +45,9 @@ function createModel (directives, parent, data) {
         return new Model(data);
     }
 
-    if (dir) {
-        dir.mount(parent);
-        return dir.model.$update(data);
-    } else if (data)
+    if (dir)
+        return dir.execute(parent).$update(data);
+    else if (data)
         return parent.$child(data);
     else // don't create a new model if not needed it
         return parent;
@@ -57,6 +59,11 @@ function $mount (el) {
         model = Model.create(directives, this),
         loop = directives.pop('for');
 
-    if (loop) loop.execute(model);
-    else mountChildren(el);
+    if (loop) {
+        loop.execute(model);
+        return true;
+    } else {
+        if (!elModel(el)) elModel(el, model);
+        mountChildren(el);
+    }
 }

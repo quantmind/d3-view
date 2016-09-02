@@ -1,6 +1,5 @@
 import {select} from 'd3-selection';
 import Directive from '../directive';
-import {isCreator} from '../utils';
 
 //
 // for loop
@@ -11,7 +10,8 @@ export default class extends Directive {
     }
 
     mount (model) {
-        var bits = [];
+        var dir = this,
+            bits = [];
 
         this.expression.trim().split(' ').forEach((v) => {
             v ? bits.push(v) : null;
@@ -22,22 +22,22 @@ export default class extends Directive {
         this.creator = this.el;
         this.itemName = bits[0];
         this.attrName = bits[2];
+        // set parent node as this element
         this.el = this.el.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
-        isCreator(this.creator, true);
 
         // model => DOM binding
         model.$on(this.attrName, refresh);
 
         function refresh () {
-            var value = model.$get(this.attrName);
+            var value = model.$get(dir.attrName);
 
             if (!value) return;
 
-            var creator = this.creator,
-                itemName = this.itemName,
-                items = select(this.el).selectAll(creator.tagName).data(value),
+            var creator = dir.creator,
+                itemName = dir.itemName,
+                items = select(dir.el).selectAll(creator.tagName).data(value),
                 enter = items.enter().append(() => {
                     return creator.cloneNode(true);
                 }).each(function (d, index) {

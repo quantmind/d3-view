@@ -4,7 +4,7 @@ import {map} from 'd3-collection';
 import Directive from './directive';
 import Model from './model';
 import getdirs from './getdirs';
-import {warn, asSelect, isCreator} from './utils';
+import {warn, asSelect} from './utils';
 
 //
 //  d3 base view class
@@ -31,6 +31,7 @@ export class Base {
 
     mounted () {}
 
+    // API
     warn (msg) {
         warn(msg);
     }
@@ -51,26 +52,10 @@ export class Base {
         return select(this.el);
     }
 
-    get parent () {
-        var p = this.model.parent;
-        return p ? p.$vm : undefined;
-    }
-
-    get root () {
-        let parent = this.parent;
-        if (parent) return parent.root;
-        else return this;
-    }
-
     mount () {
-        if (this.isMounted) this.warn('already mounted');
+        if (mounted(this)) this.warn('already mounted');
         else if (this.el) {
             this.beforeMount();
-            Object.defineProperty(this, 'isMounted', {
-                get: function () {
-                    return true;
-                }
-            });
             this.model.$mount(this.el);
             this.mounted();
         }
@@ -83,26 +68,42 @@ export class Base {
 }
 
 
-// d3 view component
+//  d3 view Component
+//  =======================
+//
+//  A component must implement the render method
 export class Component extends Base {
 
     render () {}
 
     mount () {
-        if (this.isMounted) this.warn('already mounted');
+        if (mounted(this)) this.warn('already mounted');
         else {
+            // before mount hook
             this.beforeMount();
-            this.model.$mounted = true;
-            this.model.$mount(this.el);
-            if (isCreator(this.el)) return;
-            var el = this.render();
+
+            var model = this.model,
+                el = this.el;
+            //
+            // When a for d3-for loop is active we abort mounting this component
+            // The component will be mounted as meny times the the for loop requires
+            if(model.$mount(el)) return;
+            //
+            // create the new element from the render function
+            el = this.render();
             if (!el) this.warn('render function must return a single HTML node. It returned nothing!');
             el = asSelect(el);
             if (el.size() !== 1) this.warn('render function must return a single HTML node');
             var node = el.node();
+            //
+            // remove the component element
             this.el.parentNode.appendChild(node);
-            select(this.el).remove();
-            this.model.$mount(node);
+            this.sel.remove();
+            //
+            // Mount the new element
+            model.$mount(node);
+            //
+            // mounted hook
             this.mounted();
         }
         return this;
@@ -176,4 +177,16 @@ function extendDirectivesComponents (options, directives, components) {
                 warn(`"${key}" not a valid component. Must be a function or an object with render function`);
         }
     });
+}
+
+
+function mounted (view) {
+    var mounted = view.isMounted;
+    if (!mounted)
+        Object.defineProperty(view, 'isMounted', {
+            get: function () {
+                return true;
+            }
+        });
+    return mounted;
 }

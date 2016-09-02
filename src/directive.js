@@ -51,7 +51,7 @@ export default class {
     }
 
     execute (model) {
-        this.removeAttribute().mount(model);
+        return this.removeAttribute().mount(model);
     }
 
     init () {}

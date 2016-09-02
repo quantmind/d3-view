@@ -24,6 +24,14 @@ export default function (model, initials) {
 }
 
 
+export function elModel (el, model) {
+    if (arguments.length === 2) {
+        el.__model__ = model;
+        return el;
+    } return el.__model__;
+}
+
+
 function model (value) {
     return arguments.length
       ? this.property("__model__", value)

@@ -22,6 +22,7 @@ export default function (element, directives) {
     return dirs.sorted();
 }
 
+
 // Directives container
 class Directives {
 

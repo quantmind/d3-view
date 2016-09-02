@@ -11,7 +11,7 @@ import {expression} from '../parser';
 //  Create a one-way binding between a model and a HTML element attribute
 export default class extends Directive {
 
-    mount () {
+    mount (model) {
         var attr = this.extra,
             expr = expression(this.expression),
             dir = this;
@@ -23,13 +23,13 @@ export default class extends Directive {
 
         // One way bindings
         identifiers.forEach((name) => {
-            dir.model.$on(`${name}.${dir.uid}`, refresh);
+            model.$on(`${name}.${dir.uid}`, refresh);
         });
 
         refresh();
 
         function refresh() {
-            var value = expr.eval(dir.model),
+            var value = expr.eval(model),
                 el = select(dir.el);
 
             if (isArray(value)) {

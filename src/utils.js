@@ -35,10 +35,4 @@ export function debounce (callback) {
 }
 
 
-export function isCreator (el) {
-    if (arguments.length === 2) el.__template__ = arguments[1];
-    else return el.__template__;
-}
-
-
 export default providers;

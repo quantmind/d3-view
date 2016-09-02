@@ -24,6 +24,6 @@ export default function (el) {
 
     // Execute directives
     directives.forEach((d) => {
-        d.execute();
+        d.execute(model);
     });
 }
