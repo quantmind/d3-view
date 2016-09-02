@@ -20,11 +20,13 @@ describe('d3-value directive', function() {
             .property('value', 'Initial text value');
 
         var vm = new View({el: el}).mount();
+        var model = vm.model;
 
-        expect(vm.model.foo).toBe('Initial text value');
+        expect(model.foo).toBe('Initial text value');
 
         // Model => DOM binding
-        vm.model.foo = 'a new value';
+        model.foo = 'a new value';
+        expect(model.foo).toBe('a new value');
         expect(el.property('value')).toBe('Initial text value');
 
         timeout(() => {
@@ -34,10 +36,10 @@ describe('d3-value directive', function() {
             el.property('value', 'ciao');
             trigger(el.node(), 'change');
 
-            expect(vm.model.foo).toBe('a new value');
+            expect(model.foo).toBe('a new value');
 
             timeout(() => {
-                expect(vm.model.foo).toBe('ciao');
+                expect(model.foo).toBe('ciao');
                 done();
             });
         });

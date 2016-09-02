@@ -1,6 +1,6 @@
-import {timeout} from 'd3-timer';
 import {dispatch} from 'd3-dispatch';
 import {isFunction, isObject} from 'd3-let';
+import {debounce} from '../utils';
 
 
 //  $set a reactive attribute for a Model
@@ -9,57 +9,56 @@ import {isFunction, isObject} from 'd3-let';
 //  If the attribute is not already reactive make it as such.
 //
 export default function (key, value) {
-    var model = this,
-        events = model.$events,
-        reactive = events.get(key);
+    // property not reactive - make it as such
+    if (!this.$events.get(key)) reactive(this, key, value);
+    else this[key] = value;
+}
 
-    if (!reactive) {
-        Object.defineProperty(model, key, property());
-        timeout(() => {
-            events.get('').call('change', model);
-        });
-    }
-    else
-        model[key] = value;
 
-    function update (newValue) {
-        var oldValue = value;
-        value = newValue;
+function reactive(model, key, value) {
+    var events = model.$events,
+        oldValue,
+        lazy;
+
+    events.set(key, dispatch('change'));
+
+    Object.defineProperty(model, key, property());
+
+    var trigger = debounce(() => {
+        oldValue = arguments[0];
         events.get(key).call('change', model, value, oldValue);
         events.get('').call('change', model);
+    });
+
+    // Trigger the callback once for initialization
+    trigger();
+
+    function update (newValue) {
+        if (lazy) newValue = lazy.get.call(model);
+        if (newValue === value) return;
+        // trigger lazy callbacks
+        trigger(value);
+        // update the value
+        value = newValue;
     }
 
     function property () {
-        var lazy,
-            prop = {
+        var prop = {
                 get: function () {
                     return value;
                 }
             };
 
-        events.set(key, dispatch('change'));
-
         if (isFunction(value)) value = {get: value};
 
+        // calculated attribute
         if (isObject(value) && isFunction(value.get)) {
             lazy = value;
             value = lazy.get.call(model);
-            model.$on(`.${key}`, () => {
-                var newValue = lazy.get.call(model);
-                if (newValue === value) return;
-                update(newValue);
-            });
+            model.$on(`.${key}`, update);
         } else
-            prop.set = function (newValue) {
-                if (newValue === value) return;
-                // Schedule change event at the next event loop tick
-                timeout(() => {
-                    update(newValue);
-                });
-            };
+            prop.set = update;
 
         return prop;
     }
 }
-
-

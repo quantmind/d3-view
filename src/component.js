@@ -3,7 +3,8 @@ import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import Directive from './directive';
 import Model from './model';
-import {warn} from './utils';
+import getdirs from './getdirs';
+import {warn, asSelect, isCreator} from './utils';
 
 //
 //  d3 base view class
@@ -38,12 +39,12 @@ export class Base {
         return true;
     }
 
-    get uid () {
-        return this.model.uid;
+    get model () {
+        return this.sel.model();
     }
 
-    get el () {
-        return this.model.$el;
+    get uid () {
+        return this.model.uid;
     }
 
     get sel () {
@@ -55,25 +56,21 @@ export class Base {
         return p ? p.$vm : undefined;
     }
 
-    get components () {
-        return this.model.$components;
-    }
-
     get root () {
         let parent = this.parent;
         if (parent) return parent.root;
         else return this;
     }
 
-    get isMounted () {
-        return this.model.$mounted;
-    }
-
     mount () {
         if (this.isMounted) this.warn('already mounted');
         else if (this.el) {
             this.beforeMount();
-            this.model.$mounted = true;
+            Object.defineProperty(this, 'isMounted', {
+                get: function () {
+                    return true;
+                }
+            });
             this.model.$mount(this.el);
             this.mounted();
         }
@@ -97,43 +94,55 @@ export class Component extends Base {
             this.beforeMount();
             this.model.$mounted = true;
             this.model.$mount(this.el);
+            if (isCreator(this.el)) return;
             var el = this.render();
-            if (!el || el.size() !== 1) this.warn('render function must return a single HTML node');
+            if (!el) this.warn('render function must return a single HTML node. It returned nothing!');
+            el = asSelect(el);
+            if (el.size() !== 1) this.warn('render function must return a single HTML node');
             var node = el.node();
             this.el.parentNode.appendChild(node);
             select(this.el).remove();
-            this.model.$el = node;
+            this.model.$mount(node);
             this.mounted();
         }
         return this;
     }
 }
 
-
+// d3-view Constructor
 function init(element, options) {
     this.init();
-    // model containing binding data
-    var vm = this,
-        data = options.get('model'),
-        parent = options.get('parent');
-    var model = parent ? parent.$child(data) : new Model(data);
 
-    Object.defineProperty(this, 'model', {
+    var data = options.get('model'),
+        parent = options.get('parent'),
+        directives = map(parent ? parent.$directives : this.constructor.directives),
+        components = map(parent ? parent.$components : this.constructor.components);
+
+    extendDirectivesComponents(options, directives, components);
+
+    var model = Model.create(getdirs(element, directives), parent, data);
+    model.$directives = directives;
+    model.$components = components;
+
+    Object.defineProperty(this, 'el', {
         get: function () {
-            return model;
+            return element;
         }
     });
 
-    model.$vm = vm;
-    model.$el = element;
-    model.$directives = map(parent ? parent.$directives : this.constructor.directives);
-    model.$components = map(parent ? parent.$components : this.constructor.components);
-    model.$mounted = false;
+    // Apply model to element
+    this.sel.model(model);
+    // Created hook
+    this.created();
+}
+
+
+function extendDirectivesComponents (options, directives, components) {
     //
     map(options.get('directives')).each((directive, key) => {
         if (isObject(directive))
             // Create a new directive class
-            model.$directives.set(key, class extends Directive {
+            directives.set(key, class extends Directive {
 
                 init () {
                     for (key in directive)
@@ -141,17 +150,17 @@ function init(element, options) {
                 }
             });
         else
-            vm.warn(`"${key}" not a valid directive. Must be a object with some of "create", "mount" and "destroy" functions`);
+            warn(`"${key}" not a valid directive. Must be a object with some of "create", "mount" and "destroy" functions`);
     });
     //
     map(options.get('components')).each((component, key) => {
         if (component.prototype && component.prototype.isd3)
-            model.$components.set(key, component);
+            components.set(key, component);
         else {
             if (isFunction(component)) component = {render: component};
             if (isObject(component) && isFunction(component.render))
             // Create a new directive class
-                model.$components.set(key, class extends Component {
+                components.set(key, class extends Component {
 
                     init() {
                         var init;
@@ -164,8 +173,7 @@ function init(element, options) {
 
                 });
             else
-                vm.warn(`"${key}" not a valid component. Must be a function or an object with render function`);
+                warn(`"${key}" not a valid component. Must be a function or an object with render function`);
         }
     });
-    this.created();
 }

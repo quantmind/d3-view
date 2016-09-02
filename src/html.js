@@ -3,8 +3,8 @@ import {warn} from './utils';
 import {select} from 'd3-selection';
 
 
+// require handlebar
 export function compile (text) {
-    // require handlebar
     var handlebars = inBrowser ? window.handlebars : require('handlebars');
     if (handlebars) return handlebars.compile(text);
     warn('compile function requires handlebars');
@@ -12,8 +12,14 @@ export function compile (text) {
 
 
 export function html (source, context) {
-    if (isString(source)) source = compile(source);
-    if (!source) return '';
+    if (isString(source)) {
+        if (context) {
+            var s = compile(source);
+            if (!s) return source;
+        }
+        else
+            return source;
+    }
     return source(context);
 }
 

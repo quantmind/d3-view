@@ -1,24 +1,27 @@
 import {select} from 'd3-selection';
+import {isString} from 'd3-let';
 import Directive from '../directive';
-import expression from '../parser';
+import {expression} from '../parser';
 
 //
-// Bind an expression to an event
+//  d3-on directive
+//  ===================
+//
+//  Bind an expression to an event
 //
 //  Usage:
-//      <div id="foo" d3-html="output"></div>
+//      <div id="foo" d3-on:click="doSomething()"></div>
 //
-//  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
 export default class extends Directive {
 
     mount () {
         var event = this.extra || 'click',
-            expr = expression(self.expression),
+            expr = this.expression,
             model = this.model;
-        if (!expr) return;
 
         select(this.el).on(`${event}.${this.uid}`, () => {
-            expr.eval(model);
+            if (isString(expr)) expr = expression(expr);
+            if (expr) expr.eval(model);
         });
     }
 }

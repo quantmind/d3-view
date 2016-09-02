@@ -1,11 +1,15 @@
 // tiny javascript expression parser
-import jsep from './jsep';
-import {evaluate} from './eval';
+import jsep, {code} from './jsep';
+import {evaluate, identifiers} from './eval';
 import {warn} from '../utils';
 
 
 class Expression {
-
+    
+    get codes () {
+        return code;
+    }
+    
     constructor (expr) {
         this.expr = expr;
         this.parsed = jsep(expr);
@@ -14,6 +18,10 @@ class Expression {
     eval (model) {
         return evaluate(model, this.parsed);
     }
+
+    identifiers () {
+        return identifiers(this.parsed).values();
+    }
 }
 
 
@@ -21,7 +29,7 @@ export function expression (expr) {
     try {
         return new Expression(expr);
     } catch (msg) {
-        warn(msg);
+        warn(`Could not evaluate <<${expr}>> expression: ${msg}`);
     }
 }
 

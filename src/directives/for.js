@@ -1,5 +1,6 @@
 import {select} from 'd3-selection';
 import Directive from '../directive';
+import {isCreator} from '../utils';
 
 //
 // for loop
@@ -9,14 +10,12 @@ export default class extends Directive {
         return 2000;
     }
 
-    beforeMount () {
-        var dir = this,
-            model = this.model,
-            bits = [];
+    mount (model) {
+        var bits = [];
 
-        this.el.removeAttribute(this.name);
-        if (!this.el.parentNode) return this.vm.warn('d3-for requires a parent node');
-        this.expression.trim().split(' ').forEach((v) => {v ? bits.push(v) : null;});
+        this.expression.trim().split(' ').forEach((v) => {
+            v ? bits.push(v) : null;
+        });
 
         if (bits.length !== 3 || bits[1] != 'in') return this.vm.warn('d3-for directive requires "item in data" template');
 
@@ -26,30 +25,27 @@ export default class extends Directive {
         this.el = this.el.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
-        this.creator.__template__ = true;
+        isCreator(this.creator, true);
 
         // model => DOM binding
-        model.$on(this.attrName, function () {
-            dir.mount();
-        });
-    }
+        model.$on(this.attrName, refresh);
 
-    mount () {
-        var model = this.model,
-            value = model.$get(this.attrName);
+        function refresh () {
+            var value = model.$get(this.attrName);
 
-        if (!value) return;
+            if (!value) return;
 
-        var creator = this.creator,
-            itemName = this.itemName,
-            items = select(this.el).selectAll(creator.tagName).data(value),
-            enter = items.enter().append(() => {
-                return creator.cloneNode(true);
-            }).each(function (d, index) {
-                var x = {index: index};
-                x[itemName] = d;
-                model.$child(x).$mount(this);
-            });
-        enter.merge(items);
+            var creator = this.creator,
+                itemName = this.itemName,
+                items = select(this.el).selectAll(creator.tagName).data(value),
+                enter = items.enter().append(() => {
+                    return creator.cloneNode(true);
+                }).each(function (d, index) {
+                    var x = {index: index};
+                    x[itemName] = d;
+                    model.$child(x).$mount(this);
+                });
+            enter.merge(items);
+        }
     }
 }

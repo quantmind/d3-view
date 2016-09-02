@@ -1,3 +1,4 @@
+import {select} from 'd3-selection';
 import uid from './uid';
 import {warn} from './utils';
 
@@ -18,9 +19,8 @@ import {warn} from './utils';
 //
 export default class {
 
-    constructor (model, el, attr, extra) {
+    constructor (el, attr, extra) {
         uid(this).init();
-        this.model = model;
         this.el = el;
         this.name = attr.name;
         this.expression = attr.value;
@@ -32,6 +32,10 @@ export default class {
         return this.model.$vm;
     }
 
+    get sel () {
+        return select(this.el);
+    }
+
     // default to lowest priority
     get priority () {
         return 1;
@@ -41,16 +45,18 @@ export default class {
         warn(msg);
     }
 
-    execute () {
+    removeAttribute () {
         this.el.removeAttribute(this.name);
-        this.mount();
+        return this;
+    }
+
+    execute (model) {
+        this.removeAttribute().mount(model);
     }
 
     init () {}
 
     create () {}
-
-    beforeMount () {}
 
     mount () {}
 
