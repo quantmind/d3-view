@@ -1,25 +1,25 @@
 import {isObject, isString} from 'd3-let';
-import View from './utils';
+import view from './utils';
 
-var logger = View.providers.logger;
+var logger = view.providers.logger;
 
-describe('View meta', function() {
+describe('view meta', function() {
 
-    it('View class', () => {
-        expect(isString(View.version)).toBe(true);
-        expect(isObject(View.directives)).toBe(true);
+    it('view function', () => {
+        expect(isString(view.version)).toBe(true);
+        expect(isObject(view.directives)).toBe(true);
     });
 
     it('No element', function () {
         logger.pop();
-        new View();
+        view();
         expect(logger.pop().length).toBe(1);
     });
 
 });
 
 
-describe('View', function() {
+describe('view', function() {
 
     let el;
 
@@ -28,7 +28,7 @@ describe('View', function() {
     });
 
     it('Element', () => {
-        var vm = new View({'el': el});
+        var vm = view({'el': el});
         expect(vm.el).toBe(el);
         expect(vm.isd3).toBe(true);
         expect(vm.uid).toBeGreaterThan(0);
@@ -42,7 +42,7 @@ describe('View', function() {
 
     it('view.model.$on warn', () => {
         logger.pop();
-        var vm = new View({'el': el});
+        var vm = new view({'el': el});
         vm.model.$on('bla');
         var logs = logger.pop();
         expect(logs.length).toBe(1);
@@ -50,7 +50,7 @@ describe('View', function() {
     });
 
     it('view.model.$on', (done) => {
-        var vm = new View({'el': el});
+        var vm = view({'el': el});
         vm.model.$set('bla', 5);
         vm.model.$on('bla', changed);
         expect(vm.model.bla).toBe(5);

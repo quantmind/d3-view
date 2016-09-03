@@ -45,8 +45,13 @@ function createModel (directives, parent, data) {
         return new Model(data);
     }
 
-    if (dir)
-        return dir.execute(parent).$update(data);
+    // Execute model directive
+    if (dir) {
+        dir.execute(parent);
+        var model = dir.sel.model();
+        if (model) model.$update(data);
+        return model;
+    }
     else if (data)
         return parent.$child(data);
     else // don't create a new model if not needed it

@@ -1,6 +1,7 @@
 import {select} from 'd3-selection';
 import uid from './uid';
-import {warn} from './utils';
+import {warn, debounce} from './utils';
+import {expression} from './parser';
 
 //
 // Directive base class
@@ -19,24 +20,31 @@ import {warn} from './utils';
 //
 export default class {
 
-    constructor (el, attr, extra) {
-        uid(this).init();
+    constructor (el, attr, arg) {
         this.el = el;
         this.name = attr.name;
-        this.expression = attr.value;
-        this.extra = extra;
-        this.create();
+        this.arg = arg;
+        var expr = uid(this).create(attr.value);
+        if (expr) this.expression = expression(expr);
     }
 
-    get vm () {
-        return this.model.$vm;
+    // hooks
+    create (expression) {
+        return expression;
     }
+
+    mount (model) {
+        return model;
+    }
+
+    refresh () {}
+
+    destroy () {}
 
     get sel () {
         return select(this.el);
     }
 
-    // default to lowest priority
     get priority () {
         return 1;
     }
@@ -47,18 +55,42 @@ export default class {
 
     removeAttribute () {
         this.el.removeAttribute(this.name);
-        return this;
     }
 
+    // Execute directive
     execute (model) {
-        return this.removeAttribute().mount(model);
+        // No binding expression - nothing to do
+        if (!this.expression) return;
+        this.removeAttribute();
+
+        model = this.mount(model);
+        // No model returned - abort execution
+        if (!model) return;
+
+        var dir = this,
+            sel = this.sel,
+            refresh = debounce(() => {
+                try {
+                    dir.refresh(model, dir.expression.eval(model));
+                } catch (msg) {
+                    warn(`Error while refreshing "${dir.name}" directive: ${msg}`);
+                }
+            });
+
+        // Bind expression identifiers with model
+        this.identifiers = this.expression.identifiers().map((id) => {
+            var event = `${id}.${dir.uid}`;
+            model.$on(event, refresh);
+            return id;
+        });
+
+        sel.on(`remove.${dir.uid}`, () => {
+            this.identifiers.forEach((id) => {
+                model.$off(`${id}.${dir.uid}`);
+            });
+            dir.destroy(model);
+        });
+
+        refresh();
     }
-
-    init () {}
-
-    create () {}
-
-    mount () {}
-
-    destroy () {}
 }

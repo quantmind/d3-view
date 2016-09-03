@@ -1,5 +1,4 @@
-import View from './utils';
-import {htmlElement} from '../';
+import view from './utils';
 import {select} from 'd3-selection';
 
 
@@ -13,21 +12,21 @@ describe('Create component', function() {
     };
 
     it('View class', () => {
-        var view = new View({
-            el: htmlElement('<div id="test1"><year></year></div>'),
+        var vm = view({
+            el: view.htmlElement('<div id="test1"><year></year></div>'),
             components: {
                 year: year
             }
         });
-        expect(view.el.tagName).toBe('DIV');
-        expect(view.components.size()).toBe(1);
-        expect(view.mount()).toBe(view);
-        var span = select(view.el).select('span');
+        expect(vm.el.tagName).toBe('DIV');
+        expect(vm.components.size()).toBe(1);
+        expect(vm.mount()).toBe(vm);
+        var span = select(vm.el).select('span');
         expect(span.attr('class')).toBe('year');
         expect(span.text()+0).toBeGreaterThan(2015);
-        var c = span.node().__model__;
+        var c = span.model();
         expect(c).toBeTruthy();
-        expect(c.parent).toBe(view.model);
+        expect(c.parent).toBe(vm.model);
     });
 
 

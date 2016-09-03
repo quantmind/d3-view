@@ -1,5 +1,6 @@
-import {expression} from '../';
+import view from './utils';
 
+var expression = view.expression;
 
 describe('expression.eval', function() {
 

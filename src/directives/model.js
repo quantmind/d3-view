@@ -1,5 +1,4 @@
 import Directive from '../directive';
-import {expression} from '../parser';
 
 
 //
@@ -11,14 +10,12 @@ import {expression} from '../parser';
 export default class extends Directive {
 
     mount (model) {
-        var expr = expression(this.expression);
-        if (!expr) return;
+        var expr = this.expression;
         if (expr.parsed.type !== expr.codes.IDENTIFIER)
             return this.warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
         var newModel = model.$child(expr.eval(model));
         this.sel.model(newModel);
         model.$setbase(this.expression, newModel);
-        return newModel;
     }
 
 }

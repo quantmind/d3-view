@@ -1,7 +1,4 @@
-import {select} from 'd3-selection';
-import {isString} from 'd3-let';
 import Directive from '../directive';
-import {expression} from '../parser';
 
 //
 //  d3-on directive
@@ -14,14 +11,20 @@ import {expression} from '../parser';
 //
 export default class extends Directive {
 
-    mount () {
-        var event = this.extra || 'click',
-            expr = this.expression,
-            model = this.model;
+    mount (model) {
+        var event = this.arg || 'click',
+            expr = this.expression;
 
-        select(this.el).on(`${event}.${this.uid}`, () => {
-            if (isString(expr)) expr = expression(expr);
-            if (expr) expr.eval(model);
+        // DOM event => model binding
+        this.sel.on(`${event}.${this.uid}`, ($event) => {
+            model.$event = $event;
+            expr.eval(model);
+            delete model.$event;
         });
+    }
+
+    destroy () {
+        var event = this.arg || 'click';
+        this.sel.on(`${event}.${this.uid}`, null);
     }
 }

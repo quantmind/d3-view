@@ -21,11 +21,15 @@ It provides data-reactive components with a simple and flexible API.
 - [Installing](#installing)
 - [Getting Started](#getting-started)
   - [Create the View](#create-the-view)
+  - [Expressions](#expressions)
 - [Directives](#directives)
+  - [Custom Directive](#custom-directive)
+  - [Directive API](#directive-api)
 - [Components](#components)
   - [Registration](#registration)
   - [Reusing](#reusing)
 - [API Reference](#api-reference)
+  - [Model](#model)
   - [Directives](#directives-1)
   - [Components](#components-1)
 - [Other Frameworks](#other-frameworks)
@@ -63,7 +67,7 @@ of the modular d3 library following very similar design patterns.
 
 Create a view object for you application, it doesn't need to be the whole application:
 ```javascript
-var v1 = new d3.View({
+var v1 = d3.view({
     el: '#entry',
     components: {...},
     directives: {...}
@@ -71,7 +75,7 @@ var v1 = new d3.View({
 // v1 is one view managed by d3.View
 
 // You can create more than one if you need to
-var v2 = new d3.View({
+var v2 = d3.view({
     el: '#entry2',
     components: {...},
     directives: {...}
@@ -80,8 +84,96 @@ var v2 = new d3.View({
 ```
 
 Both ``v1`` and ``v2`` are
+
+### Expressions
+
+The text we put inside directive's values are called ``binding expressions``.
+In d3-view, a binding expression consists of a single JavaScript expression
+but not operations. The difference between expressions and operations is akin
+to the difference between a cell in an Excel spreadsheet vs. a proper JavaScript program.
+
+Valid expression are:
+```javascript
+"The sun"               //  literal
+theme                   //  An identifier (a property of a model)
+dosomething()           //  A function
+[theme, number]         //  Arrays
+x ? "Hi" : "goodbye"    //  Conditionals
+```
+and complex combinations of the above
+```
+user.groups().join(", ")
+[theme, user.groups(), "Hi"]
+```
+
 ## Directives
 
+Directives are special attributes with the ``d3-`` prefix.
+Directive attribute values are expected to be binding [expression](#expressions).
+The library provides several directives for every day task.
+
+For example the ``d3-html`` directive binds an expression to the inner
+Html of the element containing the directive:
+```html
+<div d3-html='paragrah ? paragraph : "TODO"'><div>
+```
+Here the ``paragraph`` is a reactive attribute of the View model.
+
+### Custom Directive
+
+Creating a custom directive involve the following steps:
+
+* Create a (reusable) directive object:
+```javascript
+var mydir = {
+    create: function (expression) {
+        return expression;
+    },
+    mount: function (model) {
+        return model;
+    },
+    refresh: function (model, value) {
+    },
+    destroy: function () {
+    
+    }
+};
+```
+* Add the directive to the view constructor:
+```javascript
+var vm = d3.view({
+    el: '#entry',
+    ...
+    directives: {
+        mydir: mydir
+    }
+};
+```
+* Use the directive via the ``d3-mydir`` attribute.
+
+A directive is implemented customized via the four methods highlighted above.
+None of the method needs implementing, and indeed for some directive the ``refresh`` method is the only one which needs attention.
+
+### Directive API
+
+<a name="create" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
+
+The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or the model has yet occurred.
+The ``expression`` is the attribute value, a string, and it is not yet parsed.
+This method must return the expression for parsing (it doesn't need to be the same as the input expression).
+However, if it returns nothing, the directive is not executed.
+
+<a name="mount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
+
+The ``mount`` method is called once only, at the beginning of the binding the HTML element.
+The expression returned by the ``create`` method
+has been parsed and available in the ``this.expression`` attribute.
+This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
+However, if it returns nothing, the binding execution is aborted.
+
+<a name="refresh" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
+
+<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
 ## Components
 

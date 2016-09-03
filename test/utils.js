@@ -1,4 +1,4 @@
-import {View} from '../';
+import {view} from '../';
 
 
 window.handlebars = require('handlebars');
@@ -20,7 +20,7 @@ const logger = {
 };
 
 
-View.providers.logger = logger;
+view.providers.logger = logger;
 
 
-export default View;
+export default view;

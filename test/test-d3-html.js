@@ -1,14 +1,13 @@
-import View from './utils';
-import {htmlElement} from '../';
+import view from './utils';
 import {timeout} from 'd3-timer';
 
 
 describe('d3-html directive', function() {
 
     it('test simple', (done) => {
-        var el = htmlElement('<div d3-html="test">Bla</div>');
+        var el = view.htmlElement('<div d3-html="test">Bla</div>');
 
-        var vm = new View({
+        var vm = view({
             el: el,
             model: {
                 test: 'This is a test'

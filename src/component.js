@@ -5,10 +5,14 @@ import Directive from './directive';
 import Model from './model';
 import getdirs from './getdirs';
 import {warn, asSelect} from './utils';
+import directives from './directives/index';
+import providers from './utils';
+
+const components = {};
 
 //
 //  d3 base view class
-export class Base {
+export class View {
 
     constructor(options) {
         options = map(options);
@@ -31,6 +35,19 @@ export class Base {
 
     mounted () {}
 
+    // Static API
+    static get providers () {
+        return providers;
+    }
+
+    static get directives () {
+        return directives;
+    }
+
+    static get components () {
+        return components;
+    }
+
     // API
     warn (msg) {
         warn(msg);
@@ -42,6 +59,14 @@ export class Base {
 
     get model () {
         return this.sel.model();
+    }
+
+    get components () {
+        return this.model.$components;
+    }
+
+    get directives () {
+        return this.model.$directives;
     }
 
     get uid () {
@@ -72,7 +97,7 @@ export class Base {
 //  =======================
 //
 //  A component must implement the render method
-export class Component extends Base {
+export class Component extends View {
 
     render () {}
 

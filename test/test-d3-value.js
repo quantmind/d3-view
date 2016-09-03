@@ -1,6 +1,6 @@
 import {select} from 'd3-selection';
 import {timeout} from 'd3-timer';
-import View from './utils';
+import view from './utils';
 
 
 function trigger (target, event, process) {
@@ -19,7 +19,7 @@ describe('d3-value directive', function() {
             .attr('d3-value', 'foo')
             .property('value', 'Initial text value');
 
-        var vm = new View({el: el}).mount();
+        var vm = new view({el: el}).mount();
         var model = vm.model;
 
         expect(model.foo).toBe('Initial text value');

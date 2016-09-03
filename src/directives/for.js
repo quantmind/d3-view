@@ -1,51 +1,55 @@
 import {select} from 'd3-selection';
+import {isArray} from 'd3-let';
 import Directive from '../directive';
 
 //
-// for loop
+//  d3-for directive
+//  ======================
+//
+//  Repeat a element over an array of items and establish
+//  a one way binding between the array and the Dom
 export default class extends Directive {
 
-    get priority () {
-        return 2000;
+    create (expression) {
+        var bits = [];
+        expression.trim().split(' ').forEach((v) => {
+            v ? bits.push(v) : null;
+        });
+        if (bits.length !== 3 || bits[1] != 'in') return this.vm.warn('d3-for directive requires "item in expression" template');
+        this.creator = this.el;
+        this.itemName = bits[0];
+        this.itemClass = `for${this.uid}`;
+        return bits[2];
     }
 
     mount (model) {
-        var dir = this,
-            bits = [];
-
-        this.expression.trim().split(' ').forEach((v) => {
-            v ? bits.push(v) : null;
-        });
-
-        if (bits.length !== 3 || bits[1] != 'in') return this.vm.warn('d3-for directive requires "item in data" template');
-
         this.creator = this.el;
-        this.itemName = bits[0];
-        this.attrName = bits[2];
-        // set parent node as this element
-        this.el = this.el.parentNode;
+        this.el = this.creator.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
+        return model;
+    }
 
-        // model => DOM binding
-        model.$on(this.attrName, refresh);
+    refresh (model, items) {
+        if (!isArray(items)) return;
 
-        function refresh () {
-            var value = model.$get(dir.attrName);
+        var creator = this.creator,
+            selector = `${creator.tagName}.${this.itemClass}`,
+            itemName = this.itemName,
+            entries = this.sel.selectAll(selector).data(items);
 
-            if (!value) return;
+        entries
+            .enter()
+            .append(() => {
+                return creator.cloneNode(true);
+            })
+            .classed(this.itemClass, true)
+            .each(function (d, index) {
+                var x = {index: index};
+                x[itemName] = d;
+                model.$child(x).$mount(this);
+            });
 
-            var creator = dir.creator,
-                itemName = dir.itemName,
-                items = select(dir.el).selectAll(creator.tagName).data(value),
-                enter = items.enter().append(() => {
-                    return creator.cloneNode(true);
-                }).each(function (d, index) {
-                    var x = {index: index};
-                    x[itemName] = d;
-                    model.$child(x).$mount(this);
-                });
-            enter.merge(items);
-        }
+        entries.exit().remove();
     }
 }
