@@ -10,24 +10,35 @@ import Directive from '../directive';
 export default class extends Directive {
 
     create (expression) {
-        if (!this.args) return this.warn('Cannot bind to empty attribute. Specify :<attr-name>');
+        if (!this.arg) return this.warn('Cannot bind to empty attribute. Specify :<attr-name>');
         return expression;
     }
 
     refresh (model, value) {
+        if (this.arg === 'class') this.refreshClass(value);
+        if (isArray(value)) return this.warn(`Cannot apply array to attribute ${this.arg}`);
+        this.sel.attr(this.arg, value);
+    }
+
+    refreshClass (value) {
         var sel = this.sel;
 
-        if (isArray(value)) {
-            if (this.arg === 'class') value.forEach((entry) => {
-                var exist = true;
-                if (isArray(entry)) {
-                    exist = entry[1];
-                    entry = entry[0];
-                }
-                sel.classed(entry, exist);
+        if (!isArray(value)) value = [value];
+
+        if (this.oldValue)
+            this.oldValue.forEach((entry) => {
+                sel.classed(entry, false);
             });
-            else this.warn(`Cannot apply array to attribute ${this.arg}`);
-        } else
-            sel.attr(this.arg, value);
+
+        this.oldValue = value.map((entry) => {
+            var exist = true;
+            if (isArray(entry)) {
+                exist = entry[1];
+                entry = entry[0];
+            }
+            sel.classed(entry, exist);
+            return entry;
+        });
     }
+
 }

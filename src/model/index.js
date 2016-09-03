@@ -1,5 +1,5 @@
 import {select} from 'd3-selection';
-import asModel, {elModel} from './as';
+import asModel from './as';
 import $get from './get';
 import $set from './set';
 import $on from './on';
@@ -31,8 +31,24 @@ Model.prototype.$get = $get;
 Model.prototype.$set = $set;
 Model.prototype.$child = $child;
 Model.prototype.$setbase = $setbase;
+Model.prototype.$mount = $mount;
 Model.prototype.warn = warn;
 
+
+function $mount (el) {
+    var directives = getdirs(el, this.$directives),
+        model = createModel(directives, this),
+        loop = directives.pop('for');
+
+    if (loop) {
+        loop.execute(model);
+        return true;    // Important - skip mounting a component
+    } else {
+        var sel = select(el);
+        if (!sel.model()) sel.model(model);
+        mountChildren(sel);
+    }
+}
 
 // Model factory function
 export function createModel (directives, parent, data) {
@@ -63,25 +79,8 @@ export function createModel (directives, parent, data) {
 }
 
 
-export function $mount (model, el) {
-    var directives = getdirs(el, model.$directives),
-        loop = directives.pop('for');
-
-    model = createModel(directives, model);
-
-    if (loop) {
-        loop.execute(model);
-        return true;    // Important - skip mounting a component
-    } else {
-        if (!elModel(el)) elModel(el, model);
-        mountChildren(el);
-    }
-}
-
-
-function mountChildren (el) {
-    var directives = getdirs(el),
-        sel = select(el),
+function mountChildren (sel) {
+    var directives = getdirs(sel.node()),
         model = sel.model();
 
     sel.selectAll(function () {
@@ -95,7 +94,7 @@ function mountChildren (el) {
                 parent: model
             }).mount();
         else
-            $mount(model, this);
+            model.$mount(this);
     });
 
 

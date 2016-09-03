@@ -46,6 +46,9 @@ describe('expression.eval', function() {
         expect(expression('pippo.more.name').eval(ctx)).toBe('pluto');
     });
 
+    it('logical expression', () => {
+        expect(expression('xxx || foo').eval(ctx)).toBe('ciao');
+    });
 
     it('test conditional expression', () => {
         expect(expression('foo ? foo : "bla"').eval(ctx)).toBe('ciao');

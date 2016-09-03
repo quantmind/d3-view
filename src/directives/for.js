@@ -16,7 +16,6 @@ export default class extends Directive {
             v ? bits.push(v) : null;
         });
         if (bits.length !== 3 || bits[1] != 'in') return this.vm.warn('d3-for directive requires "item in expression" template');
-        this.creator = this.el;
         this.itemName = bits[0];
         this.itemClass = `for${this.uid}`;
         return bits[2];

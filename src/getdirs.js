@@ -6,6 +6,8 @@ export default function (element, directives) {
     var dirs = new Directives();
     element.__directives__ = dirs;
 
+    if (!directives) return dirs;
+    
     for (let i = 0; i < element.attributes.length; ++i) {
         let attr = element.attributes[i],
             bits = attr.name.split(':'),

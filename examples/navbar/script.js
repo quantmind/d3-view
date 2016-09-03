@@ -31,9 +31,9 @@ d3.view({
             ]
         },
         themes: [
-            "light bg-faded",
-            "dark bg-primary",
-            "dark bg-inverse"
+            "navbar-light bg-faded",
+            "navbar-dark bg-primary",
+            "navbar-dark bg-inverse"
         ]
 
     },

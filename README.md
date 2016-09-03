@@ -139,6 +139,11 @@ it will recursively retrieve it from its [parent](#model-parent).
 Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
 it will recursively retrieve it from its [parent](#model-parent).
 
+<a name="$mount" href="#model-mount">#</a> model.<b>$mount</b>(<i>HTMLElement</i>)
+
+Mount a model into an HTML Element. It kick starts the model-DOM binding process for the given element.
+If the element was already bound to a model, it does nothing and a warning is issued.
+
 
 
 ## Directives

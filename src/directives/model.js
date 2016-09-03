@@ -15,7 +15,7 @@ export default class extends Directive {
             return this.warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
         var newModel = model.$child(expr.eval(model));
         this.sel.model(newModel);
-        model.$setbase(this.expression, newModel);
+        model.$setbase(this.expression.expr, newModel);
     }
 
 }

@@ -24,7 +24,7 @@ var clock = {
 };
 
 
-new d3.View({
+d3.view({
     el: '#clock',
     components: {
         clock: clock

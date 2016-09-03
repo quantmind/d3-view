@@ -16,10 +16,8 @@ export default class extends Directive {
             expr = this.expression;
 
         // DOM event => model binding
-        this.sel.on(`${event}.${this.uid}`, ($event) => {
-            model.$event = $event;
+        this.sel.on(`${event}.${this.uid}`, () => {
             expr.eval(model);
-            delete model.$event;
         });
     }
 

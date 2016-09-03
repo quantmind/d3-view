@@ -7,6 +7,7 @@ export function evaluate (self, expr) {
         case code.IDENTIFIER: return self[expr.name];
         case code.LITERAL: return expr.value;
         case code.ARRAY_EXP: return expr.elements.map((elem) => {return evaluate(self, elem);});
+        case code.LOGICAL_EXP:
         case code.BINARY_EXP: return binaryExp(expr.operator, evaluate(self, expr.left), evaluate(self, expr.right));
         case code.CALL_EXP: return callExpression(self, expr.callee, expr.arguments);
         case code.MEMBER_EXP: return evaluate(evaluate(self, expr.object), expr.property);
