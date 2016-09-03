@@ -280,9 +280,9 @@ Components can be designed to be reused.
 
 In order of complexity
 
-* [Angular](https://angularjs.org/)
-* [React](https://facebook.github.io/react/)
-* [Vue](http://vuejs.org/)
+* [Angular](https://angularjs.org/) - angular 1.x is legacy - angular 2 :thumbsdown:
+* [React](https://facebook.github.io/react/) - OK but JSX - :scream:
+* [Vue](http://vuejs.org/) - Refreshing but :confused:
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful

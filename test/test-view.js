@@ -50,17 +50,30 @@ describe('view', function() {
     });
 
     it('view.model.$on', (done) => {
-        var vm = view({'el': el});
-        vm.model.$set('bla', 5);
-        vm.model.$on('bla', changed);
-        expect(vm.model.bla).toBe(5);
-        vm.model.bla = 4;
+        var vm = view({'el': el}),
+            model = vm.model;
+
+        model.$set('bla', 5);
+        model.$on('bla.test', changed);
+        expect(model.bla).toBe(5);
+        model.bla = 6;
+        expect(model.bla).toBe(6);
 
         function changed (value, oldValue) {
-            expect(this).toBe(vm.model);
-            expect(vm.model.bla).toBe(4);
+            expect(this).toBe(model);
+            expect(model.bla).toBe(6);
+            expect(value).toBe(6);
+            expect(oldValue).toBe(undefined);
+
+            model.$on('bla.test', changed2);
+            model.bla = 4;
+        }
+
+        function changed2 (value, oldValue) {
+            expect(this).toBe(model);
+            expect(model.bla).toBe(4);
             expect(value).toBe(4);
-            expect(oldValue).toBe(5);
+            expect(oldValue).toBe(6);
             done();
         }
     });
