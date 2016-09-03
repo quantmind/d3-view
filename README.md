@@ -25,6 +25,7 @@ It provides data-reactive components with a simple and flexible API.
 - [Model](#model)
   - [Model API](#model-api)
 - [Directives](#directives)
+  - [Core Directives](#core-directives)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
 - [Components](#components)
@@ -136,8 +137,9 @@ it will recursively retrieve it from its [parent](#model-parent).
 
 <a name="$on" href="#model-on">#</a> model.<b>$on</b>(<i>attribute, callback</i>)
 
-Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
-it will recursively retrieve it from its [parent](#model-parent).
+Add ``callback`` to a model reactive ``attribute``. The callback is invoked when
+the attribute change value only. It is possible to pass the ``callback`` only, in which
+case it is triggered when any of the model **own attributes** change.
 
 <a name="$mount" href="#model-mount">#</a> model.<b>$mount</b>(<i>HTMLElement</i>)
 
@@ -170,6 +172,28 @@ d3.view({
     }
 }).mount();
 ```
+
+### Core Directives
+
+<a name="d3-attr" href="#d3-attr">#</a> [d3-attr][]
+
+<a name="d3-for" href="#d3-for">#</a> [d3-for][]
+
+<a name="d3-html" href="#d3-html">#</a> [d3-html][]
+
+<a name="d3-if" href="#d3-if">#</a> [d3-if][]
+
+<a name="d3-model" href="#d3-model">#</a> [d3-model][]
+
+<a name="d3-on" href="#d3-on">#</a> [d3-on][]
+
+<a name="d3-value" href="#d3-value">#</a> [d3-value][]
+
+Establish a **two-way data binding** for HTML elements supporting the value property.
+The binding is tw ways because
+
+* an update in the model attribute causes an update in the HTML value property
+* an update in the HTML value property causes an update in the model attribute
 
 ### Custom Directive
 
@@ -263,3 +287,10 @@ In order of complexity
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
 [component]: #components
+[d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
+[d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js
+[d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
+[d3-if]: https://github.com/quantmind/d3-view/blob/master/src/directives/if.js
+[d3-model]: https://github.com/quantmind/d3-view/blob/master/src/directives/model.js
+[d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
+[d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js

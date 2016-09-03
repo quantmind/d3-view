@@ -24,7 +24,9 @@ function reactive(model, key, value) {
 
     Object.defineProperty(model, key, property());
 
-    var trigger = debounce(() => {
+    // the event is fired at the next tick of the event loop
+    // Cannot use the () => notation here otherwise arguments are incorrect
+    var trigger = debounce(function () {
         oldValue = arguments[0];
         events.get(key).call('change', model, value, oldValue);
         events.get('').call('change', model);

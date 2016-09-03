@@ -1,4 +1,4 @@
-import input from './textarea';
+import input from './input';
 import textarea from './textarea';
 
 export default {

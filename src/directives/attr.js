@@ -15,7 +15,7 @@ export default class extends Directive {
     }
 
     refresh (model, value) {
-        if (this.arg === 'class') this.refreshClass(value);
+        if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return this.warn(`Cannot apply array to attribute ${this.arg}`);
         this.sel.attr(this.arg, value);
     }
