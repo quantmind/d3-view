@@ -30,6 +30,7 @@ It provides data-reactive components with a simple and flexible API.
 - [Components](#components)
   - [Registration](#registration)
   - [Reusing](#reusing)
+  - [Component API](#component-api)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -43,7 +44,7 @@ AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global i
 <script src="https://d3js.org/d3-view.min.js"></script>
 <script>
 
-var view = new d3.View({
+var view = d3.view({
     el: "#my-element"
 });
 
@@ -54,7 +55,7 @@ view.mount();
 
 ## Getting Started
 
-``d3.View`` is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
+``d3.view`` is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 data driven web interfaces. It is not a framework as such, but you can easily
 build one on top of it.
 
@@ -63,22 +64,22 @@ of the modular d3 library following very similar design patterns.
 
 ### Create the View
 
-Create a view object for you application, it doesn't need to be the whole application:
+To create a view object for you application, invoke the ``d3.view`` function with at least the ``el`` entry in the input object
 ```javascript
 var v1 = d3.view({
     el: '#entry',
     components: {...},
     directives: {...}
 });
-// v1 is one view managed by d3.View
+```
 
-// You can create more than one if you need to
+You can create more than one view:
+```
 var v2 = d3.view({
     el: '#entry2',
     components: {...},
     directives: {...}
 });
-// v2 is another view managed by d3.View
 ```
 
 Both ``v1`` and ``v2`` are
@@ -95,7 +96,7 @@ Valid expression are:
 "The sun"               //  literal
 theme                   //  An identifier (a property of a model)
 dosomething()           //  A function
-[theme, number]         //  Arrays
+[theme, number]         //  Arrays of identifiers
 x ? "Hi" : "goodbye"    //  Conditionals
 ```
 and complex combinations of the above
@@ -113,6 +114,9 @@ The Model comparable to angular scope but its implementation is different.
 
 * **Reactive**:
 
+A model can be associated with more than one element, new children model are created for elements that needs a new model.
+For example, a [component][] that specify the ``model`` object during initialisation, creates its own model,
+a child model of the model associated with its parent element.
 
 ### Model API
 
@@ -140,7 +144,7 @@ it will recursively retrieve it from its [parent](#model-parent).
 ## Directives
 
 Directives are special attributes with the ``d3-`` prefix.
-Directive attribute values are expected to be binding [expression](#expressions).
+Directive attribute values are expected to be binding [expressions](#expressions).
 The library provides several directives for every day task.
 
 For example the ``d3-html`` directive binds an expression to the inner
@@ -232,6 +236,16 @@ In order to use components you need to register them with the `view`` object
 
 Components can be designed to be reused.
 
+### Component API
+
+<a name="created" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
+
+<a name="beforeMount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
+
+<a name="mounted" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
+
+<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
+
 
 ## Other Frameworks
 
@@ -243,3 +257,4 @@ In order of complexity
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
+[component]: #components

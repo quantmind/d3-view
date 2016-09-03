@@ -35,7 +35,7 @@ describe('view', function() {
         expect(vm.model.uid).toBe(vm.uid);
         expect(vm.parent).toBe(undefined);
         expect(vm.root).toBe(vm);
-        expect(vm.isMounted).toBe(false);
+        expect(vm.isMounted).toBe(undefined);
         expect(() => {vm.model.uid = -5;}).toThrow();
         expect(vm.uid).toBeGreaterThan(0);
     });

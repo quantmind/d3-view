@@ -2,7 +2,7 @@ import {isFunction, isObject} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import Directive from './directive';
-import Model from './model';
+import {$mount, createModel} from './model';
 import getdirs from './getdirs';
 import {warn, asSelect} from './utils';
 import directives from './directives/index';
@@ -61,6 +61,18 @@ export class View {
         return this.sel.model();
     }
 
+    get parent () {
+        var vm = this.model.$vm;
+        if (vm !== this) return vm;
+        var parent = this.model.parent;
+        return parent ? parent.$vm : undefined;
+    }
+
+    get root () {
+        var parent = this.parent;
+        return parent ? parent.root : this;
+    }
+
     get components () {
         return this.model.$components;
     }
@@ -81,7 +93,7 @@ export class View {
         if (mounted(this)) this.warn('already mounted');
         else if (this.el) {
             this.beforeMount();
-            this.model.$mount(this.el);
+            $mount(this.model, this.el);
             this.mounted();
         }
         return this;
@@ -111,8 +123,8 @@ export class Component extends View {
                 el = this.el;
             //
             // When a for d3-for loop is active we abort mounting this component
-            // The component will be mounted as meny times the the for loop requires
-            if(model.$mount(el)) return;
+            // The component will be mounted as many times the the for loop requires
+            if ($mount(model, el)) return;
             //
             // create the new element from the render function
             el = this.render();
@@ -126,7 +138,7 @@ export class Component extends View {
             this.sel.remove();
             //
             // Mount the new element
-            model.$mount(node);
+            $mount(model, node);
             //
             // mounted hook
             this.mounted();
@@ -139,14 +151,15 @@ export class Component extends View {
 function init(element, options) {
     this.init();
 
-    var data = options.get('model'),
+    var vm = this,
+        data = options.get('model'),
         parent = options.get('parent'),
         directives = map(parent ? parent.$directives : this.constructor.directives),
         components = map(parent ? parent.$components : this.constructor.components);
 
     extendDirectivesComponents(options, directives, components);
 
-    var model = Model.create(getdirs(element, directives), parent, data);
+    var model = createModel(getdirs(element, directives), parent, data);
     model.$directives = directives;
     model.$components = components;
 
@@ -155,6 +168,14 @@ function init(element, options) {
             return element;
         }
     });
+
+    // Inject this view if not already available
+    if (!model.$vm)
+        Object.defineProperty(model, '$vm', {
+            get: function () {
+                return vm;
+            }
+        });
 
     // Apply model to element
     this.sel.model(model);

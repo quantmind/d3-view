@@ -1,3 +1,4 @@
+import {select} from 'd3-selection';
 import asModel, {elModel} from './as';
 import $get from './get';
 import $set from './set';
@@ -5,7 +6,6 @@ import $on from './on';
 import $update from './update';
 import $child from './child';
 import $setbase from './setbase';
-import mountChildren from './mount';
 
 import {warn} from '../utils';
 import getdirs from '../getdirs';
@@ -14,9 +14,15 @@ import getdirs from '../getdirs';
 //  Model class
 //
 //  The model is at the core of d3-view reactive data component
-export default function Model (initials) {
+function Model (initials) {
     asModel(this, initials);
 }
+
+export function model (initials) {
+    return new Model(initials);
+}
+
+model.prototype = Model.prototype;
 
 // Public API methods
 Model.prototype.$on = $on;
@@ -24,19 +30,17 @@ Model.prototype.$update = $update;
 Model.prototype.$get = $get;
 Model.prototype.$set = $set;
 Model.prototype.$child = $child;
-Model.prototype.$mount = $mount;
 Model.prototype.$setbase = $setbase;
 Model.prototype.warn = warn;
-Model.create = createModel;
 
 
 // Model factory function
-function createModel (directives, parent, data) {
+export function createModel (directives, parent, data) {
     var dir = directives.pop('model');
 
     // For loop directive not permitted in the root view
     if (directives.get('for') && !parent) {
-        warn(`Cannot have a "d3-for" directive in the root element`);
+        warn(`Cannot have a "d3-for" directive in the root view element`);
         directives.pop('for');
     }
 
@@ -59,16 +63,44 @@ function createModel (directives, parent, data) {
 }
 
 
-function $mount (el) {
-    var directives = getdirs(el, this.$directives),
-        model = Model.create(directives, this),
+export function $mount (model, el) {
+    var directives = getdirs(el, model.$directives),
         loop = directives.pop('for');
+
+    model = createModel(directives, model);
 
     if (loop) {
         loop.execute(model);
-        return true;
+        return true;    // Important - skip mounting a component
     } else {
         if (!elModel(el)) elModel(el, model);
         mountChildren(el);
     }
+}
+
+
+function mountChildren (el) {
+    var directives = getdirs(el),
+        sel = select(el),
+        model = sel.model();
+
+    sel.selectAll(function () {
+        return this.children;
+    }).each(function () {
+        var Component = model.$components.get(this.tagName.toLowerCase());
+
+        if (Component)
+            new Component({
+                el: this,
+                parent: model
+            }).mount();
+        else
+            $mount(model, this);
+    });
+
+
+    // Execute directives
+    directives.forEach((d) => {
+        d.execute(model);
+    });
 }

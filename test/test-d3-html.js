@@ -14,14 +14,16 @@ describe('d3-html directive', function() {
             }
         }).mount();
 
-        expect(vm.sel.html()).toBe('This is a test');
-
-        vm.model.test = 'test reactivity';
-        expect(vm.sel.html()).toBe('This is a test');
-
         timeout(() => {
-            expect(vm.sel.html()).toBe('test reactivity');
-            done();
+            expect(vm.sel.html()).toBe('This is a test');
+
+            vm.model.test = 'test reactivity';
+            expect(vm.sel.html()).toBe('This is a test');
+
+            timeout(() => {
+                expect(vm.sel.html()).toBe('test reactivity');
+                done();
+            });
         });
     });
 });
