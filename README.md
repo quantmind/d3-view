@@ -31,6 +31,7 @@ It provides data-reactive components with a simple and flexible API.
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
+  - [Components Hooks](#components-hooks)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -176,6 +177,16 @@ d3.view({
 
 <a name="d3-attr" href="#d3-attr">#</a> [d3-attr][]
 
+Create a one-way binding between a model property and an HTML element attribute
+```html
+<input d3-attr:name="code" d3-attr:placeholder="description || code">
+```
+The ``d3-attr`` can also be ommited:
+```html
+<input :name="code" :placeholder="description || code">
+```
+``code`` and ``description`` are properties of the d3-view model.
+
 <a name="d3-for" href="#d3-for">#</a> [d3-for][]
 
 <a name="d3-html" href="#d3-html">#</a> [d3-html][]
@@ -286,7 +297,7 @@ var component1 = {
 };
 ```
 or a function, the component render method:
-```
+```javacript
 function component1 () {
     return d3.view.htmlElement('<p>Very simple component</p>');
 }
@@ -294,11 +305,19 @@ function component1 () {
 
 ### Components API
 
-A component is defined by the ``render`` method.
+<a name="el" href="#component-el">#</a> component.<b>el</b>
+
+The HTML element created by the component ``render`` method. Available after the component is mounted.
 
 <a name="model" href="#component-model">#</a> component.<b>model</b>
 
 The [model][] bound to the component
+
+
+### Components Hooks
+
+A component is defined by the ``render`` method. However, there are four additional methods that can be used to
+customize lifecycle of a component.
 
 <a name="init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
 
@@ -314,14 +333,15 @@ Hook called after the component has been mounted in to the DOM.
 
 <a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
+Called when the component HTML element is removed from the DOM.
 
 ## Other Frameworks
 
 In order of complexity
 
-* [Angular](https://angularjs.org/) - angular 1.x is legacy - angular 2 :warning:
-* [React](https://facebook.github.io/react/) - OK but JSX :scream:
-* [Vue](http://vuejs.org/) - Refreshing but :confused:
+* [Angular](https://angularjs.org/)
+* [React](https://facebook.github.io/react/)
+* [Vue](http://vuejs.org/)
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
