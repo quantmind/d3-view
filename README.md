@@ -30,8 +30,7 @@ It provides data-reactive components with a simple and flexible API.
   - [Directive API](#directive-api)
 - [Components](#components)
   - [Registration](#registration)
-  - [Reusing](#reusing)
-  - [Component API](#component-api)
+  - [Components API](#components-api)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -254,24 +253,64 @@ However, if it returns nothing, the binding execution is aborted.
 ## Components
 
 Components help you extend basic HTML elements to encapsulate reusable code.
-At a high level, Components are custom elements that ``d3.View`` attach
-specified behavior to.
+They are custom elements that ``d3.view`` attach specified behavior to.
 
 ### Registration
 
-In order to use components you need to register them with the `view`` object 
+In order to use components you need to register them with the ``view`` object:
+```javascript
+d3.view({
+    el: '#entry',
+    components: {
+        tag1: component1,
+        ...
+        tagN: componentN
+    }
+});
+```
+A component is either a ``Component`` subclass created via the API:
+```javascript
+import {view} from 'd3-view';
 
-### Reusing
+class component1 extends view.Component {
+    render () {
+        ...
+    }
+}
+```
+or an object:
+```javascript
+var component1 = {
+    render: function () {
+    }
+};
+```
+or a function, the component render method:
+```
+function component1 () {
+    return d3.view.htmlElement('<p>Very simple component</p>');
+}
+```
 
-Components can be designed to be reused.
+### Components API
 
-### Component API
+A component is defined by the ``render`` method.
 
-<a name="created" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
+<a name="model" href="#component-model">#</a> component.<b>model</b>
 
-<a name="beforeMount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
+The [model][] bound to the component
 
-<a name="mounted" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
+<a name="init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
+
+Hook called at the beginning of the component initialisation process, before it is mounted into the DOM.
+
+<a name="created" href="#component-create">#</a> component.<b>create</b>()
+
+Hook is called at the end of the component initialisation process, before it is mounted into the DOM.
+
+<a name="mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
+
+Hook called after the component has been mounted in to the DOM.
 
 <a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
@@ -286,6 +325,7 @@ In order of complexity
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
+[model]: #model
 [component]: #components
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
 [d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js

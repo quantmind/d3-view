@@ -35,8 +35,6 @@ export class View {
 
     created () {}
 
-    beforeMount () {}
-
     mounted () {}
 
     // Static API
@@ -96,7 +94,6 @@ export class View {
     mount () {
         if (mounted(this)) this.warn('already mounted');
         else if (this.el) {
-            this.beforeMount();
             this.model.$mount(this.el);
             this.mounted();
         }
@@ -120,9 +117,6 @@ export class Component extends View {
     mount () {
         if (mounted(this)) this.warn('already mounted');
         else {
-            // before mount hook
-            this.beforeMount();
-
             var model = this.model,
                 el = this.el;
             //
