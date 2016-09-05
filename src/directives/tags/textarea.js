@@ -1,18 +1,15 @@
 import {select} from 'd3-selection';
-import Input from './input';
+import Input, {refreshFunction} from './input';
 
 
 export default class extends Input {
 
     on (model, attrName) {
-        var self = this;
+        var refresh = refreshFunction(this, model, attrName);
 
         // DOM => model binding
-        select(this.el).on('input', function () {
-            model.$set(attrName, self.value);
-        });
-        select(this.el).on('change', function () {
-            model.$set(attrName, self.value);
-        });
+        select(this.el)
+            .on('input', refresh)
+            .on('change', refresh);
     }
 }

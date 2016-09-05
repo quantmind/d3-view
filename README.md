@@ -280,8 +280,8 @@ Components can be designed to be reused.
 
 In order of complexity
 
-* [Angular](https://angularjs.org/) - angular 1.x is legacy - angular 2 :thumbsdown:
-* [React](https://facebook.github.io/react/) - OK but JSX - :scream:
+* [Angular](https://angularjs.org/) - angular 1.x is legacy - angular 2 :warning:
+* [React](https://facebook.github.io/react/) - OK but JSX :scream:
 * [Vue](http://vuejs.org/) - Refreshing but :confused:
 
 

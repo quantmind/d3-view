@@ -9,7 +9,7 @@ import directives from './directives/index';
 import providers from './utils';
 
 const components = {};
-
+const optionEntries = ['model', 'directives', 'components'];
 //
 //  d3 base view class
 export class View {
@@ -22,7 +22,11 @@ export class View {
             var d3el = isFunction(el.node) ? el : select(el);
             var element = d3el.node();
             if (!element) this.warn(`could not find ${el} element`);
-            else init.call(this, element, options);
+            else {
+                this.init(options);
+                init.call(this, element, options);
+                this.created();
+            }
         }
     }
     // hooks
@@ -149,8 +153,6 @@ export class Component extends View {
 
 // d3-view Constructor
 function init(element, options) {
-    this.init();
-
     var vm = this,
         data = options.get('model'),
         parent = options.get('parent'),
@@ -179,8 +181,6 @@ function init(element, options) {
 
     // Apply model to element
     this.sel.model(model);
-    // Created hook
-    this.created();
 }
 
 
@@ -209,13 +209,15 @@ function extendDirectivesComponents (options, directives, components) {
             // Create a new directive class
                 components.set(key, class extends Component {
 
-                    init() {
+                    init (options) {
                         var init;
                         for (key in component) {
                             if (key === 'init') init = component[key];
+                            else if (optionEntries.indexOf(key) > -1) options.set(key, component[key]);
                             else this[key] = component[key];
                         }
-                        if (init) init.call(this);
+                        // custom init method
+                        if (init) init.call(this, options);
                     }
 
                 });

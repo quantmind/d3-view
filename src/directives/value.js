@@ -20,11 +20,11 @@ export default class extends Directive {
 
     mount (model) {
         var expr = this.expression;
+        // TODO: relax this constraint
         if (expr.parsed.type !== expr.codes.IDENTIFIER)
             return this.warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
-
         var attrName = this.expression.expr;
-
+        //
         // Create the model reactive attribute
         model.$set(attrName, this.tag.value);
 

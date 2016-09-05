@@ -2,7 +2,7 @@ import view from './utils';
 import {select} from 'd3-selection';
 
 
-describe('Create component', function() {
+describe('Components - ', function() {
 
     var year = {
         render: function () {
@@ -20,7 +20,7 @@ describe('Create component', function() {
         }
     };
 
-    it('simple component', () => {
+    it('simple - no binding', () => {
         var vm = view({
             el: view.htmlElement('<div id="test1"><year></year></div>'),
             components: {
@@ -39,7 +39,7 @@ describe('Create component', function() {
     });
 
 
-    it('component with model', () => {
+    it('with model', () => {
         var vm = view({
             el: view.htmlElement('<div id="test1"><text></text></div>'),
             components: {

@@ -1,5 +1,5 @@
 import {select} from 'd3-selection';
-
+import {debounce} from '../../utils';
 
 export default class {
 
@@ -8,12 +8,8 @@ export default class {
     }
 
     on (model, attrName) {
-        var self = this;
-        
         // DOM => model binding
-        select(this.el).on('change', function () {
-            model.$set(attrName, self.value);
-        });
+        select(this.el).on('change', refreshFunction(this, model, attrName));
     }
 
     get value () {
@@ -23,4 +19,12 @@ export default class {
     set value (v) {
         select(this.el).property('value', v);
     }
+}
+
+
+export function refreshFunction (dom, model, attrName) {
+
+    return debounce(() => {
+        model.$set(attrName, dom.value);
+    });
 }

@@ -1,6 +1,6 @@
 import {select} from 'd3-selection';
 import uid from './uid';
-import {warn, debounce} from './utils';
+import {warn} from './utils';
 import {expression} from './parser';
 
 //
@@ -13,9 +13,9 @@ import {expression} from './parser';
 //
 // A directive can implement one or more of the directive methods:
 //
-//  * init
 //  * create
 //  * mount
+//  * refresh
 //  * destroy
 //
 export default class {
@@ -69,13 +69,13 @@ export default class {
 
         var dir = this,
             sel = this.sel,
-            refresh = debounce(() => {
+            refresh = function () {
                 try {
                     dir.refresh(model, dir.expression.eval(model));
                 } catch (msg) {
                     warn(`Error while refreshing "${dir.name}" directive: ${msg}`);
                 }
-            });
+            };
 
         // Bind expression identifiers with model
         this.identifiers = this.expression.identifiers().map((id) => {

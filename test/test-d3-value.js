@@ -1,4 +1,3 @@
-import {select} from 'd3-selection';
 import {timeout} from 'd3-timer';
 import view from './utils';
 
