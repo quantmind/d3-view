@@ -1,0 +1,8 @@
+.idea
+circle.yml
+play.py
+agile.json
+*.log
+dist/*.zip
+test/
+examples

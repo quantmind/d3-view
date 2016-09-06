@@ -1,4 +1,4 @@
-//  $get method for an HRM
+//  $get method for an Model
 //
 //  attribute is a dotted string
 export default function (attribute) {

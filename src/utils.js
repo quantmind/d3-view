@@ -34,5 +34,36 @@ export function debounce (callback) {
     };
 }
 
+// Add callback to execute when the DOM is ready
+export function domReady (callback) {
+    readyCallbacks.push(callback);
+    if (document.readyState !== 'complete') {
+        document.addEventListener('DOMContentLoaded', _completed);
+        // A fallback to window.onload, that will always work
+        window.addEventListener('load', _completed);
+    }
+    else
+        _domReady();
+}
+
 
 export default providers;
+
+
+
+var readyCallbacks = [];
+
+function _completed () {
+    document.removeEventListener('DOMContentLoaded', _completed);
+	window.removeEventListener('load', _completed);
+    _domReady();
+}
+
+
+function _domReady() {
+    let callback;
+    while (readyCallbacks.length ) {
+        callback = readyCallbacks.shift();
+        timeout(callback);
+    }
+}

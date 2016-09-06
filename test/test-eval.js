@@ -1,8 +1,8 @@
-import view from './utils';
+import './utils';
+import {viewExpression} from '../src/parser';
 
-var expression = view.expression;
 
-describe('expression.eval', function() {
+describe('viewExpression.eval', function() {
 
     var ctx = {
         foo: 'ciao',
@@ -36,52 +36,57 @@ describe('expression.eval', function() {
 
     it('simple literal', () => {
 
-        expect(expression('"ciao"').eval(ctx)).toBe('ciao');
+        expect(viewExpression('"ciao"').eval(ctx)).toBe('ciao');
     });
 
 
-    it('member expression', () => {
-        expect(expression('foo').eval(ctx)).toBe('ciao');
-        expect(expression('foo.bla').eval(ctx)).toBe(undefined);
-        expect(expression('pippo.more.name').eval(ctx)).toBe('pluto');
+    it('member viewExpression', () => {
+        expect(viewExpression('foo').eval(ctx)).toBe('ciao');
+        expect(viewExpression('foo.bla').eval(ctx)).toBe(undefined);
+        expect(viewExpression('pippo.more.name').eval(ctx)).toBe('pluto');
     });
 
-    it('logical expression', () => {
-        expect(expression('xxx || foo').eval(ctx)).toBe('ciao');
+    it('logical viewExpression', () => {
+        expect(viewExpression('xxx || foo').eval(ctx)).toBe('ciao');
     });
 
-    it('test conditional expression', () => {
-        expect(expression('foo ? foo : "bla"').eval(ctx)).toBe('ciao');
-        expect(expression('pippo.bla > 10000 ? pippo.bla-10000 : pippo.bla').eval(ctx)).toBe(2345);
+    it('unary operation', () => {
+        expect(viewExpression('!foo').eval(ctx)).toBe(false);
+        expect(viewExpression('!xxx').eval(ctx)).toBe(true);
     });
 
-    it('Array expression', () => {
-        expect(expression('["mars", "venus"]').eval(ctx)).toEqual(['mars', 'venus']);
-        expect(expression('[foo, missing]').eval(ctx)).toEqual(['ciao', undefined]);
-        expect(expression('[pippo.more.name, nested.foo()]').eval(ctx)).toEqual(['pluto', 'OK']);
+    it('test conditional viewExpression', () => {
+        expect(viewExpression('foo ? foo : "bla"').eval(ctx)).toBe('ciao');
+        expect(viewExpression('pippo.bla > 10000 ? pippo.bla-10000 : pippo.bla').eval(ctx)).toBe(2345);
     });
 
-    it('call expression', () => {
-        expect(expression('random()').eval(ctx)).toBeGreaterThan(0);
-        expect(expression('self()').eval(ctx)).toBe(ctx);
-        expect(expression('nested.bla()').eval(ctx)).toBe(ctx.nested);
-        expect(expression('nested.bla().foo()').eval(ctx)).toBe('OK');
-        expect(expression('nested.bla().set(0, "sun")').eval(ctx)).toBe('SET');
+    it('Array viewExpression', () => {
+        expect(viewExpression('["mars", "venus"]').eval(ctx)).toEqual(['mars', 'venus']);
+        expect(viewExpression('[foo, missing]').eval(ctx)).toEqual(['ciao', undefined]);
+        expect(viewExpression('[pippo.more.name, nested.foo()]').eval(ctx)).toEqual(['pluto', 'OK']);
+    });
+
+    it('call viewExpression', () => {
+        expect(viewExpression('random()').eval(ctx)).toBeGreaterThan(0);
+        expect(viewExpression('self()').eval(ctx)).toBe(ctx);
+        expect(viewExpression('nested.bla()').eval(ctx)).toBe(ctx.nested);
+        expect(viewExpression('nested.bla().foo()').eval(ctx)).toBe('OK');
+        expect(viewExpression('nested.bla().set(0, "sun")').eval(ctx)).toBe('SET');
         expect(ctx.nested.v1).toBe(0);
         expect(ctx.nested.v2).toBe("sun");
 
-        expect(expression('nested.bla().set(random(), nested.foo())').eval(ctx)).toBe('SET');
+        expect(viewExpression('nested.bla().set(random(), nested.foo())').eval(ctx)).toBe('SET');
         expect(ctx.nested.v1).toBeGreaterThan(0);
         expect(ctx.nested.v2).toBe("OK");
     });
 
     it('identifiers', () => {
-        expect(expression('"ciao"').identifiers()).toEqual([]);
-        expect(expression('foo').identifiers()).toEqual(['foo']);
-        expect(expression('random()').identifiers()).toEqual([]);
-        expect(expression('pippo.bla').identifiers()).toEqual(['pippo']);
-        expect(expression('pippo.more.name').identifiers()).toEqual(['pippo']);
-        expect(expression('[pippo.bla]').identifiers()).toEqual(['pippo']);
-        expect(expression('[pippo.bla, foo]').identifiers()).toEqual(['pippo', 'foo']);
+        expect(viewExpression('"ciao"').identifiers()).toEqual([]);
+        expect(viewExpression('foo').identifiers()).toEqual(['foo']);
+        expect(viewExpression('random()').identifiers()).toEqual([]);
+        expect(viewExpression('pippo.bla').identifiers()).toEqual(['pippo']);
+        expect(viewExpression('pippo.more.name').identifiers()).toEqual(['pippo']);
+        expect(viewExpression('[pippo.bla]').identifiers()).toEqual(['pippo']);
+        expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo', 'foo']);
     });
 });

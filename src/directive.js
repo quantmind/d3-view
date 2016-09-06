@@ -1,7 +1,7 @@
 import {select} from 'd3-selection';
 import uid from './uid';
 import {warn} from './utils';
-import {expression} from './parser';
+import {viewExpression} from './parser';
 
 //
 // Directive base class
@@ -25,7 +25,7 @@ export default class {
         this.name = attr.name;
         this.arg = arg;
         var expr = uid(this).create(attr.value);
-        if (expr) this.expression = expression(expr);
+        if (expr) this.expression = viewExpression(expr);
     }
 
     // hooks

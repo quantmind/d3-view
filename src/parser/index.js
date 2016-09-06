@@ -5,11 +5,11 @@ import {warn} from '../utils';
 
 
 class Expression {
-    
+
     get codes () {
         return code;
     }
-    
+
     constructor (expr) {
         this.expr = expr;
         this.parsed = jsep(expr);
@@ -19,19 +19,27 @@ class Expression {
         return evaluate(model, this.parsed);
     }
 
+    safeEval (model) {
+        try {
+            return evaluate(model, this.parsed);
+        } catch (msg) {
+            warn(`Could not evaluate <<${this.expr}>> expression: ${msg}`);
+        }
+    }
+
     identifiers () {
         return identifiers(this.parsed).values();
     }
 }
 
 
-export function expression (expr) {
+export function viewExpression (expr) {
     try {
         return new Expression(expr);
     } catch (msg) {
-        warn(`Could not evaluate <<${expr}>> expression: ${msg}`);
+        warn(`Could not parse <<${expr}>> expression: ${msg}`);
     }
 }
 
 
-expression.prototype = Expression;
+viewExpression.prototype = Expression;

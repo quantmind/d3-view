@@ -2,14 +2,14 @@ import Directive from '../directive';
 
 
 //
-//  d3-html
+//  d3-if
 //  =============
-//  attach html or text to the innerHtml property
+//  Remove an element if the condition is not satisfied
 //
 //  Usage:
-//      <div id="foo" d3-html="output"></div>
+//      <div id="foo" d3-if="show"></div>
 //
-//  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
+//  d3.view({el: '#foo', model: {show: true}});
 export default class extends Directive {
 
     refresh (model, value) {

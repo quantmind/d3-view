@@ -12,6 +12,7 @@ export function evaluate (self, expr) {
         case code.CALL_EXP: return callExpression(self, expr.callee, expr.arguments);
         case code.MEMBER_EXP: return evaluate(evaluate(self, expr.object), expr.property);
         case code.CONDITIONAL_EXP: return evaluate(self, expr.test) ? evaluate(self, expr.consequent) : evaluate(self, expr.alternate);
+        case code.UNARY_EXP: return unaryExp(expr.operator, evaluate(self, expr.argument));
     }
 }
 
@@ -47,6 +48,13 @@ function callExpression (self, callee, args) {
 }
 
 
+function unaryExp (op, arg) {
+    if (!unaryFunctions[op])
+        unaryFunctions[op] = new Function("arg", `return ${op} arg`);
+    return unaryFunctions[op](arg);
+}
+
+
 function binaryExp(op, a, b) {
     if (!binaryFunctions[op])
         binaryFunctions[op] = new Function("a", "b", `return a ${op} b`);
@@ -54,4 +62,5 @@ function binaryExp(op, a, b) {
 }
 
 
+const unaryFunctions = {};
 const binaryFunctions = {};

@@ -1,13 +1,26 @@
+import {select, selection} from 'd3-selection';
 import {warn} from './utils';
 
 
+selection.prototype.directives = directives;
+
+
+function directives (value) {
+    return arguments.length
+      ? this.property("__directives__", value)
+      : this.node().__directives__;
+}
+
+
 export default function (element, directives) {
-    if (element.__directives__) return element.__directives__;
-    var dirs = new Directives();
-    element.__directives__ = dirs;
+    var sel = select(element),
+        dirs = sel.directives();
+    if (dirs) return dirs;
+    dirs = new Directives();
+    sel.directives(dirs);
 
     if (!directives) return dirs;
-    
+
     for (let i = 0; i < element.attributes.length; ++i) {
         let attr = element.attributes[i],
             bits = attr.name.split(':'),

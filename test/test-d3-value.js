@@ -1,14 +1,5 @@
 import {timeout} from 'd3-timer';
-import view from './utils';
-
-
-function trigger (target, event, process) {
-    var e = document.createEvent('HTMLEvents');
-    e.initEvent(event, true, true);
-    if (process) process(e);
-    target.dispatchEvent(e);
-}
-
+import view, {trigger} from './utils';
 
 
 describe('d3-value directive', function() {

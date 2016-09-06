@@ -20,6 +20,14 @@ const logger = {
 };
 
 
+export function trigger (target, event, process) {
+    var e = document.createEvent('HTMLEvents');
+    e.initEvent(event, true, true);
+    if (process) process(e);
+    target.dispatchEvent(e);
+}
+
+
 view.providers.logger = logger;
 
 
