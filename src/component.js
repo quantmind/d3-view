@@ -91,6 +91,13 @@ export class View {
         return select(this.el);
     }
 
+    use (plugin) {
+        if (this.isMounted) return this.warn('already mounted, cannot use plugin');
+        if (isObject(plugin)) plugin.install(this);
+        else plugin(this);
+        return this;
+    }
+
     mount () {
         if (mounted(this)) this.warn('already mounted');
         else if (this.el) {
@@ -150,10 +157,8 @@ function init(element, options) {
     var vm = this,
         data = options.get('model'),
         parent = options.get('parent'),
-        directives = map(parent ? parent.$directives : this.constructor.directives),
-        components = map(parent ? parent.$components : this.constructor.components);
-
-    extendDirectivesComponents(options, directives, components);
+        directives = extendDirectives(this, options),
+        components = extendComponents(this, options);
 
     var model = createModel(getdirs(element, directives), parent, data);
     model.$directives = directives;
@@ -178,47 +183,75 @@ function init(element, options) {
 }
 
 
-function extendDirectivesComponents (options, directives, components) {
-    //
-    map(options.get('directives')).each((directive, key) => {
-        if (isObject(directive))
-            // Create a new directive class
-            directives.set(key, class extends Directive {
+function extendDirectives (view, options) {
+    var parent = options.get('parent'),
+        dirs = map(view.constructor.directives),
+        directives = parent ? parent.$directives : null;
 
-                init () {
-                    for (key in directive)
-                        this[key] = directive[key];
-                }
-            });
-        else
-            warn(`"${key}" not a valid directive. Must be a object with some of "create", "mount" and "destroy" functions`);
+    map(options.get('directives')).each((value, key) => {
+        dirs.set(key, value);
     });
-    //
-    map(options.get('components')).each((component, key) => {
-        if (component.prototype && component.prototype.isd3)
-            components.set(key, component);
-        else {
-            if (isFunction(component)) component = {render: component};
-            if (isObject(component) && isFunction(component.render))
+
+    if (dirs.size()) {
+        directives = map(directives);
+        dirs.each((directive, key) => {
+            if (directive.prototype && directive.prototype.priority)
+                directives.set(key, directive);
+            else if (isObject(directive))
             // Create a new directive class
-                components.set(key, class extends Component {
+                directives.set(key, class extends Directive {
 
-                    init (options) {
-                        var init;
-                        for (key in component) {
-                            if (key === 'init') init = component[key];
-                            else if (optionEntries.indexOf(key) > -1) options.set(key, component[key]);
-                            else this[key] = component[key];
-                        }
-                        // custom init method
-                        if (init) init.call(this, options);
+                    init() {
+                        for (key in directive)
+                            this[key] = directive[key];
                     }
-
                 });
             else
-                warn(`"${key}" not a valid component. Must be a function or an object with render function`);
-        }
+                warn(`"${key}" not a valid directive. Must be a object with some of "create", "mount" and "destroy" functions`);
+        });
+    }
+    return directives || map();
+}
+
+
+function extendComponents (view, options) {
+    var parent = options.get('parent'),
+        comps = map(view.constructor.components),
+        components = parent ? parent.$components : null;
+
+    map(options.get('components')).each((value, key) => {
+        comps.set(key, value);
     });
+
+    if (comps.size()) {
+        components = map(components);
+        comps.each((component, key) => {
+            if (component.prototype && component.prototype.isd3)
+                components.set(key, component);
+            else {
+                if (isFunction(component)) component = {render: component};
+                if (isObject(component) && isFunction(component.render))
+                // Create a new directive class
+                    components.set(key, class extends Component {
+
+                        init(options) {
+                            var init;
+                            for (key in component) {
+                                if (key === 'init') init = component[key];
+                                else if (optionEntries.indexOf(key) > -1) options.set(key, component[key]);
+                                else this[key] = component[key];
+                            }
+                            // custom init method
+                            if (init) init.call(this, options);
+                        }
+
+                    });
+                else
+                    warn(`"${key}" not a valid component. Must be a function or an object with render function`);
+            }
+        });
+    }
+    return components || map();
 }
 
 

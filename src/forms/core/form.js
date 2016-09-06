@@ -2,17 +2,24 @@ import formElement from './element';
 import fieldset from './fieldset';
 import input from './input';
 import submit from './submit';
-import {addChildren} from './utils';
 
 
 const components = {
-    'form-fieldset': fieldset,
-    'form-input': input,
-    'form-submit': submit
+    'd3fieldset': fieldset,
+    'd3input': input,
+    'd3submit': submit
 };
 
 
+const formProps = ['json', 'url'];
+
+
 export default class extends formElement {
+
+    // make sure a new model is created for this component
+    static get props () {
+        return formProps;
+    }
 
     static get components () {
         return components;
@@ -23,9 +30,11 @@ export default class extends formElement {
     }
 
     render () {
-        var form = this.createElement('form')
+        var model = this.model,
+            form = this.createElement('form')
             .attr('novalidate', '');
 
-        return addChildren(form);
+        model.structure = {};
+        return this.addChildren(form);
     }
 }

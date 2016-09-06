@@ -44,7 +44,7 @@ export default class {
     get sel () {
         return select(this.el);
     }
-
+    
     get priority () {
         return 1;
     }
