@@ -6,14 +6,16 @@ import createModel from './model';
 // Mount a model into an element
 export default function mount (model, el) {
     var sel = select(el),
-        directives = el.directives();
+        directives = sel.directives();
 
-    // directives not available, this is a mount from a directive/loop
+    // directives not available, this is a mount from
+    // a directive/loop and requires a new model
     if (!directives) {
-        directives = getdirs(el, this.$vm ? this.$vm.directives : null);
-        model = createModel(directives, model);
+        directives = getdirs(el, model.$vm ? model.$vm.directives : null);
+        model = createModel(directives, null, model);
     }
 
+    // Loop directive is special
     var loop = directives.pop('for');
 
     if (loop) {
@@ -37,13 +39,22 @@ function mountChildren (sel, directives) {
         var component = vm ? vm.components.get(this.tagName.toLowerCase()) : null;
 
         if (component)
-            component({parent: model}).mount(this);
-        else
-            mount.call(model, this);
+            component({parent: vm}).mount(this);
+        else {
+            // vanilla element
+            mount(model, this);
+            var child = select(this);
+            // cleanup model if not needed
+            if (child.model() === model) child.model(null);
+        }
     });
 
     // Execute directives
-    directives.forEach((d) => {
-        d.execute(model);
-    });
+    if (directives.size()) {
+        directives.forEach((d) => {
+            d.execute(model);
+        });
+    } else
+        // no directives - remove property
+        sel.directives(null);
 }

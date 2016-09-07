@@ -47,6 +47,10 @@ function Directives () {
 
 
 Directives.prototype = {
+    size: function () {
+        return this._all.length;
+    },
+
     get: function (name) {
         return this._dirs[name];
     },

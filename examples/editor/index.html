@@ -5,23 +5,22 @@
     <title>d3-view markdown editor example</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
-    <script src="../../dist/d3.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
     <script src="../../dist/d3-view.js"></script>
 </head>
 <body>
 <section id="editor">
     <textarea d3-value="input"># hello</textarea>
-    <div d3-html="html"></div>
+    <div d3-html="$html()"></div>
 </section>
 
 <script>
 d3.view({
-    el: '#editor',
     model: {
-        html: function () {
+        $html: function () {
             return marked(this.input || '');
         }
     }
-}).mount();
+}).mount('#editor');
 </script>
 </body>

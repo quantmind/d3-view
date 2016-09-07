@@ -10,7 +10,6 @@ var navbarTpl = `<nav class="navbar" :class="[theme, ['navbar-fixed-top', fixedT
 
 
 d3.view({
-    el: '#page',
     model: {
         navbar: {
             fixedTop: true,
@@ -39,7 +38,7 @@ d3.view({
     },
     components: {
         navbar: function () {
-            return d3.view.htmlElement(navbarTpl);
+            return d3.viewElement(navbarTpl);
         }
     }
-}).mount();
+}).mount('#page');

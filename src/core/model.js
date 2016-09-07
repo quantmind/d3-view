@@ -25,6 +25,8 @@ export default function (directives, data, parent) {
         if (model) model.$update(data);
         return model;
     }
-    else
+    else if (data)
         return parent.$child(data);
+    else
+        return parent;
 }

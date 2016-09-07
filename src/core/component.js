@@ -60,7 +60,8 @@ const protoView = assign({}, proto, {
         else {
             el = element(el);
             if (el) {
-                this.model = createModel(getdirs(el, this.directives), this.model, this.parent);
+                var parent = this.parent ? this.parent.model : null;
+                this.model = createModel(getdirs(el, this.directives), this.model, parent);
                 asView(this, el);
             }
         }
@@ -79,7 +80,8 @@ const protoComponent = assign({}, proto, {
     mount: function (el) {
         if (mounted(this)) warn('already mounted');
         else {
-            this.model = createModel(getdirs(el, this.directives), this.model, this.parent);
+            var parent = this.parent ? this.parent.model : null;
+            this.model = createModel(getdirs(el, this.directives), this.model, parent);
             //
             // When a for d3-for loop is active we abort mounting this component
             // The component will be mounted as many times the the for loop requires
@@ -87,7 +89,7 @@ const protoComponent = assign({}, proto, {
             //
             // create the new element from the render function
             var newEl = this.render();
-            if (!newEl) warn('render function must return a single HTML node. It returned nothing!');
+            if (!newEl) return warn('render function must return a single HTML node. It returned nothing!');
             newEl = asSelect(newEl);
             if (newEl.size() !== 1) warn('render function must return a single HTML node');
             newEl = newEl.node();
@@ -107,6 +109,8 @@ const protoComponent = assign({}, proto, {
 // factory of View and Component constructors
 export function createComponent (obj, prototype) {
     prototype = prototype || protoView;
+    if (isFunction(obj)) obj = {render: obj};
+
     var classComponents = extendComponents(map(), pop(obj, 'components')),
         classDirectives = extendDirectives(map(), pop(obj, 'directives')),
         model = pop(obj, 'model'),
@@ -214,6 +218,7 @@ function asView(vm, element) {
 
 
 function element (el) {
+    if (!el) return warn(`element not defined, pass an identifier or an HTMLElement object`);
     var d3el = isFunction(el.node) ? el : select(el),
         element = d3el.node();
     if (!element) warn(`could not find ${el} element`);

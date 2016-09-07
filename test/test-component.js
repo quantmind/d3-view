@@ -40,7 +40,7 @@ describe('Components - ', function() {
         expect(span.text()+0).toBeGreaterThan(2015);
         var c = span.model();
         expect(c).toBeTruthy();
-        expect(c.parent).toBe(undefined);
+        expect(c.parent).toBe(vm.model);
     });
 
 
@@ -56,6 +56,10 @@ describe('Components - ', function() {
         expect(div.children[0].tagName).toBe('H1');
         expect(div.children[1].tagName).toBe('SPAN');
         expect(div.children[2].tagName).toBe('P');
+        expect(select(div.children[1]).model()).toBeTruthy();
+        expect(select(div.children[1]).model().parent).toBe(vm.model);
+        expect(select(div.children[0]).model()).toBe(undefined);
+        expect(select(div.children[2]).model()).toBe(undefined);
     });
 
 
@@ -75,6 +79,20 @@ describe('Components - ', function() {
         expect(model.parent).toBe(vm.model);
     });
 
+    it('component function', () => {
+        var vm = view({
+            components: {
+                bla: function () {
+                    return viewElement('<p>bla bla</p>');
+                }
+            }
+        });
+        expect(vm.components.size()).toBe(1);
 
+        vm.mount(viewElement('<div><bla></bla></div>'));
+        var p = vm.sel.select('p');
+        expect(p.size()).toBe(1);
+        expect(p.html()).toBe('bla bla');
+    });
 });
 

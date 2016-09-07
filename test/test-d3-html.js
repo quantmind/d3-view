@@ -10,11 +10,10 @@ describe('d3-html directive', function() {
         var el = viewElement('<div d3-html="test">Bla</div>');
 
         var vm = view({
-            el: el,
             model: {
                 test: 'This is a test'
             }
-        }).mount();
+        }).mount(el);
 
         timeout(() => {
             expect(vm.sel.html()).toBe('This is a test');

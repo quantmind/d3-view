@@ -5,7 +5,6 @@ import warn from '../utils/warn';
 
 
 const proto = {
-    code: code,
 
     eval: function (model) {
         return evaluate(model, this.parsed);
@@ -26,6 +25,7 @@ const proto = {
 
 
 function Expression (expr) {
+    this.codes = code;
     this.expr = expr;
     this.parsed = jsep(expr);
 }

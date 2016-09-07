@@ -1,5 +1,7 @@
 import {isFunction} from 'd3-let';
 
+import warn from '../utils/warn';
+
 
 // Add change callback to a model reactive attribute
 export default function (name, callback) {
@@ -14,7 +16,7 @@ export default function (name, callback) {
         key = bits[0],
         event = getEvent(this, key);
 
-    if (!event) return this.warn(`Cannot bind to "${key}" - no such reactive property`);
+    if (!event) return warn(`Cannot bind to "${key}" - no such reactive property`);
 
     bits[0] = 'change';
     return event.on(bits.join('.'), callback);
