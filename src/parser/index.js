@@ -1,45 +1,42 @@
 // tiny javascript expression parser
 import jsep, {code} from './jsep';
 import {evaluate, identifiers} from './eval';
-import {warn} from '../utils';
+import warn from '../utils/warn';
 
 
-class Expression {
+const proto = {
+    code: code,
 
-    get codes () {
-        return code;
-    }
-
-    constructor (expr) {
-        this.expr = expr;
-        this.parsed = jsep(expr);
-    }
-
-    eval (model) {
+    eval: function (model) {
         return evaluate(model, this.parsed);
-    }
+    },
 
-    safeEval (model) {
+    safeEval: function (model) {
         try {
             return evaluate(model, this.parsed);
         } catch (msg) {
             warn(`Could not evaluate <<${this.expr}>> expression: ${msg}`);
         }
-    }
+    },
 
-    identifiers () {
+    identifiers: function () {
         return identifiers(this.parsed).values();
     }
+};
+
+
+function Expression (expr) {
+    this.expr = expr;
+    this.parsed = jsep(expr);
 }
 
+Expression.prototype = proto;
 
-export function viewExpression (expr) {
+
+export default function (expr) {
     try {
         return new Expression(expr);
     } catch (msg) {
         warn(`Could not parse <<${expr}>> expression: ${msg}`);
     }
 }
-
-
-viewExpression.prototype = Expression;

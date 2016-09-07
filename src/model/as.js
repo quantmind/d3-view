@@ -2,7 +2,7 @@ import {selection} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
-import uid from '../uid';
+import uid from '../utils/uid';
 
 
 selection.prototype.model = model;

@@ -1,18 +1,22 @@
-import {isObject, isString} from 'd3-let';
-import view from './utils';
+import {isString, isFunction} from 'd3-let';
 
-var logger = view.providers.logger;
+import view from './utils';
+import {viewProviders, viewVersion} from '../';
+
+
+var logger = viewProviders.logger;
+
 
 describe('view meta', function() {
 
     it('view function', () => {
-        expect(isString(view.version)).toBe(true);
-        expect(isObject(view.directives)).toBe(true);
+        expect(isFunction(view)).toBe(true);
+        expect(isString(viewVersion)).toBe(true);
     });
 
     it('No element', function () {
         logger.pop();
-        view();
+        view().mount();
         expect(logger.pop().length).toBe(1);
     });
 
@@ -28,21 +32,25 @@ describe('view', function() {
     });
 
     it('Element', () => {
-        var vm = view({'el': el});
-        expect(vm.el).toBe(el);
+        var vm = view();
+        expect(vm.el).toBe(undefined);
+        expect(vm.sel).toBe(undefined);
         expect(vm.isd3).toBe(true);
+        expect(vm.parent).toBe(undefined);
+        expect(vm.directives.size()).toBe(7);
+
+        vm.mount(el);
+        expect(vm.el).toBe(el);
+        expect(vm.sel.node()).toBe(el);
         expect(vm.uid).toBeGreaterThan(0);
         expect(vm.model.uid).toBe(vm.uid);
-        expect(vm.parent).toBe(undefined);
-        expect(vm.root).toBe(vm);
-        expect(vm.isMounted).toBe(undefined);
+        expect(vm.isMounted).toBe(true);
         expect(() => {vm.model.uid = -5;}).toThrow();
-        expect(vm.uid).toBeGreaterThan(0);
     });
 
     it('view.model.$on warn', () => {
         logger.pop();
-        var vm = new view({'el': el});
+        var vm = view().mount(el);
         vm.model.$on('bla');
         var logs = logger.pop();
         expect(logs.length).toBe(1);
@@ -50,7 +58,7 @@ describe('view', function() {
     });
 
     it('view.model.$on', (done) => {
-        var vm = view({'el': el}),
+        var vm = view().mount(el),
             model = vm.model;
 
         model.$set('bla', 5);

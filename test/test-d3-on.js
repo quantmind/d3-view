@@ -1,12 +1,11 @@
 import view, {trigger} from './utils';
+import {viewElement} from '../';
 
 
 describe('d3-on directive', function() {
 
     it('test no expression', () => {
-        var vm = view({
-            el: view.htmlElement('<div><p d3-on="test">Bla</p></div>')
-        }).mount();
+        var vm = view().mount(viewElement('<div><p d3-on="test">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 
@@ -19,11 +18,10 @@ describe('d3-on directive', function() {
 
     it('test function', (done) => {
         var vm = view({
-            el: view.htmlElement('<div><p d3-on="$test()">Bla</p></div>'),
             model: {
                 $test: test
             }
-        }).mount();
+        }).mount(viewElement('<div><p d3-on="$test()">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 

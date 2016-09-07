@@ -1,6 +1,7 @@
 import {inBrowser, isString} from 'd3-let';
-import {warn} from './utils';
 import {select} from 'd3-selection';
+
+import warn from './warn';
 
 
 // require handlebar

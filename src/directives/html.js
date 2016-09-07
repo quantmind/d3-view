@@ -1,7 +1,4 @@
 import {isString} from 'd3-let';
-import Directive from '../directive';
-
-
 //
 //  d3-html
 //  =============
@@ -11,9 +8,9 @@ import Directive from '../directive';
 //      <div id="foo" d3-html="output"></div>
 //
 //  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
-export default class extends Directive {
+export default {
 
-    refresh (model, html) {
+    refresh: function (model, html) {
         if (isString(html)) this.sel.html(html);
     }
-}
+};

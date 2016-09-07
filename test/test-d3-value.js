@@ -1,12 +1,14 @@
 import {timeout} from 'd3-timer';
+
 import view, {trigger} from './utils';
+import {viewElement} from '../';
 
 
 describe('d3-value directive', function() {
 
     it('textarea', (done) => {
-        var el = view.htmlElement('<textarea d3-value="foo">Initial text value</textarea>'),
-            vm = new view({el: el}).mount(),
+        var el = viewElement('<textarea d3-value="foo">Initial text value</textarea>'),
+            vm = new view().mount(el),
             model = vm.model;
 
         expect(model.foo).toBe('Initial text value');

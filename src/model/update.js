@@ -1,4 +1,4 @@
-import {warn} from '../utils';
+import warn from '../utils/warn';
 
 // Update a model with reactive model data
 export default function (data) {

@@ -1,5 +1,5 @@
 import './utils';
-import {viewExpression} from '../src/parser';
+import {viewExpression} from '../';
 
 
 describe('viewExpression.eval', function() {

@@ -1,17 +1,8 @@
-import Directive from '../directive';
-
 //
 //  d3-on directive
-//  ===================
-//
-//  Bind an expression to an event
-//
-//  Usage:
-//      <div id="foo" d3-on:click="doSomething()"></div>
-//
-export default class extends Directive {
+export default {
 
-    mount (model) {
+    mount: function (model) {
         var event = this.arg || 'click',
             expr = this.expression;
 
@@ -20,9 +11,4 @@ export default class extends Directive {
             expr.eval(model);
         });
     }
-
-    destroy () {
-        var event = this.arg || 'click';
-        this.sel.on(`${event}.${this.uid}`, null);
-    }
-}
+};

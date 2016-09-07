@@ -1,5 +1,7 @@
-import {code} from './jsep';
 import {set} from 'd3-collection';
+
+import {code} from './jsep';
+
 
 export function evaluate (self, expr) {
 

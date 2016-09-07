@@ -1,6 +1,7 @@
 import {dispatch} from 'd3-dispatch';
 import {isFunction, isObject} from 'd3-let';
-import {debounce} from '../utils';
+
+import debounce from '../utils/debounce';
 
 
 //  $set a reactive attribute for a Model

@@ -1,5 +1,6 @@
 import {select, selection} from 'd3-selection';
-import {warn} from './utils';
+
+import warn from '../utils/warn';
 
 
 selection.prototype.directives = directives;
@@ -29,8 +30,8 @@ export default function (element, directives) {
 
         if (dirName || (extra && bits[0] === '')) {
             dirName = dirName || 'attr';
-            var Directive = directives.get(dirName);
-            if (Directive) dirs.add(dirName, new Directive(element, attr, extra));
+            var directive = directives.get(dirName);
+            if (directive) dirs.add(dirName, directive(element, attr, extra));
             else warn(`${element.tagName} cannot find directive "${dirName}". Did you forget to register it?`);
         }
     }
@@ -39,18 +40,18 @@ export default function (element, directives) {
 
 
 // Directives container
-class Directives {
+function Directives () {
+    this._dirs = {};
+    this._all = [];
+}
 
-    constructor () {
-        this._dirs = {};
-        this._all = [];
-    }
 
-    get (name) {
+Directives.prototype = {
+    get: function (name) {
         return this._dirs[name];
-    }
+    },
 
-    pop (name) {
+    pop: function (name) {
         var dir = this._dirs[name];
         if (dir) {
             delete this._dirs[name];
@@ -59,21 +60,21 @@ class Directives {
             if (index > -1) this._all.splice(index, 1);
         }
         return dir;
-    }
+    },
 
-    add (name, dir) {
+    add: function (name, dir) {
         this._dirs[name] = dir;
         this._all.push(dir);
-    }
+    },
 
-    sorted () {
+    sorted: function () {
         this._all.sort((d) => {
             return -d.priority;
         });
         return this;
-    }
+    },
 
-    forEach (callback) {
+    forEach: function (callback) {
         this._all.forEach(callback);
     }
-}
+};

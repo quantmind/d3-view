@@ -1,10 +1,8 @@
-import formElement from './element';
-
 //
 // Submit element
-export default class extends formElement {
+export default {
 
-    render () {
+    render: function () {
         var vm = this,
             model = this.model,
             el = this.createElement('button')
@@ -17,8 +15,4 @@ export default class extends formElement {
                 });
         return el;
     }
-
-    click () {
-
-    }
-}
+};

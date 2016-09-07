@@ -1,26 +1,26 @@
 import {isArray} from 'd3-let';
-import Directive from '../directive';
 
+import warn from '../utils/warn';
 
 //
 //  d3-attr:<attr> directive
 //  ==============================
 //
 //  Create a one-way binding between a model and a HTML element attribute
-export default class extends Directive {
+export default {
 
-    create (expression) {
-        if (!this.arg) return this.warn('Cannot bind to empty attribute. Specify :<attr-name>');
+    create: function (expression) {
+        if (!this.arg) return warn('Cannot bind to empty attribute. Specify :<attr-name>');
         return expression;
-    }
+    },
 
-    refresh (model, value) {
+    refresh: function (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
-        if (isArray(value)) return this.warn(`Cannot apply array to attribute ${this.arg}`);
+        if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
         this.sel.attr(this.arg, value);
-    }
+    },
 
-    refreshClass (value) {
+    refreshClass: function (value) {
         var sel = this.sel;
 
         if (!isArray(value)) value = [value];
@@ -41,4 +41,4 @@ export default class extends Directive {
         });
     }
 
-}
+};

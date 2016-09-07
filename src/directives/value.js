@@ -1,28 +1,29 @@
-import Directive from '../directive';
 import tags from './tags';
+
+import warn from '../utils/warn';
 
 //
 //  d3-value directive
 //  ===================
 //
 //  Two-way data binding for HTML elements supporting the value property
-export default class extends Directive {
+export default {
 
-    create (expression) {
+    create: function (expression) {
         var type = this.sel.attr('type'),
             tag = this.el.tagName.toLowerCase(),
             Tag = tags[type] || tags[tag];
 
-        if (!Tag) return this.warn(`Cannot apply d3-value directive to ${tag}`);
+        if (!Tag) return warn(`Cannot apply d3-value directive to ${tag}`);
         this.tag = new Tag(this.el);
         return expression;
-    }
+    },
 
-    mount (model) {
+    mount: function (model) {
         var expr = this.expression;
         // TODO: relax this constraint
         if (expr.parsed.type !== expr.codes.IDENTIFIER)
-            return this.warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
+            return warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
         var attrName = this.expression.expr;
         //
         // Create the model reactive attribute
@@ -30,15 +31,15 @@ export default class extends Directive {
 
         this.tag.on(model, attrName);
         return model;
-    }
+    },
 
-    refresh (model, value) {
+    refresh: function (model, value) {
         this.tag.value = value;
-    }
+    },
 
-    destroy () {
+    destroy: function () {
         this.tag.off();
     }
-}
+};
 
 

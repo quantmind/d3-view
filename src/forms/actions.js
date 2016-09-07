@@ -1,6 +1,6 @@
 import {isObject} from 'd3-let';
 import responses from './responses';
-import warn from '../../utils';
+import warn from '../utils/warn';
 
 
 // Form Actions

@@ -1,19 +1,20 @@
-import './utils';
-import {model} from '../src/model';
 import {isFunction} from 'd3-let';
+
+import './utils';
+import {viewModel} from '../';
 
 
 describe('model', function() {
 
     it('constructor', () => {
 
-        var m = model({
+        var model = viewModel({
             '$test': function () {
                 return 'a test';
             }
         });
 
-        expect(isFunction(m.$test)).toBe(true);
-        expect(m.$test()).toBe('a test');
+        expect(isFunction(model.$test)).toBe(true);
+        expect(model.$test()).toBe('a test');
     });
 });

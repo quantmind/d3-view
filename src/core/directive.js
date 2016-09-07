@@ -1,10 +1,12 @@
-import {select} from 'd3-selection';
-import uid from './uid';
-import {warn} from './utils';
-import {viewExpression} from './parser';
+import {assign} from 'd3-let';
+
+import viewExpression from '../parser';
+import warn from '../utils/warn';
+import uid from '../utils/uid';
+import sel from '../utils/sel';
 
 //
-// Directive base class
+// Directive Prototype
 //
 // Directives are special attributes with the d3- prefix.
 // Directive attribute values are expected to be binding expressions.
@@ -18,47 +20,32 @@ import {viewExpression} from './parser';
 //  * refresh
 //  * destroy
 //
-export default class {
-
-    constructor (el, attr, arg) {
-        this.el = el;
-        this.name = attr.name;
-        this.arg = arg;
-        var expr = uid(this).create(attr.value);
-        if (expr) this.expression = viewExpression(expr);
-    }
+const prototype = {
+    priority: 1,
 
     // hooks
-    create (expression) {
+    create: function (expression) {
         return expression;
-    }
+    },
 
-    mount (model) {
+    mount: function (model) {
         return model;
-    }
+    },
 
-    refresh () {}
+    refresh: function () {
 
-    destroy () {}
+    },
 
-    get sel () {
-        return select(this.el);
-    }
-    
-    get priority () {
-        return 1;
-    }
+    destroy: function () {
 
-    warn (msg) {
-        warn(msg);
-    }
+    },
 
-    removeAttribute () {
+    removeAttribute: function () {
         this.el.removeAttribute(this.name);
-    }
+    },
 
     // Execute directive
-    execute (model) {
+    execute: function (model) {
         // No binding expression - nothing to do
         if (!this.expression) return;
         this.removeAttribute();
@@ -93,4 +80,25 @@ export default class {
 
         refresh();
     }
+};
+
+// Directive constructor
+export default function (obj) {
+
+    function Directive (el, attr, arg) {
+        this.el = el;
+        this.name = attr.name;
+        this.arg = arg;
+        var expr = sel(uid(this)).create(attr.value);
+        if (expr) this.expression = viewExpression(expr);
+    }
+
+    Directive.prototype = assign({}, prototype, obj);
+
+    function directive (el, attr, arg) {
+        return new Directive(el, attr, arg);
+    }
+
+    directive.prototype = Directive.prototype;
+    return directive;
 }

@@ -1,4 +1,4 @@
-import {view} from '../';
+import {view, viewProviders} from '../';
 
 
 window.handlebars = require('handlebars');
@@ -28,7 +28,7 @@ export function trigger (target, event, process) {
 }
 
 
-view.providers.logger = logger;
+viewProviders.logger = logger;
 
 
 export default view;

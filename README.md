@@ -63,6 +63,7 @@ build one on top of it.
 Importantly, this library does not make any choice for you, it is build on top
 of the modular d3 library following very similar design patterns.
 
+
 ### Create the View
 
 To create a view object for you application, invoke the ``d3.view`` function with at least the ``el`` entry in the input object

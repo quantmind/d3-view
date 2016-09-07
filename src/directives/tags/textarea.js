@@ -1,10 +1,11 @@
 import {select} from 'd3-selection';
-import Input, {refreshFunction} from './input';
+
+import {createTag, refreshFunction} from './tag';
 
 
-export default class extends Input {
-
-    on (model, attrName) {
+export default createTag({
+    
+    on: function (model, attrName) {
         var refresh = refreshFunction(this, model, attrName);
 
         // DOM => model binding
@@ -12,4 +13,4 @@ export default class extends Input {
             .on('input', refresh)
             .on('change', refresh);
     }
-}
+});

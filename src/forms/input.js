@@ -1,5 +1,4 @@
 import {isObject} from 'd3-let';
-import formElement from './element';
 
 const VALIDATORS = ['required', 'minlength', 'maxlength', 'min', 'max'];
 
@@ -7,8 +6,6 @@ const VALIDATORS = ['required', 'minlength', 'maxlength', 'min', 'max'];
 //
 // Input element
 export default {
-
-    mixins: [formElement],
 
     render: function () {
         var model = this.model,
