@@ -120,28 +120,28 @@ user.groups().join(", ")
 
 ### View API
 
-<a name="model" href="#view-model">#</a> view.<b>model</b>
+<a name="user-content-view-model" href="#view-model">#</a> view.<b>model</b>
 
 The [model](#model) bound to the view, the combo gives the name to the object, the **view-model object**.
 
-<a name="parent" href="#view-parent">#</a> view.<b>parent</b>
+<a name="user-content-view-parent" href="#view-parent">#</a> view.<b>parent</b>
 
 The parent of a view, always undefined, a view is always the root element of
 a view mounted DOM.
 
-<a name="el" href="#view-el">#</a> view.<b>el</b>
+<a name="user-content-view-el" href="#view-el">#</a> view.<b>el</b>
 
 Root HTMLElement of the view, once mounted.
 
-<a name="mount" href="#view-mount">#</a> view.<b>mount</b>(<i>element</i>)
+<a name="user-content-view-mount" href="#view-mount">#</a> view.<b>mount</b>(<i>element</i>)
 
 Mount a view model into the HTML ``element``.
 The view only affect ``element`` and its children.
 This method can be called **once only** for a given view model.
 
-<a name="use" href="#view-use">#</a> view.<b>use</b>(<i>plugin</i>)
+<a name="user-content-view-use" href="#view-use">#</a> view.<b>use</b>(<i>plugin</i>)
 
-Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugin as one needs,
+Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugins as one needs,
 however it can be called only before the view is mounted into an element.
 
 
