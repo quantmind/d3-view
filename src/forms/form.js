@@ -4,7 +4,7 @@ import textarea from './field-textarea';
 import submit from './field-submit';
 import {addChildren} from './utils';
 
-
+// Main form component
 export default {
 
     // make sure a new model is created for this component
@@ -17,14 +17,14 @@ export default {
         'd3submit': submit
     },
 
-    render: function (props) {
+    render: function (data) {
         var model = this.model,
             form = this.createElement('form')
             .attr('novalidate', '');
 
         // Set reactive formData object
         model.$set('formData', {});
-        model.structure = props['json'] || {};
+        model.structure = data['json'] || {};
         addChildren.call(this, form);
         return form;
     }

@@ -4,6 +4,7 @@ import responses from './responses';
 import providers from './providers';
 
 
+// Forms plugin
 export default {
 
     install: function (view) {

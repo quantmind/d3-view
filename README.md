@@ -324,13 +324,13 @@ customize lifecycle of a component.
 
 <a name="init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
 
-Hook called at the beginning of the component initialisation process, before it is mounted into the DOM.
+Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
 <a name="render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
 
-This is **the only required hook**. It is called once only while the component is being mounted in the DOM
+This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
-The returned element replace the component element in the DOM
+The returned element replaces the component element in the DOM.
 
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
@@ -338,8 +338,10 @@ The returned element replace the component element in the DOM
 <a name="mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
 
 Hook called after the component has been mounted in to the DOM.
+In this state the component has the full API available
+and all its children elements are mounted too.
 
-<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
+<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
 
 Called when the component HTML element is removed from the DOM.
 
@@ -358,9 +360,9 @@ A plugin can be an object with the ``install`` method or a simple
 function (same signature as the install method).
 ```javascript
 var myPlugin = {
-    install: function (view) {
+    install: function (vm) {
         // add a component
-        view.addComponent('alert', {
+        vm.addComponent('alert', {
             model: {
                 style: "alert-info",
                 text: "Hi! this is a test!"
@@ -370,15 +372,16 @@ var myPlugin = {
             }
         });
         // add another component
-        view.addComponent('foo', ...);
+        vm.addComponent('foo', ...);
         
     }
 }
 ```
 
-A plugin is installed in a view via the chainable ``use`` method::
+A plugin is installed in a view via the chainable ``use`` method:
 ```javascript
-view.use(myPlugin).use(anotherPlugin);
+var vm = d3.view();
+vm.use(myPlugin).use(anotherPlugin);
 ```
 
 ## Forms

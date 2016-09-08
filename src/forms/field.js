@@ -3,7 +3,7 @@ import {select, selectAll} from 'd3-selection';
 import warn from './warn';
 
 
-// Apply wrappers form elements
+// A mixin for all form field components
 export default {
 
     wrap (sel) {
