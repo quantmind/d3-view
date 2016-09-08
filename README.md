@@ -20,8 +20,10 @@ It provides data-reactive components with a simple and flexible API.
 
 - [Installing](#installing)
 - [Getting Started](#getting-started)
-  - [Create the View](#create-the-view)
+  - [Create a view-model object](#create-a-view-model-object)
   - [Expressions](#expressions)
+- [View](#view)
+  - [View API](#view-api)
 - [Model](#model)
   - [Model API](#model-api)
 - [Directives](#directives)
@@ -66,12 +68,12 @@ Importantly, this library does not make any choice for you, it is build on top
 of the modular d3 library following very similar design patterns.
 
 
-### Create the View
+### Create a view-model object
 
-To create a view object for you application, invoke the ``d3.view`` function with at least the ``el`` entry in the input object
+To create a view object for you application, invoke the ``d3.view`` function
 ```javascript
-var v1 = d3.view({
-    el: '#entry',
+var vm = d3.view({
+    model: {...},
     components: {...},
     directives: {...}
 });
@@ -79,14 +81,19 @@ var v1 = d3.view({
 
 You can create more than one view:
 ```
-var v2 = d3.view({
-    el: '#entry2',
+var vm2 = d3.view({
+    model: {...},
     components: {...},
     directives: {...}
 });
 ```
 
-Both ``v1`` and ``v2`` are
+All properties in the input object are optionals and are used to initialised the view with
+custom data (model), [components][] and [directives][].
+
+Lets consider one view for the sake of this introduction.
+The ``vm`` obtained by the ```view`` function is a view-model object which
+can be *mounted* into the DOM via the view ``mount`` function.
 
 ### Expressions
 
@@ -108,6 +115,30 @@ and complex combinations of the above
 user.groups().join(", ")
 [theme, user.groups(), "Hi"]
 ```
+
+## View
+
+### View API
+
+<a name="parent" href="#view-parent">#</a> view.<b>parent</b>
+
+The parent of a view, always undefined, a view is always the root element of
+a view mounted DOM.
+
+<a name="el" href="#view-el">#</a> view.<b>el</b>
+
+Root HTMLElement of the view, once mounted.
+
+<a name="mount" href="#view-mount">#</a> view.<b>mount</b>(<i>element</i>)
+
+Mount a view into the the HTMLElement ``element``.
+The view only affect ``element`` and its children.
+This method can be called **onlce only** for a given view model.
+
+<a name="use" href="#view-use">#</a> view.<b>use</b>(<i>plugin</i>)
+
+Install a [plugin](#plugins) into the view model.
+
 
 ## Model
 
@@ -274,7 +305,6 @@ They are custom elements that ``d3.view`` attach specified behavior to.
 In order to use components you need to register them with the ``view`` object:
 ```javascript
 d3.view({
-    el: '#entry',
     components: {
         tag1: component1,
         ...
@@ -351,8 +381,8 @@ Plugins usually add functionality to a view object.
 There is no strictly defined scope for a plugin but there are typically several
 types of plugins you can write:
 
-* Add a group of [components][#components]
-* Add a group of [directives][#directives]
+* Add a group of [components](#components)
+* Add a group of [directives](#directives)
 * Add some components methods by attaching them to components prototype.
 * Add providers to the ``view.providers`` object
 
