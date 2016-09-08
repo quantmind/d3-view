@@ -171,8 +171,7 @@ it will recursively retrieve it from its [parent](#model-parent).
 
 <a name="user-content-model-set" href="#model-set">#</a> model.<b>$set</b>(<i>attribute, value</i>)
 
-Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
-it will recursively retrieve it from its [parent](#model-parent).
+Set an attribute value from in the model, traversing the tree.
 
 <a name="user-content-model-on" href="#model-on">#</a> model.<b>$on</b>(<i>attribute, callback</i>)
 
@@ -228,6 +227,14 @@ The ``d3-attr`` can also be ommited:
 <a name="user-content-d3-model" href="#d3-model">#</a> [d3-model][]
 
 <a name="user-content-d3-on" href="#d3-on">#</a> [d3-on][]
+
+Attaches an event listener to the element. The event type is denoted by the argument.
+The expression should be model method call, the event ``callback``. if the attribute is omitted
+it is assumed to be a ``click`` event.
+The event ``callback`` listens to **native DOM events only**.
+```html
+<button d3-on:click="submit()">Submit</button>
+```
 
 <a name="user-content-d3-value" href="#d3-value">#</a> [d3-value][]
 
@@ -327,11 +334,11 @@ function component1 () {
 
 ### Components API
 
-<a name="user-content-content-el" href="#component-el">#</a> component.<b>el</b>
+<a name="user-content-component-el" href="#component-el">#</a> component.<b>el</b>
 
 The HTML element created by the component [render][] method. Available after the component is mounted.
 
-<a name="user-content-content-model" href="#component-model">#</a> component.<b>model</b>
+<a name="user-content-component-model" href="#component-model">#</a> component.<b>model</b>
 
 The [model][] bound to the component
 
@@ -341,11 +348,11 @@ The [model][] bound to the component
 A component is defined by the [render][] method. However, there are four additional methods that can be used to
 customize lifecycle of a component.
 
-<a name="user-content-content-init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
+<a name="user-content-component-init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-<a name="user-content-content-render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
+<a name="user-content-component-render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
@@ -354,13 +361,13 @@ The returned element replaces the component element in the DOM.
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
 
-<a name="user-content-content-mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
+<a name="user-content-component-mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-<a name="user-content-content-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
+<a name="user-content-component-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
 
 Called when the component HTML element is removed from the DOM.
 
