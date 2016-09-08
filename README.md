@@ -120,6 +120,10 @@ user.groups().join(", ")
 
 ### View API
 
+<a name="model" href="#view-model">#</a> view.<b>model</b>
+
+The [model](#model) bound to the view, the combo gives the name to the object, the **view-model object**.
+
 <a name="parent" href="#view-parent">#</a> view.<b>parent</b>
 
 The parent of a view, always undefined, a view is always the root element of
@@ -131,13 +135,14 @@ Root HTMLElement of the view, once mounted.
 
 <a name="mount" href="#view-mount">#</a> view.<b>mount</b>(<i>element</i>)
 
-Mount a view into the the HTMLElement ``element``.
+Mount a view model into the HTML ``element``.
 The view only affect ``element`` and its children.
-This method can be called **onlce only** for a given view model.
+This method can be called **once only** for a given view model.
 
 <a name="use" href="#view-use">#</a> view.<b>use</b>(<i>plugin</i>)
 
-Install a [plugin](#plugins) into the view model.
+Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugin as one needs,
+however it can be called only before the view is mounted into an element.
 
 
 ## Model
@@ -200,11 +205,10 @@ Html of the element containing the directive:
 Here the ``paragraph`` is a reactive attribute of the View model.
 ```javascript
 d3.view({
-    el: '#entry',
     model: {
         paragraph: 'TODO'
     }
-}).mount();
+}).mount('#entry');
 ```
 
 ### Core Directives
@@ -377,7 +381,7 @@ Called when the component HTML element is removed from the DOM.
 
 ### Plugins
 
-Plugins usually add functionality to a view object.
+Plugins usually add functionality to a view-model.
 There is no strictly defined scope for a plugin but there are typically several
 types of plugins you can write:
 

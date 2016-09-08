@@ -6,8 +6,6 @@ import {isString} from 'd3-let';
 //
 //  Usage:
 //      <div id="foo" d3-html="output"></div>
-//
-//  new d3.View({el: '#foo', model: {output: '<h1>A title</h1>'}});
 export default {
 
     refresh: function (model, html) {
