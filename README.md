@@ -160,31 +160,25 @@ a child model of the model associated with its parent element.
 
 ### Model API
 
-<a name="parent" href="#model-parent">#</a> model.<b>parent</b>
+<a name="user-content-model-parent" href="#model-parent">#</a> model.<b>parent</b>
 
 Get the ancestor of the model if it exists. It it does not exist, this is the root model.
 
-<a name="$get" href="#model-get">#</a> model.<b>$get</b>(<i>attribute</i>)
+<a name="user-content-model-get" href="#model-get">#</a> model.<b>$get</b>(<i>attribute</i>)
 
 Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
 it will recursively retrieve it from its [parent](#model-parent).
 
-<a name="$set" href="#model-set">#</a> model.<b>$set</b>(<i>attribute, value</i>)
+<a name="user-content-model-set" href="#model-set">#</a> model.<b>$set</b>(<i>attribute, value</i>)
 
 Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
 it will recursively retrieve it from its [parent](#model-parent).
 
-<a name="$on" href="#model-on">#</a> model.<b>$on</b>(<i>attribute, callback</i>)
+<a name="user-content-model-on" href="#model-on">#</a> model.<b>$on</b>(<i>attribute, callback</i>)
 
 Add ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which
 case it is triggered when any of the model **own attributes** change.
-
-<a name="$mount" href="#model-mount">#</a> model.<b>$mount</b>(<i>HTMLElement</i>)
-
-Mount a model into an HTML Element. It kick starts the model-DOM binding process for the given element.
-If the element was already bound to a model, it does nothing and a warning is issued.
-
 
 
 ## Directives
@@ -213,7 +207,7 @@ d3.view({
 
 ### Core Directives
 
-<a name="d3-attr" href="#d3-attr">#</a> [d3-attr][]
+<a name="user-content-d3-attr" href="#d3-attr">#</a> [d3-attr][]
 
 Create a one-way binding between a model property and an HTML element attribute
 ```html
@@ -225,17 +219,17 @@ The ``d3-attr`` can also be ommited:
 ```
 ``code`` and ``description`` are properties of the d3-view model.
 
-<a name="d3-for" href="#d3-for">#</a> [d3-for][]
+<a name="user-content-d3-for" href="#d3-for">#</a> [d3-for][]
 
-<a name="d3-html" href="#d3-html">#</a> [d3-html][]
+<a name="user-content-d3-html" href="#d3-html">#</a> [d3-html][]
 
-<a name="d3-if" href="#d3-if">#</a> [d3-if][]
+<a name="user-content-d3-if" href="#d3-if">#</a> [d3-if][]
 
-<a name="d3-model" href="#d3-model">#</a> [d3-model][]
+<a name="user-content-d3-model" href="#d3-model">#</a> [d3-model][]
 
-<a name="d3-on" href="#d3-on">#</a> [d3-on][]
+<a name="user-content-d3-on" href="#d3-on">#</a> [d3-on][]
 
-<a name="d3-value" href="#d3-value">#</a> [d3-value][]
+<a name="user-content-d3-value" href="#d3-value">#</a> [d3-value][]
 
 Establish a **two-way data binding** for HTML elements supporting the value property.
 The binding is tw ways because
@@ -280,14 +274,14 @@ None of the method needs implementing, and indeed for some directive the ``refre
 
 ### Directive API
 
-<a name="create" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
+<a name="user-content-directive-create" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
 
 The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or the model has yet occurred.
 The ``expression`` is the attribute value, a string, and it is not yet parsed.
 This method must return the expression for parsing (it doesn't need to be the same as the input expression).
 However, if it returns nothing, the directive is not executed.
 
-<a name="mount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
+<a name="user-content-directive-mount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
 
 The ``mount`` method is called once only, at the beginning of the binding process with the HTML element.
 The expression returned by the ``create`` method
@@ -295,9 +289,9 @@ has been parsed and available in the ``this.expression`` attribute.
 This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
 However, if it returns nothing, the binding execution is aborted.
 
-<a name="refresh" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
+<a name="user-content-directive-refresh" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
 
-<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
+<a name="user-content-directive-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
 ## Components
 
@@ -316,37 +310,28 @@ d3.view({
     }
 });
 ```
-A component is either a ``Component`` subclass created via the API:
-```javascript
-import {view} from 'd3-view';
-
-class component1 extends view.Component {
-    render () {
-        ...
-    }
-}
-```
-or an object:
+A component is either an object:
 ```javascript
 var component1 = {
     render: function () {
+        return this.htmlElement('<p>Very simple component</p>');
     }
 };
 ```
 or a function, the component render method:
-```javacript
+```javascript
 function component1 () {
-    return d3.view.htmlElement('<p>Very simple component</p>');
+    return this.htmlElement('<p>Another very simple component</p>');
 }
 ```
 
 ### Components API
 
-<a name="el" href="#component-el">#</a> component.<b>el</b>
+<a name="user-content-content-el" href="#component-el">#</a> component.<b>el</b>
 
 The HTML element created by the component [render][] method. Available after the component is mounted.
 
-<a name="model" href="#component-model">#</a> component.<b>model</b>
+<a name="user-content-content-model" href="#component-model">#</a> component.<b>model</b>
 
 The [model][] bound to the component
 
@@ -356,11 +341,11 @@ The [model][] bound to the component
 A component is defined by the [render][] method. However, there are four additional methods that can be used to
 customize lifecycle of a component.
 
-<a name="init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
+<a name="user-content-content-init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-<a name="render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
+<a name="user-content-content-render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
@@ -369,13 +354,13 @@ The returned element replaces the component element in the DOM.
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
 
-<a name="mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
+<a name="user-content-content-mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-<a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
+<a name="user-content-content-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
 
 Called when the component HTML element is removed from the DOM.
 
