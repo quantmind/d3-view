@@ -1,4 +1,4 @@
-import {isFunction, isObject, pop, assign} from 'd3-let';
+import {isFunction, isObject, isArray, pop, assign} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 
@@ -9,7 +9,9 @@ import getdirs from './getdirs';
 import directives from '../directives/index';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
+import providers from '../utils/providers';
 import sel from '../utils/sel';
+import {htmlElement} from '../utils/html';
 
 
 // Core Directives
@@ -19,6 +21,8 @@ const coreDirectives = extendDirectives(map(), directives);
 // prototype for both views and components
 const proto = {
     isd3: true,
+    providers: providers,
+    htmlElement: htmlElement,
 
     init: function () {
     },
@@ -30,6 +34,7 @@ const proto = {
         return select(document.createElement(tag));
     }
 };
+
 
 //
 // prototype for views
@@ -80,15 +85,28 @@ const protoComponent = assign({}, proto, {
     mount: function (el) {
         if (mounted(this)) warn('already mounted');
         else {
-            var parent = this.parent ? this.parent.model : null;
-            this.model = createModel(getdirs(el, this.directives), this.model, parent);
+            var parent = this.parent ? this.parent.model : null,
+                directives = getdirs(el, this.directives),
+                model = createModel(directives, this.model, parent);
+            //
+            this.model = model;
             //
             // When a for d3-for loop is active we abort mounting this component
             // The component will be mounted as many times the the for loop requires
             if (mount(this.model, el)) return;
+
+            var data = select(el).datum() || {};
+
+            if (isArray(this.props)) {
+                var key;
+                this.props.forEach((prop) => {
+                    key = directives.attrs[prop];
+                    data[prop] = key ? model[key] || key : null;
+                });
+            }
             //
             // create the new element from the render function
-            var newEl = this.render();
+            var newEl = this.render(data, directives.attrs);
             if (!newEl) return warn('render function must return a single HTML node. It returned nothing!');
             newEl = asSelect(newEl);
             if (newEl.size() !== 1) warn('render function must return a single HTML node');
@@ -131,34 +149,29 @@ export function createComponent (obj, prototype) {
         extendDirectives(directives, pop(options, 'directives'));
 
         Object.defineProperties(this, {
-            'components': {
+            components: {
                 get: function () {
                     return components;
                 }
             },
-            'directives': {
+            directives: {
                 get: function () {
                     return directives;
                 }
             },
-            'isd3': {
-                get: function () {
-                    return true;
-                }
-            },
-            'parent': {
+            parent: {
                 get: function () {
                     return parent;
                 }
             },
-            'uid': {
-                get: function () {
-                    return this.model.uid;
-                }
-            },
-            'props': {
+            props: {
                 get: function () {
                     return props;
+                }
+            },
+            uid: {
+                get: function () {
+                    return this.model.uid;
                 }
             }
         });

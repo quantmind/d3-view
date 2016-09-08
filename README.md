@@ -31,7 +31,9 @@ It provides data-reactive components with a simple and flexible API.
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
-  - [Components Hooks](#components-hooks)
+  - [Components hooks](#components-hooks)
+  - [Plugins](#plugins)
+- [Forms](#forms)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -308,25 +310,30 @@ function component1 () {
 
 <a name="el" href="#component-el">#</a> component.<b>el</b>
 
-The HTML element created by the component ``render`` method. Available after the component is mounted.
+The HTML element created by the component [render][] method. Available after the component is mounted.
 
 <a name="model" href="#component-model">#</a> component.<b>model</b>
 
 The [model][] bound to the component
 
 
-### Components Hooks
+### Components hooks
 
-A component is defined by the ``render`` method. However, there are four additional methods that can be used to
+A component is defined by the [render][] method. However, there are four additional methods that can be used to
 customize lifecycle of a component.
 
 <a name="init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
 
 Hook called at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-<a name="created" href="#component-create">#</a> component.<b>create</b>()
+<a name="render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
 
-Hook is called at the end of the component initialisation process, before it is mounted into the DOM.
+This is **the only required hook**. It is called once only while the component is being mounted in the DOM
+and must return a single HTMLElement or a selector with one node only.
+The returned element replace the component element in the DOM
+
+* **data** is the data object in the component element
+* **attrs** is an object containing the key-value of attributes in the component element
 
 <a name="mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
 
@@ -335,6 +342,48 @@ Hook called after the component has been mounted in to the DOM.
 <a name="destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
 Called when the component HTML element is removed from the DOM.
+
+### Plugins
+
+Plugins usually add functionality to a view object.
+There is no strictly defined scope for a plugin but there are typically several
+types of plugins you can write:
+
+* Add a group of [components][#components]
+* Add a group of [directives][#directives]
+* Add some components methods by attaching them to components prototype.
+* Add providers to the ``view.providers`` object
+
+A plugin can be an object with the ``install`` method or a simple
+function (same signature as the install method).
+```javascript
+var myPlugin = {
+    install: function (view) {
+        // add a component
+        view.addComponent('alert', {
+            model: {
+                style: "alert-info",
+                text: "Hi! this is a test!"
+            },
+            render: function () {
+                return view.htmlElement('<div class="alert" :class="style" d3-html="text"></div>');
+            }
+        });
+        // add another component
+        view.addComponent('foo', ...);
+        
+    }
+}
+```
+
+A plugin is installed in a view via the chainable ``use`` method::
+```javascript
+view.use(myPlugin).use(anotherPlugin);
+```
+
+## Forms
+
+This library include a form plugin for creating dynamic form from a JSON layout.
 
 ## Other Frameworks
 
@@ -355,3 +404,4 @@ In order of complexity
 [d3-model]: https://github.com/quantmind/d3-view/blob/master/src/directives/model.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
+[render]: #component-render

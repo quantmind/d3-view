@@ -33,7 +33,8 @@ export default function (element, directives) {
             var directive = directives.get(dirName);
             if (directive) dirs.add(dirName, directive(element, attr, extra));
             else warn(`${element.tagName} cannot find directive "${dirName}". Did you forget to register it?`);
-        }
+        } else
+            dirs.attrs[attr.name] = attr.value;
     }
     return dirs.sorted();
 }
@@ -41,6 +42,7 @@ export default function (element, directives) {
 
 // Directives container
 function Directives () {
+    this.attrs = {};
     this._dirs = {};
     this._all = [];
 }

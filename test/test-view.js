@@ -85,4 +85,20 @@ describe('view', function() {
             done();
         }
     });
+
+    it('model with no binding properties', () => {
+        var vm = view({
+            model: {
+                $test: 'this is a test'
+            }
+        }).mount(el);
+        var model = vm.model;
+        expect(model.$events.get('$test')).toBe(undefined);
+        logger.pop();
+        model.$on('$test', ()=>{});
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe(`[d3-view] Cannot bind to "$test" - no such reactive property`);
+        expect(model.$test).toBe('this is a test');
+    });
 });
