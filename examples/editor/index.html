@@ -11,13 +11,13 @@
 <body>
 <section id="editor">
     <textarea d3-value="input"># hello</textarea>
-    <div d3-html="$html()"></div>
+    <div d3-html="html"></div>
 </section>
 
 <script>
 d3.view({
     model: {
-        $html: function () {
+        html: function () {
             return marked(this.input || '');
         }
     }

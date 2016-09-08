@@ -25,8 +25,7 @@ var clock = {
 
 
 d3.view({
-    el: '#clock',
     components: {
         clock: clock
     }
-}).mount();
+}).mount('#clock');
