@@ -35,7 +35,9 @@ It provides data-reactive components with a simple and flexible API.
   - [Components API](#components-api)
   - [Components hooks](#components-hooks)
   - [Plugins](#plugins)
-- [Forms](#forms)
+- [Form Plugin](#form-plugin)
+  - [Importing](#importing)
+  - [Bootstrap layouts](#bootstrap-layouts)
 - [Other Frameworks](#other-frameworks)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -410,9 +412,34 @@ var vm = d3.view();
 vm.use(myPlugin).use(anotherPlugin);
 ```
 
-## Forms
+## Form Plugin
 
-This library include a form plugin for creating dynamic form from a JSON layout.
+This library include a form plugin for creating dynamic forms from JSON layouts.
+The plugin add the ``d3form`` [component][] to the view-model:
+```javascript
+import {view, viewForms} from 'd3-view';
+
+var vm = view().use(viewForms);
+```
+
+### Importing
+
+If you are using [rollup][] to compile your javascript application, the form plugin
+will be included in your compiled file only if
+```javascript
+import {viewForms} from 'd3-view';
+```
+is present somewhere in your code. Otherwise, it will be eliminated thanks to
+tree-shaking.
+
+### Bootstrap layouts
+
+It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:
+```javascript
+import {view, viewForms, viewBootstrapForms} from 'd3-view';
+
+var vm = view().use(viewForms).use(viewBootstrapForms);
+```
 
 ## Other Frameworks
 
@@ -424,6 +451,7 @@ In order of complexity
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
+[rollup]: http://rollupjs.org/
 [model]: #model
 [component]: #components
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
