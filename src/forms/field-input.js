@@ -1,4 +1,4 @@
-import {isObject, assign} from 'd3-let';
+import {isObject, isString, assign} from 'd3-let';
 
 import field from './field';
 
@@ -11,14 +11,21 @@ const VALIDATORS = ['required', 'minlength', 'maxlength', 'min', 'max'];
 export default assign({
 
     render: function (data) {
-        this.data = data = this.inputData(data);
+        data = this.inputData(data);
         var el = this.createElement('input')
                 .attr('id', data.id)
                 .attr('type', data.type || 'text')
                 .attr('name', data.name)
-                .attr('d3-value', `formData.${data.name}`)
+                .attr('d3-value', 'value')
                 .attr('placeholder', data.placeholder)
+                .attr(':required', data.required)
                 .attr('d3-validate', 'validators');
+
+        if (isString(data.required)) el.attr('#required', data.required);
+        else el.property('required', data.required);
+
+        this.model.inputs[data.name] = this;
+
         return this.wrap(el);
     }
 }, field);

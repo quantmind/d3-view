@@ -19,7 +19,7 @@ export default function (model, initials) {
             return events;
         }
     });
-
+    model._Child = null;
     model.$update(initials);
 }
 

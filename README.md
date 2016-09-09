@@ -181,6 +181,13 @@ Add ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which
 case it is triggered when any of the model **own attributes** change.
 
+<a name="user-content-model-child" href="#model-child">#</a> model.<b>$child</b>(<i>intials</i>)
+
+Crate a child model with prototypical inheritance from the model.
+
+<a name="user-content-model-new" href="#model-new">#</a> model.<b>$new</b>(<i>intials</i>)
+
+Create a child model, with no inheritance from the parent (an isolated model).
 
 ## Directives
 
@@ -212,13 +219,13 @@ d3.view({
 
 Create a one-way binding between a model property and an HTML element attribute
 ```html
-<input d3-attr:name="code" d3-attr:placeholder="description || code">
+<input d3-attr-name="code" d3-attr-placeholder="description || code">
 ```
-The ``d3-attr`` can also be ommited:
+The ``attr`` can be omitted for ``class``, ``name`` , ``disabled``, ``readonly`` and ``required``.
 ```html
-<input :name="code" :placeholder="description || code">
+<input d3-name="code" d3-class="bright ? 'bright' : 'dull'">
 ```
-``code`` and ``description`` are properties of the d3-view model.
+``code`` and ``bright`` are reactive properties of the view-model.
 
 <a name="user-content-d3-for" href="#d3-for">#</a> [d3-for][]
 
@@ -235,7 +242,7 @@ The expression should be model method call, the event ``callback``. if the attri
 it is assumed to be a ``click`` event.
 The event ``callback`` listens to **native DOM events only**.
 ```html
-<button d3-on:click="submit()">Submit</button>
+<button d3-on-click="submit()">Submit</button>
 ```
 
 <a name="user-content-d3-value" href="#d3-value">#</a> [d3-value][]
@@ -415,7 +422,7 @@ vm.use(myPlugin).use(anotherPlugin);
 ## Form Plugin
 
 This library include a form plugin for creating dynamic forms from JSON layouts.
-The plugin add the ``d3form`` [component][] to the view-model:
+The plugin adds the ``d3form`` [component][] to the view-model:
 ```javascript
 import {view, viewForms} from 'd3-view';
 

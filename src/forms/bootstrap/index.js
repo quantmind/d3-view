@@ -1,17 +1,19 @@
 import label from './label';
-import group from './group';
+import formGroup from './form-group';
+import inputGroup from './input-group';
 import submit from './submit';
 
 
 const bootstrap = {
 
-    input: ['label', 'group'],
-    textarea: ['label', 'group'],
-    submit: ['group', 'submit'],
+    input: ['inputGroup', 'label', 'formGroup'],
+    textarea: ['label', 'formGroup'],
+    submit: ['formGroup', 'submit'],
     wrappers: {
-        label: label,
-        group: group,
-        submit: submit
+        label,
+        formGroup,
+        inputGroup,
+        submit
     }
 };
 

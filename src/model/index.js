@@ -26,4 +26,21 @@ Model.prototype.$update = $update;
 Model.prototype.$get = $get;
 Model.prototype.$set = $set;
 Model.prototype.$child = $child;
+Model.prototype.$new = $new;
 Model.prototype.$setbase = $setbase;
+
+
+
+function $new (initials) {
+
+    var parent = this,
+        child = model(initials);
+
+    Object.defineProperty(child, 'parent', {
+        get: function () {
+            return parent;
+        }
+    });
+
+    return child;
+}

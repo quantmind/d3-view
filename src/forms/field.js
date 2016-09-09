@@ -1,6 +1,7 @@
 import {select, selectAll} from 'd3-selection';
 
 import warn from './warn';
+import {modelData} from './utils';
 
 
 // A mixin for all form field components
@@ -42,7 +43,7 @@ export default {
     },
 
     inputData (data) {
-        if (!data) data = {};
+        data = modelData.call(this, data);
         if (!data.name) warn ('Input field without a name');
         data.placeholder = data.placeholder || data.label || data.name;
         data.id = data.id || `d3f${this.uid}`;

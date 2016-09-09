@@ -2,6 +2,9 @@ import {isArray} from 'd3-let';
 import warn from './warn';
 
 
+const modelDataKeys = ['labelSrOnly', 'layout'];
+
+
 const componentsFromType = {
     'text': 'input',
     'password': 'input'
@@ -15,8 +18,7 @@ export function formComponent (child) {
 
 
 export function addChildren (sel) {
-    var model = this.model,
-        children = model.structure.children;
+    var children = this.data.children;
     if (children) {
         if (!isArray(children)) {
             warn(`children should be an array of fields, for ${typeof children}`);
@@ -29,6 +31,17 @@ export function addChildren (sel) {
             .classed('d3form', true);
     }
     return sel;
+}
+
+export function modelData(data) {
+    if (!data) data = {};
+    this.data = data;
+    var model = this.model;
+    modelDataKeys.forEach((key) => {
+        if (key in data)
+            model.$set(key, data[key]);
+    });
+    return data;
 }
 
 

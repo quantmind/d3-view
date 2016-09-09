@@ -17,7 +17,7 @@ export default function (initials) {
 }
 
 
-function createChildConstructor(model) {
+function createChildConstructor (model) {
 
     function Child (initials) {
         asModel(this, initials);

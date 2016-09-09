@@ -2,6 +2,9 @@ import {select, selection} from 'd3-selection';
 
 import warn from '../utils/warn';
 
+// No value, it has its own directive
+const attributes = ['name', 'class', 'disabled', 'readonly', 'required'];
+
 
 selection.prototype.directives = directives;
 
@@ -24,17 +27,20 @@ export default function (element, directives) {
 
     for (let i = 0; i < element.attributes.length; ++i) {
         let attr = element.attributes[i],
-            bits = attr.name.split(':'),
-            extra = bits[1],
-            dirName = bits[0].substring(0, 3) === 'd3-' ? bits[0].substring(3) : null;
+            bits = attr.name.split('-'),
+            arg = bits[2],
+            dirName = bits[0] === 'd3' ? bits[1] : null;
 
-        if (dirName || (extra && bits[0] === '')) {
-            dirName = dirName || 'attr';
+        if (dirName) {
+            if (!arg && attributes.indexOf(dirName) > -1) {
+                arg = dirName;
+                dirName = 'attr';
+            }
             var directive = directives.get(dirName);
-            if (directive) dirs.add(dirName, directive(element, attr, extra));
+            if (directive) dirs.add(dirName, directive(element, attr, arg));
             else warn(`${element.tagName} cannot find directive "${dirName}". Did you forget to register it?`);
-        } else
-            dirs.attrs[attr.name] = attr.value;
+        }
+        dirs.attrs[attr.name] = attr.value;
     }
     return dirs.sorted();
 }

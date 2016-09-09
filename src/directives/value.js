@@ -23,7 +23,7 @@ export default {
         var expr = this.expression;
         // TODO: relax this constraint
         if (expr.parsed.type !== expr.codes.IDENTIFIER)
-            return warn(`d3-model expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
+            return warn(`d3-value expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
         var attrName = this.expression.expr;
         //
         // Create the model reactive attribute

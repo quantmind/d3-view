@@ -2,6 +2,8 @@ import {isArray} from 'd3-let';
 
 import warn from '../utils/warn';
 
+const properties = ['disabled', 'readonly', 'required'];
+
 //
 //  d3-attr:<attr> directive
 //  ==============================
@@ -17,7 +19,8 @@ export default {
     refresh: function (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
-        this.sel.attr(this.arg, value);
+        if (properties.indexOf(this.arg) > -1) this.sel.property(this.arg, value || null);
+        else this.sel.attr(this.arg, value);
     },
 
     refreshClass: function (value) {
@@ -27,7 +30,8 @@ export default {
 
         if (this.oldValue)
             this.oldValue.forEach((entry) => {
-                sel.classed(entry, false);
+                if (entry)
+                    sel.classed(entry, false);
             });
 
         this.oldValue = value.map((entry) => {
@@ -36,7 +40,8 @@ export default {
                 exist = entry[1];
                 entry = entry[0];
             }
-            sel.classed(entry, exist);
+            if (entry)
+                sel.classed(entry, exist);
             return entry;
         });
     }

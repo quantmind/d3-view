@@ -8,6 +8,12 @@
                 "label": "Your name"
             },
             {
+                "type": "text",
+                "name": "username",
+                "label": "username",
+                "group": "@"
+            },
+            {
                 "type": "textarea",
                 "name": "bio",
                 "label": "Brief biography"

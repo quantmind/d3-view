@@ -1,6 +1,7 @@
 export {default as view} from './src/core';
 export {default as viewModel} from './src/model';
 export {default as viewExpression} from './src/parser';
+export {default as viewReady} from './src/utils/dom';
 export {default as viewProviders} from './src/utils/providers';
 export {default as viewWarn} from './src/utils/warn';
 export {default as viewForms} from './src/forms';

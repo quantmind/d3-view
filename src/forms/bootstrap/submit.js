@@ -1,5 +1,5 @@
-export default function (el) {
-    var theme = this.field.structure.theme || 'default';
-    el.classed('btn', true);
-    el.classed(`btn-${theme}`, true);
+export default function (el, formEl) {
+    var theme = this.data.theme || 'primary';
+    formEl.classed('btn', true).classed(`btn-${theme}`, true);
+    return el;
 }

@@ -2,7 +2,7 @@ import fieldset from './field-set';
 import input from './field-input';
 import textarea from './field-textarea';
 import submit from './field-submit';
-import {addChildren} from './utils';
+import {addChildren, modelData} from './utils';
 
 // Main form component
 export default {
@@ -19,12 +19,12 @@ export default {
 
     render: function (data) {
         var model = this.model,
-            form = this.createElement('form')
-            .attr('novalidate', '');
+            form = this.createElement('form').attr('novalidate', '');
 
+        modelData.call(this, data['json']);
+        //
         // Set reactive formData object
-        model.$set('formData', {});
-        model.structure = data['json'] || {};
+        model.inputs = {};
         addChildren.call(this, form);
         return form;
     }

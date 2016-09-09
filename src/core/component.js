@@ -10,6 +10,7 @@ import directives from '../directives/index';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import providers from '../utils/providers';
+import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import {htmlElement} from '../utils/html';
 
@@ -98,10 +99,12 @@ const protoComponent = assign({}, proto, {
             var data = select(el).datum() || {};
 
             if (isArray(this.props)) {
-                var key;
+                var key, value;
                 this.props.forEach((prop) => {
                     key = directives.attrs[prop];
-                    data[prop] = key ? model[key] || key : null;
+                    if (model[key]) value = model[key];
+                    else value = maybeJson(key);
+                    data[prop] = value;
                 });
             }
             //

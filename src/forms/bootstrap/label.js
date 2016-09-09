@@ -6,6 +6,6 @@ export default function (el) {
 function labelTpl(data) {
     var label = data.label || data.name;
 
-    return `<label for=${data.id} class="control-label" :class="field.required">${label}</label>
+    return `<label for=${data.id} class="control-label" d3-class="[required, labelSrOnly ? 'sr-only' : null]">${label}</label>
 <slot></slot>`;
 }

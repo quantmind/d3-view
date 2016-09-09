@@ -25,6 +25,6 @@ export default function (name, callback) {
 
 function getEvent(model, name) {
     var event = model.$events.get(name);
-    if (!event && model.$parent) return getEvent(model.$parent, name);
+    if (!event && model.parent) return getEvent(model.parent, name);
     return event;
 }
