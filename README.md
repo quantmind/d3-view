@@ -90,7 +90,7 @@ var vm2 = d3.view({
 ```
 
 All properties in the input object are optionals and are used to initialised the view with
-custom data (model), [components][] and [directives][].
+custom data ([model][]), [components][] and [directives][].
 
 Lets consider one view for the sake of this introduction.
 The ``vm`` obtained by the ```view`` function is a view-model object which
@@ -460,6 +460,8 @@ In order of complexity
 [rollup]: http://rollupjs.org/
 [model]: #model
 [component]: #components
+[components]: #components
+[directives]: #directives
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
 [d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js
 [d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
