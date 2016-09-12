@@ -117,7 +117,7 @@ user.groups().join(", ")
 [theme, user.groups(), "Hi"]
 ```
 
-## View :heart:
+## View
 
 ### View API
 
@@ -146,7 +146,7 @@ Install a [plugin](#plugins) into the view model. This method can be called seve
 however it can be called only before the view is mounted into an element.
 
 
-## Model :zap:
+## Model
 
 At the core of the library we have the Hierarchical Reactive Model.
 The Model comparable to angular scope but its implementation is different.
@@ -188,7 +188,7 @@ Crate a child model with prototypical inheritance from the model.
 
 Create a child model, with no inheritance from the parent (an isolated model).
 
-## Directives :clap:
+## Directives
 
 Directives are special attributes with the ``d3-`` prefix.
 Directive attribute values are expected to be binding [expressions](#expressions).
@@ -308,7 +308,7 @@ However, if it returns nothing, the binding execution is aborted.
 
 <a name="user-content-directive-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
 
-## Components :punch:
+## Components
 
 Components help you extend basic HTML elements to encapsulate reusable code.
 They are custom elements that ``d3.view`` attach specified behavior to.
@@ -418,7 +418,11 @@ var vm = d3.view();
 vm.use(myPlugin).use(anotherPlugin);
 ```
 
-## Form Plugin :gift:
+## Providers
+
+
+
+## Form Plugin
 
 This library include a form plugin for creating dynamic forms from JSON layouts.
 The plugin adds the ``d3form`` [component][] to the view-model:

@@ -1,6 +1,7 @@
 import {isFunction, isObject, isArray, pop, assign} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
+import {dispatch} from 'd3-dispatch';
 
 import createDirective from './directive';
 import createModel from './model';
@@ -33,6 +34,22 @@ const proto = {
 
     createElement: function (tag) {
         return select(document.createElement(tag));
+    },
+
+    responseError (response) {
+        var self = this;
+        response.json().then((data) => {
+            self.error(data, response);
+        });
+    },
+
+    error (data) {
+        this.message(data);
+    },
+
+    message (data) {
+        var self = this;
+        this.root.events.call('message', self, data);
     }
 };
 
@@ -140,7 +157,8 @@ export function createComponent (obj, prototype) {
     function Component (options) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : null),
-            directives = map(parent ? parent.directives : coreDirectives);
+            directives = map(parent ? parent.directives : coreDirectives),
+            events = dispatch('message');
 
         classComponents.each((comp, key) => {
             components.set(key, comp);
@@ -167,6 +185,11 @@ export function createComponent (obj, prototype) {
                     return parent;
                 }
             },
+            root: {
+                get: function () {
+                    return parent ? parent.root : this;
+                }
+            },
             props: {
                 get: function () {
                     return props;
@@ -175,6 +198,11 @@ export function createComponent (obj, prototype) {
             uid: {
                 get: function () {
                     return this.model.uid;
+                }
+            },
+            events: {
+                get: function () {
+                    return events;
                 }
             }
         });

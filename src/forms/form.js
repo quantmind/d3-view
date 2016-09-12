@@ -2,6 +2,8 @@ import fieldset from './field-set';
 import input from './field-input';
 import textarea from './field-textarea';
 import submit from './field-submit';
+import responses from './responses';
+import warn from './warn';
 import {addChildren, modelData} from './utils';
 
 // Main form component
@@ -23,9 +25,48 @@ export default {
 
         modelData.call(this, data['json']);
         //
-        // Set reactive formData object
+        // set reactive properties
+        model.$set('formSubmitted', false);
+        model.$set('formPending', false);
+        //
         model.inputs = {};
+        model.form = this;
+        //
         addChildren.call(this, form);
         return form;
+    },
+
+    inputData: function () {
+        var inputs = this.model.inputs,
+            data = {},
+            value;
+        for (var key in inputs) {
+            value = inputs[key].model.value;
+            if (value !== undefined) data[key] = value;
+        }
+
+        return data;
+    },
+
+    setSubmit: function () {
+        this.model.formSubmitted = true;
+        this.model.formPending = true;
+    },
+
+    setSubmitDone: function () {
+        this.model.formPending = false;
+    },
+
+    response: function (response) {
+        if (response.status < 300) {
+            if (this.data.resultHandler) {
+                var handler = responses[this.data.resultHandler];
+                if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
+                else handler.call(this, response);
+            } else {
+                responses.default.call(this, response);
+            }
+        } else
+            this.responseError(response);
     }
 };

@@ -1,5 +1,11 @@
-import {logger} from 'd3-let';
+import {logger, inBrowser} from 'd3-let';
 
 export default {
-    logger: logger
+    logger: logger,
+    fetch: fetch
 };
+
+
+function fetch() {
+    if (inBrowser) return window.fetch;
+}

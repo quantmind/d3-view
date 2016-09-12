@@ -5,7 +5,8 @@ const groupTpl = `<div class="form-group" :class="bootstrapStatus()">
 
 
 export default function (el, formEl) {
-    if (formEl.node().tagName === 'INPUT')
+    var tname = formEl.node().tagName;
+    if (tname === 'INPUT' || tname === 'TEXTAREA')
         formEl.classed('form-control', true);
     return this.wrapTemplate(el, groupTpl);
 }

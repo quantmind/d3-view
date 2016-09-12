@@ -17,6 +17,10 @@
                 "type": "textarea",
                 "name": "bio",
                 "label": "Brief biography"
+            },
+            {
+                "type": "submit",
+                "name": "submit"
             }
         ]
     };
