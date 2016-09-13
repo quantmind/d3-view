@@ -32,6 +32,8 @@ export default {
         model.inputs = {};
         model.form = this;
         //
+        this.isDirty = false;
+        //
         addChildren.call(this, form);
         return form;
     },

@@ -1,10 +1,7 @@
-import {isObject, isString, assign} from 'd3-let';
+import {assign} from 'd3-let';
 
 import field from './field';
-
-
-const VALIDATORS = ['required', 'minlength', 'maxlength', 'min', 'max'];
-
+import validators from './validators';
 
 //
 // Input element
@@ -17,26 +14,10 @@ export default assign({
                 .attr('type', data.type || 'text')
                 .attr('name', data.name)
                 .attr('d3-value', 'value')
-                .attr('placeholder', data.placeholder)
-                .attr(':required', data.required)
-                .attr('d3-validate', 'validators');
+                .attr('placeholder', data.placeholder);
 
-        if (isString(data.required)) el.attr('#required', data.required);
-        else el.property('required', data.required);
-
+        validators.set(this, el);
         this.model.inputs[data.name] = this;
-
         return this.wrap(el);
     }
 }, field);
-
-
-export function validators (structure) {
-    let validators = {};
-    if (isObject(structure))
-        Object.keys(structure).forEach((key) => {
-            if (VALIDATORS.indexOf(key) > -1)
-                validators[key] = structure[key];
-        });
-    return validators;
-}

@@ -30,7 +30,7 @@ function reactive(model, key, value) {
     var trigger = debounce(function () {
         oldValue = arguments[0];
         events.get(key).call('change', model, value, oldValue);
-        events.get('').call('change', model);
+        events.get('').call('change', model, key);
     });
 
     // Trigger the callback once for initialization
