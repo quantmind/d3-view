@@ -1,7 +1,7 @@
 import {event} from 'd3-selection';
 import {isString, assign} from 'd3-let';
 
-import field from './field';
+import {formElement} from './field';
 import {modelData} from './utils';
 import actions from './actions';
 
@@ -32,4 +32,4 @@ export default assign({
     click: function () {
         actions.submit.call(this, event);
     }
-}, field);
+}, formElement);

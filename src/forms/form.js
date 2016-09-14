@@ -12,6 +12,11 @@ export default {
     // make sure a new model is created for this component
     props: ['json', 'url'],
 
+    model: {
+        formSubmitted: false,
+        formPending: false
+    },
+
     components: {
         'd3fieldset': fieldset,
         'd3input': input,
@@ -25,14 +30,8 @@ export default {
 
         modelData.call(this, data['json']);
         //
-        // set reactive properties
-        model.$set('formSubmitted', false);
-        model.$set('formPending', false);
-        //
         model.inputs = {};
         model.form = this;
-        //
-        this.isDirty = false;
         //
         addChildren.call(this, form);
         return form;

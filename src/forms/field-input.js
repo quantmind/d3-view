@@ -17,7 +17,6 @@ export default assign({
                 .attr('placeholder', data.placeholder);
 
         validators.set(this, el);
-        this.model.inputs[data.name] = this;
         return this.wrap(el);
     }
 }, field);

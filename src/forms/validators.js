@@ -95,12 +95,12 @@ export default {
         vm.model.$on(this.validate);
     },
 
-    validate(property) {
+    validate (property) {
         if (property !== 'value') return;
 
         var vm = this.$vm,
             validators = vm.validators.all,
-            el = vm.sel.select(`#${vm.data.id}`),
+            el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
             value = this.value,
             msg;
 

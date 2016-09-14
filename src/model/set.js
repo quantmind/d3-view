@@ -30,7 +30,8 @@ function reactive(model, key, value) {
     var trigger = debounce(function () {
         oldValue = arguments[0];
         events.get(key).call('change', model, value, oldValue);
-        events.get('').call('change', model, key);
+        // trigger model change event only when not a lazy property
+        if (!lazy) events.get('').call('change', model, key);
     });
 
     // Trigger the callback once for initialization
@@ -58,7 +59,15 @@ function reactive(model, key, value) {
         if (isObject(value) && isFunction(value.get)) {
             lazy = value;
             value = lazy.get.call(model);
-            model.$on(`.${key}`, update);
+
+            if (lazy.reactOn)
+                lazy.reactOn.forEach((name) => {
+                    model.$on(`${name}.${key}`, update);
+                });
+            else
+                model.$on(`.${key}`, update);
+
+            if (isFunction(lazy.set)) prop.set = lazy.set;
         } else
             prop.set = update;
 

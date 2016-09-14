@@ -1,11 +1,11 @@
 import {select, selectAll} from 'd3-selection';
+import {assign} from 'd3-let';
 
 import warn from './warn';
 import {modelData} from './utils';
 
 
-// A mixin for all form field components
-export default {
+export const formElement = {
 
     wrap (sel) {
         var field = this,
@@ -41,15 +41,39 @@ export default {
         slot.remove();
         return selectAll(div.children);
     },
+};
+
+// A mixin for all form field components
+export default assign({
+
+    model: {
+        error: '',
+        isDirty: false,
+        showError: {
+            reactOn: ['error', 'isDirty', 'formSubmitted'],
+            get () {
+                if (this.error) return this.isDirty || this.formSubmitted;
+                return false;
+            }
+        }
+    },
+
+    mounted () {
+        this.model.$on('value', function () {
+            this.isDirty = true;
+        });
+    },
 
     inputData (data) {
         data = modelData.call(this, data);
         if (!data.name) warn ('Input field without a name');
         data.placeholder = data.placeholder || data.label || data.name;
         data.id = data.id || `d3f${this.uid}`;
+        this.model.inputs[data.name] = this;
         return data;
     }
-};
+
+}, formElement);
 
 
 function getTheme(component) {

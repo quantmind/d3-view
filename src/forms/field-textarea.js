@@ -1,7 +1,7 @@
 import {assign} from 'd3-let';
 
 import field from './field';
-
+import validators from './validators';
 
 //
 // Textarea element
@@ -16,7 +16,7 @@ export default assign({
                 .attr('d3-value', 'value')
                 .attr('d3-validate', 'validators');
 
-        this.model.inputs[data.name] = this;
+        validators.set(this, el);
         return this.wrap(el);
     }
 

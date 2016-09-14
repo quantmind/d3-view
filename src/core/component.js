@@ -1,4 +1,5 @@
 import {isFunction, isObject, isArray, pop, assign} from 'd3-let';
+import {timeout} from 'd3-timer';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
@@ -145,11 +146,12 @@ const protoComponent = assign({}, proto, {
 });
 
 // factory of View and Component constructors
-export function createComponent (obj, prototype) {
+export function createComponent (o, prototype) {
     prototype = prototype || protoView;
-    if (isFunction(obj)) obj = {render: obj};
+    if (isFunction(o)) o = {render: o};
 
-    var classComponents = extendComponents(map(), pop(obj, 'components')),
+    var obj = assign({}, o),
+        classComponents = extendComponents(map(), pop(obj, 'components')),
         classDirectives = extendDirectives(map(), pop(obj, 'directives')),
         model = pop(obj, 'model'),
         props = pop(obj, 'props');
@@ -257,7 +259,9 @@ function asView(vm, element) {
     mount(model, element);
     //
     // mounted hook
-    vm.mounted();
+    timeout(() => {
+        vm.mounted();
+    });
 }
 
 

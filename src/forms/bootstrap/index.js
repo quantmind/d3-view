@@ -8,7 +8,7 @@ const bootstrap = {
 
     input: ['inputGroup', 'label', 'formGroup'],
     textarea: ['label', 'formGroup'],
-    submit: ['formGroup', 'submit'],
+    submit: ['submit'],
     wrappers: {
         label,
         formGroup,

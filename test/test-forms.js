@@ -1,6 +1,9 @@
-import view from './utils';
 import {isObject, isFunction} from 'd3-let';
+import {timeout} from 'd3-timer';
+
+import view from './utils';
 import {viewForms, viewElement} from '../';
+import jsonform from './fixtures/jsonform';
 
 
 describe('view meta', function() {
@@ -18,5 +21,46 @@ describe('view meta', function() {
     it('test mount empty form', function () {
         var vm = view().use(viewForms);
         vm.mount(viewElement('<div><d3form></d3form></div>'));
+    });
+});
+
+
+describe('json form', function () {
+
+    let el;
+
+    beforeEach(() => {
+        el = viewElement(`<div><d3form json='${jsonform}'></d3form></div>`);
+    });
+
+    it ('test children errors', (done) => {
+        var vm = view().use(viewForms).mount(el),
+            form = vm.sel.select('form');
+
+        expect(form.node()).toBeTruthy();
+        var formModel = form.model();
+        expect(Object.keys(formModel.inputs).length).toBe(2);
+        var id = formModel.inputs['id'];
+        var token = formModel.inputs['token'];
+        expect(id).toBeTruthy();
+        expect(token).toBeTruthy();
+
+        expect(id.model.showError).toBe(false);
+        expect(token.model.showError).toBe(false);
+
+        timeout(() => {
+
+            expect(id.model.showError).toBe(false);
+            expect(token.model.showError).toBe(false);
+
+            formModel.$vm.setSubmit();
+            expect(formModel.formSubmitted).toBe(true);
+
+            timeout(() => {
+                expect(id.model.showError).toBe(true);
+                expect(token.model.showError).toBe(true);
+                done();
+            });
+        });
     });
 });

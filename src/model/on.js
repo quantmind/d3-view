@@ -18,6 +18,9 @@ export default function (name, callback) {
 
     if (!event) return warn(`Cannot bind to "${key}" - no such reactive property`);
 
+    // event from a parent model, add model uid to distinguish it from other child callbacks
+    if (!this.$events.get(name)) bits.push(this.uid);
+
     bits[0] = 'change';
     return event.on(bits.join('.'), callback);
 }
