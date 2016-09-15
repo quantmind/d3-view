@@ -61,9 +61,9 @@ const min = {
     },
 
     validate (el, value) {
-        var l = +el.attr('min');
-        if (l === l && +value < l)
-            return `must be greater or equal ${l}`;
+        var r = range(el);
+        if (r && +value < r[0])
+            return `must be greater or equal ${r[0]}`;
     }
 };
 
@@ -78,9 +78,9 @@ const max = {
     },
 
     validate (el, value) {
-        var l = +el.attr('max');
-        if (l === l && +value > l)
-            return `must be less or equal ${l}`;
+        var r = range(el);
+        if (r && +value > r[1])
+            return `must be less or equal ${r[1]}`;
     }
 };
 
@@ -119,3 +119,12 @@ export default {
         max
     }
 };
+
+
+function range (el) {
+    var l0 = el.attr('mix'),
+        l1 = el.attr('max');
+    l0 = l0 === null ? -Infinity : +l0;
+    l1 = l1 === null ? Infinity : +l1;
+    return [l0, l1];
+}

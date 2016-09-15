@@ -3,6 +3,7 @@ import {isString} from 'd3-let';
 import fieldset from './field-set';
 import input from './field-input';
 import textarea from './field-textarea';
+import select from './field-select';
 import submit from './field-submit';
 import responses from './responses';
 import warn from './warn';
@@ -25,6 +26,7 @@ export default {
         'd3fieldset': fieldset,
         'd3input': input,
         'd3textarea': textarea,
+        'd3select': select,
         'd3submit': submit
     },
 

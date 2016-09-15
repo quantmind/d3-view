@@ -7,7 +7,8 @@ const modelDataKeys = ['labelSrOnly', 'layout'];
 
 const componentsFromType = {
     'text': 'input',
-    'password': 'input'
+    'password': 'input',
+    'number': 'input'
 };
 
 
