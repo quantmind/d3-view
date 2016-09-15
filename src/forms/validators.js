@@ -22,7 +22,7 @@ const minlength = {
     set (el, value) {
         if (isString(value))
             el.attr(`d3-attr-minlength`, value);
-        else if (value)
+        else if (value !== undefined)
             el.attr('minlength', value);
     },
 
@@ -39,13 +39,13 @@ const maxlength = {
     set (el, value) {
         if (isString(value))
             el.attr(`d3-attr-maxlength`, value);
-        else if (value)
+        else if (value !== undefined)
             el.attr('maxlength', value);
     },
 
     validate (el, value) {
         var l = +el.attr('maxlength');
-        if (l === l && l > 0 && value.length < l)
+        if (l === l && l > 0 && value.length > l)
             return `too long - ${l} characters or less expected`;
     }
 };
@@ -56,7 +56,7 @@ const min = {
     set (el, value) {
         if (isString(value))
             el.attr(`d3-attr-min`, value);
-        else if (value)
+        else if (value !== undefined)
             el.attr('min', value);
     },
 
@@ -73,7 +73,7 @@ const max = {
     set (el, value) {
         if (isString(value))
             el.attr(`d3-attr-max`, value);
-        else if (value)
+        else if (value !== undefined)
             el.attr('max', value);
     },
 
@@ -122,7 +122,7 @@ export default {
 
 
 function range (el) {
-    var l0 = el.attr('mix'),
+    var l0 = el.attr('min'),
         l1 = el.attr('max');
     l0 = l0 === null ? -Infinity : +l0;
     l1 = l1 === null ? Infinity : +l1;
