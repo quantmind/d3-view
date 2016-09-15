@@ -7,10 +7,21 @@
 </head>
 <body>
 <div id="page" class="container">
-    <navbar d3-model="navbar"></navbar>
-    <div class="m-x-auto" style="max-width: 400px">
-        <h1 style="padding-top: 100px">Dynamic forms</h1>
-        <d3form json="$simpleform"></d3form>
+    <h1 style="padding-top: 100px" class="text-center">Dynamic forms</h1>
+    <div class="row">
+        <div class="col-sm-6">
+
+            <div class="m-x-auto" style="max-width: 400px">
+                <h2>From object</h2>
+                <d3form json="$simpleform"></d3form>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="m-x-auto" style="max-width: 400px">
+                <h2>From url</h2>
+                <d3form json="form.json"></d3form>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -2,7 +2,7 @@ import {logger, inBrowser} from 'd3-let';
 
 export default {
     logger: logger,
-    fetch: fetch
+    fetch: fetch()
 };
 
 

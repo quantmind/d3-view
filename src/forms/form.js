@@ -1,16 +1,20 @@
+import {isString} from 'd3-let';
+
 import fieldset from './field-set';
 import input from './field-input';
 import textarea from './field-textarea';
 import submit from './field-submit';
 import responses from './responses';
 import warn from './warn';
+import providers from './providers';
 import {addChildren, modelData} from './utils';
+
 
 // Main form component
 export default {
 
     // make sure a new model is created for this component
-    props: ['json', 'url'],
+    props: ['json'],
 
     model: {
         formSubmitted: false,
@@ -26,15 +30,29 @@ export default {
 
     render: function (data) {
         var model = this.model,
-            form = this.createElement('form').attr('novalidate', '');
-
-        modelData.call(this, data['json']);
+            form = this.createElement('form').attr('novalidate', ''),
+            self = this;
         //
         model.inputs = {};
         model.form = this;
         //
-        addChildren.call(this, form);
+        var json = data['json'];
+        if (isString(json)) {
+            var fetch = providers.fetch;
+            fetch(json, {method: 'GET'}).then((response) => {
+                if (response.status === 200) response.json().then(build);
+                else warn(`Could not load form from ${json}: status ${response.status}`);
+            });
+        }
+        else build(json);
+
         return form;
+
+
+        function build (formData) {
+            modelData.call(self, formData);
+            addChildren.call(self, form);
+        }
     },
 
     inputData: function () {
