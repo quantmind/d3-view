@@ -366,6 +366,7 @@ Hook called once only at the beginning of the component initialisation process, 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
 The returned element replaces the component element in the DOM.
+Importantly, this function can also return a [Promise][] which resolve in an HTMLElement or selector.
 
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
@@ -463,6 +464,7 @@ In order of complexity
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
 [rollup]: http://rollupjs.org/
+[Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [model]: #model
 [component]: #components
 [components]: #components

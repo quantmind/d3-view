@@ -39,19 +39,17 @@ export default {
         var json = data['json'];
         if (isString(json)) {
             var fetch = providers.fetch;
-            fetch(json, {method: 'GET'}).then((response) => {
-                if (response.status === 200) response.json().then(build);
+            return fetch(json, {method: 'GET'}).then((response) => {
+                if (response.status === 200) return response.json().then(build);
                 else warn(`Could not load form from ${json}: status ${response.status}`);
             });
         }
-        else build(json);
-
-        return form;
-
+        else return build(json);
 
         function build (formData) {
             modelData.call(self, formData);
             addChildren.call(self, form);
+            return form;
         }
     },
 

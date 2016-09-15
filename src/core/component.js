@@ -1,4 +1,4 @@
-import {isFunction, isObject, isArray, pop, assign} from 'd3-let';
+import {isFunction, isObject, isArray, isPromise, pop, assign} from 'd3-let';
 import {timeout} from 'd3-timer';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
@@ -128,18 +128,13 @@ const protoComponent = assign({}, proto, {
             //
             // create the new element from the render function
             var newEl = this.render(data, directives.attrs);
-            if (!newEl) return warn('render function must return a single HTML node. It returned nothing!');
-            newEl = asSelect(newEl);
-            if (newEl.size() !== 1) warn('render function must return a single HTML node');
-            newEl = newEl.node();
-            //
-            // Insert before the component element
-            el.parentNode.insertBefore(newEl, el);
-            // remove the component element
-            select(el).remove();
-            //
-            // Mount
-            asView(this, newEl);
+            if (isPromise(newEl)) {
+                var self = this;
+                newEl.then((element) => {
+                    compile(self, el, element);
+                });
+            }
+            else compile(this, el, newEl);
         }
         return this;
     }
@@ -283,4 +278,20 @@ function mounted (view) {
             }
         });
     return mounted;
+}
+
+
+function compile (vm, el, element) {
+    if (!element) return warn('render function must return a single HTML node. It returned nothing!');
+    element = asSelect(element);
+    if (element.size() !== 1) warn('render function must return a single HTML node');
+    element = element.node();
+    //
+    // Insert before the component element
+    el.parentNode.insertBefore(element, el);
+    // remove the component element
+    select(el).remove();
+    //
+    // Mount
+    asView(vm, element);
 }
