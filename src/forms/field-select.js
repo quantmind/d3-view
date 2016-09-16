@@ -34,13 +34,13 @@ export default assign({}, field, {
 });
 
 
-function optionLabel () {
+function optionValue () {
     if (isArray(this.option)) return this.option[0];
     return this.option;
 }
 
 
-function optionValue () {
+function optionLabel () {
     if (isArray(this.option)) return this.option[1] || this.option[0];
     return this.option;
 }
