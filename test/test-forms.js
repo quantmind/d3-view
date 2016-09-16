@@ -18,7 +18,7 @@ describe('view meta', function() {
         expect(vm.components.get('d3form')).toBeTruthy();
     });
 
-    it('test mount empty form', function () {
+    it('mount empty form', function () {
         var vm = view().use(viewForms);
         vm.mount(viewElement('<div><d3form></d3form></div>'));
     });
@@ -45,20 +45,20 @@ describe('json form', function () {
         expect(id).toBeTruthy();
         expect(token).toBeTruthy();
 
-        expect(id.model.showError).toBe(false);
-        expect(token.model.showError).toBe(false);
+        expect(id.showError).toBe(false);
+        expect(token.showError).toBe(false);
 
         timeout(() => {
 
-            expect(id.model.showError).toBe(false);
-            expect(token.model.showError).toBe(false);
+            expect(id.showError).toBe(false);
+            expect(token.showError).toBe(false);
 
             formModel.$vm.setSubmit();
             expect(formModel.formSubmitted).toBe(true);
 
             timeout(() => {
-                expect(id.model.showError).toBe(true);
-                expect(token.model.showError).toBe(true);
+                expect(id.showError).toBe(true);
+                expect(token.showError).toBe(true);
                 done();
             });
         });

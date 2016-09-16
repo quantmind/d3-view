@@ -12,6 +12,17 @@ const componentsFromType = {
 };
 
 
+// return A promise which execute a callback at the next event Loop cycle
+export function nextTick (callback) {
+    var self = this;
+    return new Promise((resolve) => {
+        resolve();
+    }).then(() => {
+        return callback.call(self);
+    });
+}
+
+
 export function formComponent (child) {
     var type = child.type || 'text';
     return componentsFromType[type] || type;

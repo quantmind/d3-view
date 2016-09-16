@@ -1,9 +1,10 @@
-import {isString} from 'd3-let';
+import {isString, isObject} from 'd3-let';
 
 
 const required = {
 
-    set (el, value) {
+    set (el, data) {
+        var value = data.required;
         if (isString(value))
             el.attr(`d3-required`, value);
         else
@@ -11,15 +12,19 @@ const required = {
     },
 
     validate (el, value) {
-        if (el.property('required') && !value)
-            return 'required';
+        if (el.property('required')) {
+            if (!value) return 'required';
+        }
+        else if (value === '')
+            return true;
     }
 };
 
 
 const minlength = {
 
-    set (el, value) {
+    set (el, data) {
+        var value = data.minlength;
         if (isString(value))
             el.attr(`d3-attr-minlength`, value);
         else if (value !== undefined)
@@ -36,7 +41,8 @@ const minlength = {
 
 const maxlength = {
 
-    set (el, value) {
+    set (el, data) {
+        var value = data.maxlength;
         if (isString(value))
             el.attr(`d3-attr-maxlength`, value);
         else if (value !== undefined)
@@ -53,7 +59,8 @@ const maxlength = {
 
 const min = {
 
-    set (el, value) {
+    set (el, data) {
+        var value = data.min;
         if (isString(value))
             el.attr(`d3-attr-min`, value);
         else if (value !== undefined)
@@ -70,7 +77,8 @@ const min = {
 
 const max = {
 
-    set (el, value) {
+    set (el, data) {
+        var value = data.max;
         if (isString(value))
             el.attr(`d3-attr-max`, value);
         else if (value !== undefined)
@@ -87,11 +95,19 @@ const max = {
 
 export default {
 
-    set (vm, el) {
-        for (var key in this.all)
-            this.all[key].set(el, vm.data[key]);
+    get (model, custom) {
+        var validators = this.all.slice(0);
+        if (isObject(custom))
+            for (var key in custom)
+                validators.push(customValidator(key, custom[key]));
+        return validators;
+    },
 
-        vm.validators = this;
+    set (vm, el) {
+        vm.model.validators.forEach((validator) => {
+            validator.set(el, vm.data);
+        });
+
         vm.model.$on(this.validate);
     },
 
@@ -99,25 +115,31 @@ export default {
         if (property !== 'value') return;
 
         var vm = this.$vm,
-            validators = vm.validators.all,
+            validators = this.validators,
             el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
             value = this.value,
+            validator,
             msg;
 
-        for (var key in validators) {
-            msg = validators[key].validate(el, value);
-            if (msg) break;
+        for (var i=0; i<validators.length; ++i) {
+            validator = validators[i];
+            msg = validator.validate(el, value);
+            if (msg) {
+                if (msg === true) msg = '';
+                break;
+            }
         }
+
         this.error = msg || '';
     },
 
-    all: {
+    all: [
         required,
         minlength,
         maxlength,
         min,
         max
-    }
+    ]
 };
 
 
@@ -127,4 +149,19 @@ function range (el) {
     l0 = l0 === null ? -Infinity : +l0;
     l1 = l1 === null ? Infinity : +l1;
     return [l0, l1];
+}
+
+
+function customValidator (key, method) {
+
+    return {
+        set (el, data) {
+            var value = data[key];
+            if (!value) return;
+        },
+
+        validate (el, value) {
+            return method(el, value);
+        }
+    };
 }

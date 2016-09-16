@@ -454,6 +454,18 @@ import {view, viewForms, viewBootstrapForms} from 'd3-view';
 var vm = view().use(viewForms).use(viewBootstrapForms);
 ```
 
+### Form API
+
+<a name="user-content-form-setsubmit" href="#form-setsubmit">#</a> form.<b>setSubmit</b>()
+
+Sets the form model ``formSubmitted`` and ``formSubmitted`` reactive attribute to ``true`` and
+returns a [Promise][] which resolves in ``true`` or ``false``
+depending if the form inputs pass validation.
+
+<a name="user-content-form-isvalid" href="#form-isvalid">#</a> form.<b>isValid</b>()
+
+Check if the form inputs pass validation, return ``true`` or ``false``.
+
 ## Other Frameworks
 
 In order of complexity

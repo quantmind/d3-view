@@ -3,7 +3,6 @@ import {isString, assign} from 'd3-let';
 
 import {formElement} from './field';
 import {modelData} from './utils';
-import actions from './actions';
 
 //
 // Submit element
@@ -30,6 +29,6 @@ export default assign({
     },
 
     click: function () {
-        actions.submit.call(this, event);
+        this.model.form.actions.submit.call(this, event);
     }
 }, formElement);

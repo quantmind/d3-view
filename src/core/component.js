@@ -45,6 +45,7 @@ const proto = {
     },
 
     error (data) {
+        data.level = 'error';
         this.message(data);
     },
 
@@ -92,6 +93,7 @@ const protoView = assign({}, proto, {
         return this;
     }
 });
+
 
 //
 // prototype for components

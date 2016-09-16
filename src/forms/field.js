@@ -69,7 +69,7 @@ export default assign({
         if (!data.name) warn ('Input field without a name');
         data.placeholder = data.placeholder || data.label || data.name;
         data.id = data.id || `d3f${this.uid}`;
-        this.model.inputs[data.name] = this;
+        this.model.inputs[data.name] = this.model;
         return data;
     }
 
