@@ -1,7 +1,7 @@
 {
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": {
         "name": "quantmind.com",
         "email": "message@quantmind.com"
