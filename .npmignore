@@ -3,5 +3,5 @@ circle.yml
 play.py
 agile.json
 *.log
-dist/*.zip
 examples
+test
