@@ -26,6 +26,8 @@ const proto = {
     isd3: true,
     providers: providers,
     htmlElement: htmlElement,
+    // same as export
+    viewElement: htmlElement,
 
     init: function () {
     },

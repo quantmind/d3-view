@@ -15,7 +15,7 @@
     "engines": {
         "node": ">= 6.0"
     },
-    "main": "dist/d3-view.js",
+    "main": "dist/d3-view.min.js",
     "module": "index",
     "jsnext:main": "index",
     "dependencies": {
@@ -62,7 +62,6 @@
     "scripts": {
         "test": "npm run-script unit",
         "rollup": "rollup -c build/rollup.config.js --banner \"$(preamble)\"",
-        "d3": "rollup -c build/rollup.d3.js",
         "source": "npm run-script lint && npm run-script rollup && npm run-script cover",
         "build": "npm run-script source && npm run-script minify",
         "cover": "karma start build/karma.cover.js",
@@ -71,7 +70,8 @@
         "minify": "uglifyjs --preamble \"$(preamble)\" dist/d3-view.js -c -m -o dist/d3-view.min.js",
         "unit": "karma start build/karma.unit.js",
         "debug": "karma start build/karma.debug.js",
-        "bundle": "npm run-script source && uglifyjs dist/d3-view.js -c -m -o dist/d3-view.min.js && rm -f dist/d3-view.zip && zip -j dist/d3-view.zip -- LICENSE README.md dist/d3-view.js dist/d3-view.min.js",
+        "zip": "rm -f dist/d3-view.zip && zip -j dist/d3-view.zip -- LICENSE README.md dist/d3-view.js dist/d3-view.min.js",
+        "prepublish": "npm run-script rollup && npm run-script minify",
         "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags"
     }
 }
