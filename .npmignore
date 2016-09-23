@@ -5,3 +5,4 @@ agile.json
 *.log
 examples
 test
+coverage
