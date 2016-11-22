@@ -13,4 +13,4 @@ test:
   override:
     - npm test
     - npm run-script cover
-    - mv coverage/P* $CIRCLE_ARTIFACTS/coverage
+    - mv coverage/C* $CIRCLE_ARTIFACTS/coverage
