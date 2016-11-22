@@ -18,6 +18,9 @@
     "main": "dist/d3-view.min.js",
     "module": "index",
     "jsnext:main": "index",
+    "babel": {
+        "presets": ["es2015"]
+    },
     "dependencies": {
         "d3-array": "1",
         "d3-collection": "1",
