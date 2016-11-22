@@ -37,7 +37,7 @@ describe('view', function() {
         expect(vm.sel).toBe(undefined);
         expect(vm.isd3).toBe(true);
         expect(vm.parent).toBe(undefined);
-        expect(vm.directives.size()).toBe(8);
+        expect(vm.directives.size()).toBe(9);
 
         vm.mount(el);
         expect(vm.el).toBe(el);

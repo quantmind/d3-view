@@ -474,6 +474,11 @@ In order of complexity
 * [React](https://facebook.github.io/react/)
 * [Vue](http://vuejs.org/)
 
+## D3 plugins
+
+* [d3-interpolate-path](https://github.com/pbeshai/d3-interpolate-path)
+* [d3-line-chunked](https://github.com/pbeshai/d3-line-chunked)
+* [d3-scale-cluster](https://github.com/schnerd/d3-scale-cluster)
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
 [rollup]: http://rollupjs.org/

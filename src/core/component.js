@@ -54,6 +54,12 @@ const proto = {
     message (data) {
         var self = this;
         this.root.events.call('message', self, data);
+    },
+
+    // Shortcut for fetch function in providers
+    fetch (url, options) {
+        var fetch = providers.fetch;
+        return arguments.length == 1 ? fetch(url) : fetch(url, options);
     }
 };
 
