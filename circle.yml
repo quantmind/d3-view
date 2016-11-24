@@ -20,4 +20,5 @@ deployment:
   publish:
     branch: master
     commands:
+      - cd && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - npm run-script release
