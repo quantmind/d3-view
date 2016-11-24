@@ -1,6 +1,6 @@
 # javascript
 node_modules
-dist
+build
 
 *.log
 .idea

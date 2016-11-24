@@ -24,7 +24,7 @@ export default {
             ]
         })
     ],
-    dest: 'dist/d3-view.js',
+    dest: 'build/d3-view.js',
     globals: {
         "d3-collection": "d3",
         "d3-dispatch": "d3",

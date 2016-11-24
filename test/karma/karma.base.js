@@ -4,7 +4,7 @@ module.exports = {
         exitOnResourceError: true
     },
 
-    basePath: '../',
+    basePath: '../../',
     singleRun: true,
     frameworks: ['jasmine', 'browserify', 'es5-shim'],
 
