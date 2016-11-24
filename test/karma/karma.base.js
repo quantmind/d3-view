@@ -9,6 +9,7 @@ module.exports = {
     frameworks: ['jasmine', 'browserify', 'es5-shim'],
 
     files: [
+        './node_modules/babel-polyfill/dist/polyfill.js',
         './test/test-*.js'
     ],
 
