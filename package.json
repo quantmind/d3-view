@@ -1,5 +1,5 @@
 {
-    "version": "0.1.5",
+    "version": "0.1.6",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -15,7 +15,7 @@
     "engines": {
         "node": ">= 6.0"
     },
-    "main": "dist/d3-view.min.js",
+    "main": "build/d3-view.min.js",
     "module": "index",
     "jsnext:main": "index",
     "dependencies": {
