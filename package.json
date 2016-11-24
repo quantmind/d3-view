@@ -70,6 +70,7 @@
         "debug": "karma start test/karma/karma.debug.js",
         "zip": "rm -f build/d3-view.zip && zip -j build/d3-view.zip -- LICENSE README.md build/d3-view.js build/d3-view.min.js",
         "prepublish": "npm run-script rollup && npm run-script minify",
-        "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags"
+        "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags",
+        "release": "publish"
     }
 }

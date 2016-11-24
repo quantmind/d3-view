@@ -14,3 +14,10 @@ test:
     - npm test
     - npm run-script cover
     - mv coverage/C* $CIRCLE_ARTIFACTS/coverage
+
+
+deployment:
+  publish:
+    branch: master
+    commands:
+      - npm run-script release
