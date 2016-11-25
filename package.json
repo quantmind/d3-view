@@ -1,5 +1,5 @@
 {
-    "version": "0.1.7",
+    "version": "0.1.8",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -74,10 +74,9 @@
         "minify": "uglifyjs --preamble \"$(preamble)\" build/d3-view.js -c -m -o build/d3-view.min.js",
         "unit": "karma start test/karma/karma.unit.js",
         "debug": "karma start test/karma/karma.debug.js",
-        "zip": "rm -f build/d3-view.zip && zip -j build/d3-view.zip -- LICENSE README.md build/d3-view.js build/d3-view.min.js",
         "asset": "cd build && POST https://<upload_url>/repos/quantmind/d3-view/releases/:id/assets?name=d3-view.zip",
         "prepublish": "npm run-script rollup && npm run-script minify",
-        "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags",
+        "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags && mkdir -p ../giottojs.org/latest && mkdir -p ../giottojs.org/d3-view/${VERSION} && cp build/* ../giottojs.org/d3-view/${VERSION}/ && cp build/* ../giottojs.org/latest/ && cd ../giottojs.org && git add d3-view/${VERSION} latest && git commit -a -m \"d3-view ${VERSION}\" && git push",
         "release": "publish"
     }
 }

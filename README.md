@@ -47,13 +47,23 @@ It provides data-reactive components with a simple and flexible API.
 
 ## Installing
 
-The only hard dependency are [d3-transition](https://github.com/d3/d3-transition) (and its dependencies),  [d3-collection](https://github.com/d3/d3-collection) and [d3-let](https://github.com/quantmind/d3-let).
 If you use [NPM](https://www.npmjs.com/package/d3-view), ``npm install d3-view``.
 Otherwise, download the latest release.
 AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global is exported.
 Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
 ```javascript
-<script src="https://d3js.org/d3-view.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+<script src="https://d3js.org/d3-ease.v1.min.js"></script>
+<script src="https://d3js.org/d3-selection.v1.min.js"></script>
+<script src="https://d3js.org/d3-timer.v1.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-transition.v1.min.js"></script>
+<script src="https://giottojs.org/latest/d3-let.min.js"></script>
+<script src="https://giottojs.org/latest/d3-view.min.js"></script>
 <script>
 
 var vm = d3.view();
