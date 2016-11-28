@@ -65,12 +65,9 @@
         "whatwg-fetch": "2.0"
     },
     "scripts": {
-        "test": "npm run-script unit",
-        "rollup": "rollup -c rollup.config.js --banner \"$(preamble)\"",
-        "source": "npm run-script lint && npm run-script rollup && npm run-script cover",
-        "build": "npm run-script source && npm run-script minify",
+        "test": "eslint index.js test src examples && npm run-script unit",
+        "rollup": "rollup -c --banner \"$(preamble)\"",
         "cover": "karma start test/karma/karma.cover.js",
-        "lint": "eslint index.js test src examples",
         "minify": "uglifyjs --preamble \"$(preamble)\" build/d3-view.js -c -m -o build/d3-view.min.js",
         "unit": "karma start test/karma/karma.unit.js",
         "debug": "karma start test/karma/karma.debug.js",

@@ -48,7 +48,10 @@ It provides data-reactive components with a simple and flexible API.
 ## Installing
 
 If you use [NPM](https://www.npmjs.com/package/d3-view), ``npm install d3-view``.
-Otherwise, download the latest release.
+Otherwise, download the [latest release](https://github.com/quantmind/d3-view/releases).
+You can also load directly from [giottojs.org](https://giottojs.org),
+as a [standalone library](https://giottojs.org/latest/d3-view.js) or
+[unpkg](https://unpkg.com/d3-view/).
 AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global is exported.
 Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
 ```javascript

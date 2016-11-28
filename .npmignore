@@ -1,8 +1,9 @@
 .idea
 circle.yml
-play.py
-agile.json
 *.log
 examples
 test
 coverage
+contributing.md
+rollup.config.js
+.eslintrc
