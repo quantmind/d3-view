@@ -385,16 +385,29 @@ The [model][] bound to the component
 
 A component is defined by the [render][] method. However, there optional properties and
 methods that can be used to customize construction and lifecycle of a component.
+```javascript
+var component = {
+    model: {...},
+    init (options) {
+    },
+    render (data, attr) {
+    },
+    mounted () {
+    },
+    destroy () {
+    }
+};
+```
 
-#### component.model
+#### model
 
 A function or an object which specifies the default values of the component model.
 
-#### component.init(<i>options</i>)
+#### init(<i>options</i>)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-#### component.render(<i>data, attrs</i>)
+#### render(<i>data, attrs</i>)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
@@ -404,13 +417,13 @@ Importantly, this function can also return a [Promise][] which resolve in an HTM
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
 
-#### component.mounted()
+#### mounted()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-#### content.destroy()
+#### destroy()
 
 Called when the component HTML element is removed from the DOM.
 
@@ -527,4 +540,4 @@ In order of complexity
 [d3-model]: https://github.com/quantmind/d3-view/blob/master/src/directives/model.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
-[render]: #component-render
+[render]: #render
