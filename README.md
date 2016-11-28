@@ -30,18 +30,26 @@ It provides data-reactive components with a simple and flexible API.
   - [Model API](#model-api)
 - [Directives](#directives)
   - [Core Directives](#core-directives)
+    - [d3-model](#d3-model)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
-  - [Components hooks](#components-hooks)
+  - [Creating a component](#creating-a-component)
+    - [component.model](#componentmodel)
+    - [component.init(<i>options</i>)](#componentinitioptionsi)
+    - [component.render(<i>data, attrs</i>)](#componentrenderidata-attrsi)
+    - [component.mounted()](#componentmounted)
+    - [content.destroy()](#contentdestroy)
   - [Plugins](#plugins)
 - [Providers](#providers)
 - [Form Plugin](#form-plugin)
   - [Importing](#importing)
   - [Bootstrap layouts](#bootstrap-layouts)
+  - [Form API](#form-api)
 - [Other Frameworks](#other-frameworks)
+- [D3 plugins](#d3-plugins)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -249,7 +257,12 @@ The ``attr`` can be omitted for ``class``, ``name`` , ``disabled``, ``readonly``
 
 <a name="user-content-d3-if" href="#d3-if">#</a> [d3-if][]
 
-<a name="user-content-d3-model" href="#d3-model">#</a> [d3-model][]
+#### d3-model
+
+The [d3-model][] directive is a special directive and the first to be mounted, if available,
+into the hosting element. As the name suggests, the directive
+creates a new model on the element based on data from parent models.
+
 
 <a name="user-content-d3-on" href="#d3-on">#</a> [d3-on][]
 
@@ -368,16 +381,20 @@ The HTML element created by the component [render][] method. Available after the
 The [model][] bound to the component
 
 
-### Components hooks
+### Creating a component
 
-A component is defined by the [render][] method. However, there are four additional methods that can be used to
-customize lifecycle of a component.
+A component is defined by the [render][] method. However, there optional properties and
+methods that can be used to customize construction and lifecycle of a component.
 
-<a name="user-content-component-init" href="#component-init">#</a> component.<b>init</b>(<i>options</i>)
+#### component.model
+
+A function or an object which specifies the default values of the component model.
+
+#### component.init(<i>options</i>)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-<a name="user-content-component-render" href="#component-render">#</a> component.<b>render</b>(<i>data, attrs</i>)
+#### component.render(<i>data, attrs</i>)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
@@ -387,15 +404,16 @@ Importantly, this function can also return a [Promise][] which resolve in an HTM
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
 
-<a name="user-content-component-mounted" href="#component-refresh">#</a> component.<b>mounted</b>()
+#### component.mounted()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-<a name="user-content-component-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>()
+#### content.destroy()
 
 Called when the component HTML element is removed from the DOM.
+
 
 ### Plugins
 
