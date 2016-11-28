@@ -1,5 +1,5 @@
 import 'es6-promise';
-import {view, viewProviders} from '../';
+import {view, viewProviders} from '../index';
 
 
 window.handlebars = require('handlebars');

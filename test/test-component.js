@@ -1,7 +1,7 @@
 import {select} from 'd3-selection';
 
 import view from './utils';
-import {viewElement} from '../';
+import {viewElement} from '../index';
 
 
 describe('Components - ', function() {

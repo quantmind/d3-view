@@ -2,7 +2,7 @@ import {isObject, isFunction} from 'd3-let';
 import {timeout} from 'd3-timer';
 
 import view from './utils';
-import {viewForms, viewElement} from '../';
+import {viewForms, viewElement} from '../index';
 import jsonform from './fixtures/jsonform';
 
 

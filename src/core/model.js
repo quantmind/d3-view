@@ -3,7 +3,7 @@ import viewModel from '../model';
 
 
 // Model factory function
-export default function (directives, data, parent) {
+export default function (directives, defaults, parent) {
     // model directive
     var dir = directives.pop('model');
 
@@ -15,18 +15,18 @@ export default function (directives, data, parent) {
 
     if (!parent) {
         if (dir) warn(`Cannot have a d3-model directive in the root element`);
-        return viewModel(data);
+        return viewModel(defaults);
     }
 
     // Execute model directive
     if (dir) {
         dir.execute(parent);
         var model = dir.sel.model();
-        if (model) model.$update(data);
+        if (model) model.$update(defaults, false);
         return model;
     }
-    else if (data)
-        return parent.$child(data);
+    else if (defaults)
+        return parent.$child(defaults);
     else
         return parent;
 }

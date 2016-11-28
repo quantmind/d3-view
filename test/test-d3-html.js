@@ -1,7 +1,7 @@
 import {timeout} from 'd3-timer';
 
 import view from './utils';
-import {viewElement} from '../';
+import {viewElement} from '../index';
 
 
 describe('d3-html directive', function() {

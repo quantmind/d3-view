@@ -28,8 +28,8 @@ module.exports = function (config) {
         ],
 
         preprocessors: {
-            './test/*.js': ['browserify']
-            //'./src/**/*.js': ['browserify', 'coverage']
+            './test/*.js': ['browserify'],
+            './src/**/*.js': ['browserify', 'coverage']
         },
 
         coverageReporter: {

@@ -1,7 +1,7 @@
 import {isFunction} from 'd3-let';
 
 import './utils';
-import {viewModel} from '../';
+import {viewModel} from '../index';
 
 
 describe('model', function() {
@@ -35,5 +35,21 @@ describe('model', function() {
                 done();
             }
         }
+    });
+
+    it('update', (done) => {
+        var model = viewModel({foo: 5});
+        model.$update({foo: 6});
+
+        expect(model.foo).toBe(6);
+
+        model.$update({foo: 'g'}, true);
+
+        expect(model.foo).toBe('g');
+
+        model.$update({foo: 'k'}, false);
+
+        expect(model.foo).toBe('g');
+        done();
     });
 });

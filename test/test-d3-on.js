@@ -1,5 +1,5 @@
 import view, {trigger} from './utils';
-import {viewElement} from '../';
+import {viewElement} from '../index';
 
 
 describe('d3-on directive', function() {

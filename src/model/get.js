@@ -1,4 +1,4 @@
-//  $get method for an Model
+//  $get method for a Model
 //
 //  attribute is a dotted string
 export default function (attribute) {

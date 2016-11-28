@@ -1,5 +1,5 @@
 import './utils';
-import {viewExpression} from '../';
+import {viewExpression} from '../index';
 
 
 describe('viewExpression.eval', function() {

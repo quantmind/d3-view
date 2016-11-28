@@ -1,7 +1,7 @@
 import {isString, isFunction} from 'd3-let';
 
 import view from './utils';
-import {viewProviders, viewVersion} from '../';
+import {viewProviders, viewVersion} from '../index';
 
 
 var logger = viewProviders.logger;
