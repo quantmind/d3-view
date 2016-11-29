@@ -5,10 +5,11 @@ import warn from '../utils/warn';
 const properties = ['disabled', 'readonly', 'required'];
 
 //
-//  d3-attr:<attr> directive
+//  d3-attr-<attr> directive
 //  ==============================
 //
 //  Create a one-way binding between a model and a HTML element attribute
+//
 export default {
 
     create: function (expression) {
