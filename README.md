@@ -39,6 +39,10 @@ It provides data-reactive components with a simple and flexible API.
     - [d3-value](#d3-value)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
+    - [create(<i>expression</i>)](#createiexpressioni)
+    - [mount(<i>model</i>)](#mountimodeli)
+    - [refresh(<i>model, newValue</i>)](#refreshimodel-newvaluei)
+    - [destroy(<i>model</i>)](#destroyimodeli)
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
@@ -48,12 +52,12 @@ It provides data-reactive components with a simple and flexible API.
     - [render(<i>data, attrs</i>)](#renderidata-attrsi)
     - [mounted()](#mounted)
     - [destroy()](#destroy)
-  - [Plugins](#plugins)
+- [Plugins](#plugins)
+  - [Form Plugin](#form-plugin)
+    - [Importing](#importing)
+    - [Form API](#form-api)
+  - [Bootstrap Plugin](#bootstrap-plugin)
 - [Providers](#providers)
-- [Form Plugin](#form-plugin)
-  - [Importing](#importing)
-  - [Bootstrap layouts](#bootstrap-layouts)
-  - [Form API](#form-api)
 - [Other Frameworks](#other-frameworks)
 - [D3 plugins](#d3-plugins)
 
@@ -342,14 +346,14 @@ Directives can also be added via [plugins][]
 
 ### Directive API
 
-<a name="user-content-directive-create" href="#directive-create">#</a> directive.<b>create</b>(<i>expression</i>)
+#### create(<i>expression</i>)
 
 The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or the model has yet occurred.
 The ``expression`` is the attribute value, a string, and it is not yet parsed.
 This method must return the expression for parsing (it doesn't need to be the same as the input expression).
 However, if it returns nothing, the directive is not executed.
 
-<a name="user-content-directive-mount" href="#directive-mount">#</a> directive.<b>mount</b>(<i>model</i>)
+#### mount(<i>model</i>)
 
 The ``mount`` method is called once only, at the beginning of the binding process with the HTML element.
 The expression returned by the ``create`` method
@@ -357,9 +361,13 @@ has been parsed and available in the ``this.expression`` attribute.
 This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
 However, if it returns nothing, the binding execution is aborted.
 
-<a name="user-content-directive-refresh" href="#directive-refresh">#</a> directive.<b>refresh</b>(<i>model, newValue</i>)
+#### refresh(<i>model, newValue</i>)
 
-<a name="user-content-directive-destroy" href="#directive-destroy">#</a> directive.<b>destroy</b>(<i>model</i>)
+This method is called every time the model associated with the element hosting the directive, has changed value.
+
+#### destroy(<i>model</i>)
+
+Called when the element hosting the directive is destroyed.
 
 ## Components
 
@@ -451,7 +459,7 @@ and all its children elements are mounted too.
 Called when the component HTML element is removed from the DOM.
 
 
-### Plugins
+## Plugins
 
 Plugins, usually, add functionality to a view-model.
 There is no strictly defined scope for a plugin but there are typically several
@@ -496,11 +504,8 @@ var vm = d3.view();
 vm.use(myPlugin).use(anotherPlugin);
 ```
 
-## Providers
 
-
-
-## Form Plugin
+### Form Plugin
 
 This library include a form plugin for creating dynamic forms from JSON layouts.
 The plugin adds the ``d3form`` [component][] to the view-model:
@@ -510,7 +515,7 @@ import {view, viewForms} from 'd3-view';
 var vm = view().use(viewForms);
 ```
 
-### Importing
+#### Importing
 
 If you are using [rollup][] to compile your javascript application, the form plugin
 will be included in your compiled file only if
@@ -520,16 +525,7 @@ import {viewForms} from 'd3-view';
 is present somewhere in your code. Otherwise, it will be eliminated thanks to
 tree-shaking.
 
-### Bootstrap layouts
-
-It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:
-```javascript
-import {view, viewForms, viewBootstrapForms} from 'd3-view';
-
-var vm = view().use(viewForms).use(viewBootstrapForms);
-```
-
-### Form API
+#### Form API
 
 <a name="user-content-form-setsubmit" href="#form-setsubmit">#</a> form.<b>setSubmit</b>()
 
@@ -540,6 +536,20 @@ depending if the form inputs pass validation.
 <a name="user-content-form-isvalid" href="#form-isvalid">#</a> form.<b>isValid</b>()
 
 Check if the form inputs pass validation, return ``true`` or ``false``.
+
+### Bootstrap Plugin
+
+It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:
+```javascript
+import {view, viewForms, viewBootstrapForms} from 'd3-view';
+
+var vm = view().use(viewForms).use(viewBootstrapForms);
+```
+
+## Providers
+
+**TODO**
+
 
 ## Other Frameworks
 
