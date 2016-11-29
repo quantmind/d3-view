@@ -31,7 +31,7 @@ describe('view', function() {
         el = document.createElement('div');
     });
 
-    it('Element', () => {
+    it('API', () => {
         var vm = view();
         expect(vm.el).toBe(undefined);
         expect(vm.sel).toBe(undefined);
@@ -45,6 +45,8 @@ describe('view', function() {
         expect(vm.uid).toBeGreaterThan(0);
         expect(vm.model.uid).toBe(vm.uid);
         expect(vm.isMounted).toBe(true);
+        expect(vm.root).toBe(vm);
+        expect(vm.parent).toBe(undefined);
         expect(() => {vm.model.uid = -5;}).toThrow();
     });
 

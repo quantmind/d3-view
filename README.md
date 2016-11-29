@@ -166,9 +166,10 @@ user.groups().join(", ")
 
 ### View API
 
-With the exception of the [mount](#view.mount) and 
-[use](#view.use) methods, the view API is available once the view
-has been mounted to an HTML element.
+With the exception of the [mount](#view-mount) and 
+[use](#view-use) methods, the view API is available once the view
+has been mounted to an HTML element, i.e. once the [mount](#view-mount)
+method has been called.
 
 #### view.model
 
@@ -183,6 +184,11 @@ a view mounted DOM.
 
 Root HTMLElement of the view.
 
+#### view.createElement(<i>tag</i>)
+
+Create a new HTML Element with the given tag. Return a [d3.selection][]
+of the new element.
+
 #### view.mount(<i>element</i>)
 
 Mount a view model into the HTML ``element``.
@@ -191,7 +197,7 @@ This method can be called **once only** for a given view model.
 
 #### view.use(<i>plugin</i>)
 
-Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugins as one needs,
+Install a [plugin](#plugins) into the view model. This method can be called several times with as many plugins as one needs,
 however it can be called only before the view is mounted into an element.
 
 
@@ -624,4 +630,5 @@ In order of complexity
 [d3-model]: https://github.com/quantmind/d3-view/blob/master/src/directives/model.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
+[d3-selection]: https://github.com/d3/d3-selection
 [render]: #render

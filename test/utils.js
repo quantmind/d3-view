@@ -5,7 +5,7 @@ import {view, viewProviders} from '../index';
 window.handlebars = require('handlebars');
 
 
-const logger = {
+export const logger = {
     logs: [],
 
     warn: function (msg) {
