@@ -26,6 +26,11 @@ It provides data-reactive components with a simple and flexible API.
   - [Expressions](#expressions)
 - [View](#view)
   - [View API](#view-api)
+    - [model](#model)
+    - [parent](#parent)
+    - [el](#el)
+    - [mount(<i>element</i>)](#mountielementi)
+    - [use(<i>plugin</i>)](#useiplugini)
 - [Model](#model)
   - [Model API](#model-api)
 - [Directives](#directives)
@@ -47,11 +52,17 @@ It provides data-reactive components with a simple and flexible API.
   - [Registration](#registration)
   - [Components API](#components-api)
   - [Creating a component](#creating-a-component)
-    - [model](#model)
+    - [model](#model-1)
     - [init(<i>options</i>)](#initioptionsi)
     - [render(<i>data, attrs</i>)](#renderidata-attrsi)
     - [mounted()](#mounted)
     - [destroy()](#destroy)
+  - [Component API](#component-api)
+    - [events](#events)
+    - [model](#model-2)
+    - [parent](#parent-1)
+    - [root](#root)
+    - [uid](#uid)
 - [Plugins](#plugins)
   - [Form Plugin](#form-plugin)
     - [Importing](#importing)
@@ -156,26 +167,30 @@ user.groups().join(", ")
 
 ### View API
 
-<a name="user-content-view-model" href="#view-model">#</a> view.<b>model</b>
+With the exception of the [mount](#view.mount) and 
+[use](#view.use) methods, the view API is available once the view
+has been mounted to an HTML element.
+
+#### model
 
 The [model](#model) bound to the view, the combo gives the name to the object, the **view-model object**.
 
-<a name="user-content-view-parent" href="#view-parent">#</a> view.<b>parent</b>
+#### parent
 
-The parent of a view, always undefined, a view is always the root element of
+The parent of a view, always **undefined**, a view is always the root element of
 a view mounted DOM.
 
-<a name="user-content-view-el" href="#view-el">#</a> view.<b>el</b>
+#### el
 
-Root HTMLElement of the view, once mounted.
+Root HTMLElement of the view.
 
-<a name="user-content-view-mount" href="#view-mount">#</a> view.<b>mount</b>(<i>element</i>)
+#### mount(<i>element</i>)
 
 Mount a view model into the HTML ``element``.
 The view only affect ``element`` and its children.
 This method can be called **once only** for a given view model.
 
-<a name="user-content-view-use" href="#view-use">#</a> view.<b>use</b>(<i>plugin</i>)
+#### use(<i>plugin</i>)
 
 Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugins as one needs,
 however it can be called only before the view is mounted into an element.
@@ -458,6 +473,34 @@ and all its children elements are mounted too.
 
 Called when the component HTML element is removed from the DOM.
 
+### Component API
+
+The most important part of a component is the ``render`` method. This sections
+deals with the API available to the component once it is created.
+The API is very similar to the [view-api][] since components and views share
+the same constructor.
+
+#### events
+
+Events object which can be used for registering event listeners or firing events.
+
+#### model
+
+Model associated with the component. Some component have their own model, other
+they use the model of the parent component.
+
+#### parent
+
+The parent component. If not defined this is the root view, not a component.
+
+#### root
+
+The view object the component belongs to.
+
+#### uid
+
+Component unique identifier
+
 
 ## Plugins
 
@@ -573,6 +616,7 @@ In order of complexity
 [components]: #components
 [directives]: #directives
 [plugins]: #plugins
+[view-api]: #view-api
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
 [d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js
 [d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
