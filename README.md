@@ -239,23 +239,37 @@ d3.view({
 
 ### Core Directives
 
-<a name="user-content-d3-attr" href="#d3-attr">#</a> [d3-attr][]
+#### d3-attr
 
-Create a one-way binding between a model property and an HTML element attribute
+The [d3-attr][] directive creates a **one-way binding** between a model
+property and an HTML element attribute
 ```html
 <input d3-attr-name="code" d3-attr-placeholder="description || code">
 ```
-The ``attr`` can be omitted for ``class``, ``name`` , ``disabled``, ``readonly`` and ``required``.
+The ``attr`` can be omitted for ``class``, ``name`` , ``disabled``,
+``readonly`` and ``required``.
 ```html
 <input d3-name="code" d3-class="bright ? 'bright' : 'dull'">
 ```
 ``code`` and ``bright`` are reactive properties of the view-model.
 
-<a name="user-content-d3-for" href="#d3-for">#</a> [d3-for][]
+#### d3-for
 
-<a name="user-content-d3-html" href="#d3-html">#</a> [d3-html][]
+As the name suggest, the [d3-for][] directive can be used to repeat the
+element once per item from a collection. Each element gets its own model,
+where the given loop variable is set to the current collection item,
+and ``index`` is set to the item index or key.
 
-<a name="user-content-d3-if" href="#d3-if">#</a> [d3-if][]
+
+#### d3-html
+
+The [d3-html][] directive creates a **one-way-binding** between a model property
+and the innerHtml property of the hosting HTML element.
+You can use it to attach html or text to element dynamically.
+
+#### d3-if
+
+With [d3-if][] you can create conditionals.
 
 #### d3-model
 
@@ -264,9 +278,9 @@ into the hosting element. As the name suggests, the directive
 creates a new model on the element based on data from parent models.
 
 
-<a name="user-content-d3-on" href="#d3-on">#</a> [d3-on][]
+#### d3-on
 
-Attaches an event listener to the element. The event type is denoted by the argument.
+The [d3-on][] directive attaches an event listener to the element. The event type is denoted by the argument.
 The expression should be model method call, the event ``callback``. if the attribute is omitted
 it is assumed to be a ``click`` event.
 The event ``callback`` listens to **native DOM events only**.
@@ -274,10 +288,11 @@ The event ``callback`` listens to **native DOM events only**.
 <button d3-on-click="submit()">Submit</button>
 ```
 
-<a name="user-content-d3-value" href="#d3-value">#</a> [d3-value][]
+#### d3-value
 
-Establish a **two-way data binding** for HTML elements supporting the value property.
-The binding is tw ways because
+The [d3-value][] directive establish a **two-way data binding** for HTML
+elements supporting the value property.
+The binding is two ways because
 
 * an update in the model attribute causes an update in the HTML value property
 * an update in the HTML value property causes an update in the model attribute
@@ -316,6 +331,8 @@ var vm = d3.view({
 
 A directive is implemented customized via the four methods highlighted above.
 None of the method needs implementing, and indeed for some directive the ``refresh`` method is the only one which needs attention.
+
+Directives can also be added via [plugins][]
 
 ### Directive API
 
@@ -430,12 +447,12 @@ Called when the component HTML element is removed from the DOM.
 
 ### Plugins
 
-Plugins usually add functionality to a view-model.
+Plugins, usually, add functionality to a view-model.
 There is no strictly defined scope for a plugin but there are typically several
 types of plugins you can write:
 
-* Add a group of [components](#components)
-* Add a group of [directives](#directives)
+* Add a group of [components][]
+* Add a group of [directives][]
 * Add some components methods by attaching them to components prototype.
 * Add providers to the ``view.providers`` object
 
@@ -457,6 +474,12 @@ var myPlugin = {
         // add another component
         vm.addComponent('foo', ...);
         
+        // add a custom directive
+        vm.addDirective('mydir', {
+            refresh: function (model, value) {
+                ...
+            }
+        });
     }
 }
 ```
@@ -533,6 +556,7 @@ In order of complexity
 [component]: #components
 [components]: #components
 [directives]: #directives
+[plugins]: #plugins
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
 [d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js
 [d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
