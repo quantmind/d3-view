@@ -26,11 +26,11 @@ It provides data-reactive components with a simple and flexible API.
   - [Expressions](#expressions)
 - [View](#view)
   - [View API](#view-api)
-    - [model](#model)
-    - [parent](#parent)
-    - [el](#el)
-    - [mount(<i>element</i>)](#mountielementi)
-    - [use(<i>plugin</i>)](#useiplugini)
+    - [view.model](#viewmodel)
+    - [view.parent](#viewparent)
+    - [view.el](#viewel)
+    - [view.mount(<i>element</i>)](#viewmountielementi)
+    - [view.use(<i>plugin</i>)](#viewuseiplugini)
 - [Model](#model)
   - [Model API](#model-api)
 - [Directives](#directives)
@@ -52,17 +52,16 @@ It provides data-reactive components with a simple and flexible API.
   - [Registration](#registration)
   - [Components API](#components-api)
   - [Creating a component](#creating-a-component)
-    - [model](#model-1)
-    - [init(<i>options</i>)](#initioptionsi)
-    - [render(<i>data, attrs</i>)](#renderidata-attrsi)
-    - [mounted()](#mounted)
-    - [destroy()](#destroy)
+    - [component.model](#componentmodel)
+    - [component.init(<i>options</i>)](#componentinitioptionsi)
+    - [component.render(<i>data, attrs</i>)](#componentrenderidata-attrsi)
+    - [component.mounted()](#componentmounted)
+    - [component.destroy()](#componentdestroy)
   - [Component API](#component-api)
-    - [events](#events)
-    - [model](#model-2)
-    - [parent](#parent-1)
-    - [root](#root)
-    - [uid](#uid)
+    - [component.events](#componentevents)
+    - [component.parent](#componentparent)
+    - [component.root](#componentroot)
+    - [component.uid](#componentuid)
 - [Plugins](#plugins)
   - [Form Plugin](#form-plugin)
     - [Importing](#importing)
@@ -171,26 +170,26 @@ With the exception of the [mount](#view.mount) and
 [use](#view.use) methods, the view API is available once the view
 has been mounted to an HTML element.
 
-#### model
+#### view.model
 
 The [model](#model) bound to the view, the combo gives the name to the object, the **view-model object**.
 
-#### parent
+#### view.parent
 
 The parent of a view, always **undefined**, a view is always the root element of
 a view mounted DOM.
 
-#### el
+#### view.el
 
 Root HTMLElement of the view.
 
-#### mount(<i>element</i>)
+#### view.mount(<i>element</i>)
 
 Mount a view model into the HTML ``element``.
 The view only affect ``element`` and its children.
 This method can be called **once only** for a given view model.
 
-#### use(<i>plugin</i>)
+#### view.use(<i>plugin</i>)
 
 Install a [plugin](#plugins) into the view model. This method can be called several time with as many plugins as one needs,
 however it can be called only before the view is mounted into an element.
@@ -445,15 +444,21 @@ var component = {
 };
 ```
 
-#### model
+#### component.model
 
 A function or an object which specifies the default values of the component model.
 
-#### init(<i>options</i>)
+Once the component has been mounted, this is becomes the
+model associated with the component and therefore an API property
+of the component.
+
+Some component have their own model, other they use the model of the parent component.
+
+#### component.init(<i>options</i>)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-#### render(<i>data, attrs</i>)
+#### component.render(<i>data, attrs</i>)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
 and must return a single HTMLElement or a selector with one node only.
@@ -463,13 +468,13 @@ Importantly, this function can also return a [Promise][] which resolve in an HTM
 * **data** is the data object in the component element
 * **attrs** is an object containing the key-value of attributes in the component element
 
-#### mounted()
+#### component.mounted()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-#### destroy()
+#### component.destroy()
 
 Called when the component HTML element is removed from the DOM.
 
@@ -480,24 +485,19 @@ deals with the API available to the component once it is created.
 The API is very similar to the [view-api][] since components and views share
 the same constructor.
 
-#### events
+#### component.events
 
 Events object which can be used for registering event listeners or firing events.
 
-#### model
-
-Model associated with the component. Some component have their own model, other
-they use the model of the parent component.
-
-#### parent
+#### component.parent
 
 The parent component. If not defined this is the root view, not a component.
 
-#### root
+#### component.root
 
 The view object the component belongs to.
 
-#### uid
+#### component.uid
 
 Component unique identifier
 
