@@ -6,12 +6,13 @@
 export default {
 
     mount: function (model) {
-        this.block = this.sel.style('display') ? 'block' : null;
+        this.display = this.sel.style('display');
+        if (!this.display || this.display === 'none') this.display = 'block';
         return model;
     },
 
     refresh: function (model, value) {
-        if (value) this.sel.style('display', this.block);
+        if (value) this.sel.style('display', this.display);
         else this.sel.style('display', 'none');
     }
 };

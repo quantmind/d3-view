@@ -4,11 +4,14 @@ let UID = 0;
 export default function (o) {
     var uid = ++UID;
 
-    Object.defineProperty(o, 'uid', {
-        get: function () {
-            return uid;
-        }
-    });
+    if (arguments.length) {
+        Object.defineProperty(o, 'uid', {
+            get: function () {
+                return uid;
+            }
+        });
 
-    return o;
+        return o;
+    } else
+        return uid;
 }

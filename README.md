@@ -29,6 +29,7 @@ It provides data-reactive components with a simple and flexible API.
     - [view.model](#viewmodel)
     - [view.parent](#viewparent)
     - [view.el](#viewel)
+    - [view.createElement(<i>tag</i>)](#viewcreateelementitagi)
     - [view.mount(<i>element</i>)](#viewmountielementi)
     - [view.use(<i>plugin</i>)](#viewuseiplugini)
 - [Model](#model)
@@ -41,6 +42,7 @@ It provides data-reactive components with a simple and flexible API.
     - [d3-if](#d3-if)
     - [d3-model](#d3-model)
     - [d3-on](#d3-on)
+    - [d3-show](#d3-show)
     - [d3-value](#d3-value)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
@@ -317,6 +319,10 @@ The event ``callback`` listens to **native DOM events only**.
 ```html
 <button d3-on-click="submit()">Submit</button>
 ```
+
+#### d3-show
+
+The [d3-show][] directive display or hide an element. The display style is preserved.
 
 #### d3-value
 
@@ -629,6 +635,7 @@ In order of complexity
 [d3-if]: https://github.com/quantmind/d3-view/blob/master/src/directives/if.js
 [d3-model]: https://github.com/quantmind/d3-view/blob/master/src/directives/model.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
+[d3-show]: https://github.com/quantmind/d3-view/blob/master/src/directives/show.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
 [d3-selection]: https://github.com/d3/d3-selection
 [render]: #render

@@ -28,6 +28,7 @@ describe('Components - ', function() {
                 year: year
             }
         });
+        // API pre-mount
         expect(vm.components.size()).toBe(1);
         expect(vm.components.get('year')).toBeTruthy();
         expect(vm.components.get('year').prototype.isd3).toBe(true);
