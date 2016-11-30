@@ -396,9 +396,9 @@ However, if it returns nothing, the binding execution is aborted.
 
 #### directive.refresh(<i>model, newValue</i>)
 
-This method is called every time the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directive-mount).
+This method is called every time the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel).
 
-#### <small>directive.</small>destroy(<i>model</i>)
+#### <span style="font-weight:normal">directive.</span>destroy(<i>model</i>)
 
 Called when the element hosting the directive is destroyed.
 
