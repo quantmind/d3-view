@@ -46,10 +46,11 @@ It provides data-reactive components with a simple and flexible API.
     - [d3-value](#d3-value)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
-    - [create(<i>expression</i>)](#createiexpressioni)
-    - [mount(<i>model</i>)](#mountimodeli)
-    - [refresh(<i>model, newValue</i>)](#refreshimodel-newvaluei)
-    - [destroy(<i>model</i>)](#destroyimodeli)
+    - [directive.expression](#directiveexpression)
+    - [directive.create(<i>expression</i>)](#directivecreateiexpressioni)
+    - [directive.mount(<i>model</i>)](#directivemountimodeli)
+    - [directive.refresh(<i>model, newValue</i>)](#directiverefreshimodel-newvaluei)
+    - [<small>directive.</small>destroy(<i>model</i>)](#smalldirectivesmalldestroyimodeli)
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
@@ -365,21 +366,27 @@ var vm = d3.view({
 ```
 * Use the directive via the ``d3-mydir`` attribute.
 
-A directive is implemented customized via the four methods highlighted above.
-None of the method needs implementing, and indeed for some directive the ``refresh`` method is the only one which needs attention.
+A directive is customized via the four methods highlighted above.
+None of the method needs implementing, and indeed for some directive
+the ``refresh`` method is the only one which needs attention.
 
 Directives can also be added via [plugins][]
 
 ### Directive API
 
-#### create(<i>expression</i>)
+#### directive.expression
 
-The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or the model has yet occurred.
+The parsed expression, available after the [create](#directive-create)
+method has been called.
+
+#### directive.create(<i>expression</i>)
+
+The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or model has yet occurred.
 The ``expression`` is the attribute value, a string, and it is not yet parsed.
 This method must return the expression for parsing (it doesn't need to be the same as the input expression).
 However, if it returns nothing, the directive is not executed.
 
-#### mount(<i>model</i>)
+#### directive.mount(<i>model</i>)
 
 The ``mount`` method is called once only, at the beginning of the binding process with the HTML element.
 The expression returned by the ``create`` method
@@ -387,11 +394,11 @@ has been parsed and available in the ``this.expression`` attribute.
 This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
 However, if it returns nothing, the binding execution is aborted.
 
-#### refresh(<i>model, newValue</i>)
+#### directive.refresh(<i>model, newValue</i>)
 
-This method is called every time the model associated with the element hosting the directive, has changed value.
+This method is called every time the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directive-mount).
 
-#### destroy(<i>model</i>)
+#### <small>directive.</small>destroy(<i>model</i>)
 
 Called when the element hosting the directive is destroyed.
 
