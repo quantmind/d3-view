@@ -1,8 +1,9 @@
 let UID = 0;
+const prefix = 'v';
 
 // Add a unique identifier to an object
 export default function (o) {
-    var uid = ++UID;
+    var uid = prefix + (++UID);
 
     if (arguments.length) {
         Object.defineProperty(o, 'uid', {

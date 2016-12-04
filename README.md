@@ -46,11 +46,12 @@ It provides data-reactive components with a simple and flexible API.
     - [d3-value](#d3-value)
   - [Custom Directive](#custom-directive)
   - [Directive API](#directive-api)
+    - [directive.el](#directiveel)
     - [directive.expression](#directiveexpression)
     - [directive.create(<i>expression</i>)](#directivecreateiexpressioni)
     - [directive.mount(<i>model</i>)](#directivemountimodeli)
     - [directive.refresh(<i>model, newValue</i>)](#directiverefreshimodel-newvaluei)
-    - [<small>directive.</small>destroy(<i>model</i>)](#smalldirectivesmalldestroyimodeli)
+    - [directive.destroy(<i>model</i>)](#directivedestroyimodeli)
 - [Components](#components)
   - [Registration](#registration)
   - [Components API](#components-api)
@@ -129,11 +130,11 @@ var vm = d3.view({
 ```
 
 You can create more than one view:
-```
+```javascript
 var vm2 = d3.view({
-    model: {...},
-    components: {...},
-    directives: {...}
+    model: {},
+    components: {},
+    directives: {}
 });
 ```
 
@@ -160,7 +161,7 @@ dosomething()           //  A function
 x ? "Hi" : "goodbye"    //  Conditionals
 ```
 and complex combinations of the above
-```
+```javascript
 user.groups().join(", ")
 [theme, user.groups(), "Hi"]
 ```
@@ -341,15 +342,15 @@ Creating a custom directive involve the following steps:
 * Create a (reusable) directive object:
 ```javascript
 var mydir = {
-    create: function (expression) {
+    create (expression) {
         return expression;
     },
-    mount: function (model) {
+    mount (model) {
         return model;
     },
-    refresh: function (model, value) {
+    refresh (model, value) {
     },
-    destroy: function () {
+    destroy () {
     
     }
 };
@@ -358,7 +359,6 @@ var mydir = {
 ```javascript
 var vm = d3.view({
     el: '#entry',
-    ...
     directives: {
         mydir: mydir
     }
@@ -374,9 +374,14 @@ Directives can also be added via [plugins][]
 
 ### Directive API
 
+#### directive.el
+
+The HTML Element hosting the directive, available after initialisation and therefore accessible by all
+API methods.
+
 #### directive.expression
 
-The parsed expression, available after the [create](#directive-create)
+The parsed expression, available after the [create](#directivecreateexpression)
 method has been called.
 
 #### directive.create(<i>expression</i>)
@@ -398,9 +403,9 @@ However, if it returns nothing, the binding execution is aborted.
 
 This method is called every time the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel).
 
-#### <span style="font-weight:normal">directive.</span>destroy(<i>model</i>)
+#### directive.destroy(<i>model</i>)
 
-Called when the element hosting the directive is destroyed.
+Called when the element hosting the directive is removed from the DOM.
 
 ## Components
 
