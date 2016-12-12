@@ -46,6 +46,8 @@ function callExpression (self, callee, args) {
     }
 
     func = self[callee.name];
+    if (!func)
+        throw new EvalError(`callable "${callee.name}" not found in context`);
     return func.apply(self, args);
 }
 

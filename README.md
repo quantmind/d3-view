@@ -546,16 +546,16 @@ The original expression string passed to the Expression constructor.
 #### expression.eval(model)
 
 Evaluate an expression with data from a given ``model``. The ``model``
-can be an a [model][] instance or a vanilla object.
+can be a [model][] instance or a vanilla object.
 
 #### expression.safeEval(model)
 
-Same as [expression.eval](#expression-evalmodel) but does not throw an
+Same as [expression.eval](#expressionevalmodel) but does not throw an
 exception if evalutation fails. Instead it logs the error end returns nothing.
 
 #### expression.identifiers()
 
-Array of identifiers in the expression.
+Array of identifiers (model properties) in the expression.
 
 
 ## Plugins
