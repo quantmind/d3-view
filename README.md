@@ -14,6 +14,8 @@ It provides data-reactive components with a simple and flexible API.
 * Minimal footprint  - use only what you need
 * Built on top of [d3](https://github.com/d3)
  
+[TOC]
+
 ## Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -23,7 +25,6 @@ It provides data-reactive components with a simple and flexible API.
 - [Installing](#installing)
 - [Getting Started](#getting-started)
   - [Create a view-model object](#create-a-view-model-object)
-  - [Expressions](#expressions)
 - [View](#view)
   - [View API](#view-api)
     - [view.model](#viewmodel)
@@ -66,6 +67,12 @@ It provides data-reactive components with a simple and flexible API.
     - [component.parent](#componentparent)
     - [component.root](#componentroot)
     - [component.uid](#componentuid)
+- [Expressions](#expressions)
+  - [Expressions API](#expressions-api)
+    - [expression.expr](#expressionexpr)
+    - [expression.eval(model)](#expressionevalmodel)
+    - [expression.safeEval(model)](#expressionsafeevalmodel)
+    - [expression.identifiers()](#expressionidentifiers)
 - [Plugins](#plugins)
   - [Form Plugin](#form-plugin)
     - [Importing](#importing)
@@ -145,27 +152,6 @@ Lets consider one view for the sake of this introduction.
 The ``vm`` obtained by the ```view`` function is a view-model object which
 can be *mounted* into the DOM via the view ``mount`` function.
 
-### Expressions
-
-The text we put inside directive's values are called ``binding expressions``.
-In d3-view, a binding expression consists of a single JavaScript expression
-but not operations. The difference between expressions and operations is akin
-to the difference between a cell in an Excel spreadsheet vs. a proper JavaScript program.
-
-Valid expression are:
-```javascript
-"The sun"               //  literal
-theme                   //  An identifier (a property of a model)
-dosomething()           //  A function
-[theme, number]         //  Arrays of identifiers
-x ? "Hi" : "goodbye"    //  Conditionals
-```
-and complex combinations of the above
-```javascript
-user.groups().join(", ")
-[theme, user.groups(), "Hi"]
-```
-
 ## View
 
 ### View API
@@ -208,7 +194,7 @@ however it can be called only before the view is mounted into an element.
 ## Model
 
 At the core of the library we have the Hierarchical Reactive Model.
-The Model comparable to angular scope but its implementation is different.
+The Model is comparable to angular scope but its implementation is different.
 
 * **Hierarchical**: a **root** model is associated with a d3-view object.
 
@@ -524,6 +510,52 @@ The view object the component belongs to.
 #### component.uid
 
 Component unique identifier
+
+
+## Expressions
+
+The text we put inside directive's values are called ``binding expressions``.
+In d3-view, a binding expression consists of a single JavaScript expression
+but not operations. The difference between expressions and operations is akin
+to the difference between a cell in an Excel spreadsheet vs. a proper JavaScript program.
+
+Valid expression are:
+```javascript
+"The sun"               //  literal
+theme                   //  An identifier (a property of a model)
+dosomething()           //  A function
+[theme, number]         //  Arrays of identifiers
+x ? "Hi" : "goodbye"    //  Conditionals
+```
+and complex combinations of the above
+```javascript
+user.groups().join(", ")
+[theme, user.groups(), "Hi"]
+```
+
+### Expressions API
+
+Expression can be created via the javascript API:
+```javascript
+var expression = viewExpression(<expression string>);
+```
+#### expression.expr
+
+The original expression string passed to the Expression constructor.
+
+#### expression.eval(model)
+
+Evaluate an expression with data from a given ``model``. The ``model``
+can be an a [model][] instance or a vanilla object.
+
+#### expression.safeEval(model)
+
+Same as [expression.eval](#expression-evalmodel) but does not throw an
+exception if evalutation fails. Instead it logs the error end returns nothing.
+
+#### expression.identifiers()
+
+Array of identifiers in the expression.
 
 
 ## Plugins

@@ -1,6 +1,6 @@
 import {timeout} from 'd3-timer';
 
-export default function (callback) {
+export default function (callback, delay) {
     var queued = false;
     return function () {
         if (!queued) {
@@ -9,7 +9,7 @@ export default function (callback) {
             timeout(() => {
                 queued = false;
                 callback.apply(undefined, args);
-            });
+            }, delay);
         }
     };
 }
