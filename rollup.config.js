@@ -6,7 +6,6 @@ export default {
     entry: 'index.js',
     format: 'umd',
     moduleName: 'd3',
-    moduleId: 'd3-view',
     plugins: [
         json(),
         babel({

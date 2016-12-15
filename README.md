@@ -13,8 +13,7 @@ It provides data-reactive components with a simple and flexible API.
 * Modern javascript
 * Minimal footprint  - use only what you need
 * Built on top of [d3](https://github.com/d3)
- 
-[TOC]
+
 
 ## Contents
 
