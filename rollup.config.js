@@ -1,6 +1,5 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
-import node from 'rollup-plugin-node-resolve';
 
 
 export default {
@@ -13,21 +12,13 @@ export default {
         babel({
             babelrc: false,
             presets: ['es2015-rollup']
-        }),
-        node({
-            skip: [
-                'd3-collection',
-                'd3-dispatch',
-                'd3-selection',
-                'd3-timer',
-                'd3-transition'
-            ]
         })
     ],
     dest: 'build/d3-view.js',
     globals: {
         "d3-collection": "d3",
         "d3-dispatch": "d3",
+        "d3-let": "d3",
         "d3-selection": "d3",
         "d3-timer": "d3",
         "d3-transition": "d3"

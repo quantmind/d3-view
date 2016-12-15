@@ -1,5 +1,5 @@
 {
-    "version": "0.1.11",
+    "version": "0.1.12",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -58,7 +58,6 @@
         "requirejs": "2.3",
         "rollup": "0.36",
         "rollup-plugin-json": "2.0",
-        "rollup-plugin-node-resolve": "2.0",
         "rollup-plugin-babel": "2.6",
         "uglify-js": "2.7",
         "watchify": "3.7",

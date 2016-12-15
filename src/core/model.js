@@ -1,5 +1,5 @@
 import warn from '../utils/warn';
-import viewModel from '../model';
+import viewModel from '../model/main';
 
 
 // Model factory function

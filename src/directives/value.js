@@ -1,4 +1,4 @@
-import tags from './tags';
+import tags from './tags/all';
 
 import warn from '../utils/warn';
 

@@ -1,6 +1,6 @@
 import {assign} from 'd3-let';
 
-import viewExpression from '../parser';
+import viewExpression from '../parser/expression';
 import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
