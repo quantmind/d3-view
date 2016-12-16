@@ -34,6 +34,14 @@ It provides data-reactive components with a simple and flexible API.
     - [view.use(<i>plugin</i>)](#viewuseiplugini)
 - [Model](#model)
   - [Model API](#model-api)
+    - [model.parent](#modelparent)
+    - [model.$get(attribute)](#modelgetattribute)
+    - [model.$set(attribute, value)](#modelsetattribute-value)
+    - [model.$update(object)](#modelupdateobject)
+    - [model.$on(attribute, callback)](#modelonattribute-callback)
+    - [model.$off()](#modeloff)
+    - [model.$child(intials)](#modelchildintials)
+    - [model.$new(intials)](#modelnewintials)
 - [Directives](#directives)
   - [Core Directives](#core-directives)
     - [d3-attr](#d3-attr)
@@ -205,32 +213,53 @@ a child model of the model associated with its parent element.
 
 ### Model API
 
-<a name="user-content-model-parent" href="#model-parent">#</a> model.<b>parent</b>
+#### model.parent
 
 Get the ancestor of the model if it exists. It it does not exist, this is the root model.
 
-<a name="user-content-model-get" href="#model-get">#</a> model.<b>$get</b>(<i>attribute</i>)
+#### model.$get(attribute)
 
 Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
-it will recursively retrieve it from its [parent](#model-parent).
+it will recursively retrieve it from its [parent](#modelparent).
 
-<a name="user-content-model-set" href="#model-set">#</a> model.<b>$set</b>(<i>attribute, value</i>)
+#### model.$set(attribute, value)
 
 Set an attribute value from in the model, traversing the tree.
 
-<a name="user-content-model-on" href="#model-on">#</a> model.<b>$on</b>(<i>attribute, callback</i>)
+#### model.$update(object)
 
-Add ``callback`` to a model reactive ``attribute``. The callback is invoked when
+Same as [$set]() bit for a group of attribute-value pairs.
+
+#### model.$on(attribute, callback)
+
+Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which
 case it is triggered when any of the model **own attributes** change.
 
-<a name="user-content-model-child" href="#model-child">#</a> model.<b>$child</b>(<i>intials</i>)
+#### model.$off()
+
+Remove all callbacks from reactive attributes
+
+#### model.$child(intials)
 
 Crate a child model with prototypical inheritance from the model.
-
-<a name="user-content-model-new" href="#model-new">#</a> model.<b>$new</b>(<i>intials</i>)
+```javascript
+var a = d3.viewModel({foo: 4});
+var b = model.$child({bla: 3});
+b.foo       //  4
+b.bla       //  3
+b.parent    //  a
+```
+#### model.$new(intials)
 
 Create a child model, with no inheritance from the parent (an isolated model).
+```javascript
+var a = d3.viewModel({foo: 4});
+var b = model.$new({bla: 3});
+b.foo       //  undefined
+b.bla       //  3
+b.parent    //  a
+```
 
 ## Directives
 

@@ -3,8 +3,8 @@ import $get from './get';
 import $set from './set';
 import $on from './on';
 import $update from './update';
-import $child from './child';
 import $setbase from './setbase';
+import $off from './off';
 
 //
 //  Model class
@@ -25,9 +25,9 @@ Model.prototype.$on = $on;
 Model.prototype.$update = $update;
 Model.prototype.$get = $get;
 Model.prototype.$set = $set;
-Model.prototype.$child = $child;
 Model.prototype.$new = $new;
 Model.prototype.$setbase = $setbase;
+Model.prototype.$off = $off;
 
 
 
@@ -35,6 +35,8 @@ function $new (initials) {
 
     var parent = this,
         child = model(initials);
+
+    parent.$children.push(child);
 
     Object.defineProperty(child, 'parent', {
         get: function () {

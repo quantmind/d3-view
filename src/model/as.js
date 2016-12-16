@@ -7,20 +7,52 @@ import uid from '../utils/uid';
 
 selection.prototype.model = model;
 
-
-export default function (model, initials) {
-    var events = map();
+//
+// Initialise a model
+export default function asModel (model, initials) {
+    var events = map(),
+        children = [],
+        Child = null;
 
     // event handler for any change in the model
     events.set('', dispatch('change'));
 
-    Object.defineProperty(uid(model), '$events', {
-        get: function () {
-            return events;
+    Object.defineProperties(uid(model), {
+        $events: {
+            get: function () {
+                return events;
+            }
+        },
+        $children: {
+            get: function () {
+                return children;
+            }
         }
     });
-    model._Child = null;
+    model.$child = $child;
     model.$update(initials);
+
+    function $child (o) {
+        if (Child === null) Child = createChildConstructor(model);
+        return new Child(o);
+    }
+}
+
+
+function createChildConstructor (model) {
+
+    function Child (initials) {
+        asModel(this, initials);
+        model.$children.push(this);
+        Object.defineProperty(this, 'parent', {
+            get: function () {
+                return model;
+            }
+        });
+    }
+
+    Child.prototype = model;
+    return Child;
 }
 
 
