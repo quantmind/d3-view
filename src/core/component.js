@@ -1,5 +1,4 @@
-import {isFunction, isObject, isArray, isPromise, pop, assign} from 'd3-let';
-import {timeout} from 'd3-timer';
+import {isFunction, isArray, isPromise, pop, assign} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
@@ -20,9 +19,8 @@ import {htmlElement} from '../utils/html';
 // Core Directives
 const coreDirectives = extendDirectives(map(), directives);
 
-
 // prototype for both views and components
-const proto = {
+export const protoComponent = {
     isd3: true,
     providers: providers,
     htmlElement: htmlElement,
@@ -60,52 +58,7 @@ const proto = {
     fetch (url, options) {
         var fetch = providers.fetch;
         return arguments.length == 1 ? fetch(url) : fetch(url, options);
-    }
-};
-
-
-//
-// prototype for views
-const protoView = assign({}, proto, {
-
-    use: function (plugin) {
-        if (isObject(plugin)) plugin.install(this);
-        else plugin(this);
-        return this;
     },
-
-    addComponent: function (name, obj) {
-        if (this.isMounted) return warn('already mounted, cannot add component');
-        var component = createComponent(obj, protoComponent);
-        this.components.set(name, component);
-        return component;
-    },
-
-    addDirective: function (name, obj) {
-        if (this.isMounted) return warn('already mounted, cannot add directive');
-        var directive = createDirective(obj);
-        this.directives.set(name, directive);
-        return directive;
-    },
-
-    mount: function (el) {
-        if (mounted(this)) warn('already mounted');
-        else {
-            el = element(el);
-            if (el) {
-                var parent = this.parent ? this.parent.model : null;
-                this.model = createModel(getdirs(el, this.directives), this.model, parent);
-                asView(this, el);
-            }
-        }
-        return this;
-    }
-});
-
-
-//
-// prototype for components
-const protoComponent = assign({}, proto, {
 
     render: function () {
 
@@ -148,11 +101,10 @@ const protoComponent = assign({}, proto, {
         }
         return this;
     }
-});
+};
 
 // factory of View and Component constructors
 export function createComponent (o, prototype) {
-    prototype = prototype || protoView;
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -228,6 +180,19 @@ export function createComponent (o, prototype) {
     return component;
 }
 
+
+export function mounted (view) {
+    var mounted = view.isMounted;
+    if (!mounted)
+        Object.defineProperty(view, 'isMounted', {
+            get: function () {
+                return true;
+            }
+        });
+    return mounted;
+}
+
+
 function extendComponents (container, components) {
     map(components).each((obj, key) => {
         container.set(key, createComponent(obj, protoComponent));
@@ -243,7 +208,7 @@ function extendDirectives (container, directives) {
 }
 
 
-function asView(vm, element) {
+export function asView(vm, element) {
     var model = vm.model;
 
     Object.defineProperty(sel(vm), 'el', {
@@ -262,36 +227,12 @@ function asView(vm, element) {
     select(element).model(model);
 
     mount(model, element);
-    //
-    // mounted hook
-    timeout(() => {
-        vm.mounted();
-    });
 }
 
 
-function element (el) {
-    if (!el) return warn(`element not defined, pass an identifier or an HTMLElement object`);
-    var d3el = isFunction(el.node) ? el : select(el),
-        element = d3el.node();
-    if (!element) warn(`could not find ${el} element`);
-    else return element;
-}
-
-
-function mounted (view) {
-    var mounted = view.isMounted;
-    if (!mounted)
-        Object.defineProperty(view, 'isMounted', {
-            get: function () {
-                return true;
-            }
-        });
-    return mounted;
-}
-
-
-function compile (vm, el, element) {
+// Compile a component model
+// This function is called once a component has rendered the component element
+function compile (cm, el, element) {
     if (!element) return warn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
     if (element.size() !== 1) warn('render function must return a single HTML node');
@@ -302,6 +243,8 @@ function compile (vm, el, element) {
     // remove the component element
     select(el).remove();
     //
-    // Mount
-    asView(vm, element);
+    asView(cm, element);
+    //
+    // mounted hook
+    cm.mounted();
 }

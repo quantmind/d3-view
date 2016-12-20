@@ -138,6 +138,7 @@ To create a view object for you application, invoke the ``d3.view`` function
 ```javascript
 var vm = d3.view({
     model: {...},
+    props: [...],
     components: {...},
     directives: {...}
 });
@@ -147,6 +148,7 @@ You can create more than one view:
 ```javascript
 var vm2 = d3.view({
     model: {},
+    props: [...],
     components: {},
     directives: {}
 });
@@ -154,10 +156,6 @@ var vm2 = d3.view({
 
 All properties in the input object are optionals and are used to initialised the view with
 custom data ([model][]), [components][] and [directives][].
-
-Lets consider one view for the sake of this introduction.
-The ``vm`` obtained by the ```view`` function is a view-model object which
-can be *mounted* into the DOM via the view ``mount`` function.
 
 ## View
 
@@ -224,7 +222,8 @@ it will recursively retrieve it from its [parent](#modelparent).
 
 #### model.$set(attribute, value)
 
-Set an attribute value from in the model, traversing the tree.
+Set an attribute value in the model, traversing the tree. If the attribute is not
+a reactive attribute it becomes one.
 
 #### model.$update(object)
 
@@ -471,6 +470,7 @@ methods that can be used to customize construction and lifecycle of a component.
 ```javascript
 var component = {
     model: {...},
+    props: [...],
     init (options) {
     },
     render (data, attr) {
@@ -481,6 +481,13 @@ var component = {
     }
 };
 ```
+
+The optional ``props`` array can specify a set of html attributes which 
+contribute to the component data.
+The html properties can contain
+
+* JSON strings
+* Model attribute name
 
 #### component.model
 

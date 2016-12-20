@@ -2,7 +2,7 @@ import warn from '../utils/warn';
 
 // Update a model with reactive model data
 export default function (data, replace) {
-    if (data)
+    if (data) {
         replace = arguments.length === 2 ? replace : true;
         for (var key in data) {
             if (replace || this[key] === undefined) {
@@ -13,5 +13,6 @@ export default function (data, replace) {
                     this.$set(key, data[key]);
             }
         }
+    }
     return this;
 }
