@@ -117,7 +117,7 @@ export function createComponent (o, prototype) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : null),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message');
+            events = dispatch('message', 'mounted');
 
         classComponents.each((comp, key) => {
             components.set(key, comp);
@@ -247,4 +247,5 @@ function compile (cm, el, element) {
     //
     // mounted hook
     cm.mounted();
+    cm.events.call('mounted', cm);
 }
