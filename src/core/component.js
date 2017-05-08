@@ -34,20 +34,6 @@ export const protoComponent = {
     },
 
     createElement: function (tag) {
-        return select(document.createElement(tag));
-    },
-
-    responseError (response) {
-        var self = this;
-        response.json().then((data) => {
-            self.error(data, response);
-        });
-    },
-
-    error (data) {
-        data.level = 'error';
-        this.message(data);
-    },
 
     message (data) {
         var self = this;
@@ -77,7 +63,21 @@ export const protoComponent = {
             // The component will be mounted as many times the the for loop requires
             if (mount(this.model, el)) return;
 
-            var data = select(el).datum() || {};
+            var data = select(el).datum()
+        return select(document.createElement(tag));
+    },
+
+    responseError (response) {
+        var self = this;
+        response.json().then((data) => {
+            self.error(data, response);
+        });
+    },
+
+    error (data) {
+        data.level = 'error';
+        this.message(data);
+    }, || {};
 
             if (isArray(this.props)) {
                 var key, value;
@@ -117,7 +117,7 @@ export function createComponent (o, prototype) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : null),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message');
+            events = dispatch('message', 'mounted');
 
         classComponents.each((comp, key) => {
             components.set(key, comp);
@@ -245,6 +245,7 @@ function compile (cm, el, element) {
     //
     asView(cm, element);
     //
-    // mounted hook
+    // mounted dispatch
     cm.mounted();
+    cm.events.call('mounted', cm);
 }
