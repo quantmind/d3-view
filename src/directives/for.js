@@ -17,7 +17,8 @@ export default {
         expression.trim().split(' ').forEach((v) => {
             v ? bits.push(v) : null;
         });
-        if (bits.length !== 3 || bits[1] != 'in') return warn(`d3-for directive requires "item in expression" template, got "${expression}"`);
+        if (bits.length !== 3 || bits[1] != 'in')
+            return warn(`d3-for directive requires "item in expression" template, got "${expression}"`);
         this.itemName = bits[0];
         this.itemClass = `for${this.uid}`;
         return bits[2];
@@ -48,7 +49,7 @@ export default {
             .each(function (d, index) {
                 var x = {index: index};
                 x[itemName] = d;
-                mount(model.$child(x), this);
+                mount(this, model.$child(x));
             });
 
         entries.exit().remove();

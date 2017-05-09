@@ -1,9 +1,26 @@
 import {selection} from 'd3-selection';
 
+// Extend selection prototype with new methods
 selection.prototype.mount = mount;
+selection.prototype.model = model;
+selection.prototype.directives = directives;
 
+
+function directives (value) {
+    return arguments.length
+      ? this.property("__directives__", value)
+      : this.node().__directives__;
+}
+
+
+function model (value) {
+    return arguments.length
+      ? this.property("__model__", value)
+      : this.node().__model__;
+}
 //
 // mount function on a d3 selection
+// Use this function to mount the selection (useful when appending new html
 function mount () {
     return this.each(function () {
         var parent = this.parentNode,

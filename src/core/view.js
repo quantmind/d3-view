@@ -1,6 +1,7 @@
 import {assign, isObject, isFunction} from 'd3-let';
 import {select} from 'd3-selection';
 
+import './selection';
 import {createComponent, protoComponent, mounted, asView} from './component';
 import createDirective from './directive';
 import getdirs from './getdirs';

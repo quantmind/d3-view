@@ -75,7 +75,7 @@ export const protoComponent = {
             //
             // When a for d3-for loop is active we abort mounting this component
             // The component will be mounted as many times the the for loop requires
-            if (mount(this.model, el)) return;
+            if (mount(el, this.model)) return;
 
             var data = select(el).datum() || {};
 
@@ -226,7 +226,7 @@ export function asView(vm, element) {
     // Apply model to element
     select(element).model(model);
 
-    mount(model, element);
+    mount(element, model);
 }
 
 

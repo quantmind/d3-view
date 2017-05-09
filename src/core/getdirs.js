@@ -1,19 +1,9 @@
-import {select, selection} from 'd3-selection';
+import {select} from 'd3-selection';
 
 import warn from '../utils/warn';
 
 // No value, it has its own directive
 const attributes = ['name', 'class', 'disabled', 'readonly', 'required'];
-
-
-selection.prototype.directives = directives;
-
-
-function directives (value) {
-    return arguments.length
-      ? this.property("__directives__", value)
-      : this.node().__directives__;
-}
 
 
 export default function (element, directives) {

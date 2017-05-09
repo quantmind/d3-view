@@ -4,7 +4,7 @@ import getdirs from './getdirs';
 import createModel from './model';
 
 // Mount a model into an element
-export default function mount (model, el) {
+export default function mount (el, model) {
     var sel = select(el),
         directives = sel.directives();
 
@@ -42,7 +42,7 @@ function mountChildren (sel, directives) {
             component({parent: vm}).mount(this);
         else {
             // vanilla element
-            mount(model, this);
+            mount(this, model);
             var child = select(this);
             // cleanup model if not needed
             if (child.model() === model) child.model(null);

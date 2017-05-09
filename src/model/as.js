@@ -1,11 +1,7 @@
-import {selection} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
 import uid from '../utils/uid';
-
-
-selection.prototype.model = model;
 
 //
 // Initialise a model
@@ -61,11 +57,4 @@ export function elModel (el, model) {
         el.__model__ = model;
         return el;
     } return el.__model__;
-}
-
-
-function model (value) {
-    return arguments.length
-      ? this.property("__model__", value)
-      : this.node().__model__;
 }
