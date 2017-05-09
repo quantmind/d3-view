@@ -1,7 +1,7 @@
 import {isString, isFunction} from 'd3-let';
 
 import view from './utils';
-import {viewProviders, viewVersion} from '../index';
+import {viewProviders, viewVersion, viewElement} from '../index';
 
 
 var logger = viewProviders.logger;
@@ -48,6 +48,17 @@ describe('view', function() {
         expect(vm.root).toBe(vm);
         expect(vm.parent).toBe(undefined);
         expect(() => {vm.model.uid = -5;}).toThrow();
+    });
+
+    it('view.mounted hook', () => {
+        var mounted = false;
+        var vm = view({
+            mounted: function () {
+                mounted = true;
+            }
+        });
+        expect(vm.mount(viewElement('<div id="test1"><year></year></div>'))).toBe(vm);
+        expect(mounted).toBe(true);
     });
 
     it('view.model.$on warn', () => {
