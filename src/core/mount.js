@@ -9,7 +9,7 @@ export default function mount (model, el) {
         directives = sel.directives();
 
     // directives not available, this is a mount from
-    // a directive/loop and requires a new model
+    // a directive or loop and requires a new model
     if (!directives) {
         directives = getdirs(el, model.$vm ? model.$vm.directives : null);
         model = createModel(directives, null, model);
