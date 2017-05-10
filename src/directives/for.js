@@ -1,6 +1,7 @@
 import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
+import simpleView from '../core/view';
 import warn from '../utils/warn';
 
 //
@@ -32,7 +33,7 @@ export default {
         this.el = this.creator.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
-        return model;
+        if (this.el) return model;
     },
 
     refresh (model, items) {
@@ -41,7 +42,10 @@ export default {
         var creator = this.creator,
             selector = `${creator.tagName}.${this.itemClass}`,
             itemName = this.itemName,
-            entries = this.sel.selectAll(selector).data(items);
+            sel = this.sel,
+            entries = sel.selectAll(selector).data(items),
+            vm = sel.view();
+
         let x;
 
         entries
@@ -53,7 +57,7 @@ export default {
             .each(function (d, index) {
                 x = {index: index};
                 x[itemName] = d;
-                select(this).model(model.$child(x)).mount();
+                simpleView({model: x}).mount(this);
             });
 
         entries.exit().remove();

@@ -59,8 +59,8 @@ describe('Components - ', function() {
         expect(div.children[2].tagName).toBe('P');
         expect(select(div.children[1]).model()).toBeTruthy();
         expect(select(div.children[1]).model().parent).toBe(vm.model);
-        expect(select(div.children[0]).model()).toBe(undefined);
-        expect(select(div.children[2]).model()).toBe(undefined);
+        expect(select(div.children[0]).model()).toBe(vm.model);
+        expect(select(div.children[2]).model()).toBe(vm.model);
     });
 
 
@@ -96,4 +96,3 @@ describe('Components - ', function() {
         expect(p.html()).toBe('bla bla');
     });
 });
-

@@ -1,9 +1,10 @@
 import {select} from 'd3-selection';
+import {isPromise} from 'd3-let';
 
 import warn from '../utils/warn';
 
 // No value, it has its own directive
-const attributes = ['name', 'class', 'disabled', 'readonly', 'required'];
+const attributes = ['name', 'class', 'disabled', 'readonly', 'required', 'href'];
 
 
 export default function (element, directives) {
@@ -26,7 +27,7 @@ export default function (element, directives) {
                 dirName = 'attr';
             }
             var directive = directives.get(dirName);
-            if (directive) dirs.add(dirName, directive(element, attr, arg));
+            if (directive) dirs.add(directive(element, attr, arg));
             else warn(`${element.tagName} cannot find directive "${dirName}". Did you forget to register it?`);
         }
         dirs.attrs[attr.name] = attr.value;
@@ -41,51 +42,57 @@ export default function (element, directives) {
 // Directives container
 function Directives () {
     this.attrs = {};
-    this._dirs = {};
-    this._all = [];
+    this.all = [];
 }
 
 
 Directives.prototype = {
 
     size () {
-        return this._all.length;
+        return this.all.length;
     },
 
-    get (name) {
-        return this._dirs[name];
-    },
-
-    pop (name) {
-        var dir = this._dirs[name];
-        if (dir) {
-            delete this._dirs[name];
+    pop: function (dir) {
+        var index = this.all.indexOf(dir);
+        if (index > -1) {
             dir.removeAttribute();
-            var index = this._all.indexOf(dir);
-            if (index > -1) this._all.splice(index, 1);
+            this.all.splice(index, 1);
         }
         return dir;
     },
 
-    add (name, dir) {
-        this._dirs[name] = dir;
-        this._all.push(dir);
+    add (dir) {
+        this.all.push(dir);
     },
 
     sorted () {
-        this._all.sort((d) => {
+        this.all.sort((d) => {
             return -d.priority;
         });
         return this;
     },
 
     forEach (callback) {
-        this._all.forEach(callback);
+        this.all.forEach(callback);
     },
 
     preMount () {
-        for (let i=0; i<this._all.length; ++i)
-            if (this._all[i].preMount())
-                return this._all[i];
+        let dir;
+        for (let i=0; i<this.all.length; ++i) {
+            dir = this.all[i];
+            if (dir.preMount()) return this.pop(dir);
+        }
+    },
+
+    execute (model) {
+        if (!this.size()) return;
+        var promises = [];
+        let promise;
+        this.forEach((d) => {
+            promise = d.execute(model);
+            if (isPromise(promise)) promises.push(promise);
+        });
+        if (promises.length)
+            return Promise.all(promises);
     }
 };

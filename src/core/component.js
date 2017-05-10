@@ -4,17 +4,12 @@ import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
 import createDirective from './directive';
-import directives from '../directives/index';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import providers from '../utils/providers';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import {htmlElement} from '../utils/html';
-
-
-// Core Directives
-const coreDirectives = extendDirectives(map(), directives);
 
 // prototype for both views and components
 export const protoComponent = {
@@ -70,7 +65,7 @@ export const protoComponent = {
                 data = sel.datum() || {};
 
             // create a new model for the component
-            model = model.$child(this.model);
+            model = this.parent.model.$child(this.model);
             this.model = model;
 
             if (isArray(this.props)) {
@@ -98,7 +93,7 @@ export const protoComponent = {
 };
 
 // factory of View and Component constructors
-export function createComponent (o, prototype) {
+export function createComponent (o, prototype, coreDirectives) {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -205,22 +200,13 @@ function extendDirectives (container, directives) {
 // inject the model into the view element
 // call the mounted hook and can return a Promise
 export function asView(vm, element) {
-    var model = vm.model;
-
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
             return element;
         }
     });
-
-    Object.defineProperty(model, '$vm', {
-        get: function () {
-            return vm;
-        }
-    });
-
     // Apply model to element and mount
-    var p = select(element).model(model).mount();
+    var p = select(element).view(vm).mount();
     if (isPromise(p))
         return p.then(() => {
             return vm.mounted();
