@@ -4,9 +4,6 @@ import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
 import createDirective from './directive';
-import createModel from './model';
-import mount from './mount';
-import getdirs from './getdirs';
 import directives from '../directives/index';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
@@ -64,25 +61,22 @@ export const protoComponent = {
 
     },
 
-    mount: function (el) {
+    mount: function (el, model) {
         if (mounted(this)) warn('already mounted');
         else {
-            var parent = this.parent ? this.parent.model : null,
-                directives = getdirs(el, this.directives),
-                model = createModel(directives, this.model, parent);
-            //
-            this.model = model;
-            //
-            // When a for d3-for loop is active we abort mounting this component
-            // The component will be mounted as many times the the for loop requires
-            if (mount(el, this.model)) return;
+            var sel = select(el),
+                directives = sel.directives(),
+                dattrs = directives ? directives.attrs : {},
+                data = sel.datum() || {};
 
-            var data = select(el).datum() || {};
+            // create a new model for the component
+            model = model.$child(this.model);
+            this.model = model;
 
             if (isArray(this.props)) {
                 var key, value;
                 this.props.forEach((prop) => {
-                    key = directives.attrs[prop];
+                    key = dattrs[prop];
                     if (model[key]) value = model[key];
                     else value = maybeJson(key);
                     data[prop] = value;
@@ -90,16 +84,16 @@ export const protoComponent = {
             }
             //
             // create the new element from the render function
-            var newEl = this.render(data, directives.attrs);
+            var newEl = this.render(data, dattrs);
             if (isPromise(newEl)) {
                 var self = this;
-                newEl.then((element) => {
-                    compile(self, el, element);
+                return newEl.then((element) => {
+                    return compile(self, el, element);
                 });
             }
-            else compile(this, el, newEl);
+            else
+                return compile(this, el, newEl);
         }
-        return this;
     }
 };
 
@@ -207,7 +201,9 @@ function extendDirectives (container, directives) {
     return container;
 }
 
-
+// Finalise the binding between the view and the model
+// inject the model into the view element
+// call the mounted hook and can return a Promise
 export function asView(vm, element) {
     var model = vm.model;
 
@@ -223,10 +219,14 @@ export function asView(vm, element) {
         }
     });
 
-    // Apply model to element
-    select(element).model(model);
-
-    mount(element, model);
+    // Apply model to element and mount
+    var p = select(element).model(model).mount();
+    if (isPromise(p))
+        return p.then(() => {
+            return vm.mounted();
+        });
+    else
+        return vm.mounted();
 }
 
 
@@ -243,9 +243,5 @@ function compile (cm, el, element) {
     // remove the component element
     select(el).remove();
     //
-    asView(cm, element);
-    //
-    // mounted hook
-    cm.mounted();
-    cm.events.call('mounted', cm);
+    return asView(cm, element);
 }

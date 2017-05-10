@@ -11,7 +11,6 @@ export default function (element, directives) {
         dirs = sel.directives();
     if (dirs) return dirs;
     dirs = new Directives();
-    sel.directives(dirs);
 
     if (!directives) return dirs;
 
@@ -32,6 +31,9 @@ export default function (element, directives) {
         }
         dirs.attrs[attr.name] = attr.value;
     }
+
+    if (dirs.size()) sel.directives(dirs);
+
     return dirs.sorted();
 }
 
@@ -45,15 +47,16 @@ function Directives () {
 
 
 Directives.prototype = {
-    size: function () {
+
+    size () {
         return this._all.length;
     },
 
-    get: function (name) {
+    get (name) {
         return this._dirs[name];
     },
 
-    pop: function (name) {
+    pop (name) {
         var dir = this._dirs[name];
         if (dir) {
             delete this._dirs[name];
@@ -64,19 +67,25 @@ Directives.prototype = {
         return dir;
     },
 
-    add: function (name, dir) {
+    add (name, dir) {
         this._dirs[name] = dir;
         this._all.push(dir);
     },
 
-    sorted: function () {
+    sorted () {
         this._all.sort((d) => {
             return -d.priority;
         });
         return this;
     },
 
-    forEach: function (callback) {
+    forEach (callback) {
         this._all.forEach(callback);
+    },
+
+    preMount () {
+        for (let i=0; i<this._all.length; ++i)
+            if (this._all[i].preMount())
+                return this._all[i];
     }
 };

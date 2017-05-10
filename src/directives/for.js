@@ -2,7 +2,6 @@ import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
 import warn from '../utils/warn';
-import mount from '../core/mount';
 
 //
 //  d3-for directive
@@ -12,7 +11,7 @@ import mount from '../core/mount';
 //  a one way binding between the array and the Dom
 export default {
 
-    create: function (expression) {
+    create (expression) {
         var bits = [];
         expression.trim().split(' ').forEach((v) => {
             v ? bits.push(v) : null;
@@ -24,7 +23,11 @@ export default {
         return bits[2];
     },
 
-    mount: function (model) {
+    preMount () {
+        return true;
+    },
+
+    mount (model) {
         this.creator = this.el;
         this.el = this.creator.parentNode;
         // remove the creator from the DOM
@@ -32,13 +35,14 @@ export default {
         return model;
     },
 
-    refresh: function (model, items) {
+    refresh (model, items) {
         if (!isArray(items)) return;
 
         var creator = this.creator,
             selector = `${creator.tagName}.${this.itemClass}`,
             itemName = this.itemName,
             entries = this.sel.selectAll(selector).data(items);
+        let x;
 
         entries
             .enter()
@@ -47,9 +51,9 @@ export default {
             })
             .classed(this.itemClass, true)
             .each(function (d, index) {
-                var x = {index: index};
+                x = {index: index};
                 x[itemName] = d;
-                mount(this, model.$child(x));
+                select(this).model(model.$child(x)).mount();
             });
 
         entries.exit().remove();
