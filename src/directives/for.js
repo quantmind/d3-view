@@ -57,7 +57,10 @@ export default {
             .each(function (d, index) {
                 x = {index: index};
                 x[itemName] = d;
-                simpleView({model: x}).mount(this);
+                simpleView({
+                    model: x,
+                    parent: vm
+                }).mount(this);
             });
 
         entries.exit().remove();

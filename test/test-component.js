@@ -33,7 +33,7 @@ describe('Components - ', function() {
         expect(vm.components.get('year')).toBeTruthy();
         expect(vm.components.get('year').prototype.isd3).toBe(true);
         // mount
-        expect(vm.mount(viewElement('<div id="test1"><year></year></div>'))).toBe(vm);
+        vm.mount(viewElement('<div id="test1"><year></year></div>'));
         expect(vm.el.tagName).toBe('DIV');
 
         var span = select(vm.el).select('span');
@@ -50,7 +50,8 @@ describe('Components - ', function() {
             components: {
                 year: year
             }
-        }).mount(viewElement('<div id="test1"><h1>This Year</h1><year></year><p>Hi there</p></div>'));
+        });
+        vm.mount(viewElement('<div id="test1"><h1>This Year</h1><year></year><p>Hi there</p></div>'));
         var div = vm.el;
         expect(div.tagName).toBe('DIV');
         expect(div.children.length).toBe(3);
@@ -72,7 +73,7 @@ describe('Components - ', function() {
         });
         expect(vm.components.size()).toBe(1);
 
-        expect(vm.mount(viewElement('<div id="test1"><text></text></div>'))).toBe(vm);
+        vm.mount(viewElement('<div id="test1"><text></text></div>'));
         expect(vm.el.tagName).toBe('DIV');
         var p = select(vm.el).select('p');
         var model = p.model();

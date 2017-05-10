@@ -11,6 +11,7 @@ import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import {htmlElement} from '../utils/html';
 
+
 // prototype for both views and components
 export const protoComponent = {
     isd3: true,
@@ -182,14 +183,14 @@ export function mounted (view) {
 }
 
 
-function extendComponents (container, components) {
+export function extendComponents (container, components) {
     map(components).each((obj, key) => {
         container.set(key, createComponent(obj, protoComponent));
     });
     return container;
 }
 
-function extendDirectives (container, directives) {
+export function extendDirectives (container, directives) {
     map(directives).each((obj, key) => {
         container.set(key, createDirective(obj));
     });

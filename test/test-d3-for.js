@@ -5,7 +5,8 @@ import {viewElement} from '../index';
 describe('d3-on directive', function() {
 
     it('bad template', () => {
-        var vm = view().mount(
+        var vm = view();
+        vm.mount(
             viewElement('<div><p d3-for="foo bo bla"></p></div>')
         );
 
@@ -19,7 +20,8 @@ describe('d3-on directive', function() {
             model: {
                 bla: text
             }
-        }).mount(
+        });
+        vm.mount(
             viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
         );
 

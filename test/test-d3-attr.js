@@ -13,7 +13,8 @@ describe('d3-attr directive', function() {
             model: {
                 test: 'This is a test'
             }
-        }).mount(el);
+        });
+        vm.mount(el);
 
         timeout(() => {
             expect(vm.sel.attr('foo')).toBe('This is a test');
@@ -36,7 +37,8 @@ describe('d3-attr directive', function() {
             model: {
                 test: 'bright'
             }
-        }).mount(el);
+        });
+        vm.mount(el);
 
         timeout(() => {
             expect(vm.sel.classed('bright')).toBe(true);

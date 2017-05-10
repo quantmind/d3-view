@@ -34,8 +34,10 @@ describe('json form', function () {
     });
 
     it ('test children errors', (done) => {
-        var vm = view().use(viewForms).mount(el),
-            form = vm.sel.select('form');
+        var vm = view().use(viewForms);
+        vm.mount(el);
+
+        var form = vm.sel.select('form');
 
         expect(form.node()).toBeTruthy();
         var formModel = form.model();

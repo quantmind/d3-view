@@ -5,7 +5,8 @@ import {viewElement} from '../index';
 describe('d3-on directive', function() {
 
     it('test no expression', () => {
-        var vm = view().mount(viewElement('<div><p d3-on="test">Bla</p></div>'));
+        var vm = view();
+        vm.mount(viewElement('<div><p d3-on="test">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 
@@ -21,13 +22,15 @@ describe('d3-on directive', function() {
             model: {
                 $test: test
             }
-        }).mount(viewElement('<div><p d3-on="$test()">Bla</p></div>'));
+        });
+        vm.mount(viewElement('<div><p d3-on="$test()">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 
         expect(sel.attr('d3-on')).toBe(null);
-        var d = sel.directives().get('on');
+        var d = sel.directives().all[0];
         expect(d).toBeTruthy();
+        expect(d.name).toBe('on');
 
         trigger(sel.node(), 'click');
 

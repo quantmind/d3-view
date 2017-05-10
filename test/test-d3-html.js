@@ -13,7 +13,8 @@ describe('d3-html directive', function() {
             model: {
                 test: 'This is a test'
             }
-        }).mount(el);
+        });
+        vm.mount(el);
 
         timeout(() => {
             expect(vm.sel.html()).toBe('This is a test');
