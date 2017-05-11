@@ -1,3 +1,5 @@
+# Getting Started
+
 ## Installing
 
 If you use [NPM](https://www.npmjs.com/package/d3-view), ``npm install d3-view``.
@@ -29,7 +31,7 @@ vm.mount("#my-element");
 </script>
 ```
 
-## Getting Started
+## Creating a view
 
 ``d3.view`` is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 data driven web interfaces. It is not a framework as such, but you can easily
