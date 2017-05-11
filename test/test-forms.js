@@ -40,7 +40,9 @@ describe('json form', function () {
         var form = vm.sel.select('form');
 
         expect(form.node()).toBeTruthy();
-        var formModel = form.model();
+        var fv = form.view();
+        expect(fv.parent).toBe(vm);
+        var formModel = fv.model;
         expect(Object.keys(formModel.inputs).length).toBe(2);
         var id = formModel.inputs['id'];
         var token = formModel.inputs['token'];
@@ -55,7 +57,7 @@ describe('json form', function () {
             expect(id.showError).toBe(false);
             expect(token.showError).toBe(false);
 
-            formModel.$vm.setSubmit();
+            fv.setSubmit();
             expect(formModel.formSubmitted).toBe(true);
 
             timeout(() => {

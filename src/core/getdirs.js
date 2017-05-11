@@ -34,8 +34,7 @@ export default function (element, directives) {
     }
 
     if (dirs.size()) sel.directives(dirs);
-
-    return dirs.sorted();
+    return dirs;
 }
 
 
@@ -63,13 +62,6 @@ Directives.prototype = {
 
     add (dir) {
         this.all.push(dir);
-    },
-
-    sorted () {
-        this.all.sort((d) => {
-            return -d.priority;
-        });
-        return this;
     },
 
     forEach (callback) {

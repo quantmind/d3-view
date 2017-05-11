@@ -62,7 +62,7 @@ export const protoComponent = {
         else {
             var sel = select(el),
                 directives = sel.directives(),
-                dattrs = directives ? directives.attrs : {},
+                dattrs = directives ? directives.attrs : attributes(el),
                 data = sel.datum() || {};
 
             // create a new model for the component
@@ -231,4 +231,15 @@ function compile (cm, el, element) {
     select(el).remove();
     //
     return asView(cm, element);
+}
+
+
+function attributes (element) {
+    var attrs = {};
+    let attr;
+    for (let i = 0; i < element.attributes.length; ++i) {
+        attr = element.attributes[i];
+        attrs[attr.name] = attr.value;
+    }
+    return attrs;
 }

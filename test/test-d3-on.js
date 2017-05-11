@@ -11,8 +11,9 @@ describe('d3-on directive', function() {
         var sel = vm.sel.select('p');
 
         expect(sel.attr('d3-on')).toBe(null);
-        var d = sel.directives().get('on');
+        var d = sel.directives().all[0];
         expect(d).toBeTruthy();
+        expect(d.name).toBe('d3-on');
 
         trigger(sel.node(), 'click');
     });
@@ -30,7 +31,7 @@ describe('d3-on directive', function() {
         expect(sel.attr('d3-on')).toBe(null);
         var d = sel.directives().all[0];
         expect(d).toBeTruthy();
-        expect(d.name).toBe('on');
+        expect(d.name).toBe('d3-on');
 
         trigger(sel.node(), 'click');
 

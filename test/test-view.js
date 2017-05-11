@@ -59,6 +59,7 @@ describe('view', function() {
         });
         vm.mount(viewElement('<div id="test1"><year></year></div>'));
         expect(mounted).toBe(false);
+        expect(vm.sel.view()).toBe(vm);
     });
 
     it('view.model.$on warn', () => {
