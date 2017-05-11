@@ -56,12 +56,6 @@ You can use it to attach html or text to element dynamically.
 
 With [d3-if][] you can create conditionals.
 
-### d3-model
-
-The [d3-model][] directive is a special directive and the first to be mounted, if available,
-into the hosting element. As the name suggests, the directive
-creates a new model on the element based on data from parent models.
-
 ### d3-on
 
 The [d3-on][] directive attaches an event listener to the element. The event type is denoted by the argument.
@@ -156,3 +150,12 @@ This method is called every time the model associated with the element hosting t
 ### directive.destroy(<i>model</i>)
 
 Called when the element hosting the directive is removed from the DOM.
+
+
+[d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
+[d3-for]: https://github.com/quantmind/d3-view/blob/master/src/directives/for.js
+[d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
+[d3-if]: https://github.com/quantmind/d3-view/blob/master/src/directives/if.js
+[d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
+[d3-show]: https://github.com/quantmind/d3-view/blob/master/src/directives/show.js
+[d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
