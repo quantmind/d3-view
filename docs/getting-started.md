@@ -14,12 +14,8 @@ Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
 <script src="https://d3js.org/d3-collection.v1.min.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
-<script src="https://d3js.org/d3-ease.v1.min.js"></script>
 <script src="https://d3js.org/d3-selection.v1.min.js"></script>
 <script src="https://d3js.org/d3-timer.v1.min.js"></script>
-<script src="https://d3js.org/d3-array.v1.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-<script src="https://d3js.org/d3-transition.v1.min.js"></script>
 <script src="https://giottojs.org/latest/d3-let.min.js"></script>
 <script src="https://giottojs.org/latest/d3-view.min.js"></script>
 <script>
@@ -64,4 +60,4 @@ var vm2 = d3.view({
 ```
 
 All properties in the input object are optionals and are used to initialised the view with
-custom data ([model][]), [components][] and [directives][].
+custom data: [model](./model.md), [components](./component.md) and [directives](./directives).

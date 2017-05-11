@@ -21,7 +21,7 @@ It provides data-reactive components with a simple and flexible API.
 * [Model](/docs/model.md)
 * [Components](/docs/component.md)
 * [Directives](/docs/directives.md)
-* [Expression](/docs/expressions.md)
+* [Expressions](/docs/expressions.md)
 * [Plugins](/docs/plugins.md)
 * [Providers](/docs/providers.md)
 * [Forms](/docs/forms.md)
