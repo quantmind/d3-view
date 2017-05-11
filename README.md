@@ -14,17 +14,18 @@ It provides data-reactive components with a simple and flexible API.
 * Minimal footprint  - use only what you need
 * Built on top of [d3](https://github.com/d3)
 
+## Contents
 
-[Getting Started](/docs/getting-started.md)
-[View](/docs/view.md)
-[Model](/docs/model.md)
-[Components](/docs/component.md)
-[Directives](/docs/directives.md)
-[Expression](/docs/expressions.md)
-[Plugins](/docs/plugins.md)
-[Providers](/docs/providers.md)
-[Forms](/docs/forms.md)
-[References](/docs/references.md)
+* [Getting Started](/docs/getting-started.md)
+* [View](/docs/view.md)
+* [Model](/docs/model.md)
+* [Components](/docs/component.md)
+* [Directives](/docs/directives.md)
+* [Expression](/docs/expressions.md)
+* [Plugins](/docs/plugins.md)
+* [Providers](/docs/providers.md)
+* [Forms](/docs/forms.md)
+* [References](/docs/references.md)
 
 
 
