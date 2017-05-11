@@ -1,8 +1,8 @@
 import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
+import simpleView from '../core/view';
 import warn from '../utils/warn';
-import mount from '../core/mount';
 
 //
 //  d3-for directive
@@ -12,7 +12,7 @@ import mount from '../core/mount';
 //  a one way binding between the array and the Dom
 export default {
 
-    create: function (expression) {
+    create (expression) {
         var bits = [];
         expression.trim().split(' ').forEach((v) => {
             v ? bits.push(v) : null;
@@ -24,21 +24,29 @@ export default {
         return bits[2];
     },
 
-    mount: function (model) {
+    preMount () {
+        return true;
+    },
+
+    mount (model) {
         this.creator = this.el;
         this.el = this.creator.parentNode;
         // remove the creator from the DOM
         select(this.creator).remove();
-        return model;
+        if (this.el) return model;
     },
 
-    refresh: function (model, items) {
+    refresh (model, items) {
         if (!isArray(items)) return;
 
         var creator = this.creator,
             selector = `${creator.tagName}.${this.itemClass}`,
             itemName = this.itemName,
-            entries = this.sel.selectAll(selector).data(items);
+            sel = this.sel,
+            entries = sel.selectAll(selector).data(items),
+            vm = sel.view();
+
+        let x;
 
         entries
             .enter()
@@ -47,9 +55,12 @@ export default {
             })
             .classed(this.itemClass, true)
             .each(function (d, index) {
-                var x = {index: index};
+                x = {index: index};
                 x[itemName] = d;
-                mount(this, model.$child(x));
+                simpleView({
+                    model: x,
+                    parent: vm
+                }).mount(this);
             });
 
         entries.exit().remove();

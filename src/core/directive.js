@@ -24,28 +24,33 @@ const prototype = {
     priority: 1,
 
     // hooks
-    create: function (expression) {
+    create (expression) {
         return expression;
     },
 
-    mount: function (model) {
+    // pre mount
+    preMount () {
+
+    },
+
+    mount (model) {
         return model;
     },
 
-    refresh: function () {
+    refresh () {
 
     },
 
-    destroy: function () {
+    destroy () {
 
     },
 
-    removeAttribute: function () {
+    removeAttribute () {
         this.el.removeAttribute(this.name);
     },
 
     // Execute directive
-    execute: function (model) {
+    execute (model) {
         // No binding expression - nothing to do
         if (!this.expression) return;
         this.removeAttribute();

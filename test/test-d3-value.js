@@ -8,8 +8,10 @@ describe('d3-value directive', function() {
 
     it('textarea', (done) => {
         var el = viewElement('<textarea d3-value="foo">Initial text value</textarea>'),
-            vm = new view().mount(el),
-            model = vm.model;
+            vm = new view();
+
+        vm.mount(el);
+        var model = vm.model;
 
         expect(model.foo).toBe('Initial text value');
 

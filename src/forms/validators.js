@@ -108,16 +108,16 @@ export default {
             validator.set(el, vm.data);
         });
 
-        vm.model.$on(this.validate);
+        vm.model.$on((property) => this.validate(property, vm));
     },
 
-    validate (property) {
+    validate (property, vm) {
         if (property !== 'value') return;
 
-        var vm = this.$vm,
-            validators = this.validators,
+        var model = vm.model,
+            validators = model.validators,
+            value = model.value,
             el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
-            value = this.value,
             validator,
             msg;
 
@@ -130,7 +130,7 @@ export default {
             }
         }
 
-        this.error = msg || '';
+        model.error = msg || '';
     },
 
     all: [

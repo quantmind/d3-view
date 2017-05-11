@@ -37,7 +37,7 @@ describe('view', function() {
         expect(vm.sel).toBe(undefined);
         expect(vm.isd3).toBe(true);
         expect(vm.parent).toBe(undefined);
-        expect(vm.directives.size()).toBe(8);
+        expect(vm.directives.size()).toBe(7);
 
         vm.mount(el);
         expect(vm.el).toBe(el);
@@ -57,13 +57,15 @@ describe('view', function() {
                 mounted = true;
             }
         });
-        expect(vm.mount(viewElement('<div id="test1"><year></year></div>'))).toBe(vm);
+        vm.mount(viewElement('<div id="test1"><year></year></div>'));
         expect(mounted).toBe(false);
+        expect(vm.sel.view()).toBe(vm);
     });
 
     it('view.model.$on warn', () => {
         logger.pop();
-        var vm = view().mount(el);
+        var vm = view();
+        vm.mount(el);
         vm.model.$on('bla');
         var logs = logger.pop();
         expect(logs.length).toBe(1);
@@ -71,9 +73,10 @@ describe('view', function() {
     });
 
     it('view.model.$on', (done) => {
-        var vm = view().mount(el),
-            model = vm.model;
+        var vm = view();
+        vm.mount(el);
 
+        var model = vm.model;
         model.$set('bla', 5);
         model.$on('bla.test', changed);
         expect(model.bla).toBe(5);
@@ -104,7 +107,8 @@ describe('view', function() {
             model: {
                 $test: 'this is a test'
             }
-        }).mount(el);
+        });
+        vm.mount(el);
         var model = vm.model;
         expect(model.$events.get('$test')).toBe(undefined);
         logger.pop();

@@ -4,13 +4,12 @@ import {select} from 'd3-selection';
 import './selection';
 import {createComponent, protoComponent, mounted, asView} from './component';
 import createDirective from './directive';
-import getdirs from './getdirs';
-import createModel from './model';
+import viewModel from '../model/main';
 import warn from '../utils/warn';
 
 //
 // prototype for views
-const protoView = assign({}, protoComponent, {
+export const protoView = assign({}, protoComponent, {
 
     use: function (plugin) {
         if (isObject(plugin)) plugin.install(this);
@@ -37,16 +36,14 @@ const protoView = assign({}, protoComponent, {
         else {
             el = element(el);
             if (el) {
-                var parent = this.parent ? this.parent.model : null;
-                this.model = createModel(getdirs(el, this.directives), this.model, parent);
-                asView(this, el);
+                this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);
+                return asView(this, el);
             }
         }
-        return this;
     }
 });
 
-// the view constructor
+
 export default createComponent(null, protoView);
 
 

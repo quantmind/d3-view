@@ -1,4 +1,3 @@
-import model from './model';
 import attr from './attr';
 import html from './html';
 import value from './value';
@@ -8,7 +7,6 @@ import d3For from './for';
 import d3If from './if';
 
 export default {
-    model,
     attr,
     html,
     value,
