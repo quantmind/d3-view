@@ -1,5 +1,9 @@
 import './utils';
 import {viewExpression} from '../index';
+import {viewProviders} from '../index';
+
+
+var logger = viewProviders.logger;
 
 
 describe('viewExpression.eval', function() {
@@ -37,6 +41,7 @@ describe('viewExpression.eval', function() {
     it('simple literal', () => {
 
         expect(viewExpression('"ciao"').eval(ctx)).toBe('ciao');
+        expect(viewExpression('"ciao luca"').eval(ctx)).toBe('ciao luca');
     });
 
 
@@ -78,6 +83,23 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('nested.bla().set(random(), nested.foo())').eval(ctx)).toBe('SET');
         expect(ctx.nested.v1).toBeGreaterThan(0);
         expect(ctx.nested.v2).toBe("OK");
+    });
+
+    it('eval exceptions', () => {
+        expect(() => viewExpression('nested.fdsg()').eval(ctx)).toThrow();
+        expect(() => viewExpression('gddgd.bla()').eval(ctx)).toThrow();
+        //
+        logger.pop();
+        expect(viewExpression('gddgd.bla()').safeEval(ctx)).toBe(undefined);
+        expect(logger.pop().length).toBe(1);
+        //
+        expect(function () {
+            try {
+                viewExpression('"unclosed foo');
+            } catch (e) {
+                return e.message;
+            }
+        }()).toBe('Unclosed quote after "unclosed foo" at character 13');
     });
 
     it('identifiers', () => {

@@ -38,5 +38,4 @@ It provides data-reactive components with a simple and flexible API.
 [directives]: #directives
 [plugins]: #plugins
 [view-api]: #view-api
-[d3-selection]: https://github.com/d3/d3-selection
 [render]: #render

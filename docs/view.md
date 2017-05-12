@@ -1,5 +1,14 @@
 # View
 
+A **view** is the entry-point for creating reactive d3 based web applications.
+```javascript
+var vm = d3.view({
+	model: {},
+	components: [],
+	directives: []
+});
+```
+
 ## View API
 
 With the exception of the [mount](#view-mount) and
@@ -33,5 +42,8 @@ This method can be called **once only** for a given view model.
 
 ### view.use(<i>plugin</i>)
 
-Install a [plugin](#plugins) into the view model. This method can be called several times with as many plugins as one needs,
+Install a [plugin](./plugins.md) into the view model. This method can be called several times with as many plugins as one needs,
 however it can be called only before the view is mounted into an element.
+
+
+[d3-selection]: https://github.com/d3/d3-selection

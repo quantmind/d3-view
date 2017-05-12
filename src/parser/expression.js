@@ -34,9 +34,5 @@ Expression.prototype = proto;
 
 
 export default function (expr) {
-    try {
-        return new Expression(expr);
-    } catch (msg) {
-        warn(`Could not parse <<${expr}>> expression: ${msg}`);
-    }
+    return new Expression(expr);
 }
