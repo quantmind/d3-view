@@ -8,6 +8,30 @@ var vm = d3.view({
 	directives: []
 });
 ```
+## Mount
+
+To **mount** a view model into an HTML ``element`` one uses the **view.mount** method.
+The view only affect ``element`` and its children.
+This method can be called **once only** for a given view model.
+```javascript
+vm.mount('#app', function () {
+	d3.viewWarn('View mounted');
+});
+```
+
+The element can be a selector, an HTML element or a d3 selection. The optional callback function
+is invoked once the view is fully mounted in the DOM, including all the view components.
+
+## Plugins
+
+Views are extandible via [plugins](./plugins.md). To add plugins into a view
+```javascript
+vm.use(myPlugin);
+```
+
+This method can be called several times with as many plugins as one needs,
+however it can be called only before the view is mounted into an element.
+
 
 ## View API
 
@@ -33,17 +57,5 @@ Root HTMLElement of the view.
 
 Create a new HTML Element with the given tag. Return a [d3.selection][]
 of the new element.
-
-### view.mount(<i>element</i>)
-
-Mount a view model into the HTML ``element``.
-The view only affect ``element`` and its children.
-This method can be called **once only** for a given view model.
-
-### view.use(<i>plugin</i>)
-
-Install a [plugin](./plugins.md) into the view model. This method can be called several times with as many plugins as one needs,
-however it can be called only before the view is mounted into an element.
-
 
 [d3-selection]: https://github.com/d3/d3-selection

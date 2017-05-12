@@ -52,13 +52,11 @@ describe('view', function() {
 
     it('view.mounted hook', () => {
         var mounted = false;
-        var vm = view({
-            mounted: function () {
-                mounted = true;
-            }
+        var vm = view({});
+        vm.mount(viewElement('<div id="test1"><year></year></div>'), () => {
+            mounted = true;
         });
-        vm.mount(viewElement('<div id="test1"><year></year></div>'));
-        expect(mounted).toBe(false);
+        expect(mounted).toBe(true);
         expect(vm.sel.view()).toBe(vm);
     });
 

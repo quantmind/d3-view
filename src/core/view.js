@@ -31,13 +31,16 @@ export const protoView = assign({}, protoComponent, {
         return directive;
     },
 
-    mount: function (el) {
+    mount: function (el, callback) {
         if (mounted(this)) warn('already mounted');
         else {
             el = element(el);
             if (el) {
                 this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);
-                return asView(this, el);
+                var p = asView(this, el);
+                if (callback)
+                    return p ? p.then(callback) : callback();
+                return p;
             }
         }
     }
