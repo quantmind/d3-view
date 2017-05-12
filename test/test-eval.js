@@ -111,4 +111,20 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('[pippo.bla]').identifiers()).toEqual(['pippo']);
         expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo', 'foo']);
     });
+
+    it('binary precedence', () => {
+        expect(viewExpression('a+2*b').eval({a: 1, b: 3})).toBe(7);
+        expect(function () {
+            try {
+                viewExpression('a + 2*');
+            } catch (e) {
+                return e.message;
+            }
+        }()).toBe('Expected expression after * at character 6');
+    });
+
+    it('numeric literals', () => {
+        expect(viewExpression('a + 2.1*b').eval({a: 1, b: 3})).toBeCloseTo(7.3);
+        expect(viewExpression('.5e3 + a').eval({a: 1})).toBeCloseTo(501);
+    });
 });
