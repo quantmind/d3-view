@@ -57,16 +57,16 @@ export const protoComponent = {
 
     },
 
-    mount: function (el, model) {
+    mount: function (el, data) {
         if (mounted(this)) warn('already mounted');
         else {
             var sel = select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
-                data = sel.datum() || {};
+                model = this.parent.model.$child(this.model);
 
-            // create a new model for the component
-            model = this.parent.model.$child(this.model);
+            data = assign({}, sel.datum(), data);
+
             this.model = model;
 
             if (isArray(this.props)) {

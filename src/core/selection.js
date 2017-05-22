@@ -42,13 +42,13 @@ function view (value) {
 // mount function on a d3 selection
 // Use this function to mount the selection
 // Return nothing or a promise
-function mount () {
+function mount (data) {
     var promises = [];
     let promise;
     this.each(function () {
         var view = select(this).view();
         if (view) {
-            promise = mountElement(this, view);
+            promise = mountElement(this, view, data);
             if (isPromise(promise)) promises.push(promise);
         }
     });
@@ -58,7 +58,7 @@ function mount () {
 
 
 // mount an element into a given model
-function mountElement (element, vm) {
+function mountElement (element, vm, data) {
     var component = vm.components.get(element.tagName.toLowerCase()),
         directives = getdirs(element, vm.directives),
         preMount = directives.preMount();
@@ -69,11 +69,11 @@ function mountElement (element, vm) {
         let promise;
         if (component) {
             vm = component({parent: vm});
-            promise = vm.mount(element);
+            promise = vm.mount(element, data);
         } else {
             var promises = [];
             for (let i=0; i<element.children.length; ++i) {
-                promise = mountElement(element.children[i], vm);
+                promise = mountElement(element.children[i], vm, data);
                 if (isPromise(promise)) promises.push(promise);
             }
             if (promises.length)
