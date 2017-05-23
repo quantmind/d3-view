@@ -50,11 +50,3 @@ function createChildConstructor (model) {
     Child.prototype = model;
     return Child;
 }
-
-
-export function elModel (el, model) {
-    if (arguments.length === 2) {
-        el.__model__ = model;
-        return el;
-    } return el.__model__;
-}
