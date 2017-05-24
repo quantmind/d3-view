@@ -1,3 +1,5 @@
+import {timeout} from 'd3-timer';
+
 import view, {logger} from './utils';
 import {viewElement} from '../index';
 
@@ -31,6 +33,32 @@ describe('d3-on directive', function() {
         paragraphs.select(function (txt, i) {
             expect(txt).toBe(text[i]);
             expect(this.innerHTML).toBe(txt);
+        });
+    });
+
+    it('d3-for refresh', (done) => {
+        var text = ["blaaaaaa", "foooooooo"],
+            vm = view({
+            model: {
+                bla: text
+            }
+        });
+        vm.mount(
+            viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
+        );
+
+        expect(vm.isMounted).toBe(true);
+        var paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+        vm.model.bla.push('a new entry');
+        vm.model.$change('bla');
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+
+        timeout(() => {
+            paragraphs = vm.sel.selectAll('p');
+            expect(paragraphs.size()).toBe(3);
+            done();
         });
     });
 });

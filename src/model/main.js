@@ -5,6 +5,7 @@ import $on from './on';
 import $update from './update';
 import $setbase from './setbase';
 import $off from './off';
+import $change from './change';
 
 //
 //  Model class
@@ -22,6 +23,7 @@ model.prototype = Model.prototype;
 
 // Public API methods
 Model.prototype.$on = $on;
+Model.prototype.$change = $change;
 Model.prototype.$update = $update;
 Model.prototype.$get = $get;
 Model.prototype.$set = $set;

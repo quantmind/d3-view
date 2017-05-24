@@ -1,8 +1,6 @@
-import {dispatch} from 'd3-dispatch';
 import {isFunction, isObject} from 'd3-let';
 
-import debounce from '../utils/debounce';
-
+import {debounceDispatch} from './as';
 
 //  $set a reactive attribute for a Model
 //
@@ -21,18 +19,18 @@ function reactive(model, key, value) {
         oldValue,
         lazy;
 
-    events.set(key, dispatch('change'));
+    events.set(key, debounceDispatch('change'));
 
     Object.defineProperty(model, key, property());
 
     // the event is fired at the next tick of the event loop
     // Cannot use the () => notation here otherwise arguments are incorrect
-    var trigger = debounce(function () {
+    var trigger = function () {
         oldValue = arguments[0];
         events.get(key).call('change', model, value, oldValue);
         // trigger model change event only when not a lazy property
         if (!lazy) events.get('').call('change', model, key);
-    });
+    };
 
     // Trigger the callback once for initialization
     trigger();

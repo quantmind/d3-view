@@ -5,11 +5,9 @@ The Model is comparable to angular scope but its implementation is different.
 
 * **Hierarchical**: a **root** model is associated with a d3-view object.
 
-* **Reactive**:
+* **Reactive**: model properties which are registered to be reactive, dispatch a ``change`` event when their value change.
 
-A model can be associated with more than one element, new children model are created for elements that needs a new model.
-For example, a [component][] that specify the ``model`` object during initialisation, creates its own model,
-a child model of the model associated with its parent element.
+A model is usually associated with a given [component][], the model-view pair, but it can also be used in other contexts.
 
 ## Model API
 
@@ -34,8 +32,20 @@ Same as [$set]() bit for a group of attribute-value pairs.
 ### model.$on(attribute, callback)
 
 Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when
-the attribute change value only. It is possible to pass the ``callback`` only, in which
-case it is triggered when any of the model **own attributes** change.
+the attribute change value only. It is possible to pass the ``callback`` only, in which case it is triggered when any of the model **own attributes** change.
+
+### model.$change(attribute)
+
+Dispatch the ``change`` event for ``attribute`` (it must be a reactive attribute otherwise it is a no operation).
+
+this is useful when updating a composite model attribute (an array for example).
+```javascript
+var model = d3.viewModel({
+    data: []
+});
+model.data.push(4);
+model.$change('data');
+```
 
 ### model.$off()
 
@@ -61,3 +71,5 @@ b.foo       //  undefined
 b.bla       //  3
 b.parent    //  a
 ```
+
+[component]: ./component.md
