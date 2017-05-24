@@ -1,11 +1,8 @@
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
-import debounce from '../utils/debounce';
 import uid from '../utils/uid';
-
-
-const slice = Array.prototype.slice;
+import ddispatch from './dispatch';
 
 //
 // Initialise a model
@@ -15,7 +12,7 @@ export default function asModel (model, initials) {
         Child = null;
 
     // event handler for any change in the model
-    events.set('', debounceDispatch());
+    events.set('', ddispatch());
 
     Object.defineProperties(uid(model), {
         $events: {
@@ -37,24 +34,6 @@ export default function asModel (model, initials) {
         return new Child(o);
     }
 }
-
-
-export function debounceDispatch () {
-    var events = dispatch('change');
-
-    return {
-        on () {
-            if (arguments.length < 2)
-                return events.on.apply(events, slice.call(arguments));
-            events.on.apply(events, slice.call(arguments));
-            return this;
-        },
-        trigger: debounce(function () {
-            events.call('change', slice.call(arguments));
-        })
-    };
-}
-
 
 function createChildConstructor (model) {
 
