@@ -5,7 +5,7 @@ import {viewModel} from '../index';
 
 describe('model', function() {
 
-    it('model.$unbind', (done) => {
+    it('model.$off', (done) => {
         var model = viewModel({
             foo: 5,
             bla: 2
@@ -16,22 +16,24 @@ describe('model', function() {
         expect(model.$events.size()).toBe(3);
         expect(child.$events.size()).toBe(1);
 
-        model.$on('foo', function (value) {
-            foov = value;
+        model.$on('foo', function (oldValue) {
+            foov = oldValue;
         });
 
-        model.foo = 8;
-
         timeout(() => {
-            expect(foov).toBe(8);
-            model.$off();
-            model.foo = 10;
-
+            expect(foov).toBe(undefined);
+            model.foo = 8;
             timeout(() => {
-                expect(foov).toBe(8);
-                expect(model.$events.size()).toBe(3);
-                expect(child.$events.size()).toBe(1);
-                done();
+                expect(foov).toBe(5);
+                model.$off();
+                model.foo = 10;
+
+                timeout(() => {
+                    expect(foov).toBe(5);
+                    expect(model.$events.size()).toBe(3);
+                    expect(child.$events.size()).toBe(1);
+                    done();
+                });
             });
         });
     });

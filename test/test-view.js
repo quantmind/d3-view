@@ -81,20 +81,18 @@ describe('view', function() {
         model.bla = 6;
         expect(model.bla).toBe(6);
 
-        function changed (value, oldValue) {
+        function changed (oldValue) {
             expect(this).toBe(model);
             expect(model.bla).toBe(6);
-            expect(value).toBe(6);
             expect(oldValue).toBe(undefined);
 
             model.$on('bla.test', changed2);
             model.bla = 4;
         }
 
-        function changed2 (value, oldValue) {
+        function changed2 (oldValue) {
             expect(this).toBe(model);
             expect(model.bla).toBe(4);
-            expect(value).toBe(4);
             expect(oldValue).toBe(6);
             done();
         }

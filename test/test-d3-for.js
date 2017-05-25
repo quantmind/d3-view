@@ -13,7 +13,9 @@ describe('d3-on directive', function() {
         );
 
         expect(vm.isMounted).toBe(true);
-        expect(logger.pop()[0]).toBe('[d3-view] d3-for directive requires "item in expression" template, got "foo bo bla"');
+        expect(logger.pop()[0]).toBe(
+            '[d3-view] d3-for directive requires "item in expression" template, got "foo bo bla"'
+        );
     });
 
     it('d3-for to paragraph', () => {

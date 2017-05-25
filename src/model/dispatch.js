@@ -10,10 +10,10 @@ export default function () {
     var events = dispatch('change');
 
     return {
-        on () {
+        on (typename, callback) {
             if (arguments.length < 2)
-                return events.on.apply(events, slice.call(arguments));
-            events.on.apply(events, slice.call(arguments));
+                return events.on(typename);
+            events.on(typename, callback);
             return this;
         },
         trigger: debounce(function () {

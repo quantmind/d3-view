@@ -1,5 +1,4 @@
 import {map} from 'd3-collection';
-import {dispatch} from 'd3-dispatch';
 
 import uid from '../utils/uid';
 import ddispatch from './dispatch';

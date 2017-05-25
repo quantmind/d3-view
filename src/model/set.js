@@ -16,21 +16,11 @@ export default function (key, value) {
 
 function reactive(model, key, value) {
     var events = model.$events,
-        oldValue,
         lazy;
 
     events.set(key, ddispatch());
 
     Object.defineProperty(model, key, property());
-
-    // the event is fired at the next tick of the event loop
-    // Cannot use the () => notation here otherwise arguments are incorrect
-    var trigger = function () {
-        oldValue = arguments[0];
-        events.get(key).trigger(model, value, oldValue);
-        // trigger model change event only when not a lazy property
-        if (!lazy) events.get('').trigger(model, key);
-    };
 
     // Trigger the callback once for initialization
     trigger();
@@ -39,9 +29,9 @@ function reactive(model, key, value) {
         if (lazy) newValue = lazy.get.call(model);
         if (newValue === value) return;
         // trigger lazy callbacks
-        trigger(value);
-        // update the value
+        var oldValue = value;
         value = newValue;
+        trigger(oldValue);
     }
 
     function property () {
@@ -70,5 +60,11 @@ function reactive(model, key, value) {
             prop.set = update;
 
         return prop;
+    }
+
+    function trigger (oldValue) {
+        events.get(key).trigger(model, oldValue);
+        // trigger model change event only when not a lazy property
+        if (!lazy) events.get('').trigger(model, key);
     }
 }
