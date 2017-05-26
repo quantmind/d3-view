@@ -48,7 +48,7 @@ export default assign({
 
     model: {
         error: '',
-        isDirty: false,
+        isDirty: null,
         showError: {
             reactOn: ['error', 'isDirty', 'formSubmitted'],
             get () {
@@ -60,7 +60,7 @@ export default assign({
 
     mounted () {
         this.model.$on('value', function () {
-            this.isDirty = true;
+            this.isDirty === null ? this.isDirty = false : this.isDirty = true;
         });
     },
 

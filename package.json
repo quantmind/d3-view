@@ -63,6 +63,7 @@
         "whatwg-fetch": "2.0"
     },
     "scripts": {
+        "lint": "eslint index.js test src examples",
         "test": "eslint index.js test src examples && npm run-script unit",
         "rollup": "rollup -c --banner \"$(preamble)\"",
         "cover": "karma start test/karma/karma.cover.js",

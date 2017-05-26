@@ -10,18 +10,35 @@ import warn from './warn';
 import providers from './providers';
 import actions from './actions';
 import validators from './validators';
-import {addChildren, modelData, nextTick} from './utils';
+import debounce from '../utils/debounce';
+import {addChildren, modelData} from './utils';
 
 
 // Main form component
 export default {
 
     // make sure a new model is created for this component
-    props: ['json'],
+    props: ['schema'],
 
-    model: {
-        formSubmitted: false,
-        formPending: false
+    model () {
+        return {
+            formSubmitted: false,
+            formPending: false,
+            inputs: {},
+            $validate () {
+                for (var key in this.inputs)
+                    this.inputs[key].$validate();
+            },
+            $setSubmit () {
+                this.formSubmitted = true;
+                this.formPending = true;
+                this.$refresh();
+                return this.$isValid();
+            },
+            $setSubmitDone () {
+                this.formPending = false;
+            }
+        };
     },
 
     components: {
@@ -37,31 +54,38 @@ export default {
             form = this.createElement('form').attr('novalidate', ''),
             self = this;
         //
-        model.inputs = {};
+        model.actions = {};
         model.form = this;
+        model.$isValid = debounce(() => {
+            let inp;
+            for (var key in model.inputs) {
+                inp = model.inputs[key];
+                if (inp.error) return false;
+            }
+            return true;
+        });
         //
-        var json = data['json'];
-        if (isString(json)) {
+        var schema = data['schema'];
+        if (isString(schema)) {
             var fetch = providers.fetch;
-            return fetch(json, {method: 'GET'}).then((response) => {
+            return fetch(schema, {method: 'GET'}).then((response) => {
                 if (response.status === 200) return response.json().then(build);
-                else warn(`Could not load form from ${json}: status ${response.status}`);
+                else warn(`Could not load form from ${schema}: status ${response.status}`);
             });
         }
-        else return build(json);
+        else return build(schema);
 
-        function build (formData) {
-            modelData.call(self, formData);
+        function build (schema) {
+            modelData.call(self, schema);
             //
             // Form validations
-            model.validators = validators.get(model, data.validators);
+            model.validators = validators.get(data.validators);
             //
             // Form actions
-            self.actions = {};
             for (var key in actions) {
                 var action = self.data[key];
                 if (isString(action)) action = self.model.$get(action);
-                self.actions[key] = action || actions[key];
+                model.actions[key] = action || actions[key];
             }
             addChildren.call(self, form);
             return form;
@@ -80,20 +104,12 @@ export default {
         return data;
     },
 
-    setSubmit: function () {
-        this.model.formSubmitted = true;
-        this.model.formPending = true;
-        return nextTick.call(this, () => {
-            return this.isValid();
-        });
-    },
-
     setSubmitDone: function () {
         this.model.formPending = false;
     },
 
     isValid () {
-        var inp;
+        let inp;
         for (var key in this.model.inputs) {
             inp = this.model.inputs[key];
             if (inp.error) return false;

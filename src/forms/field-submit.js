@@ -29,6 +29,6 @@ export default assign({
     },
 
     click: function () {
-        this.model.form.actions.submit.call(this, event);
+        this.model.actions.submit.call(this, event);
     }
 }, formElement);

@@ -9,6 +9,76 @@ The Model is comparable to angular scope but its implementation is different.
 
 A model is usually associated with a given [component][], the model-view pair, but it can also be used in other contexts.
 
+## Reactivity
+
+A model is created with ``viewModel`` function by passing an object of reactive
+properties:
+```javascript
+model = d3.viewModel({
+    bla: 'foo',
+    score: 10
+});
+// model.bla is reactive
+// model.score is reactive
+```
+The model does not allow dynamically adding new root-level reactive properties
+to an already created instance::
+```javascript
+model.a = 5;
+// model.a is NOT reactive
+model.$events.get('a')
+undefinied
+```
+However you can specify a new reactive property via the ``$set`` method
+```javascript
+model.$set('a', 5);
+// model.a is now reactive
+model.$events.get('a')
+{...}
+```
+All reactive properties have a corresponding entry in the ``$events`` map.
+One can trigger a change event either by modifying the value:
+```javsacript
+model.score = 11
+```
+or esplicitly calling the ``$change`` method
+```javascript
+model.$change('score');
+```
+
+### Collections
+The ``$change`` method is useful when dealing with reactive collections, for example:
+```javascript
+model = d3.viewModel({
+    data: [10, 5]
+});
+model.data.push(68);
+model.$change('data');
+```
+
+### Lazy reactivity
+
+We refer to leazy reactivity to properties which depends on other properties.
+These properties are defined as a function:
+```javascript
+model = d3.viewModel({
+    bla: 'foo',
+    score: 10,
+    isValid: {
+        reactOn: ['score'],
+        get: function () {
+            return this.score > 0;
+        }
+    }
+});
+```
+The ``reactOn`` entry specifies which reactive properties
+the ``isValid`` lazy property depends on.
+```javascript
+model.score = -2;
+// at the next event loop tick
+model.isValid   //  False
+```
 ## Model API
 
 ### model.parent

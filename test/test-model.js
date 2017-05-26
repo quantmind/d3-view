@@ -1,9 +1,83 @@
 import {timeout} from 'd3-timer';
+import {isFunction} from 'd3-let';
 
-import {viewModel} from '../index';
+import {viewModel, viewDebounce} from '../index';
+import {testAsync} from './utils';
 
 
 describe('model', function() {
+
+    const nextTick = viewDebounce(),
+          delayAdd = viewDebounce((a, b) => a + b),
+          delayError = viewDebounce((text) => {
+              throw new Error(text);
+          });
+
+    it ('debounce', testAsync(async () => {
+        var promise = nextTick();
+        expect(nextTick()).toBe(promise);
+        var value = await promise;
+        expect(value).toBe(undefined);
+        var promise2 = nextTick();
+        expect(promise2).not.toBe(promise);
+        expect(nextTick()).toBe(promise2);
+        await promise2;
+        value = await delayAdd(2, 4);
+        expect(value).toBe(6);
+    }));
+
+    it ('debounce reject', testAsync(async () => {
+        var message = await delayError('whaaa!').catch((err) => {
+            return err.message;
+        });
+        expect(message).toBe('whaaa!');
+    }));
+
+    it('parent-child binding', (done) => {
+
+        var model = viewModel({foo: 5});
+        expect(model.foo).toBe(5);
+        expect(model.$events.get('foo')).toBeTruthy();
+        var child = model.$child();
+        expect(child.foo).toBe(5);
+        child.$on('foo', callback);
+
+        function callback (oldValue) {
+            if (oldValue === undefined)
+                model.foo = 8;
+            else {
+                expect(oldValue).toBe(5);
+                done();
+            }
+        }
+    });
+
+    it('update', () => {
+        var model = viewModel({foo: 5});
+        model.$update({foo: 6});
+
+        expect(model.foo).toBe(6);
+
+        model.$update({foo: 'g'}, true);
+
+        expect(model.foo).toBe('g');
+
+        model.$update({foo: 'k'}, false);
+
+        expect(model.foo).toBe('g');
+    });
+
+    it('model function', () => {
+
+        var model = viewModel({
+            '$test': function () {
+                return 'a test';
+            }
+        });
+
+        expect(isFunction(model.$test)).toBe(true);
+        expect(model.$test()).toBe('a test');
+    });
 
     it('model.$off', (done) => {
         var model = viewModel({

@@ -63,7 +63,7 @@ export const protoComponent = {
             var sel = select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
-                model = this.parent.model.$child(this.model);
+                model = this.parent.model.$child(isFunction(this.model) ? this.model() : this.model);
 
             data = assign({}, sel.datum(), data);
 

@@ -9,16 +9,16 @@ export default JSON.stringify({
             children: [
                 {
                     type: "text",
-                    maxlength: 32,
-                    minlength: 32,
+                    maxLength: 32,
+                    minLength: 32,
                     label: "Application ID",
                     required: true,
                     name: "id"
                 },
                 {
                     type: "password",
-                    maxlength: 32,
-                    minlength: 32,
+                    maxLength: 32,
+                    minLength: 8,
                     label: "Application Token",
                     required: true,
                     name: "token"
