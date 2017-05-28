@@ -1,5 +1,7 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
+import node from 'rollup-plugin-node-resolve';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 
 
 export default {
@@ -11,13 +13,16 @@ export default {
         babel({
             babelrc: false,
             presets: ['es2015-rollup']
-        })
+        }),
+        // in clude d3-let in the bundle
+        node(),
+        sourcemaps()
     ],
+    sourceMap: true,
     dest: 'build/d3-view.js',
     external: [
         "d3-collection",
         "d3-dispatch",
-        "d3-let",
         "d3-selection",
         "d3-timer",
         "d3-transition"
