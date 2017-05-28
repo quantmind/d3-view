@@ -9,16 +9,18 @@ import {timeout} from 'd3-timer';
 // always the initial promise
 export default function (callback, delay) {
     var promise = null;
+
     return function () {
         if (promise !== null) return promise;
-        var args = arguments;
+        var self = this,
+            args = arguments;
 
         promise = new Promise((resolve, reject) => {
 
             timeout(() => {
                 promise = null;
                 try {
-                    resolve(callback ? callback.call(undefined, ...args) : undefined);
+                    resolve(callback ? callback.call(self, ...args) : undefined);
                 } catch (err) {
                     reject(err);
                 }

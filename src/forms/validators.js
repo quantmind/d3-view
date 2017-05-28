@@ -108,23 +108,23 @@ export default {
 
     // add model validators to a form-field
     set (vm, el) {
-        var validate = this.validate;
-        vm.model.validators.forEach((validator) => {
-            validator.set(el, vm.data);
-        });
-
-        vm.model.$on((property) => validate(property, vm));
+        var model = vm.model;
+        model._view = vm;
+        model.validators.forEach((validator) => validator.set(el, vm.data));
+        model.$on('value.validate', this.validate);
+        model.$validate = this.validate;
     },
 
-    validate (property, vm) {
-        if (property !== 'value') return;
-
-        var model = vm.model,
+    validate () {
+        var model = this,
+            vm = model._view,
             validators = model.validators,
             value = model.value,
             el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
             validator,
             msg;
+
+        model.isDirty === null ? model.isDirty = false : model.isDirty = true;
 
         for (var i=0; i<validators.length; ++i) {
             validator = validators[i];

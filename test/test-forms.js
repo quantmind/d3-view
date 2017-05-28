@@ -8,26 +8,26 @@ import jsonform from './fixtures/jsonform';
 const nextTick = viewDebounce();
 
 
-describe('view meta', function() {
+describe('view meta', () => {
 
     it('viewForms', () => {
         expect(isObject(viewForms)).toBe(true);
         expect(isFunction(viewForms.install)).toBe(true);
     });
 
-    it('test install', function () {
+    it('test install', () => {
         var vm = view().use(viewForms);
         expect(vm.components.get('d3form')).toBeTruthy();
     });
 
-    it('mount empty form', function () {
+    it('mount empty form', () => {
         var vm = view().use(viewForms);
         vm.mount(viewElement('<div><d3form></d3form></div>'));
     });
 });
 
 
-describe('json form', function () {
+describe('json form', () => {
 
     let el;
 
@@ -58,7 +58,7 @@ describe('json form', function () {
         var token = model.inputs.token;
         token.value = 'xxy';
         expect(token.isDirty).toBe(false);
-        expect(token.error).toBe('');
+        expect(token.error).toBe('required');
         expect(token.showError).toBe(false);
 
         await nextTick();
@@ -99,11 +99,13 @@ describe('json form', function () {
         expect(token.showError).toBe(false);
         expect(token.isDirty).toBe(false);
 
-        var valid = await formModel.$setSubmit();
+        var valid = formModel.$setSubmit();
 
-        expect(valid).toBe(true);
+        expect(valid).toBe(false);
 
         expect(formModel.formSubmitted).toBe(true);
+
+        await nextTick();
 
         expect(id.showError).toBe(true);
         expect(token.showError).toBe(true);

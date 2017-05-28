@@ -7,7 +7,7 @@ import validators from './validators';
 // Input element
 export default assign({
 
-    render: function (data) {
+    render (data) {
         data = this.inputData(data);
         var el = this.createElement('input')
                 .attr('id', data.id)

@@ -10,7 +10,6 @@ import warn from './warn';
 import providers from './providers';
 import actions from './actions';
 import validators from './validators';
-import debounce from '../utils/debounce';
 import {addChildren, modelData} from './utils';
 
 
@@ -25,14 +24,19 @@ export default {
             formSubmitted: false,
             formPending: false,
             inputs: {},
-            $validate () {
-                for (var key in this.inputs)
-                    this.inputs[key].$validate();
+            $isValid () {
+                let inp,
+                    valid = true;
+                for (var key in this.inputs) {
+                    inp = this.inputs[key];
+                    inp.$validate();
+                    if (inp.error) valid = false;
+                }
+                return valid;
             },
             $setSubmit () {
                 this.formSubmitted = true;
                 this.formPending = true;
-                this.$refresh();
                 return this.$isValid();
             },
             $setSubmitDone () {
@@ -56,14 +60,6 @@ export default {
         //
         model.actions = {};
         model.form = this;
-        model.$isValid = debounce(() => {
-            let inp;
-            for (var key in model.inputs) {
-                inp = model.inputs[key];
-                if (inp.error) return false;
-            }
-            return true;
-        });
         //
         var schema = data['schema'];
         if (isString(schema)) {

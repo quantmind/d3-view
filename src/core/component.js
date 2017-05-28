@@ -19,29 +19,19 @@ export const protoComponent = {
     htmlElement: htmlElement,
     // same as export
     viewElement: htmlElement,
-
-    init: function () {
-    },
-
-    mounted: function () {
-    },
-
-    createElement: function (tag) {
+    createElement (tag) {
         return select(document.createElement(tag));
     },
-
     responseError (response) {
         var self = this;
         response.json().then((data) => {
             self.error(data, response);
         });
     },
-
     error (data) {
         data.level = 'error';
         this.message(data);
     },
-
     message (data) {
         var self = this;
         this.root.events.call('message', self, data);
@@ -52,18 +42,19 @@ export const protoComponent = {
         var fetch = providers.fetch;
         return arguments.length == 1 ? fetch(url) : fetch(url, options);
     },
-
-    render: function () {
-
-    },
-
+    //
+    // hooks
+    init () {},
+    render () {},
+    mounted () {},
+    //
     mount: function (el, data) {
         if (mounted(this)) warn('already mounted');
         else {
             var sel = select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
-                model = this.parent.model.$child(isFunction(this.model) ? this.model() : this.model);
+                model = this.parent.model.$child(this.model);
 
             data = assign({}, sel.datum(), data);
 
@@ -155,7 +146,7 @@ export function createComponent (o, prototype, coreDirectives) {
                 }
             }
         });
-        this.model = assign({}, model, pop(options, 'model'));
+        this.model = assign({}, isFunction(model) ? model() : model, pop(options, 'model'));
         this.init(options);
     }
 

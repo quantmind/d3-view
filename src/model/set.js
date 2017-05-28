@@ -1,5 +1,6 @@
 import {isFunction, isObject} from 'd3-let';
 
+import warn from '../utils/warn';
 import ddispatch from './dispatch';
 
 //  $set a reactive attribute for a Model
@@ -15,15 +16,13 @@ export default function (key, value) {
 
 
 function reactive(model, key, value) {
-    var events = model.$events,
-        lazy;
+    var lazy;
 
-    events.set(key, ddispatch());
+    model.$events.set(key, ddispatch());
 
     Object.defineProperty(model, key, property());
-
     // Trigger the callback once for initialization
-    trigger();
+    model.$change(key);
 
     function update (newValue) {
         if (lazy) newValue = lazy.get.call(model);
@@ -31,7 +30,7 @@ function reactive(model, key, value) {
         // trigger lazy callbacks
         var oldValue = value;
         value = newValue;
-        trigger(oldValue);
+        model.$change(key, oldValue);
     }
 
     function property () {
@@ -53,18 +52,12 @@ function reactive(model, key, value) {
                     model.$on(`${name}.${key}`, update);
                 });
             else
-                model.$on(`.${key}`, update);
+                warn(`reactive lazy property ${key} does not specify 'reactOn' list or properties`);
 
             if (isFunction(lazy.set)) prop.set = lazy.set;
         } else
             prop.set = update;
 
         return prop;
-    }
-
-    function trigger (oldValue) {
-        events.get(key).trigger(model, oldValue);
-        // trigger model change event only when not a lazy property
-        if (!lazy) events.get('').trigger(model, key);
     }
 }

@@ -3,11 +3,9 @@ import {dispatch} from 'd3-dispatch';
 import debounce from '../utils/debounce';
 
 
-const slice = Array.prototype.slice;
-
-
 export default function () {
-    var events = dispatch('change');
+    var events = dispatch('change'),
+        triggered = 0;
 
     return {
         on (typename, callback) {
@@ -17,7 +15,11 @@ export default function () {
             return this;
         },
         trigger: debounce(function () {
-            events.apply('change', arguments[0], slice.call(arguments, 1));
-        })
+            events.apply('change', this, arguments);
+            triggered +=1;
+        }),
+        triggered () {
+            return triggered;
+        }
     };
 }

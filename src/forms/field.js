@@ -47,6 +47,7 @@ export const formElement = {
 export default assign({
 
     model: {
+        value: null,
         error: '',
         isDirty: null,
         showError: {
@@ -55,13 +56,9 @@ export default assign({
                 if (this.error) return this.isDirty || this.formSubmitted;
                 return false;
             }
-        }
-    },
-
-    mounted () {
-        this.model.$on('value', function () {
-            this.isDirty === null ? this.isDirty = false : this.isDirty = true;
-        });
+        },
+        // default validate function does nothing, IMPORTANT!
+        $validate () {}
     },
 
     inputData (data) {
