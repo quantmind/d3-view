@@ -111,4 +111,31 @@ describe('model', function() {
             });
         });
     });
+
+    it('model.$off attribute', testAsync(async () => {
+        var model = viewModel({
+            foo: 5,
+            bla: 2
+        });
+        var called = 0;
+        model.$on('foo.test', handler);
+        await nextTick();
+
+        expect(called).toBe(1);
+        model.foo = 4;
+        await nextTick();
+
+        expect(called).toBe(2);
+
+        model.$off('foo.test');
+
+        model.foo = 5;
+        await nextTick();
+
+        expect(called).toBe(2);
+
+        function handler () {
+            called += 1;
+        }
+    }));
 });
