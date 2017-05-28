@@ -35,7 +35,7 @@ describe('json form', () => {
         el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
     });
 
-    it ('form model', testAsync(async () => {
+    it ('form model', () => {
         var vm = view().use(viewForms);
         vm.mount(el);
         var fv = vm.sel.select('form').view();
@@ -45,7 +45,7 @@ describe('json form', () => {
         expect(isObject(model.actions)).toBe(true);
         expect(model.formSubmitted).toBe(false);
         expect(model.formPending).toBe(false);
-    }));
+    });
 
     it ('maxLength - minLength validation', testAsync(async () => {
         var vm = view().use(viewForms);

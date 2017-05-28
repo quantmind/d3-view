@@ -5,7 +5,7 @@ var base = require('./karma.base.js');
 module.exports = function (config) {
 
     var options = assign(base, {
-        browsers: ['Chrome', 'Firefox'],
+        browsers: ['PhantomJS', 'Chrome', 'Firefox'],
         reporters: ['progress']
     });
 
