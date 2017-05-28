@@ -1,8 +1,7 @@
-import {dispatch} from 'd3-dispatch';
 import {isFunction, isObject} from 'd3-let';
 
-import debounce from '../utils/debounce';
-
+import warn from '../utils/warn';
+import ddispatch from './dispatch';
 
 //  $set a reactive attribute for a Model
 //
@@ -17,33 +16,21 @@ export default function (key, value) {
 
 
 function reactive(model, key, value) {
-    var events = model.$events,
-        oldValue,
-        lazy;
+    var lazy;
 
-    events.set(key, dispatch('change'));
+    model.$events.set(key, ddispatch());
 
     Object.defineProperty(model, key, property());
-
-    // the event is fired at the next tick of the event loop
-    // Cannot use the () => notation here otherwise arguments are incorrect
-    var trigger = debounce(function () {
-        oldValue = arguments[0];
-        events.get(key).call('change', model, value, oldValue);
-        // trigger model change event only when not a lazy property
-        if (!lazy) events.get('').call('change', model, key);
-    });
-
     // Trigger the callback once for initialization
-    trigger();
+    model.$change(key);
 
     function update (newValue) {
         if (lazy) newValue = lazy.get.call(model);
         if (newValue === value) return;
         // trigger lazy callbacks
-        trigger(value);
-        // update the value
+        var oldValue = value;
         value = newValue;
+        model.$change(key, oldValue);
     }
 
     function property () {
@@ -65,7 +52,7 @@ function reactive(model, key, value) {
                     model.$on(`${name}.${key}`, update);
                 });
             else
-                model.$on(`.${key}`, update);
+                warn(`reactive lazy property ${key} does not specify 'reactOn' list or properties`);
 
             if (isFunction(lazy.set)) prop.set = lazy.set;
         } else

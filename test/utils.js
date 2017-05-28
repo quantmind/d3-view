@@ -29,6 +29,13 @@ export function trigger (target, event, process) {
 }
 
 
+export function testAsync (runAsync) {
+    return (done) => {
+        runAsync().then(done, done.fail);
+    };
+}
+
+
 viewProviders.logger = logger;
 
 

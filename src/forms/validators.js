@@ -12,19 +12,20 @@ const required = {
     },
 
     validate (el, value) {
-        if (el.property('required')) {
+        if (el.property('required'))
             if (!value) return 'required';
-        }
-        else if (value === '')
+        else if (value === '') {
+            // this is valid, no need to continue with the remaining validators
             return true;
+        }
     }
 };
 
 
-const minlength = {
+const minLength = {
 
     set (el, data) {
-        var value = data.minlength;
+        var value = data.minLength;
         if (isString(value))
             el.attr(`d3-attr-minlength`, value);
         else if (value !== undefined)
@@ -39,10 +40,10 @@ const minlength = {
 };
 
 
-const maxlength = {
+const maxLength = {
 
     set (el, data) {
-        var value = data.maxlength;
+        var value = data.maxLength;
         if (isString(value))
             el.attr(`d3-attr-maxlength`, value);
         else if (value !== undefined)
@@ -57,10 +58,10 @@ const maxlength = {
 };
 
 
-const min = {
+const minimum = {
 
     set (el, data) {
-        var value = data.min;
+        var value = data.minimum;
         if (isString(value))
             el.attr(`d3-attr-min`, value);
         else if (value !== undefined)
@@ -75,10 +76,10 @@ const min = {
 };
 
 
-const max = {
+const maximum = {
 
     set (el, data) {
-        var value = data.max;
+        var value = data.maximum;
         if (isString(value))
             el.attr(`d3-attr-max`, value);
         else if (value !== undefined)
@@ -92,10 +93,12 @@ const max = {
     }
 };
 
-
+// validator singleton
 export default {
 
-    get (model, custom) {
+    // get the list of validators
+    // custom is an optional list of custom validators
+    get (custom) {
         var validators = this.all.slice(0);
         if (isObject(custom))
             for (var key in custom)
@@ -103,23 +106,25 @@ export default {
         return validators;
     },
 
+    // add model validators to a form-field
     set (vm, el) {
-        vm.model.validators.forEach((validator) => {
-            validator.set(el, vm.data);
-        });
-
-        vm.model.$on((property) => this.validate(property, vm));
+        var model = vm.model;
+        model._view = vm;
+        model.validators.forEach((validator) => validator.set(el, vm.data));
+        model.$on('value.validate', this.validate);
+        model.$validate = this.validate;
     },
 
-    validate (property, vm) {
-        if (property !== 'value') return;
-
-        var model = vm.model,
+    validate () {
+        var model = this,
+            vm = model._view,
             validators = model.validators,
             value = model.value,
             el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
             validator,
             msg;
+
+        model.isDirty === null ? model.isDirty = false : model.isDirty = true;
 
         for (var i=0; i<validators.length; ++i) {
             validator = validators[i];
@@ -135,10 +140,10 @@ export default {
 
     all: [
         required,
-        minlength,
-        maxlength,
-        min,
-        max
+        minLength,
+        maxLength,
+        minimum,
+        maximum
     ]
 };
 

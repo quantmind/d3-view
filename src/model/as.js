@@ -1,7 +1,7 @@
 import {map} from 'd3-collection';
-import {dispatch} from 'd3-dispatch';
 
 import uid from '../utils/uid';
+import ddispatch from './dispatch';
 
 //
 // Initialise a model
@@ -11,7 +11,7 @@ export default function asModel (model, initials) {
         Child = null;
 
     // event handler for any change in the model
-    events.set('', dispatch('change'));
+    events.set('', ddispatch());
 
     Object.defineProperties(uid(model), {
         $events: {
@@ -33,7 +33,6 @@ export default function asModel (model, initials) {
         return new Child(o);
     }
 }
-
 
 function createChildConstructor (model) {
 

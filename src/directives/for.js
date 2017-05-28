@@ -48,6 +48,8 @@ export default {
 
         let x;
 
+        entries.exit().remove();
+
         entries
             .enter()
             .append(() => {
@@ -61,8 +63,10 @@ export default {
                     model: x,
                     parent: vm
                 }).mount(this);
+            })
+            .merge(entries)
+            .each(function () {
+                //this.__d3_view__.refresh();
             });
-
-        entries.exit().remove();
     }
 };

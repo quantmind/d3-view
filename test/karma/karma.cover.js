@@ -22,11 +22,6 @@ module.exports = function (config) {
 
         reporters: ['progress', 'coverage'],
 
-        files: [
-            './test/test-*.js'
-            //'./src/**/*.js'
-        ],
-
         preprocessors: {
             './test/*.js': ['browserify'],
             './src/**/*.js': ['browserify', 'coverage']
@@ -45,6 +40,10 @@ module.exports = function (config) {
             transform: transforms
         }
     });
+
+    if(process.env.TRAVIS || process.env.CIRCLECI) {
+        options.browsers = ['ChromeNoSandbox'];
+    }
 
     config.set(options);
 };
