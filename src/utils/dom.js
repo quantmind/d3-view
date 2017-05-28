@@ -1,9 +1,11 @@
 import {timeout} from 'd3-timer';
 
+import providers from './providers';
+
 
 // Add callback to execute when the DOM is ready
 export default function (callback) {
-    readyCallbacks.push(callback);
+    providers.readyCallbacks.push(callback);
     if (document.readyState !== 'complete') {
         document.addEventListener('DOMContentLoaded', _completed);
         // A fallback to window.onload, that will always work
@@ -14,8 +16,6 @@ export default function (callback) {
 }
 
 
-var readyCallbacks = [];
-
 function _completed () {
     document.removeEventListener('DOMContentLoaded', _completed);
 	window.removeEventListener('load', _completed);
@@ -25,8 +25,8 @@ function _completed () {
 
 function domReady() {
     let callback;
-    while (readyCallbacks.length ) {
-        callback = readyCallbacks.shift();
+    while (providers.readyCallbacks.length ) {
+        callback = providers.readyCallbacks.shift();
         timeout(callback);
     }
 }
