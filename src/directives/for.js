@@ -52,21 +52,23 @@ export default {
 
         entries
             .enter()
-            .append(() => {
-                return creator.cloneNode(true);
-            })
-            .classed(this.itemClass, true)
-            .each(function (d, index) {
-                x = {index: index};
-                x[itemName] = d;
-                simpleView({
-                    model: x,
-                    parent: vm
-                }).mount(this);
-            })
-            .merge(entries)
-            .each(function () {
-                //this.__d3_view__.refresh();
-            });
+                .append(() => {
+                    return creator.cloneNode(true);
+                })
+                .classed(this.itemClass, true)
+                .each(function (d, index) {
+                    x = {index: index};
+                    x[itemName] = d;
+                    simpleView({
+                        model: x,
+                        parent: vm
+                    }).mount(this);
+                });
+            //.merge(entries)
+            //    .each(function () {
+            //        var vm = this.__d3_view__;
+            //        if (vm._refresh) vm.refresh();
+            //        vm._refresh = true;
+            //    });
     }
 };

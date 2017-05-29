@@ -1,6 +1,9 @@
 import {select, selection} from 'd3-selection';
 import {isPromise} from 'd3-let';
+
 import getdirs from './getdirs';
+import slice from '../utils/slice';
+
 
 // Extend selection prototype with new methods
 selection.prototype.mount = mount;
@@ -71,9 +74,10 @@ function mountElement (element, vm, data) {
             vm = component({parent: vm});
             promise = vm.mount(element, data);
         } else {
-            var promises = [];
-            for (let i=0; i<element.children.length; ++i) {
-                promise = mountElement(element.children[i], vm, data);
+            var promises = [],
+                children = slice(element.children);
+            for (let i=0; i<children.length; ++i) {
+                promise = mountElement(children[i], vm, data);
                 if (isPromise(promise)) promises.push(promise);
             }
             if (promises.length)
