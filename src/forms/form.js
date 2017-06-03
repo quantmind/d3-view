@@ -100,19 +100,6 @@ export default {
         return data;
     },
 
-    setSubmitDone: function () {
-        this.model.formPending = false;
-    },
-
-    isValid () {
-        let inp;
-        for (var key in this.model.inputs) {
-            inp = this.model.inputs[key];
-            if (inp.error) return false;
-        }
-        return true;
-    },
-
     inputError (error) {
         var input = this.model.inputs[error.name];
         if (!input) {

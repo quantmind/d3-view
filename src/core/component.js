@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isFunction, isArray, isPromise, pop} from 'd3-let';
+import {isFunction, isArray, isPromise, isString, pop} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
@@ -64,10 +64,13 @@ export const protoComponent = {
             if (isArray(this.props)) {
                 var key, value;
                 this.props.forEach((prop) => {
-                    key = dattrs[prop];
-                    if (model[key]) value = model[key];
-                    else value = maybeJson(key);
-                    data[prop] = value;
+                    key = data[prop] === undefined ? dattrs[prop] : data[prop];
+                    if (isString(key)) {
+                        if (model[key]) value = model[key];
+                        else value = maybeJson(key);
+                    } else
+                        value = key;
+                    if (value !== undefined) data[prop] = value;
                 });
             }
             //

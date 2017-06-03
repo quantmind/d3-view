@@ -46,4 +46,16 @@ describe('json form', () => {
         expect(model.formPending).toBe(false);
     });
 
+    it ('Dynamic mount', () => {
+        var vm = view().use(viewForms).use(viewBootstrapForms);
+        vm.mount(viewElement('<div>/<div>'));
+        //
+        vm.sel.html('<d3form></d3form').mount({schema: JSON.parse(jsonform)});
+        var fv = vm.sel.select('form').view(),
+            model = fv.model;
+
+        expect(model.inputs.id).toBeTruthy();
+        expect(model.inputs.token).toBeTruthy();
+    });
+
 });
