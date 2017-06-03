@@ -5,7 +5,13 @@ import {viewForms, viewElement, viewBootstrapForms} from '../index';
 import jsonform from './fixtures/jsonform';
 
 
-describe('from bootstrap plugin', () => {
+describe('Bootstrap plugin', () => {
+
+    let el;
+
+    beforeEach(() => {
+        el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
+    });
 
     it('viewBootstrapForms', () => {
         expect(isObject(viewBootstrapForms)).toBe(true);
@@ -22,17 +28,6 @@ describe('from bootstrap plugin', () => {
     it('mount empty form', () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
         vm.mount(viewElement('<div><d3form></d3form></div>'));
-    });
-
-});
-
-
-describe('json form', () => {
-
-    let el;
-
-    beforeEach(() => {
-        el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
     });
 
     it ('form model', () => {
