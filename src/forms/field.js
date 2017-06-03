@@ -1,5 +1,5 @@
+import assign from 'object-assign';
 import {select, selectAll} from 'd3-selection';
-import {assign} from 'd3-let';
 
 import warn from './warn';
 import {modelData} from './utils';

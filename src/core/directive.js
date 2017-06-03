@@ -1,4 +1,4 @@
-import {assign} from 'd3-let';
+import assign from 'object-assign';
 
 import viewExpression from '../parser/expression';
 import warn from '../utils/warn';

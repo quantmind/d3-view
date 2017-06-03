@@ -1,4 +1,5 @@
-import {isFunction, isArray, isPromise, pop, assign} from 'd3-let';
+import assign from 'object-assign';
+import {isFunction, isArray, isPromise, pop} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';

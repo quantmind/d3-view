@@ -1,5 +1,6 @@
+import assign from 'object-assign';
 import {event} from 'd3-selection';
-import {isString, assign} from 'd3-let';
+import {isString} from 'd3-let';
 
 import {formElement} from './field';
 import {modelData} from './utils';

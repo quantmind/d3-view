@@ -10,13 +10,10 @@ as a [standalone library](https://giottojs.org/latest/d3-view.js) or
 AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global is exported.
 Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
 ```javascript
-<script src="https://d3js.org/d3-array.v1.min.js"></script>
 <script src="https://d3js.org/d3-collection.v1.min.js"></script>
-<script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
 <script src="https://d3js.org/d3-selection.v1.min.js"></script>
 <script src="https://d3js.org/d3-timer.v1.min.js"></script>
-<script src="https://giottojs.org/latest/d3-let.min.js"></script>
 <script src="https://giottojs.org/latest/d3-view.min.js"></script>
 <script>
 

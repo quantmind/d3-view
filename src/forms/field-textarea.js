@@ -1,4 +1,4 @@
-import {assign} from 'd3-let';
+import assign from 'object-assign';
 
 import field from './field';
 import validators from './validators';

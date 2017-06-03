@@ -1,4 +1,5 @@
-import {assign, isObject, isFunction} from 'd3-let';
+import assign from 'object-assign';
+import {isObject, isFunction} from 'd3-let';
 import {select} from 'd3-selection';
 
 import './selection';
