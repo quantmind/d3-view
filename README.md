@@ -10,7 +10,7 @@ This is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
 It provides data-reactive components with a simple and flexible API.
 
-* Modern javascript
+* [Javascript ES6](/docs/develop.md)
 * Minimal footprint  - use only what you need
 * Built on top of [d3](https://github.com/d3)
 
@@ -25,17 +25,8 @@ It provides data-reactive components with a simple and flexible API.
 * [Plugins](/docs/plugins.md)
 * [Providers](/docs/providers.md)
 * [Forms](/docs/forms.md)
-* [References](/docs/references.md)
+* [Develop](/docs/develop.md)
 
 
 
 [Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
-[rollup]: http://rollupjs.org/
-[Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
-[model]: #model
-[component]: #components
-[components]: #components
-[directives]: #directives
-[plugins]: #plugins
-[view-api]: #view-api
-[render]: #render

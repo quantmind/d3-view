@@ -1,4 +1,11 @@
-# Refrences
+# Development
+
+d3-view is written in Javascript ES6 and uses [rollup][] for creating bundles.
+During development one can use the rollup watch client for fast incremental
+rebuilds:
+```bash
+yarn dev
+```
 
 ## Other Frameworks
 
@@ -20,3 +27,6 @@ Some plugin we really like
 * [d3-scale-cluster](https://github.com/schnerd/d3-scale-cluster)
 
 Discover more at [npm d3-plugins](https://www.npmjs.com/browse/keyword/d3-module)
+
+
+[rollup]: https://github.com/rollup/rollup
