@@ -43,6 +43,18 @@ export const protoComponent = {
         var fetch = providers.fetch;
         return arguments.length == 1 ? fetch(url) : fetch(url, options);
     },
+
+    //
+    // render a template from a url
+    renderFromUrl (url) {
+        var cache = this.cache;
+        if (url in cache)
+            return new Promise((resolve) => resolve(htmlElement(cache[url])));
+        return this.fetch(url).then(response => response.text()).then(template => {
+            cache[url] = template;
+            return htmlElement(template);
+        });
+    },
     //
     // hooks
     init () {},
@@ -102,7 +114,8 @@ export function createComponent (o, prototype, coreDirectives) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : null),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message', 'mounted');
+            events = dispatch('message', 'mounted'),
+            cache = {};
 
         classComponents.each((comp, key) => {
             components.set(key, comp);
@@ -132,6 +145,11 @@ export function createComponent (o, prototype, coreDirectives) {
             root: {
                 get: function () {
                     return parent ? parent.root : this;
+                }
+            },
+            cache: {
+                get: function () {
+                    return parent ? parent.cache : cache;
                 }
             },
             props: {
