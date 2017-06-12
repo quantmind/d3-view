@@ -36,12 +36,12 @@ model.$set('a', 5);
 model.$events.get('a')
 {...}
 ```
-All reactive properties have a corresponding entry in the ``$events`` map.
+All reactive properties have a corresponding entry in the ``$events`` [d3.map](https://github.com/d3/d3-collection#maps).
 One can trigger a change event either by modifying the value:
 ```javsacript
 model.score = 11
 ```
-or esplicitly calling the ``$change`` method
+or explicitly calling the ``$change`` method
 ```javascript
 model.$change('score');
 ```

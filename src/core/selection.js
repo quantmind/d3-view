@@ -44,8 +44,8 @@ function view (value) {
 //
 // mount function on a d3 selection
 // Use this function to mount the selection
-// Return nothing or a promise
-function mount (data) {
+// THis method returns nothing or a promise
+function mount (data, callback) {
     var promises = [];
     let promise;
     this.each(function () {
@@ -55,8 +55,7 @@ function mount (data) {
             if (isPromise(promise)) promises.push(promise);
         }
     });
-    if (promises.length)
-        return Promise.all(promises);
+    return chain(promises, callback);
 }
 
 
@@ -91,4 +90,14 @@ function mountElement (element, vm, data) {
         else
             return directives.execute(vm.model);
     }
+}
+
+
+function chain (promises, callback) {
+    var p;
+    if (promises.length)
+        p = Promise.all(promises);
+    if (callback)
+        return p ? p.then(callback) : callback();
+    return p;
 }

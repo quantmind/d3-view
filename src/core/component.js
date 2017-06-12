@@ -75,14 +75,17 @@ export const protoComponent = {
 
             if (isArray(this.props)) {
                 var key, value;
-                this.props.forEach((prop) => {
+                this.props.forEach(prop => {
                     key = data[prop] === undefined ? dattrs[prop] : data[prop];
                     if (isString(key)) {
                         if (model[key]) value = model[key];
                         else value = maybeJson(key);
                     } else
                         value = key;
-                    if (value !== undefined) data[prop] = value;
+                    if (value !== undefined) {
+                        data[prop] = value;
+                        if (model.$events.has(prop)) model[prop] = value;
+                    }
                 });
             }
             //
