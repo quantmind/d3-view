@@ -1,5 +1,13 @@
 # Plugins
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Plugins](#plugins)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Plugins, usually, add functionality to a view-model.
 There is no strictly defined scope for a plugin but there are typically several
 types of plugins you can write:
@@ -42,4 +50,3 @@ A plugin is installed in a view via the chainable ``use`` method:
 var vm = d3.view();
 vm.use(myPlugin).use(anotherPlugin);
 ```
-

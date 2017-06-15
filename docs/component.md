@@ -1,13 +1,41 @@
 # Components
 
 Components help you extend basic HTML elements to encapsulate reusable code.
-They are custom elements that ``d3.view`` attach specified behavior to.
+They are custom elements that [d3.view][] attach specified behavior to. They have the same API as the [d3.view][] with the exception they cannot be the root view, i.e. a component ``parent`` attribute is always available.
+
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Registration](#registration)
+- [Creating a component](#creating-a-component)
+    - [component.model](#componentmodel)
+    - [component.init(<i>options</i>)](#componentinitioptionsi)
+    - [component.render(<i>data, attrs</i>)](#componentrenderidata-attrsi)
+    - [component.mounted()](#componentmounted)
+    - [component.destroy()](#componentdestroy)
+- [Component API](#component-api)
+  - [view.model](#viewmodel)
+  - [view.parent](#viewparent)
+  - [view.el](#viewel)
+  - [view.createElement(<i>tag</i>)](#viewcreateelementitagi)
+    - [component.events](#componentevents)
+    - [component.parent](#componentparent)
+    - [component.root](#componentroot)
+    - [component.uid](#componentuid)
+- [Examples](#examples)
+  - [Simple component](#simple-component)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 
 ## Registration
 
 In order to use components you need to register them with the ``view`` object:
 ```javascript
 d3.view({
+    model: {...},
     components: {
         tag1: component1,
         ...
@@ -33,7 +61,7 @@ function component1 () {
 
 ## Creating a component
 
-A component is defined by the [render][] method. However, there optional properties and
+A component is defined by the [render][] method. However, there are optional properties and
 methods that can be used to customize construction and lifecycle of a component.
 ```javascript
 var component = {
@@ -93,6 +121,27 @@ Called when the component HTML element is removed from the DOM.
 
 ## Component API
 
+
+### view.model
+
+The [model](#model) bound to the component, the combo gives the name to the **component-model object**, often shortened to **vm** or **cm**.
+
+### view.parent
+
+The parent of a view, always **undefined**, a view is always the root element of
+a view mounted DOM.
+
+### view.el
+
+Root HTMLElement of the view.
+
+### view.createElement(<i>tag</i>)
+
+Create a new HTML Element with the given tag. Return a [d3.selection][]
+of the new element.
+
+[d3-selection]: https://github.com/d3/d3-selection
+
 <a name="user-content-component-el" href="#component-el">#</a> component.<b>el</b>
 
 The HTML element created by the component [render][] method. Available after the component is mounted.
@@ -137,3 +186,4 @@ A simple component can be sued to attach a new model to an html element
 
 Component unique identifier
 
+[d3.view]: ./view.md

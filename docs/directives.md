@@ -1,5 +1,32 @@
 # Directives
 
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [What is a Directive?](#what-is-a-directive)
+- [Core Directives](#core-directives)
+  - [d3-attr](#d3-attr)
+  - [d3-for](#d3-for)
+  - [d3-html](#d3-html)
+  - [d3-if](#d3-if)
+  - [d3-on](#d3-on)
+  - [d3-show](#d3-show)
+  - [d3-value](#d3-value)
+- [Custom Directive](#custom-directive)
+- [Directive API](#directive-api)
+  - [directive.el](#directiveel)
+  - [directive.expression](#directiveexpression)
+  - [directive.create(<i>expression</i>)](#directivecreateiexpressioni)
+  - [directive.mount(<i>model</i>)](#directivemountimodeli)
+  - [directive.refresh(<i>model, newValue</i>)](#directiverefreshimodel-newvaluei)
+  - [directive.destroy(<i>model</i>)](#directivedestroyimodeli)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## What is a Directive?
+
 Directives are special attributes with the ``d3-`` prefix.
 Directive attribute values are expected to be binding [expressions](#expressions).
 The library provides several directives for every day task.

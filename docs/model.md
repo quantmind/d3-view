@@ -1,5 +1,28 @@
 # Model
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [What is a view model?](#what-is-a-view-model)
+- [Reactivity](#reactivity)
+  - [Collections](#collections)
+  - [Lazy reactivity](#lazy-reactivity)
+- [Model API](#model-api)
+  - [model.parent](#modelparent)
+  - [model.$get(attribute)](#modelgetattribute)
+  - [model.$set(attribute, value)](#modelsetattribute-value)
+  - [model.$update(object)](#modelupdateobject)
+  - [model.$on(attribute, callback)](#modelonattribute-callback)
+  - [model.$change(attribute)](#modelchangeattribute)
+  - [model.$off()](#modeloff)
+  - [model.$child(intials)](#modelchildintials)
+  - [model.$new(intials)](#modelnewintials)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## What is a view model?
+
 At the core of the library we have the Hierarchical Reactive Model.
 The Model is comparable to angular scope but its implementation is different.
 

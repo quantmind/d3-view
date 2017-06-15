@@ -1,5 +1,15 @@
 # Getting Started
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Installing](#installing)
+- [Creating a view](#creating-a-view)
+  - [Create a view-model object](#create-a-view-model-object)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Installing
 
 If you use [NPM](https://www.npmjs.com/package/d3-view), ``npm install d3-view``.

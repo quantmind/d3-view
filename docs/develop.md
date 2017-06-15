@@ -7,6 +7,15 @@ rebuilds:
 yarn dev
 ```
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [Other Frameworks](#other-frameworks)
+- [D3 plugins](#d3-plugins)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Other Frameworks
 
 In order of complexity
