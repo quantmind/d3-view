@@ -46,13 +46,13 @@ export const protoComponent = {
 
     //
     // render a template from a url
-    renderFromUrl (url) {
+    renderFromUrl (url, context) {
         var cache = this.cache;
         if (url in cache)
             return new Promise((resolve) => resolve(htmlElement(cache[url])));
         return this.fetch(url).then(response => response.text()).then(template => {
             cache[url] = template;
-            return htmlElement(template);
+            return htmlElement(template, context);
         });
     },
     //

@@ -1,17 +1,17 @@
+# Form Plugin
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Form Plugin](#form-plugin)
-  - [Importing](#importing)
-  - [Bootstrap Plugin](#bootstrap-plugin)
-  - [Usage](#usage)
-  - [Form API](#form-api)
+
+- [Overview](#overview)
+- [Usage](#usage)
+- [Form API](#form-api)
+- [Bootstrap Plugin](#bootstrap-plugin)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-# Form Plugin
+## Overview
 
 This library include a form plugin for creating dynamic forms from JSON schema.
 The plugin adds the ``d3form`` [component][] to the view-model:
@@ -21,23 +21,12 @@ import {view, viewForms} from 'd3-view';
 var vm = view().use(viewForms);
 ```
 
-## Importing
-
 The form plugin will be included in your compiled file only if
 ```javascript
 import {viewForms} from 'd3-view';
 ```
 is present somewhere in your code. Otherwise, it will be eliminated thanks to
 tree-shaking.
-
-## Bootstrap Plugin
-
-It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:
-```javascript
-import {view, viewForms, viewBootstrapForms} from 'd3-view';
-
-var vm = view().use(viewForms).use(viewBootstrapForms);
-```
 
 ## Usage
 
@@ -80,5 +69,14 @@ depending if the form inputs pass validation.
 
 Check if the form inputs pass validation, return ``true`` or ``false``.
 
+
+## Bootstrap Plugin
+
+It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:
+```javascript
+import {view, viewForms, viewBootstrapForms} from 'd3-view';
+
+var vm = view().use(viewForms).use(viewBootstrapForms);
+```
 
 [component]: ./component.md

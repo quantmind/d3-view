@@ -2,9 +2,9 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
 
-- [Introduction](#introduction)
+
+- [Overview](#overview)
 - [Expressions API](#expressions-api)
   - [expression.expr](#expressionexpr)
   - [expression.eval(model)](#expressionevalmodel)
@@ -13,7 +13,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Introduction
+## Overview
 
 The text we put inside directive's values are called ``binding expressions``.
 In d3-view, a binding expression consists of a single JavaScript expression

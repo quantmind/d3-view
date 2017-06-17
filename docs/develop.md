@@ -1,20 +1,23 @@
 # Development
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [ES6](#es6)
+- [Other Frameworks](#other-frameworks)
+- [D3 plugins](#d3-plugins)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## ES6
+
 d3-view is written in Javascript ES6 and uses [rollup][] for creating bundles.
 During development one can use the rollup watch client for fast incremental
 rebuilds:
 ```bash
 yarn dev
 ```
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
-
-- [Other Frameworks](#other-frameworks)
-- [D3 plugins](#d3-plugins)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Other Frameworks
 
