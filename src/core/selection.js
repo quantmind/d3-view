@@ -3,6 +3,7 @@ import {isPromise} from 'd3-let';
 
 import getdirs from './getdirs';
 import slice from '../utils/slice';
+import warn from '../utils/warn';
 
 
 // Extend selection prototype with new methods
@@ -45,22 +46,24 @@ function view (value) {
 // mount function on a d3 selection
 // Use this function to mount the selection
 // THis method returns nothing or a promise
-function mount (data, callback) {
+function mount (data, onMounted) {
     var promises = [];
     let promise;
     this.each(function () {
         var view = select(this).view();
         if (view) {
-            promise = mountElement(this, view, data);
+            promise = mountElement(this, view, data, onMounted);
             if (isPromise(promise)) promises.push(promise);
+        } else {
+            warn('Cannot mount, no view object available to mount to');
         }
     });
-    return chain(promises, callback);
+    return promises.length ? Promise.all(promises) : null;
 }
 
 
 // mount an element into a given model
-function mountElement (element, vm, data) {
+function mountElement (element, vm, data, onMounted) {
     var component = vm.components.get(element.tagName.toLowerCase()),
         directives = getdirs(element, vm.directives),
         preMount = directives.preMount();
@@ -71,12 +74,12 @@ function mountElement (element, vm, data) {
         let promise;
         if (component) {
             vm = component({parent: vm});
-            promise = vm.mount(element, data);
+            promise = vm.mount(element, data, onMounted);
         } else {
             var promises = [],
                 children = slice(element.children);
             for (let i=0; i<children.length; ++i) {
-                promise = mountElement(children[i], vm, data);
+                promise = mountElement(children[i], vm, data, onMounted);
                 if (isPromise(promise)) promises.push(promise);
             }
             if (promises.length)
@@ -90,14 +93,4 @@ function mountElement (element, vm, data) {
         else
             return directives.execute(vm.model);
     }
-}
-
-
-function chain (promises, callback) {
-    var p;
-    if (promises.length)
-        p = Promise.all(promises);
-    if (callback)
-        return p ? p.then(callback) : callback();
-    return p;
 }

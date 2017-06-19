@@ -157,14 +157,14 @@ method has been called.
 
 ### directive.create(<i>expression</i>)
 
-The ``create`` method is called once only, at the end of directive initialisation, no binding with the HTML element or model has yet occurred.
+The ``create`` method is called **once only**, at the end of directive initialisation, no binding with the HTML element or model has yet occurred.
 The ``expression`` is the attribute value, a string, and it is not yet parsed.
 This method must return the expression for parsing (it doesn't need to be the same as the input expression).
 However, if it returns nothing, the directive is not executed.
 
 ### directive.mount(<i>model</i>)
 
-The ``mount`` method is called once only, at the beginning of the binding process with the HTML element.
+The ``mount`` method is called **once only**, at the beginning of the binding process with the HTML element.
 The expression returned by the ``create`` method
 has been parsed and available in the ``this.expression`` attribute.
 This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
@@ -172,11 +172,11 @@ However, if it returns nothing, the binding execution is aborted.
 
 ### directive.refresh(<i>model, newValue</i>)
 
-This method is called every time the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel).
+This method is called **every time** the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel).
 
 ### directive.destroy(<i>model</i>)
 
-Called when the element hosting the directive is removed from the DOM.
+Called **once only** when the element hosting the directive is removed from the DOM.
 
 
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js
@@ -186,3 +186,4 @@ Called when the element hosting the directive is removed from the DOM.
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
 [d3-show]: https://github.com/quantmind/d3-view/blob/master/src/directives/show.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
+[plugins]: ./plugins.md

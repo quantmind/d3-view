@@ -1,11 +1,13 @@
-import {isFunction, isObject} from 'd3-let';
+import {isFunction} from 'd3-let';
 
 import warn from '../utils/warn';
+import isObject from '../utils/object';
 import ddispatch from './dispatch';
+
 
 //  $set a reactive attribute for a Model
 //
-//  Set the value of a dotted attribute in the model or its parents
+//  Set the value of an attribute in the model
 //  If the attribute is not already reactive make it as such.
 //
 export default function (key, value) {
@@ -15,7 +17,7 @@ export default function (key, value) {
 }
 
 
-function reactive(model, key, value) {
+function reactive (model, key, value) {
     var lazy;
 
     model.$events.set(key, ddispatch());
@@ -29,7 +31,7 @@ function reactive(model, key, value) {
         if (newValue === value) return;
         // trigger lazy callbacks
         var oldValue = value;
-        value = newValue;
+        value = isObject(newValue) ? model.$new(newValue) : newValue;
         model.$change(key, oldValue);
     }
 

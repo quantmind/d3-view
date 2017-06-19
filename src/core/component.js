@@ -61,7 +61,7 @@ export const protoComponent = {
     render () {},
     mounted () {},
     //
-    mount: function (el, data) {
+    mount: function (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
             var sel = select(el),
@@ -94,11 +94,11 @@ export const protoComponent = {
             if (isPromise(newEl)) {
                 var self = this;
                 return newEl.then((element) => {
-                    return compile(self, el, element);
+                    return compile(self, el, element, onMounted);
                 });
             }
             else
-                return compile(this, el, newEl);
+                return compile(this, el, newEl, onMounted);
         }
     }
 };
@@ -216,7 +216,7 @@ export function extendDirectives (container, directives) {
 // Finalise the binding between the view and the model
 // inject the model into the view element
 // call the mounted hook and can return a Promise
-export function asView(vm, element) {
+export function asView(vm, element, onMounted) {
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
             return element;
@@ -226,16 +226,19 @@ export function asView(vm, element) {
     var p = select(element).view(vm).mount();
     if (isPromise(p))
         return p.then(() => {
-            return vm.mounted();
+            vm.mounted();
+            if (onMounted) onMounted(vm);
         });
-    else
-        return vm.mounted();
+    else {
+        vm.mounted();
+        if (onMounted) onMounted(vm);
+    }
 }
 
 
 // Compile a component model
 // This function is called once a component has rendered the component element
-function compile (cm, el, element) {
+function compile (cm, el, element, onMounted) {
     if (!element) return warn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
     if (element.size() !== 1) warn('render function must return a single HTML node');
@@ -246,7 +249,7 @@ function compile (cm, el, element) {
     // remove the component element
     select(el).remove();
     //
-    return asView(cm, element);
+    return asView(cm, element, onMounted);
 }
 
 

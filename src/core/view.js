@@ -38,10 +38,7 @@ export const protoView = assign({}, protoComponent, {
             el = element(el);
             if (el) {
                 this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);
-                var p = asView(this, el);
-                if (callback)
-                    return p ? p.then(callback) : callback();
-                return p;
+                return asView(this, el, callback);
             }
         }
     }

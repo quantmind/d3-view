@@ -1,4 +1,5 @@
 import asModel from './as';
+import string from './string';
 import $get from './get';
 import $set from './set';
 import $on from './on';
@@ -22,6 +23,7 @@ export default function model (initials) {
 model.prototype = Model.prototype;
 
 // Public API methods
+Model.prototype.toString = string;
 Model.prototype.$on = $on;
 Model.prototype.$change = $change;
 Model.prototype.$update = $update;
@@ -30,7 +32,6 @@ Model.prototype.$set = $set;
 Model.prototype.$new = $new;
 Model.prototype.$setbase = $setbase;
 Model.prototype.$off = $off;
-
 
 
 function $new (initials) {

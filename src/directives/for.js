@@ -62,7 +62,11 @@ export default {
                     simpleView({
                         model: x,
                         parent: vm
-                    }).mount(this);
+                    }).mount(this, (vm) => {
+                        // replace the item with a property from the model
+                        // This allow for reactivity when d is an object
+                        items[index] = vm.model[itemName];
+                    });
                 });
             //.merge(entries)
             //    .each(function () {

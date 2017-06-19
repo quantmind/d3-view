@@ -15,9 +15,9 @@
 A **view** is the entry-point for creating reactive d3 based web applications.
 ```javascript
 var vm = d3.view({
-	model: {},
-	components: [],
-	directives: []
+    model: {},
+    components: [],
+    directives: []
 });
 ```
 ## Mount

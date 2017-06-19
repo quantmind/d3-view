@@ -6,6 +6,7 @@
 
 - [What is a view model?](#what-is-a-view-model)
 - [Reactivity](#reactivity)
+  - [Objects](#objects)
   - [Collections](#collections)
   - [Lazy reactivity](#lazy-reactivity)
 - [Model API](#model-api)
@@ -23,10 +24,21 @@
 
 ## What is a view model?
 
-At the core of the library we have the Hierarchical Reactive Model.
-The Model is comparable to angular scope but its implementation is different.
+At the core of the library we have the HRM, Hierarchical Reactive Model.
 
-* **Hierarchical**: a **root** model is associated with a d3-view object.
+* **Hierarchical**: a **root** model is associated with a [d3-view][] object.
+```javascript
+var vm = d3.view({
+    model: {
+        message: 'this is a test'
+    }
+});
+vm.mount('#app');
+vm.model.message
+// 'this is a test'
+vm.model.parent
+// undefined
+```
 
 * **Reactive**: model properties which are registered to be reactive, dispatch a ``change`` event when their value change.
 
@@ -50,14 +62,14 @@ to an already created instance::
 model.a = 5;
 // model.a is NOT reactive
 model.$events.get('a')
-undefinied
+// undefinied
 ```
 However you can specify a new reactive property via the ``$set`` method
 ```javascript
 model.$set('a', 5);
 // model.a is now reactive
 model.$events.get('a')
-{...}
+// {...}
 ```
 All reactive properties have a corresponding entry in the ``$events`` [d3.map](https://github.com/d3/d3-collection#maps).
 One can trigger a change event either by modifying the value:
@@ -69,6 +81,18 @@ or explicitly calling the ``$change`` method
 model.$change('score');
 ```
 
+### Objects
+
+An important property of the HRM is to create new models when
+reactive properties are objects. For example
+```javascript
+model = d3.viewModel({
+    bla: 'foo',
+    nested: {
+        foo: 1
+    }
+});
+```
 ### Collections
 The ``$change`` method is useful when dealing with reactive collections, for example:
 ```javascript
@@ -106,7 +130,7 @@ model.isValid   //  False
 
 ### model.parent
 
-Get the ancestor of the model if it exists. It it does not exist, this is the root model.
+Get the ancestor of the model if it exists. It it does not exist, this is a root model.
 
 ### model.$get(attribute)
 
@@ -165,4 +189,5 @@ b.bla       //  3
 b.parent    //  a
 ```
 
+[d3-view]: ./view.md
 [component]: ./component.md

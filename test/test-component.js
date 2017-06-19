@@ -1,6 +1,6 @@
 import {select} from 'd3-selection';
 
-import view from './utils';
+import view, {testAsync} from './utils';
 import {viewElement} from '../index';
 
 
@@ -96,4 +96,15 @@ describe('Components - ', function() {
         expect(p.size()).toBe(1);
         expect(p.html()).toBe('bla bla');
     });
+
+    it ('renderFromUrl', testAsync(async () => {
+        var vm = view({
+            components: {
+                bla: function () {
+                    return this.renderFromUrl();
+                }
+            }
+        });
+        expect(vm.components.size()).toBe(1);
+    }));
 });

@@ -20,10 +20,10 @@
   - [vm.cache](#vmcache)
   - [vm.uid](#vmuid)
   - [vm.events](#vmevents)
-  - [vm.createElement(<i>tag</i>)](#vmcreateelementitagi)
-  - [cm.viewElement(<i>html</i>, [<i>context</i>])](#cmviewelementihtmli-icontexti)
+  - [vm.createElement (<i>tag</i>)](#vmcreateelement-itagi)
+  - [vm.viewElement (<i>html</i>, [<i>context</i>])](#vmviewelement-ihtmli-icontexti)
   - [vm.fetch (<i>url</i>, [<i>options</i>])](#vmfetch-iurli-ioptionsi)
-  - [renderFromUrl (<i>url</i>, [<i>context</i>])](#renderfromurl-iurli-icontexti)
+  - [vm.renderFromUrl (<i>url</i>, [<i>context</i>])](#vmrenderfromurl-iurli-icontexti)
 - [Selection](#selection)
   - [selection.view()](#selectionview)
   - [selection.model()](#selectionmodel)
@@ -145,11 +145,11 @@ The parent component. If not defined this is the root view, not a component.
 
 ### vm.root
 
-The [d3.view][] object the component belongs to. Equal to itself if the component is a [d3-view][].
+The [d3.view][] object the component belongs to. Equal to itself if the component is a [d3.view][].
 
 ### vm.cache
 
-An object for storing data. This object is the same across all components in a given [d3-view][].
+An object for storing data. This object is the same across all components in a given [d3.view][].
 ```
 vm.cache.foo = 'test';
 ```
@@ -162,11 +162,11 @@ Unique identifier
 
 Events object which can be used for registering event listeners or firing events.
 
-### vm.createElement(<i>tag</i>)
+### vm.createElement (<i>tag</i>)
 
 Create a new HTML Element with the given tag. Return a [d3.selection][] of the new element.
 
-### cm.viewElement(<i>html</i>, [<i>context</i>])
+### vm.viewElement (<i>html</i>, [<i>context</i>])
 
 Render an ``html`` string into an HTML Element. This method returns a [d3.selection][].
 If the optional ``context`` object is provided, it renders the html string using
@@ -178,7 +178,7 @@ Fetch a resource from a ``url``.
 
 ### vm.renderFromUrl (<i>url</i>, [<i>context</i>])
 
-Fetch an ``html`` template from a ``url`` (or the [vmcache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][].
+Fetch an ``html`` template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][].
 If the optional ``context`` object is provided, it renders the remote html string using
 [handlebars][] template engine (requires handlebars to be available).
 
@@ -207,6 +207,7 @@ The ``data`` object is passed to the render method while the optional ``callback
 
 
 [d3.view]: ./view.md
+[cache]: #vmcache
 [render]: render
 [d3.selection]: https://github.com/d3/d3-selection
 [handlebars]: http://handlebarsjs.com/
