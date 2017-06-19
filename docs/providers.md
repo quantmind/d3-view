@@ -5,6 +5,8 @@
 
 
 - [Access Providers](#access-providers)
+  - [Logger](#logger)
+  - [Fetch](#fetch)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -20,4 +22,18 @@ import {viewProviders} from 'd3-view'
 * In common JS
 ```javascript
 d3.viewProviders
+```
+
+### Logger
+
+The logger is available at
+```javascript
+d3.viewProviders.logger
+```
+
+### Fetch
+
+Retrieve data from urls
+```javascript
+d3.viewProviders.fetch
 ```

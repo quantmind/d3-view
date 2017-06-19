@@ -8,10 +8,10 @@
 - [Registration](#registration)
 - [Creating a Component](#creating-a-component)
   - [model](#model)
-  - [init (<i>options</i>)](#init-ioptionsi)
-  - [render (<i>data, attrs</i>)](#render-idata-attrsi)
-  - [mounted()](#mounted)
-  - [destroy()](#destroy)
+  - [init (options)](#init-options)
+  - [render (data, attrs)](#render-data-attrs)
+  - [mounted ()](#mounted-)
+  - [destroy ()](#destroy-)
 - [Component API](#component-api)
   - [vm.model](#vmmodel)
   - [vm.el](#vmel)
@@ -20,14 +20,14 @@
   - [vm.cache](#vmcache)
   - [vm.uid](#vmuid)
   - [vm.events](#vmevents)
-  - [vm.createElement (<i>tag</i>)](#vmcreateelement-itagi)
-  - [vm.viewElement (<i>html</i>, [<i>context</i>])](#vmviewelement-ihtmli-icontexti)
-  - [vm.fetch (<i>url</i>, [<i>options</i>])](#vmfetch-iurli-ioptionsi)
-  - [vm.renderFromUrl (<i>url</i>, [<i>context</i>])](#vmrenderfromurl-iurli-icontexti)
+  - [vm.createElement (tag)](#vmcreateelement-tag)
+  - [vm.viewElement (html, [context])](#vmviewelement-html-context)
+  - [vm.fetch (url, [options])](#vmfetch-url-options)
+  - [vm.renderFromUrl (url, [context])](#vmrenderfromurl-url-context)
 - [Selection](#selection)
-  - [selection.view()](#selectionview)
-  - [selection.model()](#selectionmodel)
-  - [selection.mount(<i>data</i>, [<i>callback</i>])](#selectionmountidatai-icallbacki)
+  - [selection.view ()](#selectionview-)
+  - [selection.model ()](#selectionmodel-)
+  - [selection.mount (data, [callback])](#selectionmount-data-callback)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -101,29 +101,27 @@ Once the component has been mounted, this is becomes the
 model associated with the component and therefore an API property
 of the component.
 
-Some component have their own model, other they use the model of the parent component.
-
-### init (<i>options</i>)
+### init (options)
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-### render (<i>data, attrs</i>)
+### render (data, attrs)
 
 This is **the only required hook**. It is called once only while the component is being mounted into the DOM
-and must return a single HTMLElement or a selector with one node only.
+and must return a single HTMLElement or a d3 selector with one node only.
 The returned element replaces the component element in the DOM.
 Importantly, this function can also return a [Promise][] which resolve in an HTMLElement or selector.
 
 * ``data`` is the data object in the component element
 * ``attrs`` is an object containing the key-value of attributes in the component element
 
-### mounted()
+### mounted ()
 
 Hook called after the component has been mounted in to the DOM.
 In this state the component has the full API available
 and all its children elements are mounted too.
 
-### destroy()
+### destroy ()
 
 Called when the component HTML element is removed from the DOM.
 
@@ -162,21 +160,22 @@ Unique identifier
 
 Events object which can be used for registering event listeners or firing events.
 
-### vm.createElement (<i>tag</i>)
+### vm.createElement (tag)
 
 Create a new HTML Element with the given tag. Return a [d3.selection][] of the new element.
 
-### vm.viewElement (<i>html</i>, [<i>context</i>])
+### vm.viewElement (html, [context])
 
 Render an ``html`` string into an HTML Element. This method returns a [d3.selection][].
 If the optional ``context`` object is provided, it renders the html string using
 [handlebars][] template engine (requires handlebars to be available).
 
-### vm.fetch (<i>url</i>, [<i>options</i>])
+### vm.fetch (url, [options])
 
-Fetch a resource from a ``url``.
+Fetch a resource from a ``url``. This is a convinient method which uses the
+``fetch`` [provider](./providers.md).
 
-### vm.renderFromUrl (<i>url</i>, [<i>context</i>])
+### vm.renderFromUrl (url, [context])
 
 Fetch an ``html`` template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][].
 If the optional ``context`` object is provided, it renders the remote html string using
@@ -186,12 +185,12 @@ If the optional ``context`` object is provided, it renders the remote html strin
 
 This plugins extend the [d3.selection][] API with three additional methods for retrieving mounted component from a given element and mounting components on a selection.
 
-### selection.view()
+### selection.view ()
 
 Retrieve the nearest ``component``/``view`` element to the ``selection`` starting for the Html element in the selection.
 It returns ``null`` if no component or view was not found in the selection element nor in all its parent elements.
 
-### selection.model()
+### selection.model ()
 
 Retrieve the nearest ``model`` to the ``selection`` starting for the Html element in the selection. Equivalent to
 ```javascript
@@ -199,7 +198,7 @@ var vm = selection.view();
 vm ? vm.model : null;
 ```
 
-### selection.mount(<i>data</i>, [<i>callback</i>])
+### selection.mount (data, [callback])
 
 Mount a ``selection`` with new components. This method is useful when adding new components to an already mounted DOM.
 The ``data`` object is passed to the render method while the optional ``callback`` function is called once mounting has finished.
