@@ -1,9 +1,5 @@
 module.exports = {
 
-    phantomjsLauncher: {
-        exitOnResourceError: true
-    },
-
     basePath: '../../',
     singleRun: true,
     frameworks: ['jasmine', 'browserify', 'es5-shim'],

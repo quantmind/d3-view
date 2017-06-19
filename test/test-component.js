@@ -106,5 +106,9 @@ describe('Components - ', function() {
             }
         });
         expect(vm.components.size()).toBe(1);
+        await vm.mount(vm.viewElement('<div><bla></bla></div>'));
+        var p = vm.sel.select('p');
+        expect(p.size()).toBe(1);
+        expect(p.html()).toBe('This is a test');
     }));
 });

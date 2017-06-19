@@ -204,7 +204,40 @@ vm ? vm.model : null;
 Mount a ``selection`` with new components. This method is useful when adding new components to an already mounted DOM.
 The ``data`` object is passed to the render method while the optional ``callback`` function is called once mounting has finished.
 
-
+For example lets take the following example:
+```html
+<div id="app"><div>
+```
+create and mount a view with a custom component ``msg``
+```javascript
+vm = d3.view({
+    components: {
+        msg: {
+            model: {
+                messagge: "Hi there!"
+            },
+            render () {
+                return this.viewElement('<p d3-html="message"></p>');
+            }
+        }
+    }
+});
+vm.mount('#app');
+```
+Somewhere in the code, after mounting:
+```javascript
+var sel = vm.sel;
+// equivalent to d3.select('#app');
+sel.append('msg').mount();
+sel.append('msg').mount({message: "Nice to meet you"});
+```
+and the result
+```html
+<div id="app">
+<p>Hi there!</p>
+<p>Nice to meet you</p>
+</div>
+```
 
 [d3.view]: ./view.md
 [cache]: #vmcache
