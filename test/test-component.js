@@ -111,5 +111,7 @@ describe('Components - ', function() {
         expect(p.size()).toBe(1);
         expect(p.html()).toBe('This is a test');
         expect('/test' in vm.cache).toBe(true);
+        var el = await vm.renderFromUrl('/test');
+        expect(el.tagName).toBe('P');
     }));
 });
