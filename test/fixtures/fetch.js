@@ -1,3 +1,6 @@
+import promise from '../promise';
+
+
 export default {
     '/test': () => {
         return asText('<p>This is a test</p>');
@@ -8,7 +11,7 @@ export default {
 function asText (text) {
     return {
         text () {
-            return new Promise(function (resolve) {resolve(text);});
+            return promise.ok(text);
         }
     };
 }

@@ -101,7 +101,7 @@ describe('Components - ', function() {
         var vm = view({
             components: {
                 bla: function () {
-                    return this.renderFromUrl();
+                    return this.renderFromUrl('/test');
                 }
             }
         });
@@ -110,5 +110,6 @@ describe('Components - ', function() {
         var p = vm.sel.select('p');
         expect(p.size()).toBe(1);
         expect(p.html()).toBe('This is a test');
+        expect('/test' in vm.cache).toBe(true);
     }));
 });

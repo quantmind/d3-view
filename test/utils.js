@@ -1,6 +1,7 @@
 import 'es6-promise';
 import {view, viewProviders} from '../index';
 import fixtures from './fixtures/fetch';
+import promise from './promise';
 
 window.handlebars = require('handlebars');
 
@@ -44,6 +45,6 @@ export default view;
 
 function testFetch (url) {
     var result = fixtures[url];
-    if (result) return new Promise(function (resolve) {resolve(result);});
-    else return new Promise(function (resolve, error) {error('404) - Not Found');});
+    if (result) return promise.ok(result());
+    else return promise.error('404 - Not Found');
 }
