@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isFunction, isArray, isPromise, isString, pop} from 'd3-let';
+import {isFunction, isArray, isPromise, pop} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
@@ -67,25 +67,25 @@ export const protoComponent = {
             var sel = select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
-                model = this.parent.model.$child(this.model);
+                model = this.model;
+            let key, value;
 
             data = assign({}, sel.datum(), data);
 
-            this.model = model;
+            // override model keys from data object
+            for (key in model) {
+                value = data[key] === undefined ? dattrs[key] : data[key];
+                if (value !== undefined)
+                    model[key] = maybeJson(pop(data, key));
+            }
+
+            // Create model
+            this.model = model = this.parent.model.$child(model);
 
             if (isArray(this.props)) {
-                var key, value;
                 this.props.forEach(prop => {
-                    key = data[prop] === undefined ? dattrs[prop] : data[prop];
-                    if (isString(key)) {
-                        if (model[key]) value = model[key];
-                        else value = maybeJson(key);
-                    } else
-                        value = key;
-                    if (value !== undefined) {
-                        data[prop] = value;
-                        if (model.$events.has(prop)) model[prop] = value;
-                    }
+                    value = maybeJson(data[prop] === undefined ? dattrs[prop] : data[prop]);
+                    if (value !== undefined) data[prop] = maybeJson(value);
                 });
             }
             //

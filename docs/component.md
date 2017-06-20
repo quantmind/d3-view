@@ -213,7 +213,7 @@ vm = d3.view({
     components: {
         msg: {
             model: {
-                messagge: "Hi there!"
+                message: "Hi there!"
             },
             render () {
                 return this.viewElement('<p d3-html="message"></p>');

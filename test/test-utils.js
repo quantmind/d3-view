@@ -1,6 +1,6 @@
-import {viewProviders, viewReady, viewDebounce} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewMount} from '../index';
 import maybeJson from '../src/utils/maybeJson';
-import {testAsync} from './utils';
+import view, {testAsync} from './utils';
 
 
 describe('model', () => {
@@ -25,6 +25,25 @@ describe('model', () => {
         function ready () {
             called += 1;
         }
+    }));
+
+    it ('viewMount', testAsync(async () => {
+        var vm = view({
+            components: {
+                msg: {
+                    model: {
+                        message: "Hi there!"
+                    },
+                    render () {
+                        return this.viewElement('<p d3-html="message"></p>');
+                    }
+                }
+            }
+        });
+        var el = vm.viewElement('<div></div>');
+        vm.mount(el);
+        await viewMount(vm.el, '<msg></msg>', {message: 'test message'});
+        expect(vm.sel.select('p').html()).toBe('test message');
     }));
 
 });
