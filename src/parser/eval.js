@@ -18,15 +18,28 @@ export function evaluate (self, expr) {
     }
 }
 
-export function identifiers (expr, all) {
-    if (arguments.length === 1) all = set();
+// extract identifiers from a context and a parsed extression
+export function identifiers (context, expr, all) {
+    if (arguments.length === 2) all = set();
     switch(expr.type) {
-        case code.IDENTIFIER: all.add(expr.name); break;
-        case code.ARRAY_EXP: expr.elements.forEach((elem) => {identifiers(elem, all);}); break;
-        case code.BINARY_EXP: identifiers(expr.left, all); identifiers(expr.right, all); break;
-        case code.CALL_EXP: identifiers(expr.arguments, all); break;
-        case code.MEMBER_EXP: identifiers(expr.object, all); break;
-        case code.CONDITIONAL_EXP: identifiers(expr.test, all); identifiers(expr.consequent, all); evaluate(expr.alternate, all); break;
+        case code.IDENTIFIER:
+            all.add(expr.name); break;
+        case code.ARRAY_EXP:
+            expr.elements.forEach(elem => identifiers(context, elem, all));
+            break;
+        case code.BINARY_EXP:
+            identifiers(context, expr.left, all);
+            identifiers(context, expr.right, all);
+            break;
+        case code.CALL_EXP:
+            identifiers(context, expr.arguments, all); break;
+        case code.MEMBER_EXP:
+            identifiers(context, expr.object, all); break;
+        case code.CONDITIONAL_EXP:
+            identifiers(context, expr.test, all);
+            identifiers(context, expr.consequent, all);
+            evaluate(context, expr.alternate, all);
+            break;
     }
     return all;
 }

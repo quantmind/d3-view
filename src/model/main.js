@@ -39,8 +39,6 @@ function $new (initials) {
     var parent = this,
         child = model(initials);
 
-    parent.$children.push(child);
-
     Object.defineProperty(child, 'parent', {
         get: function () {
             return parent;

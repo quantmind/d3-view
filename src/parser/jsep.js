@@ -1,5 +1,6 @@
 // Code originally from https://github.com/soney/jsep
 // Copyright (c) 2013 Stephen Oney, http://jsep.from.so/
+// Code modified and adapted to work with d3-view
 
 // This is the full set of types that any JSEP node can be.
 // Store them here to save space when minified

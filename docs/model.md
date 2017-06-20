@@ -4,7 +4,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [What is a view model?](#what-is-a-view-model)
+- [Hierarchical Reactive Model](#hierarchical-reactive-model)
 - [Reactivity](#reactivity)
   - [Objects](#objects)
   - [Collections](#collections)
@@ -22,9 +22,9 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## What is a view model?
+## Hierarchical Reactive Model
 
-At the core of the library we have the HRM, Hierarchical Reactive Model.
+At the core of the library we have the **HRM**, the Hierarchical Reactive Model.
 
 * **Hierarchical**: a **root** model is associated with a [d3-view][] object.
 ```javascript
@@ -83,7 +83,7 @@ model.$change('score');
 
 ### Objects
 
-An important property of the HRM is to create new models when
+An important property of the [HRM][] is to create **new** models when
 reactive properties are objects. For example
 ```javascript
 model = d3.viewModel({
@@ -92,7 +92,20 @@ model = d3.viewModel({
         foo: 1
     }
 });
+model.uid
+// 'd3v1'
+model.nested.parent === model
+// true
+model.nested.uid
+// 'd3v2'
+model.nested.foo
+// 1
 ```
+The ``nested`` property is converted into a reactive model with the parent set to the newly created model:
+```javascript
+typeof model.nested
+```
+
 ### Collections
 The ``$change`` method is useful when dealing with reactive collections, for example:
 ```javascript
@@ -191,3 +204,4 @@ b.parent    //  a
 
 [d3-view]: ./view.md
 [component]: ./component.md
+[HRM]: #hierarchical-reactive-model

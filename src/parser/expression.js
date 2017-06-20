@@ -18,8 +18,9 @@ const proto = {
         }
     },
 
-    identifiers: function () {
-        return identifiers(this.parsed).values();
+    // evaluate identifiers from a model
+    identifiers: function (model) {
+        return identifiers(model, this.parsed).values();
     }
 };
 

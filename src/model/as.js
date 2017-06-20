@@ -18,11 +18,6 @@ export default function asModel (model, initials) {
             get: function () {
                 return events;
             }
-        },
-        $children: {
-            get: function () {
-                return children;
-            }
         }
     });
     model.$child = $child;
@@ -38,7 +33,6 @@ function createChildConstructor (model) {
 
     function Child (initials) {
         asModel(this, initials);
-        model.$children.push(this);
         Object.defineProperty(this, 'parent', {
             get: function () {
                 return model;

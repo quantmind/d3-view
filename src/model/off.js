@@ -8,8 +8,6 @@ export default function (attr) {
             event = this.$events.get(type);
         if (event) removeEvent(event, bits.join('.'));
     }
-
-    this.$children.forEach((child) => child.$off(attr));
 }
 
 
