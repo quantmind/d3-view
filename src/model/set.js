@@ -23,6 +23,9 @@ function reactive (model, key, value) {
     model.$events.set(key, ddispatch());
 
     Object.defineProperty(model, key, property());
+
+    // Create a new model if value is an object
+    value = isObject(value) ? model.$new(value) : value;
     // Trigger the callback once for initialization
     model.$change(key);
 

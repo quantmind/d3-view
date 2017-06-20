@@ -138,4 +138,27 @@ describe('model', function() {
             called += 1;
         }
     }));
+
+    it ('model child', testAsync(async () => {
+        var model = viewModel({
+            foo: 5,
+            bla: {
+                a: 'test',
+                b: {
+                    c: 2
+                }
+            }
+        });
+        expect(model.bla instanceof viewModel).toBe(true);
+        expect(model.bla.b instanceof viewModel).toBe(true);
+
+        var called = 0;
+        model.bla.$on('a', () => {
+            called += 1;
+        });
+
+        model.bla.a = 5;
+        await nextTick();
+        expect(called).toBe(1);
+    }));
 });

@@ -23,7 +23,6 @@ export default {
         return {
             formSubmitted: false,
             formPending: false,
-            inputs: {},
             $isValid () {
                 let inp,
                     valid = true;
@@ -58,6 +57,7 @@ export default {
             form = this.createElement('form').attr('novalidate', ''),
             self = this;
         //
+        model.inputs = {};
         model.actions = {};
         model.form = this;
         //
