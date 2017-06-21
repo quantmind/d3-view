@@ -80,7 +80,8 @@ You can use it to attach html or text to element dynamically.
 
 ### d3-if
 
-The [d3-if][] directive display or hide an element. The display style is preserved.
+The [d3-if][] directive displays or hides an element depending on the binding expression.
+The display style is preserved.
 
 ### d3-on
 
@@ -133,8 +134,8 @@ var vm = d3.view({
 * Use the directive via the ``d3-mydir`` attribute.
 
 A directive is customized via the four methods highlighted above.
-None of the method needs implementing, and indeed for some directive
-the ``refresh`` method is the only one which needs attention.
+None of the methods need implementing, and indeed for some directive
+the **refresh** method is the only one which needs attention.
 
 Directives can also be added via [plugins][]
 
