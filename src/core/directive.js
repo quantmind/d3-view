@@ -1,6 +1,7 @@
 import assign from 'object-assign';
 
 import viewExpression from '../parser/expression';
+import viewModel from '../model/main';
 import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
@@ -70,15 +71,38 @@ const prototype = {
             };
 
         // Bind expression identifiers with model
-        this.identifiers = this.expression.identifiers().map((id) => {
-            var event = `${id}.${dir.uid}`;
-            model.$on(event, refresh);
-            return id;
+        let bits, target, attr, i;
+        dir.identifiers = [];
+        this.expression.identifiers().forEach(identifier => {
+            bits = identifier.split('.');
+            target = model;
+            attr = null;
+
+            for (i=0; i<bits.length-1; ++i) {
+                target = target[bits[i]];
+                if (!(target instanceof viewModel)) {
+                    attr = bits.slice(0, i+1).join('.');
+                    warn(`Property ${attr} is not a reactive model. Directive ${dir.name} cannot bind to ${identifier}`);
+                    break;
+                }
+            }
+
+            if (attr === null) {
+                attr = bits[bits.length-1];
+
+                dir.identifiers.push({
+                    model: target,
+                    attr: attr
+                });
+
+                var event = `${attr}.${dir.uid}`;
+                target.$on(event, refresh);
+            }
         });
 
         sel.on(`remove.${dir.uid}`, () => {
-            this.identifiers.forEach((id) => {
-                model.$off(`${id}.${dir.uid}`);
+            this.identifiers.forEach(identifier => {
+                identifier.model.$off(`${identifier.attr}.${dir.uid}`);
             });
             dir.destroy(model);
         });

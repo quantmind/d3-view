@@ -12,7 +12,6 @@
   - [d3-html](#d3-html)
   - [d3-if](#d3-if)
   - [d3-on](#d3-on)
-  - [d3-show](#d3-show)
   - [d3-value](#d3-value)
 - [Custom Directive](#custom-directive)
 - [Directive API](#directive-api)
@@ -81,7 +80,7 @@ You can use it to attach html or text to element dynamically.
 
 ### d3-if
 
-With [d3-if][] you can create conditionals.
+The [d3-if][] directive display or hide an element. The display style is preserved.
 
 ### d3-on
 
@@ -92,10 +91,6 @@ The event ``callback`` listens to **native DOM events only**.
 ```html
 <button d3-on-click="submit()">Submit</button>
 ```
-
-### d3-show
-
-The [d3-show][] directive display or hide an element. The display style is preserved.
 
 ### d3-value
 
@@ -184,6 +179,5 @@ Called **once only** when the element hosting the directive is removed from the 
 [d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
 [d3-if]: https://github.com/quantmind/d3-view/blob/master/src/directives/if.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
-[d3-show]: https://github.com/quantmind/d3-view/blob/master/src/directives/show.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
 [plugins]: ./plugins.md

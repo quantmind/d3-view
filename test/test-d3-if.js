@@ -3,7 +3,7 @@ import {viewUid} from '../index';
 import {timeout} from 'd3-timer';
 import {select} from 'd3-selection';
 
-describe('d3-show directive', function() {
+describe('d3-if directive', function() {
 
     it('block', (done) => {
         var uid = 'test' + viewUid(),
@@ -16,7 +16,7 @@ describe('d3-show directive', function() {
         select('body')
             .append('div')
             .attr('id', uid)
-            .html('<p d3-show="foo">Hi</p>');
+            .html('<p d3-if="foo">Hi</p>');
 
         vm.mount(`#${uid}`);
 
@@ -45,7 +45,7 @@ describe('d3-show directive', function() {
         select('body')
             .append('div')
             .attr('id', uid)
-            .html('<p d3-show="foo" style="display: inline">Hi there</p>');
+            .html('<p d3-if="foo" style="display: inline">Hi there</p>');
 
         vm.mount(`#${uid}`);
 
