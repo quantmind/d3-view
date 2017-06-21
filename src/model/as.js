@@ -7,7 +7,6 @@ import ddispatch from './dispatch';
 // Initialise a model
 export default function asModel (model, initials) {
     var events = map(),
-        children = [],
         Child = null;
 
     // event handler for any change in the model

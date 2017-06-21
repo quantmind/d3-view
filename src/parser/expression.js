@@ -19,8 +19,8 @@ const proto = {
     },
 
     // evaluate identifiers from a model
-    identifiers: function (model) {
-        return identifiers(model, this.parsed).values();
+    identifiers: function () {
+        return identifiers(this.parsed).values();
     }
 };
 

@@ -18,27 +18,29 @@ export function evaluate (self, expr) {
     }
 }
 
-// extract identifiers from a context and a parsed extression
-export function identifiers (context, expr, all) {
-    if (arguments.length === 2) all = set();
+// extract identifiers
+export function identifiers (expr, all) {
+    if (arguments.length === 1) all = set();
     switch(expr.type) {
         case code.IDENTIFIER:
             all.add(expr.name); break;
         case code.ARRAY_EXP:
-            expr.elements.forEach(elem => identifiers(context, elem, all));
+            expr.elements.forEach(elem => identifiers(elem, all));
             break;
         case code.BINARY_EXP:
-            identifiers(context, expr.left, all);
-            identifiers(context, expr.right, all);
+            identifiers(expr.left, all);
+            identifiers(expr.right, all);
             break;
         case code.CALL_EXP:
-            identifiers(context, expr.arguments, all); break;
+            identifiers(expr.callee, all);
+            expr.arguments.forEach(elem => identifiers(elem, all));
+            break;
         case code.MEMBER_EXP:
-            identifiers(context, expr.object, all); break;
+            all.add(fullName(expr)); break;
         case code.CONDITIONAL_EXP:
-            identifiers(context, expr.test, all);
-            identifiers(context, expr.consequent, all);
-            evaluate(context, expr.alternate, all);
+            identifiers(expr.test, all);
+            identifiers(expr.consequent, all);
+            evaluate(expr.alternate, all);
             break;
     }
     return all;
@@ -78,6 +80,11 @@ function binaryExp(op, a, b) {
     return binaryFunctions[op](a, b);
 }
 
+
+function fullName (expr) {
+    if (expr.type === code.IDENTIFIER) return expr.name;
+    else return `${fullName(expr.object)}.${expr.property.name}`;
+}
 
 const unaryFunctions = {};
 const binaryFunctions = {};

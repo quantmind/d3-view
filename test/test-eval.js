@@ -105,11 +105,13 @@ describe('viewExpression.eval', function() {
     it('identifiers', () => {
         expect(viewExpression('"ciao"').identifiers()).toEqual([]);
         expect(viewExpression('foo').identifiers()).toEqual(['foo']);
-        expect(viewExpression('random()').identifiers()).toEqual([]);
-        expect(viewExpression('pippo.bla').identifiers()).toEqual(['pippo']);
-        expect(viewExpression('pippo.more.name').identifiers()).toEqual(['pippo']);
-        expect(viewExpression('[pippo.bla]').identifiers()).toEqual(['pippo']);
-        expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo', 'foo']);
+        expect(viewExpression('random()').identifiers()).toEqual(['random']);
+        expect(viewExpression('pippo.bla').identifiers()).toEqual(['pippo.bla']);
+        expect(viewExpression('pippo.more.name').identifiers()).toEqual(['pippo.more.name']);
+        expect(viewExpression('[pippo.bla]').identifiers()).toEqual(['pippo.bla']);
+        expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo.bla', 'foo']);
+        expect(viewExpression('[pippo.bla.test(), foo.go(bla)]').identifiers()).toEqual(
+            ['pippo.bla.test', 'foo.go', 'bla']);
     });
 
     it('binary precedence', () => {
