@@ -10,8 +10,8 @@ describe('directive', function() {
 
         var vm = view();
         vm.addDirective('random', {
-            refresh (model, value) {
-                return value;
+            refresh () {
+                this.sel.html(''+Math.random());
             }
         });
         vm.mount(vm.viewElement('<div d3-random></div>'));
@@ -24,9 +24,15 @@ describe('directive', function() {
         expect(dir.uid).toBeTruthy();
         expect(dir.name).toBe('d3-random');
         expect(dir.sel.node()).toBe(vm.el);
-        // vm.mount(vm.viewElement('<div d3-random></div>'));
-
-
+        expect(dir.active).toBe(true);
+        var num = +vm.sel.html();
+        expect(num>0).toBe(true);
+        //
+        vm.model.$change();
+        await nextTick();
+        var num2 = +vm.sel.html();
+        expect(num2>0).toBe(true);
+        expect(num2 !== num).toBe(true);
     }));
 
 });

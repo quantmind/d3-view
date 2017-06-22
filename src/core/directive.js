@@ -1,4 +1,6 @@
 import assign from 'object-assign';
+import {isFunction} from 'd3-let';
+import {map} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
@@ -52,8 +54,7 @@ const prototype = {
 
     // Execute directive
     execute (model) {
-        // No binding expression - nothing to do
-        if (!this.expression) return;
+        if (!this.active) return;
         this.removeAttribute();
 
         model = this.mount(model);
@@ -64,7 +65,8 @@ const prototype = {
             sel = this.sel,
             refresh = function () {
                 try {
-                    dir.refresh(model, dir.expression.eval(model));
+                    let value = dir.expression ? dir.expression.eval(model) : undefined;
+                    dir.refresh(model, value);
                 } catch (msg) {
                     warn(`Error while refreshing "${dir.name}" directive: ${msg}`);
                 }
@@ -73,31 +75,56 @@ const prototype = {
         // Bind expression identifiers with model
         let bits, target, attr, i;
         dir.identifiers = [];
-        this.expression.identifiers().forEach(identifier => {
-            bits = identifier.split('.');
-            target = model;
-            attr = null;
+        if (!this.expression) {
+            dir.identifiers.push({
+                model: model,
+                attr: ''
+            });
+        } else {
+            var modelEvents = map();
+            this.expression.identifiers().forEach(identifier => {
+                bits = identifier.split('.');
+                target = model;
+                attr = null;
 
-            for (i=0; i<bits.length-1; ++i) {
-                target = target[bits[i]];
-                if (!(target instanceof viewModel)) {
-                    attr = bits.slice(0, i+1).join('.');
-                    warn(`Property ${attr} is not a reactive model. Directive ${dir.name} cannot bind to ${identifier}`);
-                    break;
+                for (i=0; i<bits.length-1; ++i) {
+                    target = target[bits[i]];
+                    if (!(target instanceof viewModel)) {
+                        attr = bits.slice(0, i+1).join('.');
+                        warn(`Property ${attr} is not a reactive model. Directive ${dir.name} cannot bind to ${identifier}`);
+                        break;
+                    }
                 }
-            }
 
-            if (attr === null) {
-                attr = bits[bits.length-1];
-
-                dir.identifiers.push({
-                    model: target,
-                    attr: attr
+                if (attr === null) {
+                    attr = bits[bits.length-1];
+                    if (isFunction(target[attr])) {
+                        modelEvents.set(target.uid, target);
+                        attr = '';
+                    } else
+                        dir.identifiers.push({
+                            model: target,
+                            attr: attr
+                        });
+                }
+            });
+            let identifiers = [];
+            modelEvents.each((target) => {
+                dir.identifiers.forEach(identifier => {
+                    if (identifier.model.uid !== target.uid)
+                        identifiers.push(identifier);
                 });
+                identifiers.push({
+                    model: target,
+                    attr: ''
+                });
+                dir.identifiers = identifiers;
+            });
+        }
 
-                var event = `${attr}.${dir.uid}`;
-                target.$on(event, refresh);
-            }
+        this.identifiers.forEach(identifier => {
+            var event = `${identifier.attr}.${dir.uid}`;
+            identifier.model.$on(event, refresh);
         });
 
         sel.on(`remove.${dir.uid}`, () => {
@@ -120,6 +147,7 @@ export default function (obj) {
         this.arg = arg;
         var expr = sel(uid(this)).create(attr.value);
         if (expr) this.expression = viewExpression(expr);
+        this.active = !attr.value || this.expression;
     }
 
     Directive.prototype = assign({}, prototype, obj);
