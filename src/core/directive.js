@@ -1,6 +1,6 @@
 import assign from 'object-assign';
 import {isFunction} from 'd3-let';
-import {map} from 'd3-collection';
+import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
@@ -96,29 +96,24 @@ const prototype = {
                     }
                 }
 
-                if (attr === null) {
-                    attr = bits[bits.length-1];
-                    if (isFunction(target[attr])) {
-                        modelEvents.set(target.uid, target);
-                        attr = '';
-                    } else
+                // process attribute
+                if (attr === null)
+                    addTarget(modelEvents, target, bits[bits.length-1]);
+            });
+
+            modelEvents.each(target => {
+                if (target.events.has(''))
+                    dir.identifiers.push({
+                        model: target.model,
+                        attr: ''
+                    });
+                else
+                    target.events.each(attr => {
                         dir.identifiers.push({
-                            model: target,
+                            model: target.model,
                             attr: attr
                         });
-                }
-            });
-            let identifiers = [];
-            modelEvents.each((target) => {
-                dir.identifiers.forEach(identifier => {
-                    if (identifier.model.uid !== target.uid)
-                        identifiers.push(identifier);
-                });
-                identifiers.push({
-                    model: target,
-                    attr: ''
-                });
-                dir.identifiers = identifiers;
+                    });
             });
         }
 
@@ -158,4 +153,26 @@ export default function (obj) {
 
     directive.prototype = Directive.prototype;
     return directive;
+}
+
+
+function addTarget (modelEvents, model, attr) {
+    var target = modelEvents.get(model.uid),
+        value = arguments.length === 3 ? model[attr] : undefined;
+
+    if (!target) {
+        target = {
+            model: model,
+            events: set()
+        };
+        modelEvents.set(model.uid, target);
+    }
+    //
+    if (isFunction(value) || arguments.length === 2)
+        target.events.add('');
+    else if (value instanceof viewModel) {
+        target.events.add('');
+        addTarget(modelEvents, value);
+    } else
+        target.events.add(attr);
 }

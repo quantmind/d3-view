@@ -11,14 +11,14 @@
   - [Lazy reactivity](#lazy-reactivity)
 - [Model API](#model-api)
   - [model.parent](#modelparent)
-  - [model.$get(attribute)](#modelgetattribute)
-  - [model.$set(attribute, value)](#modelsetattribute-value)
-  - [model.$update(object)](#modelupdateobject)
-  - [model.$on(attribute, callback)](#modelonattribute-callback)
-  - [model.$change(attribute)](#modelchangeattribute)
-  - [model.$off()](#modeloff)
-  - [model.$child(intials)](#modelchildintials)
-  - [model.$new(intials)](#modelnewintials)
+  - [model.$get (attribute)](#modelget-attribute)
+  - [model.$set (attribute, value)](#modelset-attribute-value)
+  - [model.$update (object)](#modelupdate-object)
+  - [model.$on (attribute, callback)](#modelon-attribute-callback)
+  - [model.$change ([attribute])](#modelchange-attribute)
+  - [model.$off ()](#modeloff-)
+  - [model.$child ([object])](#modelchild-object)
+  - [model.$new ([object])](#modelnew-object)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -145,30 +145,31 @@ model.isValid   //  False
 
 Get the ancestor of the model if it exists. It it does not exist, this is a root model.
 
-### model.$get(attribute)
+### model.$get (attribute)
 
 Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
 it will recursively retrieve it from its [parent](#modelparent).
 
-### model.$set(attribute, value)
+### model.$set (attribute, value)
 
 Set an attribute value in the model, traversing the tree. If the attribute is not
 a reactive attribute it becomes one.
 
-### model.$update(object)
+### model.$update (object)
 
 Same as [$set]() bit for a group of attribute-value pairs.
 
-### model.$on(attribute, callback)
+### model.$on (attribute, callback)
 
 Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which case it is triggered when any of the model **own attributes** change.
 
-### model.$change(attribute)
+### model.$change ([attribute])
 
-Dispatch the ``change`` event for ``attribute`` (it must be a reactive attribute otherwise it is a no operation).
+If ``attribute`` is not specified or it is an empty string, this method dispatches the ``change`` event for the model.
+Alternatively, it dispatches the ``change`` event for ``attribute`` (it must be a reactive attribute otherwise it is a no operation).
 
-this is useful when updating a composite model attribute (an array for example).
+This is useful when updating a composite model attribute (an array for example).
 ```javascript
 var model = d3.viewModel({
     data: []
@@ -177,11 +178,11 @@ model.data.push(4);
 model.$change('data');
 ```
 
-### model.$off()
+### model.$off ()
 
 Remove all callbacks from reactive attributes
 
-### model.$child(intials)
+### model.$child ([object])
 
 Crate a child model with prototypical inheritance from the model.
 ```javascript
@@ -191,7 +192,10 @@ b.foo       //  4
 b.bla       //  3
 b.parent    //  a
 ```
-### model.$new(intials)
+Child models are created by components by inheriting from the model of the previous
+component/view in the DOM tree.
+
+### model.$new ([object])
 
 Create a child model, with no inheritance from the parent (an isolated model).
 ```javascript
@@ -201,6 +205,7 @@ b.foo       //  undefined
 b.bla       //  3
 b.parent    //  a
 ```
+All models, with the exception of component models, are created in this way.
 
 [d3-view]: ./view.md
 [component]: ./component.md

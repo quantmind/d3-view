@@ -4,9 +4,10 @@ import view, {logger} from './utils';
 import {viewElement} from '../index';
 
 
-describe('d3-on directive', function() {
+describe('d3-for directive', function() {
 
     it('bad template', () => {
+        logger.pop();
         var vm = view();
         vm.mount(
             viewElement('<div><p d3-for="foo bo bla"></p></div>')
@@ -19,6 +20,7 @@ describe('d3-on directive', function() {
     });
 
     it('d3-for to paragraph', () => {
+        logger.pop();
         var text = ["blaaaaaa", "foooooooo"],
             vm = view({
             model: {
@@ -36,6 +38,7 @@ describe('d3-on directive', function() {
             expect(txt).toBe(text[i]);
             expect(this.innerHTML).toBe(txt);
         });
+        expect(logger.pop().length).toBe(0);
     });
 
     it('d3-for refresh', (done) => {

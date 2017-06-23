@@ -17,17 +17,17 @@
 - [Directive API](#directive-api)
   - [directive.el](#directiveel)
   - [directive.expression](#directiveexpression)
-  - [directive.create(<i>expression</i>)](#directivecreateiexpressioni)
-  - [directive.mount(<i>model</i>)](#directivemountimodeli)
-  - [directive.refresh(<i>model, newValue</i>)](#directiverefreshimodel-newvaluei)
-  - [directive.destroy(<i>model</i>)](#directivedestroyimodeli)
+  - [directive.create (expression)](#directivecreate-expression)
+  - [directive.mount (model)](#directivemount-model)
+  - [directive.refresh (model, newValue)](#directiverefresh-model-newvalue)
+  - [directive.destroy (model)](#directivedestroy-model)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## What is a Directive?
 
 Directives are special attributes with the ``d3-`` prefix.
-Directive attribute values are expected to be binding [expressions](#expressions).
+Directive attribute values are expected to be binding [expressions](#expressions) or empty.
 The library provides several directives for every day task.
 
 For example the ``d3-html`` directive binds an expression to the inner
@@ -35,7 +35,7 @@ Html of the element containing the directive:
 ```html
 <div id="entry">
     ...
-    <p d3-html='paragrah'></p>
+    <p d3-html='paragraph'></p>
     ...
 </div>
 ```
@@ -70,7 +70,11 @@ As the name suggest, the [d3-for][] directive can be used to repeat the
 element once per item from a collection. Each element gets its own model,
 where the given loop variable is set to the current collection item,
 and ``index`` is set to the item index or key.
-
+```html
+<li d3-for="item in items">
+    <a d3-attr-href="item.href" d3-html="item.label"></a>
+</li>
+```
 
 ### d3-html
 
@@ -151,14 +155,14 @@ API methods.
 The parsed expression, available after the [create](#directivecreateexpression)
 method has been called.
 
-### directive.create(<i>expression</i>)
+### directive.create (expression)
 
 The ``create`` method is called **once only**, at the end of directive initialisation, no binding with the HTML element or model has yet occurred.
 The ``expression`` is the attribute value, a string, and it is not yet parsed.
 This method must return the expression for parsing (it doesn't need to be the same as the input expression).
 However, if it returns nothing, the directive is not executed.
 
-### directive.mount(<i>model</i>)
+### directive.mount (model)
 
 The ``mount`` method is called **once only**, at the beginning of the binding process with the HTML element.
 The expression returned by the ``create`` method
@@ -166,11 +170,11 @@ has been parsed and available in the ``this.expression`` attribute.
 This method must return the model for binding (it doesn't need to be the same as the input model, but usually it is).
 However, if it returns nothing, the binding execution is aborted.
 
-### directive.refresh(<i>model, newValue</i>)
+### directive.refresh (model, newValue)
 
 This method is called **every time** the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel).
 
-### directive.destroy(<i>model</i>)
+### directive.destroy (model)
 
 Called **once only** when the element hosting the directive is removed from the DOM.
 

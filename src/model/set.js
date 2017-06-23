@@ -1,6 +1,7 @@
 import {isFunction} from 'd3-let';
 
 import warn from '../utils/warn';
+import debug from '../utils/debug';
 import isObject from '../utils/object';
 import ddispatch from './dispatch';
 
@@ -35,7 +36,11 @@ function reactive (model, key, value) {
         // trigger lazy callbacks
         var oldValue = value;
         value = isObject(newValue) ? model.$new(newValue) : newValue;
-        model.$change(key, oldValue);
+        //
+        // Fire model events
+        debug(`updating ${key}`);
+        model.$change(key, oldValue);   // attribute change event
+        model.$change();                // model change event
     }
 
     function property () {

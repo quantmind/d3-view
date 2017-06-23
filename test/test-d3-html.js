@@ -23,6 +23,10 @@ describe('d3-html directive', function() {
         expect(vm.sel.html()).toBe('This is a test');
         await nextTick();
         expect(vm.sel.html()).toBe('test reactivity');
+        // test with number
+        vm.model.test = 11;
+        await nextTick();
+        expect(vm.sel.html()).toBe('11');
     }));
 
     it('test nested one level', testAsync(async () => {
@@ -62,5 +66,24 @@ describe('d3-html directive', function() {
         expect(vm.sel.html()).toBe('This is a test');
         await nextTick();
         expect(vm.sel.html()).toBe('test reactivity2');
+    }));
+
+    it('test html mount', testAsync(async () => {
+        var vm = view({
+            model: {
+                html: 'simple'
+            },
+            components: {
+                boom () {
+                    return this.viewElement('<p>Boom!</p>');
+                }
+            }
+        });
+        vm.mount(vm.viewElement('<div d3-html="html"></div>'));
+        await nextTick();
+        expect(vm.sel.html()).toBe('simple');
+        vm.model.html = '<boom></boom>';
+        await nextTick();
+        expect(vm.sel.html()).toBe('<p>Boom!</p>');
     }));
 });
