@@ -1,3 +1,5 @@
+import {map} from 'd3-collection';
+
 import {viewDebounce} from '../index';
 import view, {testAsync} from './utils';
 
@@ -25,7 +27,9 @@ describe('directive', function() {
         var dirs = vm.sel.directives();
         expect(dirs).toBeTruthy();
         expect(dirs.all.length).toBe(2);
-        var dir = dirs.all[0];
+        var mdir = map();
+        dirs.all.forEach(d => {mdir.set(d.name, d);});
+        var dir = mdir.get('d3-random');
         expect(dir.uid).toBeTruthy();
         expect(dir.name).toBe('d3-random');
         expect(dir.sel.node()).toBe(vm.el);

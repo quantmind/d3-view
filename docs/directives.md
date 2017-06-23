@@ -16,6 +16,8 @@
 - [Custom Directive](#custom-directive)
 - [Directive API](#directive-api)
   - [directive.el](#directiveel)
+  - [directive.name](#directivename)
+  - [directive.uid](#directiveuid)
   - [directive.expression](#directiveexpression)
   - [directive.create (expression)](#directivecreate-expression)
   - [directive.mount (model)](#directivemount-model)
@@ -149,6 +151,14 @@ Directives can also be added via [plugins][]
 
 The HTML Element hosting the directive, available after initialisation and therefore accessible by all
 API methods.
+
+### directive.name
+
+The name of the directive (including the ``d3-`` prefix)
+
+### directive.uid
+
+The unique identifier of the directive.
 
 ### directive.expression
 
