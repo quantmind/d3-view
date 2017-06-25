@@ -7,13 +7,14 @@
 - [Overview](#overview)
 - [Usage](#usage)
 - [Form API](#form-api)
+- [Customize Fields](#customize-fields)
 - [Bootstrap Plugin](#bootstrap-plugin)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Overview
 
-This library include a form plugin for creating dynamic forms from JSON schema.
+This library include a form [plugin][] for creating dynamic forms from JSON schema.
 The plugin adds the ``d3form`` [component][] to the view-model:
 ```javascript
 import {view, viewForms} from 'd3-view';
@@ -48,6 +49,9 @@ schema = {
             "max": 100,
             "required": true,
             "name": "age"
+        },
+        {
+            "type": "submit"
         }
     ]
 }
@@ -85,3 +89,4 @@ var vm = view().use(viewForms).use(viewBootstrapForms);
 ```
 
 [component]: ./component.md
+[plugin]: ./plugins.md

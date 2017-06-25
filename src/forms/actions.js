@@ -1,5 +1,3 @@
-import {isObject} from 'd3-let';
-
 import providers from './providers';
 import warn from './warn';
 
@@ -11,12 +9,7 @@ export default {
 
 
 function submit (e) {
-    var form = this && this.model ? this.model.form : null;
-
-    if (!form) {
-        warn('form not available, cannot submit');
-        return;
-    }
+    var form = this;
 
     if (e) {
         e.preventDefault();
@@ -25,8 +18,7 @@ function submit (e) {
 
     var fetch = providers.fetch,
         ct = (form.data.enctype || '').split(';')[0],
-        action = form.data.action,
-        url = isObject(action) ? action.url : action,
+        url = form.data.url,
         data = form.inputData(),
         options = {};
 
@@ -54,7 +46,7 @@ function submit (e) {
 
     // Flag the form as submitted
     form.setSubmit();
-    options.method = form.method || 'post';
+    options.method = form.data.method || 'post';
     fetch(url, options).then(success, failure);
 
 

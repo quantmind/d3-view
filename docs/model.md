@@ -13,7 +13,7 @@
   - [model.parent](#modelparent)
   - [model.$get (attribute)](#modelget-attribute)
   - [model.$set (attribute, value)](#modelset-attribute-value)
-  - [model.$update (object)](#modelupdate-object)
+  - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
   - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$off ()](#modeloff-)
