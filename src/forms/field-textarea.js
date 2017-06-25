@@ -13,8 +13,7 @@ export default assign({
                 .attr('id', data.id)
                 .attr('name', data.name)
                 .attr('placeholder', data.placeholder)
-                .attr('d3-value', 'value')
-                .attr('d3-validate', 'validators');
+                .attr('d3-value', 'value');
 
         validators.set(this, el);
         return this.wrap(el);

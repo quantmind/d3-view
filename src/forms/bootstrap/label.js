@@ -1,5 +1,5 @@
-export default function (el) {
-    return this.wrapTemplate(el, labelTpl(this.data));
+export default function (field, wrappedEl) {
+    return field.wrapTemplate(wrappedEl, labelTpl(field.data));
 }
 
 

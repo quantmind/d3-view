@@ -4,7 +4,7 @@ import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
-import createDirective from './directive';
+import createDirective, {base} from './directive';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import providers from '../utils/providers';
@@ -14,15 +14,10 @@ import {htmlElement} from '../utils/html';
 
 
 // prototype for both views and components
-export const protoComponent = {
+export const protoComponent = assign({
     isd3: true,
     providers: providers,
-    htmlElement: htmlElement,
-    // same as export
-    viewElement: htmlElement,
-    createElement (tag) {
-        return select(document.createElement(tag));
-    },
+    //
     responseError (response) {
         var self = this;
         response.json().then((data) => {
@@ -101,7 +96,7 @@ export const protoComponent = {
                 return compile(this, el, newEl, onMounted);
         }
     }
-};
+}, base);
 
 // factory of View and Component constructors
 export function createComponent (o, prototype, coreDirectives) {

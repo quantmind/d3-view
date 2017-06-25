@@ -1,9 +1,9 @@
-export default function (el, formEl) {
-    var ig = this.data['group'];
-    if (!ig) return el;
-    var gid = `g${formEl.attr('id')}`;
-    formEl.attr('aria-describedby', gid);
-    return this.wrapTemplate(el, groupTpl(gid, ig));
+export default function (field, wrappedEl, fieldEl) {
+    var ig = field.data['group'];
+    if (!ig) return wrappedEl;
+    var gid = `g${fieldEl.attr('id')}`;
+    fieldEl.attr('aria-describedby', gid);
+    return field.wrapTemplate(wrappedEl, groupTpl(gid, ig));
 }
 
 

@@ -1,4 +1,4 @@
-import {isObject, isFunction} from 'd3-let';
+import {isObject, isFunction, isArray} from 'd3-let';
 
 import view from './utils';
 import {viewForms, viewElement, viewBootstrapForms} from '../index';
@@ -20,9 +20,8 @@ describe('Bootstrap plugin', () => {
 
     it('test install', () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
-        expect(vm.components.get('d3form')).toBeTruthy();
-        var theme = vm.components.get('d3form').prototype.formTheme;
-        expect(isObject(theme)).toBe(true);
+        expect(isArray(vm.$formExtensions)).toBe(true);
+        expect(vm.$formExtensions.length).toBe(1);
     });
 
     it('mount empty form', () => {

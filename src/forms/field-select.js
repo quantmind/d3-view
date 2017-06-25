@@ -14,7 +14,7 @@ export default assign({}, field, {
         $optionValue: optionValue
     }, field.model),
 
-    render: function (data) {
+    render (data) {
         data = this.inputData(data);
         var el = this.createElement('select')
                 .attr('id', data.id)

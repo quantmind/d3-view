@@ -70,6 +70,11 @@ depending if the form inputs pass validation.
 Check if the form inputs pass validation, return ``true`` or ``false``.
 
 
+## Customize Fields
+
+It is possible to customize fields by adding new functionality or
+wrapping their html representation with additional html elements.
+
 ## Bootstrap Plugin
 
 It is possible to use bootstrap layouts for d3 forms by importing and using the ``viewBootstrapForms`` plugin:

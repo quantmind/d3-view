@@ -4,25 +4,20 @@ import {select, selectAll} from 'd3-selection';
 import warn from './warn';
 import {modelData} from './utils';
 
-
+//
+// Mixin for all form elements
 export const formElement = {
 
-    wrap (sel) {
+    // wrap the form element with extensions
+    wrap (fieldEl) {
         var field = this,
-            theme = getTheme(field),
-            wrappers = theme ? theme[sel.attr('type')] || theme[sel.node().tagName.toLowerCase()] : null;
-        if (!wrappers || !theme.wrappers) return sel;
+            wrappedEl = fieldEl;
 
-        var wrapped = sel,
-            wrap;
-
-        wrappers.forEach((wrapper) => {
-            wrap = theme.wrappers[wrapper];
-            if (wrap) wrapped = wrap.call(field, wrapped, sel);
-            else warn(`Could not find form field wrapper ${wrapper}`);
+        this.model.$formExtensions.forEach((extension) => {
+            wrappedEl = extension(field, wrappedEl, fieldEl) || wrappedEl;
         });
 
-        return wrapped;
+        return wrappedEl;
     },
 
     wrapTemplate (sel, template) {
@@ -50,6 +45,7 @@ export default assign({
         value: null,
         error: '',
         isDirty: null,
+        labelSrOnly: '',
         showError: {
             reactOn: ['error', 'isDirty', 'formSubmitted'],
             get () {
@@ -71,10 +67,3 @@ export default assign({
     }
 
 }, formElement);
-
-
-function getTheme(component) {
-    var theme = component.formTheme;
-    if (!theme && component.parent) return getTheme(component.parent);
-    else return theme;
-}

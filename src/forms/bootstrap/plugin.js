@@ -2,6 +2,7 @@ import label from './label';
 import formGroup from './form-group';
 import inputGroup from './input-group';
 import submit from './submit';
+import warn from '../warn';
 
 
 const bootstrap = {
@@ -22,9 +23,24 @@ const bootstrap = {
 // Bootstrap theme
 export default {
 
-    install: function (view) {
-        var d3form = view.components.get('d3form');
-        if (d3form)
-            d3form.prototype.formTheme = bootstrap;
+    install (vm) {
+        if (!vm.$formExtensions)
+            return warn('form bootstrap requires the form plugin installed first!');
+        vm.$formExtensions.push(wrapBootstrap);
     }
 };
+
+
+function wrapBootstrap(field, wrappedEl, fieldEl) {
+    var wrappers = bootstrap[fieldEl.attr('type')] || bootstrap[fieldEl.node().tagName.toLowerCase()];
+    if (!wrappers) return wrappedEl;
+    let wrap;
+
+    wrappers.forEach(wrapper => {
+        wrap = bootstrap.wrappers[wrapper];
+        if (wrap) wrappedEl = wrap(field, wrappedEl, fieldEl);
+        else warn(`Could not find form field wrapper ${wrapper}`);
+    });
+
+    return wrappedEl;
+}

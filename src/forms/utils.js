@@ -64,5 +64,5 @@ function formChild (child) {
         component = 'input';
         child.type = 'hidden';
     }
-    return document.createElement(`d3${component}`);
+    return document.createElement(`d3-form-${component}`);
 }

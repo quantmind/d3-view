@@ -45,11 +45,11 @@ export default {
     },
 
     components: {
-        'd3fieldset': fieldset,
-        'd3input': input,
-        'd3textarea': textarea,
-        'd3select': select,
-        'd3submit': submit
+        'd3-form-fieldset': fieldset,
+        'd3-form-input': input,
+        'd3-form-textarea': textarea,
+        'd3-form-select': select,
+        'd3-form-submit': submit
     },
 
     render: function (data) {
@@ -57,6 +57,7 @@ export default {
             form = this.createElement('form').attr('novalidate', ''),
             self = this;
         //
+        model.$formExtensions = this.root.$formExtensions || [];
         model.inputs = {};
         model.actions = {};
         model.form = this;

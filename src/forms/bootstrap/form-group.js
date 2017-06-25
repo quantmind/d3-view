@@ -4,7 +4,7 @@ const groupTpl = `<div class="form-group" d3-class='showError ? "has-danger" : n
 </div>`;
 
 
-export default function (el, formEl) {
-    formEl.classed('form-control', true).attr('d3-class', 'showError ? "form-control-danger" : null');
-    return this.wrapTemplate(el, groupTpl);
+export default function (field, wrappedEl, fieldEl) {
+    fieldEl.classed('form-control', true).attr('d3-class', 'showError ? "form-control-danger" : null');
+    return field.wrapTemplate(wrappedEl, groupTpl);
 }

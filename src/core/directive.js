@@ -1,4 +1,5 @@
 import assign from 'object-assign';
+import {select} from 'd3-selection';
 import {isFunction} from 'd3-let';
 import {map, set} from 'd3-collection';
 
@@ -7,6 +8,17 @@ import viewModel from '../model/main';
 import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
+import {htmlElement} from '../utils/html';
+
+
+export const base = {
+    htmlElement: htmlElement,
+    // same as export
+    viewElement: htmlElement,
+    createElement (tag) {
+        return select(document.createElement(tag));
+    }
+};
 
 //
 // Directive Prototype
@@ -23,7 +35,7 @@ import sel from '../utils/sel';
 //  * refresh
 //  * destroy
 //
-const prototype = {
+const prototype = assign({
     priority: 1,
 
     // hooks
@@ -131,7 +143,7 @@ const prototype = {
 
         refresh();
     }
-};
+}, base);
 
 // Directive constructor
 export default function (obj) {

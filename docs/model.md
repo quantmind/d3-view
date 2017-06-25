@@ -152,12 +152,30 @@ it will recursively retrieve it from its [parent](#modelparent).
 
 ### model.$set (attribute, value)
 
-Set an attribute value in the model, traversing the tree. If the attribute is not
-a reactive attribute it becomes one.
+Set a reactive attribute value in the model. If the attribute is not a reactive attribute it becomes one.
 
-### model.$update (object)
+### model.$update (object, [override])
 
-Same as [$set]() bit for a group of attribute-value pairs.
+Same as [$set][] but for a group of attribute-value pairs. The optional ``override``
+parameter can be used to prevent overriding existing values:
+```javascript
+var m = d3.viewModel({a: 2});
+m.a     //  2
+
+m.$update({
+    a: 5,
+    b: 10
+}, false);
+m.a     // 2
+m.b     // 10
+
+m.$update({
+    a: 5,
+    b: 11
+});
+m.a     // 5
+m.b     // 11
+```
 
 ### model.$on (attribute, callback)
 
@@ -180,7 +198,7 @@ model.$change('data');
 
 ### model.$off ()
 
-Remove all callbacks from reactive attributes
+Remove all callbacks from reactive attributes and the model.
 
 ### model.$child ([object])
 
@@ -208,5 +226,6 @@ b.parent    //  a
 All models, with the exception of component models, are created in this way.
 
 [d3-view]: ./view.md
+[$set]: #modelset-attribute-value
 [component]: ./component.md
 [HRM]: #hierarchical-reactive-model

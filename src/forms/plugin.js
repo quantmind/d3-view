@@ -6,14 +6,13 @@ import providers from './providers';
 
 // Forms plugin
 export default {
-
-    install: function (view) {
-        view.addComponent('d3form', form);
-        for (var key in view.providers)
-            providers[key] = view.providers[key];
+    install (vm) {
+        vm.addComponent('d3form', form);
+        // list of form Extensions
+        vm.$formExtensions = [];
+        for (var key in vm.providers)
+            providers[key] = vm.providers[key];
     },
-
-    actions: actions,
-
-    responses: responses
+    actions,
+    responses
 };
