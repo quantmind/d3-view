@@ -12,8 +12,11 @@ export default assign({
     render: function (data) {
         var model = this.model;
         data = modelData.call(this, data);
-        data.type = data.type || 'submit';
         model.$set('error', false);
+        //
+        // model non-reactive attributes
+        model.type = data.type || 'submit';
+        if (data.endpoint) model.endpoint = data.endpoint;
         //
         // default submit function
         model.$submit = () => {
@@ -27,8 +30,8 @@ export default assign({
         if (!data.submit) data.submit = '$submit()';
 
         var el = this.createElement('button')
-                .attr('type', data.type)
-                .attr('name', data.name)
+                .attr('type', model.type)
+                .attr('name', model.name)
                 .attr('d3-attr-disabled', data.disabled)
                 .attr('d3-on-click', data.submit)
                 .html(data.label || 'submit');

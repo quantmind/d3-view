@@ -46,6 +46,7 @@ export default assign({
         error: '',
         isDirty: null,
         labelSrOnly: '',
+        placeholder: '',
         showError: {
             reactOn: ['error', 'isDirty', 'formSubmitted'],
             get () {

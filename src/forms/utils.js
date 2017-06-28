@@ -49,6 +49,7 @@ export function modelData(data) {
     if (!data) data = {};
     this.data = data;
     var model = this.model;
+    model.data = data;
     modelDataKeys.forEach((key) => {
         if (key in data)
             model.$set(key, data[key]);

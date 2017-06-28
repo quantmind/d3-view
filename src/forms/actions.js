@@ -1,3 +1,5 @@
+import assign from 'object-assign';
+
 import providers from './providers';
 import warn from './warn';
 
@@ -8,8 +10,17 @@ export default {
 };
 
 
+const endpointDefauls = {
+    contentType: 'application/json',
+    method: 'post'
+};
+
+//
+// Submit action
 function submit (e) {
-    var form = this;
+    var submit = this,
+        form = submit.form,
+        endpoint = assign({}, endpointDefauls, submit.endpoint);
 
     if (e) {
         e.preventDefault();
@@ -17,9 +28,7 @@ function submit (e) {
     }
 
     var fetch = providers.fetch,
-        ct = (form.data.enctype || '').split(';')[0],
-        url = form.data.url,
-        data = form.inputData(),
+        data = form.$inputData(),
         options = {};
 
     if (!fetch) {
@@ -27,14 +36,14 @@ function submit (e) {
         return;
     }
 
-    if (!url) {
+    if (!endpoint.url) {
         warn('No url, cannot submit');
         return;
     }
 
-    if (ct === 'application/json') {
+    if (endpoint.contentType === 'application/json') {
         options.headers = {
-            'Content-Type': form.data.enctype
+            'Content-Type': endpoint.contentType
         };
         options.body = JSON.stringify(data);
     }
@@ -45,17 +54,21 @@ function submit (e) {
     }
 
     // Flag the form as submitted
-    form.setSubmit();
-    options.method = form.data.method || 'post';
-    fetch(url, options).then(success, failure);
+    if (!form.$setSubmit()) {
+        // form not valid, don't bother with request
+        form.$setSubmitDone();
+    } else {
+        options.method = endpoint.method;
+        fetch(endpoint.url, options).then(success, failure);
+    }
 
 
     function success (response) {
-        form.setSubmitDone();
-        form.response(response);
+        form.$setSubmitDone();
+        form.$response(response);
     }
 
     function failure () {
-        form.setSubmitDone();
+        form.$setSubmitDone();
     }
 }

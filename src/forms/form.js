@@ -19,29 +19,73 @@ export default {
     // make sure a new model is created for this component
     props: ['schema'],
 
-    model () {
-        return {
-            formSubmitted: false,
-            formPending: false,
-            $isValid () {
-                let inp,
-                    valid = true;
-                for (var key in this.inputs) {
-                    inp = this.inputs[key];
-                    inp.$validate();
-                    if (inp.error) valid = false;
-                }
-                return valid;
-            },
-            $setSubmit () {
-                this.formSubmitted = true;
-                this.formPending = true;
-                return this.$isValid();
-            },
-            $setSubmitDone () {
-                this.formPending = false;
+    model: {
+        formSubmitted: false,
+        formPending: false,
+        $isValid () {
+            let inp,
+                valid = true;
+            for (var key in this.inputs) {
+                inp = this.inputs[key];
+                inp.$validate();
+                if (inp.error) valid = false;
             }
-        };
+            return valid;
+        },
+        $setSubmit () {
+            this.formSubmitted = true;
+            this.formPending = true;
+            return this.$isValid();
+        },
+        $setSubmitDone () {
+            this.formPending = false;
+        },
+        $inputData () {
+            var inputs = this.inputs,
+                data = {},
+                value;
+            for (var key in inputs) {
+                value = inputs[key].value;
+                if (value !== undefined) data[key] = value;
+            }
+            return data;
+        },
+        //
+        // response from a server submit
+        $response (response) {
+            if (!response) return;
+            var handler;
+
+            if (response.status) {
+                if (response.status < 300) {
+                    if (this.data.resultHandler) {
+                        handler = responses[this.data.resultHandler];
+                        if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
+                        else handler.call(this, response);
+                    } else {
+                        responses.default.call(this, response);
+                    }
+                } else
+                    this.responseError(response);
+            }
+            else if (response.error) {
+                this.error(response.error);
+            } else if (isArray(response.errors)) {
+                var self = this;
+                response.errors.forEach((error) => {
+                    self.inputError(error);
+                });
+            }
+            else {
+                if (this.data.resultHandler) {
+                    handler = responses[this.data.resultHandler];
+                    if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
+                    else handler.call(this, response);
+                } else {
+                    responses.default.call(this, response);
+                }
+            }
+        }
     },
 
     components: {
@@ -60,7 +104,7 @@ export default {
         model.$formExtensions = this.root.$formExtensions || [];
         model.inputs = {};
         model.actions = {};
-        model.form = this;
+        model.form = model; // inject self for children models
         //
         var schema = data['schema'];
         if (isString(schema)) {
@@ -89,58 +133,11 @@ export default {
         }
     },
 
-    inputData: function () {
-        var inputs = this.model.inputs,
-            data = {},
-            value;
-        for (var key in inputs) {
-            value = inputs[key].value;
-            if (value !== undefined) data[key] = value;
-        }
-
-        return data;
-    },
-
     inputError (error) {
         var input = this.model.inputs[error.name];
         if (!input) {
             warn('Unknown input, cannot set input error');
             this.error(error);
-        }
-    },
-
-    response (response) {
-        if (!response) return;
-        var handler;
-
-        if (response.status) {
-            if (response.status < 300) {
-                if (this.data.resultHandler) {
-                    handler = responses[this.data.resultHandler];
-                    if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
-                    else handler.call(this, response);
-                } else {
-                    responses.default.call(this, response);
-                }
-            } else
-                this.responseError(response);
-        }
-        else if (response.error) {
-            this.error(response.error);
-        } else if (isArray(response.errors)) {
-            var self = this;
-            response.errors.forEach((error) => {
-                self.inputError(error);
-            });
-        }
-        else {
-            if (this.data.resultHandler) {
-                handler = responses[this.data.resultHandler];
-                if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
-                else handler.call(this, response);
-            } else {
-                responses.default.call(this, response);
-            }
         }
     }
 };
