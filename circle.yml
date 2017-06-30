@@ -13,7 +13,8 @@ test:
   override:
     - yarn test
     - yarn cover
-    - mv coverage/C* $CIRCLE_ARTIFACTS/coverage
+  post:
+    - bash <(curl -s https://codecov.io/bash)
 
 
 deployment:
