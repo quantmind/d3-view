@@ -1,10 +1,11 @@
 # d3-view
 
 [![CircleCI](https://circleci.com/gh/quantmind/d3-view.svg?style=svg&circle-token=f84972c3cf4e8f17d74066ead28544da990115c3)](https://circleci.com/gh/quantmind/d3-view)
+[![codecov](https://codecov.io/gh/quantmind/d3-view/branch/master/graph/badge.svg)](https://codecov.io/gh/quantmind/d3-view)
+
 [![Dependency Status](https://david-dm.org/quantmind/d3-view.svg)](https://david-dm.org/quantmind/d3-view)
 [![devDependency Status](https://david-dm.org/quantmind/d3-view/dev-status.svg)](https://david-dm.org/quantmind/d3-view#info=devDependencies)
 
-[Coverage][]
 
 This is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
@@ -26,7 +27,3 @@ It provides data-reactive components with a simple and flexible API.
 * [Providers](/docs/providers.md)
 * [Forms](/docs/forms.md)
 * [Develop](/docs/develop.md)
-
-
-
-[Coverage]: https://circleci.com/api/v1/project/quantmind/d3-view/latest/artifacts/0/$CIRCLE_ARTIFACTS/coverage/index.html?branch=master&filter=successful
