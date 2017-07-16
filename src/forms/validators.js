@@ -110,7 +110,7 @@ export default {
     set (vm, el) {
         var model = vm.model;
         model._view = vm;
-        model.validators.forEach((validator) => validator.set(el, vm.data));
+        model.validators.forEach((validator) => validator.set(el, model.data));
         model.$on('value.validate', this.validate);
         model.$validate = this.validate;
     },

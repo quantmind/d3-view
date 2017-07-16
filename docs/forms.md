@@ -63,7 +63,10 @@ A d3 form can be rendered via
 ```javascript
 d3.select('#form-container').html('<d3form></d3form>').mount({schema: schema});
 ```
-
+Alternatively, one can mount the form via a remote url
+```javascript
+d3.select('#form-container').html('<d3form schema='https://'></d3form>').mount({schema: schema});
+```
 ## Form API
 
 The form API is exposed to the [model](./model.md) bound to the form component.

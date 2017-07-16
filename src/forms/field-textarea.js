@@ -5,7 +5,7 @@ import validators from './validators';
 
 //
 // Textarea element
-export default assign({
+export default assign({}, field, {
 
     render: function (data) {
         data = this.inputData(data);
@@ -19,4 +19,4 @@ export default assign({
         return this.wrap(el);
     }
 
-}, field);
+});
