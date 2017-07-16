@@ -8,9 +8,12 @@ const modelDataKeys = ['labelSrOnly', 'layout'];
 
 
 const componentsFromType = {
-    'text': 'input',
-    'password': 'input',
-    'number': 'input'
+    text: 'input',
+    password: 'input',
+    number: 'input',
+    date: 'input',
+    url: 'input',
+    'datetime-local': 'input'
 };
 
 

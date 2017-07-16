@@ -5,8 +5,10 @@ import {addChildren, modelData} from './utils';
 export default {
 
     render (data) {
-        var el = this.createElement('fieldset');
+        var tag = data.tag || 'fieldset';
+        var el = this.createElement(tag);
         modelData.call(this, data);
+        if (data.classes) el.classed(data.classes, true);
         return addChildren.call(this, el);
     }
 

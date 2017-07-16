@@ -1,5 +1,5 @@
 import 'es6-promise';
-import {view, viewProviders} from '../index';
+import {view, viewProviders, viewDebounce} from '../index';
 import fixtures from './fixtures/fetch';
 import promise from './promise';
 
@@ -35,6 +35,8 @@ export function testAsync (runAsync) {
         runAsync().then(done, done.fail);
     };
 }
+
+export const nextTick = viewDebounce();
 
 
 viewProviders.logger = logger;

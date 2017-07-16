@@ -52,7 +52,7 @@ const maxLength = {
 
     validate (el, value) {
         var l = +el.attr('maxlength');
-        if (l === l && l > 0 && value.length > l)
+        if (l === l && l > 0 && value && value.length > l)
             return `too long - ${l} characters or less expected`;
     }
 };

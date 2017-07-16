@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isFunction, isArray, isPromise, pop} from 'd3-let';
+import {isFunction, isArray, isPromise, isString, pop} from 'd3-let';
 import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
@@ -67,7 +67,7 @@ export const protoComponent = assign({
 
             data = assign({}, sel.datum(), data);
 
-            // override model keys from data object
+            // override model keys from data object and element attributes
             for (key in model) {
                 value = data[key] === undefined ? dattrs[key] : data[key];
                 if (value !== undefined)
@@ -80,7 +80,11 @@ export const protoComponent = assign({
             if (isArray(this.props)) {
                 this.props.forEach(prop => {
                     value = maybeJson(data[prop] === undefined ? dattrs[prop] : data[prop]);
-                    if (value !== undefined) data[prop] = maybeJson(value);
+                    if (value !== undefined) {
+                        // data point to a model attribute
+                        if (isString(value) && model[value]) value = model[value];
+                        data[prop] = value;
+                    }
                 });
             }
             //

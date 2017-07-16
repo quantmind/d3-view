@@ -22,8 +22,6 @@ export default assign({}, field, {
                 .attr('d3-value', 'value')
                 .attr('placeholder', data.placeholder);
 
-        this.model.options = data.options;
-
         el.append('option')
             .attr('d3-for', 'option in options')
             .attr('d3-html', '$optionLabel()')

@@ -7,8 +7,11 @@
 - [Overview](#overview)
 - [Usage](#usage)
 - [Form API](#form-api)
-- [Customize Fields](#customize-fields)
-- [Bootstrap Plugin](#bootstrap-plugin)
+  - [$inputData ()](#inputdata-)
+  - [$isValid ()](#isvalid-)
+  - [$setSubmit ()](#setsubmit-)
+  - [$setSubmitDone ()](#setsubmitdone-)
+- [Extensions](#extensions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -63,21 +66,54 @@ d3.select('#form-container').html('<d3form></d3form>').mount({schema: schema});
 
 ## Form API
 
-<a name="user-content-form-setsubmit" href="#form-setsubmit">#</a> form.<b>setSubmit</b>()
+The form API is exposed to the [model](./model.md) bound to the form component.
 
-Sets the form model ``formSubmitted`` and ``formSubmitted`` reactive attribute to ``true`` and
-returns a [Promise][] which resolves in ``true`` or ``false``
-depending if the form inputs pass validation.
+### $inputData ()
 
-<a name="user-content-form-isvalid" href="#form-isvalid">#</a> form.<b>isValid</b>()
+Object containing fields data with keys given by field names.
+Only values which are defined are included.
+
+### $isValid ()
 
 Check if the form inputs pass validation, return ``true`` or ``false``.
 
+### $setSubmit ()
 
-## Customize Fields
+Sets the form model ``formSubmitted`` and ``formPending`` reactive attributes to ``true`` and
+returns ``true`` or ``false`` depending if the form inputs pass validation.
+
+### $setSubmitDone ()
+
+Sets the form model ``formPending`` reactive attribute to ``false``.
+A common usage of this method is during form submission:
+```javascript
+if (form.$setSubmit()) {
+    // submit form
+} else
+    form.$setSubmitDone()   // don't submit, form not valid
+```
+
+## Extensions
 
 It is possible to customize fields by adding new functionality or
 wrapping their html representation with additional html elements.
+Extensions are functions with the following signature:
+```javascript
+extension (field, wrappedEl, fieldEl) {
+
+}
+```
+where ``field`` is form field component, ``wrappedEl`` is the outer HTML element
+which contain the field element ``fieldEl``.
+
+Form extensions should be added to the ``$formExtensions`` list in the root view.
+```javascript
+var vm = d3.view().use(d3.viewForms);
+vm.$formExtensions  //  []
+vm = d3.use(d3.viewBootstrapForms);
+vm.$formExtensions  //  [ [Function: wrapBootstrap] ]
+
+Form extensions can be added via plugins as the Bootstrap plugin does.
 
 ## Bootstrap Plugin
 
