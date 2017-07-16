@@ -12,6 +12,7 @@
   - [$setSubmit ()](#setsubmit-)
   - [$setSubmitDone ()](#setsubmitdone-)
 - [Extensions](#extensions)
+- [Bootstrap Plugin](#bootstrap-plugin)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -65,15 +66,16 @@ d3.select('#form-container').html('<d3form></d3form>').mount({schema: schema});
 ```
 Alternatively, one can mount the form via a remote url
 ```javascript
-d3.select('#form-container').html('<d3form schema='https://'></d3form>').mount({schema: schema});
+d3.select('#form-container').html('<d3form schema='https://goo.gl/fRVi9w'><d3form>');
 ```
+
 ## Form API
 
 The form API is exposed to the [model](./model.md) bound to the form component.
 
 ### $inputData ()
 
-Object containing fields data with keys given by field names.
+This method returns the object containing fields data with keys given by field names.
 Only values which are defined are included.
 
 ### $isValid ()
@@ -103,10 +105,10 @@ wrapping their html representation with additional html elements.
 Extensions are functions with the following signature:
 ```javascript
 extension (field, wrappedEl, fieldEl) {
-
+    //
 }
 ```
-where ``field`` is form field component, ``wrappedEl`` is the outer HTML element
+where ``field`` is a form field component, ``wrappedEl`` is the outer HTML element
 which contain the field element ``fieldEl``.
 
 Form extensions should be added to the ``$formExtensions`` list in the root view.
@@ -115,6 +117,7 @@ var vm = d3.view().use(d3.viewForms);
 vm.$formExtensions  //  []
 vm = d3.use(d3.viewBootstrapForms);
 vm.$formExtensions  //  [ [Function: wrapBootstrap] ]
+```
 
 Form extensions can be added via plugins as the Bootstrap plugin does.
 
