@@ -66,12 +66,17 @@ d3.select('#form-container').html('<d3form></d3form>').mount({schema: schema});
 ```
 Alternatively, one can mount the form via a remote url
 ```javascript
-d3.select('#form-container').html('<d3form schema='https://goo.gl/fRVi9w'><d3form>');
+d3.select('#form-container').html('<d3form schema="https://goo.gl/fRVi9w"><d3form>');
 ```
 
 ## Form API
 
 The form API is exposed to the [model](./model.md) bound to the form component.
+
+### actions
+
+Object containing actions which can be performed by the form.
+Only the default ``submit`` action is implemented.
 
 ### $inputData ()
 
@@ -97,6 +102,13 @@ if (form.$setSubmit()) {
 } else
     form.$setSubmitDone()   // don't submit, form not valid
 ```
+## Field API
+
+Fields are model associated with forms input components.
+
+### endpoint
+
+An object which defines an endpoint. Mainly used by ``submit`` type fields.
 
 ## Extensions
 
