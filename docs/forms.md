@@ -12,6 +12,7 @@
   - [$isValid ()](#isvalid-)
   - [$setSubmit ()](#setsubmit-)
   - [$setSubmitDone ()](#setsubmitdone-)
+  - [$response (response)](#response-response)
 - [Field API](#field-api)
   - [endpoint](#endpoint)
 - [Extensions](#extensions)
@@ -105,6 +106,12 @@ if (form.$setSubmit()) {
 } else
     form.$setSubmitDone()   // don't submit, form not valid
 ```
+
+### $response (response)
+
+Called after a successful form submit.
+
+
 ## Field API
 
 Fields are model associated with forms input components.

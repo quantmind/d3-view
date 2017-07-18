@@ -80,11 +80,13 @@ describe('json form', () => {
         var fv = form.view();
         expect(fv.parent).toBe(vm);
         var formModel = fv.model;
-        expect(Object.keys(formModel.inputs).length).toBe(2);
-        var id = formModel.inputs['id'];
-        var token = formModel.inputs['token'];
+        expect(Object.keys(formModel.inputs).length).toBe(3);
+        var id = formModel.inputs.id,
+            token = formModel.inputs.token,
+            remember = formModel.inputs.remember;
         expect(id).toBeTruthy();
         expect(token).toBeTruthy();
+        expect(remember).toBeTruthy();
 
         expect(id.showError).toBe(false);
         expect(token.showError).toBe(false);

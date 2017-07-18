@@ -22,6 +22,11 @@ export default JSON.stringify({
                     label: "Application Token",
                     required: true,
                     name: "token"
+                },
+                {
+                    type: "checkbox",
+                    label: "Remember me",
+                    name: "remember"
                 }
             ]
         },
