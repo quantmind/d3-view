@@ -19,6 +19,7 @@ export default {
         node(),
         sourcemaps()
     ],
+    extend: true,
     sourceMap: true,
     dest: 'build/d3-view.js',
     external: [

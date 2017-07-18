@@ -10,6 +10,7 @@ const modelDataKeys = ['labelSrOnly', 'layout'];
 const componentsFromType = {
     text: 'input',
     password: 'input',
+    checkbox: 'input',
     number: 'input',
     date: 'input',
     url: 'input',

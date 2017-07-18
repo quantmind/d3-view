@@ -1,6 +1,7 @@
 import label from './label';
 import formGroup from './form-group';
 import inputGroup from './input-group';
+import formCheck from './check';
 import submit from './submit';
 import warn from '../warn';
 
@@ -8,6 +9,7 @@ import warn from '../warn';
 const bootstrap = {
 
     input: ['inputGroup', 'label', 'formGroup'],
+    checkbox: ['formCheck'],
     textarea: ['label', 'formGroup'],
     select: ['label', 'formGroup'],
     submit: ['submit'],
@@ -15,6 +17,7 @@ const bootstrap = {
         label,
         formGroup,
         inputGroup,
+        formCheck,
         submit
     }
 };

@@ -7,10 +7,13 @@
 - [Overview](#overview)
 - [Usage](#usage)
 - [Form API](#form-api)
+  - [actions](#actions)
   - [$inputData ()](#inputdata-)
   - [$isValid ()](#isvalid-)
   - [$setSubmit ()](#setsubmit-)
   - [$setSubmitDone ()](#setsubmitdone-)
+- [Field API](#field-api)
+  - [endpoint](#endpoint)
 - [Extensions](#extensions)
 - [Bootstrap Plugin](#bootstrap-plugin)
 

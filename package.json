@@ -75,6 +75,7 @@
         "cover": "karma start test/karma/karma.cover.js",
         "minify": "uglifyjs --preamble \"$(preamble)\" build/d3-view.js -c -m -o build/d3-view.min.js",
         "build": "npm run-script rollup && npm run-script minify",
+        "simple": "rollup -c",
         "unit": "karma start test/karma/karma.unit.js",
         "debug": "karma start test/karma/karma.debug.js",
         "asset": "cd build && POST https://<upload_url>/repos/quantmind/d3-view/releases/:id/assets?name=d3-view.zip",
