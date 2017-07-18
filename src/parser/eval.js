@@ -36,11 +36,15 @@ export function identifiers (expr, all) {
             expr.arguments.forEach(elem => identifiers(elem, all));
             break;
         case code.MEMBER_EXP:
-            all.add(fullName(expr)); break;
+            all.add(fullName(expr));
+            break;
         case code.CONDITIONAL_EXP:
             identifiers(expr.test, all);
             identifiers(expr.consequent, all);
             evaluate(expr.alternate, all);
+            break;
+        case code.UNARY_EXP:
+            identifiers(expr.argument, all);
             break;
     }
     return all;

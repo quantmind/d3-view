@@ -8,6 +8,7 @@ window.handlebars = require('handlebars');
 
 export const logger = {
     logs: [],
+    debugLogs: [],
 
     warn: function (msg) {
         logger.logs.push(msg);
@@ -38,15 +39,16 @@ export function testAsync (runAsync) {
 
 export const nextTick = viewDebounce();
 
-
 viewProviders.logger = logger;
 viewProviders.fetch = testFetch;
+// uncomment this line for debug logs
+// viewProviders.setDebug();
 
 export default view;
 
 
-function testFetch (url) {
+function testFetch (url, ...o) {
     var result = fixtures[url];
-    if (result) return promise.ok(result());
+    if (result) return promise.ok(result(...o));
     else return promise.error('404 - Not Found');
 }

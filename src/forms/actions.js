@@ -66,7 +66,14 @@ function submit (e) {
 
     function success (response) {
         form.$setSubmitDone();
-        form.$response(response);
+        var ct = (response.headers.get('content-type') || '').split(';')[0];
+        if (ct === 'application/json')
+            response.json().then(data => {
+                form.$response(data, response.status, response.headers);
+            });
+        else {
+            warn(`Cannot load content type '${ct}'`);
+        }
     }
 
     function failure () {

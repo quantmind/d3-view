@@ -57,6 +57,4 @@ describe('json form select field', () => {
         options = vm.sel.selectAll('option');
         expect(options.size()).toBe(4);
     }));
-
-
 });

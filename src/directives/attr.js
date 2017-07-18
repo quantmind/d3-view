@@ -20,8 +20,8 @@ export default {
     refresh: function (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
-        if (properties.indexOf(this.arg) > -1) this.sel.property(this.arg, value || null);
-        else this.sel.attr(this.arg, value);
+        if (properties.indexOf(this.arg) > -1) this.sel.property(this.arg, value || false);
+        else this.sel.attr(this.arg, value || null);
     },
 
     refreshClass: function (value) {

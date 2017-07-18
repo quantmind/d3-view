@@ -10,7 +10,7 @@ export default JSON.stringify({
                 {
                     type: "text",
                     maxLength: 32,
-                    minLength: 32,
+                    minLength: 2,
                     label: "Application ID",
                     required: true,
                     name: "id"
@@ -28,7 +28,11 @@ export default JSON.stringify({
         {
             type: "submit",
             label: "Login",
-            name: "login"
+            name: "login",
+            disabled: "!form.$isValid()",
+            endpoint: {
+                url: '/submitTest'
+            }
         }
     ]
 });

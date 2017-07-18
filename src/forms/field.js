@@ -63,7 +63,14 @@ export default assign({
         if (!data.name) warn ('Input field without a name');
         data.placeholder = data.placeholder || data.label || data.name;
         data.id = data.id || `d3f${this.uid}`;
-        this.model.inputs[data.name] = this.model;
+        var model = this.model;
+        // add this model to the form inputs object
+        model.form.inputs[data.name] = model;
+        model.$on('value', () => {
+            // trigger a change event in the form
+            // required for form method such as $isValid
+            model.form.$change();
+        });
         return data;
     }
 

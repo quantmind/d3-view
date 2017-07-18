@@ -1,11 +1,8 @@
 import {isObject, isFunction, isArray} from 'd3-let';
 
-import view, {testAsync} from './utils';
-import {viewForms, viewElement, viewDebounce} from '../index';
+import view, {testAsync, nextTick} from './utils';
+import {viewForms, viewElement} from '../index';
 import jsonform from './fixtures/jsonform';
-
-
-const nextTick = viewDebounce();
 
 
 describe('view meta', () => {
@@ -110,4 +107,5 @@ describe('json form', () => {
         expect(id.showError).toBe(true);
         expect(token.showError).toBe(true);
     }));
+
 });

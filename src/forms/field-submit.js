@@ -29,7 +29,7 @@ export default assign({
         }
         if (!data.submit) data.submit = '$submit()';
 
-        var el = this.createElement('button')
+        var el = this.createElement(data.tag || 'button')
                 .attr('type', model.type)
                 .attr('name', model.name)
                 .attr('d3-attr-disabled', data.disabled)
