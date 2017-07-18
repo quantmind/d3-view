@@ -1,5 +1,5 @@
 import view, {testAsync, nextTick, trigger} from './utils';
-import {viewForms, viewProviders} from '../index';
+import {viewForms} from '../index';
 import jsonform from './fixtures/jsonform2';
 
 
@@ -29,8 +29,6 @@ describe('submit field', () => {
             });
         };
 
-        // submit no endpoint.url
-        viewProviders.logger.pop();
         var button = vm.sel.select('button');
         trigger(button.node(), 'click');
         // expect(viewProviders.logger.pop(1)[0]).toBe('[d3-form] No url, cannot submit');
