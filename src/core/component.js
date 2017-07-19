@@ -87,6 +87,8 @@ export const protoComponent = assign({
                     }
                 });
             }
+            // give the model a name
+            if (!model.name) model.name = this.name;
             //
             // create the new element from the render function
             var newEl = this.render(data, dattrs);

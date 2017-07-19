@@ -1,19 +1,36 @@
 import assign from 'object-assign';
+import {isString} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
 
 import warn from './warn';
-import {modelData} from './utils';
 
 //
 // Mixin for all form elements
 export const formElement = {
+
+    inputData (el, data) {
+        var model = this.model;
+        if (!data) data = {};
+        data.id = data.id || model.uid;
+        model.data = data;
+        el.attr('id', data.id);
+        if (data.classes) el.classed(data.classes, true);
+
+        if (data.disabled) {
+            if (isString(data.disabled))
+                el.attr('d3-attr-disabled', data.disabled);
+            else
+                el.property('disabled', true);
+        }
+        return data;
+    },
 
     // wrap the form element with extensions
     wrap (fieldEl) {
         var field = this,
             wrappedEl = fieldEl;
 
-        this.model.$formExtensions.forEach((extension) => {
+        field.model.$formExtensions.forEach(extension => {
             wrappedEl = extension(field, wrappedEl, fieldEl) || wrappedEl;
         });
 
@@ -39,18 +56,18 @@ export const formElement = {
 };
 
 // A mixin for all form field components
-export default assign({
+export default assign({}, formElement, {
 
     model: {
         value: null,
         error: '',
         isDirty: null,
-        labelSrOnly: '',
+        srOnly: false,
         placeholder: '',
         showError: {
-            reactOn: ['error', 'isDirty', 'formSubmitted'],
+            reactOn: ['error', 'isDirty'],
             get () {
-                if (this.error) return this.isDirty || this.formSubmitted;
+                if (this.error) return this.isDirty;
                 return false;
             }
         },
@@ -58,12 +75,15 @@ export default assign({
         $validate () {}
     },
 
-    inputData (data) {
-        data = modelData.call(this, data);
-        if (!data.name) warn ('Input field without a name');
+    inputData (el, data) {
+        data = formElement.inputData.call(this, el, data);
+        if (!data.name)
+            return warn ('Input field without a name');
+
+        el.attr('name', name);
         data.placeholder = data.placeholder || data.label || data.name;
-        data.id = data.id || `d3f${this.uid}`;
         var model = this.model;
+        //
         // add this model to the form inputs object
         model.form.inputs[data.name] = model;
         // give name to model (for debugging info messages)
@@ -78,4 +98,4 @@ export default assign({
         return data;
     }
 
-}, formElement);
+});

@@ -1,15 +1,17 @@
-import {addChildren, modelData} from './utils';
+import assign from 'object-assign';
+
+import {formElement} from './field';
+import {addChildren} from './utils';
 
 //
 // Fieldset element
-export default {
+export default assign({}, formElement, {
 
     render (data) {
-        var tag = data.tag || 'fieldset';
-        var el = this.createElement(tag);
-        modelData.call(this, data);
-        if (data.classes) el.classed(data.classes, true);
+        var tag = data ? data.tag || 'fieldset' : 'fieldset',
+            el = this.createElement(tag);
+        data = this.inputData(el, data);
         return addChildren.call(this, el);
     }
 
-};
+});

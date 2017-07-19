@@ -1,6 +1,6 @@
 import assign from 'object-assign';
 import {select} from 'd3-selection';
-import {isFunction} from 'd3-let';
+import {isFunction, isObject} from 'd3-let';
 import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
@@ -76,12 +76,8 @@ const prototype = assign({
         var dir = this,
             sel = this.sel,
             refresh = function () {
-                try {
-                    let value = dir.expression ? dir.expression.eval(model) : undefined;
-                    dir.refresh(model, value);
-                } catch (msg) {
-                    warn(`Error while refreshing "${dir.name}" directive: ${msg}`);
-                }
+                let value = dir.expression ? dir.expression.eval(model) : undefined;
+                dir.refresh(model, value);
             };
 
         // Bind expression identifiers with model
@@ -101,16 +97,19 @@ const prototype = assign({
 
                 for (i=0; i<bits.length-1; ++i) {
                     target = target[bits[i]];
-                    if (!(target instanceof viewModel)) {
+                    if (!isObject(target)) {
                         attr = bits.slice(0, i+1).join('.');
-                        warn(`Property ${attr} is not a reactive model. Directive ${dir.name} cannot bind to ${identifier}`);
+                        warn(`Property ${attr} is not an object. Directive ${dir.name} cannot bind to ${identifier}`);
                         break;
                     }
                 }
 
                 // process attribute
-                if (attr === null)
+                if (attr === null) {
+                    if (!(target instanceof viewModel))
+                        return warn(`${identifier} is not a reactive model. Directive ${dir.name} cannot bind to it`);
                     addTarget(modelEvents, target, bits[bits.length-1]);
+                }
             });
 
             modelEvents.each(target => {

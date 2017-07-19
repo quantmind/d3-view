@@ -1,5 +1,6 @@
 export default function (field, wrappedEl, fieldEl) {
-    var ig = field.data['group'];
+    var data = field.model.data,
+        ig = data['group'];
     if (!ig) return wrappedEl;
     var gid = `g${fieldEl.attr('id')}`;
     fieldEl.attr('aria-describedby', gid);

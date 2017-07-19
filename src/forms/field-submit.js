@@ -3,16 +3,17 @@ import {event} from 'd3-selection';
 import {isString} from 'd3-let';
 
 import {formElement} from './field';
-import {modelData} from './utils';
 
 //
 // Submit element
-export default assign({
+export default assign({}, formElement, {
 
     render: function (data) {
+        var tag = data ? data.tag || 'button' : 'button',
+            el = this.createElement(tag);
+
+        data = this.inputData(el, data);
         var model = this.model;
-        data = modelData.call(this, data);
-        model.$set('error', false);
         //
         // model non-reactive attributes
         model.type = data.type || 'submit';
@@ -29,13 +30,12 @@ export default assign({
         }
         if (!data.submit) data.submit = '$submit()';
 
-        var el = this.createElement(data.tag || 'button')
-                .attr('type', model.type)
-                .attr('name', model.name)
-                .attr('d3-attr-disabled', data.disabled)
-                .attr('d3-on-click', data.submit)
-                .html(data.label || 'submit');
+        el.attr('type', model.type)
+            .attr('name', model.name)
+            .attr('d3-attr-disabled', data.disabled)
+            .attr('d3-on-click', data.submit)
+            .html(data.label || 'submit');
 
         return this.wrap(el);
     }
-}, formElement);
+});

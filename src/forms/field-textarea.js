@@ -8,12 +8,10 @@ import validators from './validators';
 export default assign({}, field, {
 
     render: function (data) {
-        data = this.inputData(data);
-        var el = this.createElement('textarea')
-                .attr('id', data.id)
-                .attr('name', data.name)
-                .attr('placeholder', data.placeholder)
-                .attr('d3-value', 'value');
+        var el = this.createElement('textarea');
+        data = this.inputData(el, data);
+        el.attr('placeholder', data.placeholder)
+            .attr('d3-value', 'value');
 
         validators.set(this, el);
         return this.wrap(el);

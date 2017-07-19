@@ -1,5 +1,6 @@
 import {isString, isArray} from 'd3-let';
 
+import {formElement} from './field';
 import fieldset from './field-set';
 import input from './field-input';
 import textarea from './field-textarea';
@@ -10,7 +11,7 @@ import warn from './warn';
 import providers from './providers';
 import actions from './actions';
 import validators from './validators';
-import {addChildren, modelData} from './utils';
+import {addChildren} from './utils';
 
 
 // Main form component
@@ -19,14 +20,23 @@ export default {
     // make sure a new model is created for this component
     props: ['schema'],
 
+    components: {
+        'd3-form-fieldset': fieldset,
+        'd3-form-input': input,
+        'd3-form-textarea': textarea,
+        'd3-form-select': select,
+        'd3-form-submit': submit
+    },
+
     model: {
         formSubmitted: false,
         formPending: false,
-        $isValid () {
+        $isValid (submitting) {
             let inp,
                 valid = true;
             for (var key in this.inputs) {
                 inp = this.inputs[key];
+                if (submitting) inp.isDirty = true;
                 inp.$validate();
                 if (inp.error) valid = false;
             }
@@ -35,7 +45,7 @@ export default {
         $setSubmit () {
             this.formSubmitted = true;
             this.formPending = true;
-            return this.$isValid();
+            return this.$isValid(true);
         },
         $setSubmitDone () {
             this.formPending = false;
@@ -88,14 +98,6 @@ export default {
         }
     },
 
-    components: {
-        'd3-form-fieldset': fieldset,
-        'd3-form-input': input,
-        'd3-form-textarea': textarea,
-        'd3-form-select': select,
-        'd3-form-submit': submit
-    },
-
     render: function (data) {
         var model = this.model,
             form = this.createElement('form').attr('novalidate', ''),
@@ -117,14 +119,14 @@ export default {
         else return build(schema);
 
         function build (schema) {
-            modelData.call(self, schema);
+            schema = formElement.inputData.call(self, form, schema);
             //
             // Form validations
-            model.validators = validators.get(data.validators);
+            model.validators = validators.get(schema.validators);
             //
             // Form actions
             for (var key in actions) {
-                var action = self.data[key];
+                var action = schema[key];
                 if (isString(action)) action = self.model.$get(action);
                 model.actions[key] = action || actions[key];
             }

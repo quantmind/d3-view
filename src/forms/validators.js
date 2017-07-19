@@ -120,7 +120,7 @@ export default {
             vm = model._view,
             validators = model.validators,
             value = model.value,
-            el = vm.sel.attr('id') === vm.data.id ? vm.sel : vm.sel.select(`#${vm.data.id}`),
+            el = vm.sel.attr('id') === model.data.id ? vm.sel : vm.sel.select(`#${model.data.id}`),
             validator,
             msg;
 

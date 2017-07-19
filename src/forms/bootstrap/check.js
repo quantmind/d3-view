@@ -1,5 +1,5 @@
 export default function (field, wrappedEl, fieldEl) {
-    var data = field.data;
+    var data = field.model.data;
     fieldEl.classed('form-check-input', true);
     return field.wrapTemplate(wrappedEl, groupTpl(data.label));
 }

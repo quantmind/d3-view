@@ -15,17 +15,14 @@ export default assign({}, field, {
     }, field.model),
 
     render (data) {
-        data = this.inputData(data);
-        var el = this.createElement('select')
-                .attr('id', data.id)
-                .attr('name', data.name)
-                .attr('d3-value', 'value')
-                .attr('placeholder', data.placeholder);
-
-        el.append('option')
-            .attr('d3-for', 'option in options')
-            .attr('d3-html', '$optionLabel()')
-            .attr('d3-attr-value', '$optionValue()');
+        var el = this.createElement('select');
+        data = this.inputData(el, data);
+        el.attr('d3-value', 'value')
+            .attr('placeholder', data.placeholder)
+            .append('option')
+                .attr('d3-for', 'option in options')
+                .attr('d3-html', '$optionLabel()')
+                .attr('d3-attr-value', '$optionValue()');
 
         validators.set(this, el);
         return this.wrap(el);
