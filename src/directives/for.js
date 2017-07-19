@@ -1,8 +1,12 @@
 import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
-import simpleView from '../core/view';
+import {createComponent} from '../core/component';
+import protoView from '../core/view';
 import warn from '../utils/warn';
+
+
+export const forView = createComponent('forView', null, protoView);
 
 //
 //  d3-for directive
@@ -59,7 +63,7 @@ export default {
                 .each(function (d, index) {
                     x = {index: index};
                     x[itemName] = d;
-                    simpleView({
+                    forView({
                         model: x,
                         parent: vm
                     }).mount(this, (vm) => {

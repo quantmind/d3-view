@@ -127,7 +127,12 @@ Called when the component HTML element is removed from the DOM.
 
 ## Component API
 
-Components and views share the same API.
+Components and [views](./view.md) share the same API.
+
+### vm.name
+
+Component name, for a view this is `view`, for any other component it is the name
+the component has been registered with.
 
 ### vm.model
 

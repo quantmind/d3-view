@@ -23,7 +23,12 @@ const bootstrap = {
 };
 
 
-// Bootstrap theme
+//
+//  Bootstrap plugin
+//  ===================
+//
+//  Simply add a new form extension to wrap form fields
+//
 export default {
 
     install (vm) {

@@ -103,7 +103,7 @@ export const protoComponent = assign({
 }, base);
 
 // factory of View and Component constructors
-export function createComponent (o, prototype, coreDirectives) {
+export function createComponent (name, o, prototype, coreDirectives) {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -129,6 +129,11 @@ export function createComponent (o, prototype, coreDirectives) {
         extendDirectives(directives, pop(options, 'directives'));
 
         Object.defineProperties(this, {
+            name : {
+                get () {
+                    return name;
+                }
+            },
             components: {
                 get: function () {
                     return components;
@@ -200,7 +205,7 @@ export function mounted (view) {
 
 export function extendComponents (container, components) {
     map(components).each((obj, key) => {
-        container.set(key, createComponent(obj, protoComponent));
+        container.set(key, createComponent(key, obj, protoComponent));
     });
     return container;
 }
@@ -222,7 +227,7 @@ export function asView(vm, element, onMounted) {
         }
     });
     // Apply model to element and mount
-    var p = select(element).view(vm).mount();
+    var p = select(element).view(vm).mount(null, onMounted);
     if (isPromise(p))
         return p.then(() => {
             vm.mounted();

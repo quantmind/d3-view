@@ -10,7 +10,7 @@ import warn from '../utils/warn';
 
 //
 // prototype for views
-export const protoView = assign({}, protoComponent, {
+export default assign({}, protoComponent, {
 
     use: function (plugin) {
         if (isObject(plugin)) plugin.install(this);
@@ -20,7 +20,7 @@ export const protoView = assign({}, protoComponent, {
 
     addComponent: function (name, obj) {
         if (this.isMounted) return warn('already mounted, cannot add component');
-        var component = createComponent(obj, protoComponent);
+        var component = createComponent(name, obj, protoComponent);
         this.components.set(name, component);
         return component;
     },
@@ -43,9 +43,6 @@ export const protoView = assign({}, protoComponent, {
         }
     }
 });
-
-
-export default createComponent(null, protoView);
 
 
 function element (el) {
