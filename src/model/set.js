@@ -38,7 +38,8 @@ function reactive (model, key, value) {
         value = isObject(newValue) ? model.$new(newValue) : newValue;
         //
         // Fire model events
-        debug(`updating ${key}`);
+        var modelName = model.name || 'model';
+        debug(`updating ${modelName}.${key}`);
         model.$change(key, oldValue);   // attribute change event
         model.$change();                // model change event
     }

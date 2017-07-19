@@ -1,6 +1,7 @@
 import {logger, inBrowser, isFunction} from 'd3-let';
 
-var debug = logger.info;
+import {defaultDebug} from './debug';
+
 
 logger.debug = null;
 
@@ -12,7 +13,7 @@ export default {
     // Set/unset debug
     setDebug (active) {
         if (!arguments.length || active)
-            this.logger.debug = isFunction(active) ? active : debug;
+            this.logger.debug = isFunction(active) ? active : defaultDebug;
         else
             this.logger.debug = null;
     }

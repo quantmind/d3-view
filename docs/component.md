@@ -13,6 +13,7 @@
   - [mounted ()](#mounted-)
   - [destroy ()](#destroy-)
 - [Component API](#component-api)
+  - [vm.name](#vmname)
   - [vm.model](#vmmodel)
   - [vm.el](#vmel)
   - [vm.parent](#vmparent)

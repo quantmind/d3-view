@@ -2,8 +2,12 @@ import providers from './providers';
 
 const prefix = '[d3-view-debug]';
 
-
-export default function debug (msg) {
+export default function (msg) {
     if (providers.logger.debug)
-        providers.logger.debug(`${prefix} ${msg}`);
+        providers.logger.debug(msg);
+}
+
+
+export function defaultDebug (msg) {
+    providers.logger.info(`${prefix} ${msg}`);
 }

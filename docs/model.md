@@ -6,6 +6,7 @@
 
 - [Hierarchical Reactive Model](#hierarchical-reactive-model)
 - [Reactivity](#reactivity)
+  - [Overview](#overview)
   - [Objects](#objects)
   - [Collections](#collections)
   - [Lazy reactivity](#lazy-reactivity)
@@ -46,6 +47,12 @@ A model is usually associated with a given [component][], the model-view pair, b
 
 ## Reactivity
 
+Model reactivity is what makes models powerful when designing dynamic interfaces.
+Models are usually associed with d3-view views and components but they
+can be used on their own too.
+
+### Overview
+
 A model is created with ``viewModel`` function by passing an object of reactive
 properties:
 ```javascript
@@ -53,18 +60,19 @@ model = d3.viewModel({
     bla: 'foo',
     score: 10
 });
+
 // model.bla is reactive
 // model.score is reactive
 ```
-The model does not allow dynamically adding new root-level reactive properties
-to an already created instance::
+A model does not allow dynamically adding new root-level reactive properties
+to an already created instance:
 ```javascript
 model.a = 5;
 // model.a is NOT reactive
 model.$events.get('a')
 // undefinied
 ```
-However you can specify a new reactive property via the ``$set`` method
+However you can specify a new reactive property via the [$set](#modelset-attribute-value) method
 ```javascript
 model.$set('a', 5);
 // model.a is now reactive
@@ -76,7 +84,7 @@ One can trigger a change event either by modifying the value:
 ```javsacript
 model.score = 11
 ```
-or explicitly calling the ``$change`` method
+or explicitly calling the [$change](#modelchange-attribute) method
 ```javascript
 model.$change('score');
 ```
@@ -101,10 +109,15 @@ model.nested.uid
 model.nested.foo
 // 1
 ```
-The ``nested`` property is converted into a reactive model with the parent set to the newly created model:
+The ``nested`` property is converted into a reactive model with the parent set to the newly created model.
+The ``nested`` model **is not created via prototypical inheritance** from the parent model, therefore
 ```javascript
-typeof model.nested
+model.bla
+//  `foo`
+model.nested.bla
+//  undefined
 ```
+In other words, the ``nested`` model has been created via the [$new](#modelnew-object) method.
 
 ### Collections
 The ``$change`` method is useful when dealing with reactive collections, for example:
@@ -113,6 +126,11 @@ model = d3.viewModel({
     data: [10, 5]
 });
 model.data.push(68);
+```
+Even though the ``data`` is a reactive attribute, the ``push`` function does
+not trigger a change event (the array has changed but it is still the same object).
+Therefore one can force the change event with:
+```javascript
 model.$change('data');
 ```
 

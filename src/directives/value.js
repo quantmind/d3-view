@@ -1,4 +1,4 @@
-import tags from './tags/all';
+import types from './types/index';
 
 import warn from '../utils/warn';
 
@@ -12,10 +12,10 @@ export default {
     create: function (expression) {
         var type = this.sel.attr('type'),
             tag = this.el.tagName.toLowerCase(),
-            Tag = tags[type] || tags[tag];
+            ValueType = types[type] || types[tag];
 
-        if (!Tag) return warn(`Cannot apply d3-value directive to ${tag}`);
-        this.tag = new Tag(this.el);
+        if (!ValueType) return warn(`Cannot apply d3-value directive to ${tag}`);
+        this.tag = new ValueType(this.el);
         return expression;
     },
 
@@ -27,19 +27,17 @@ export default {
         var attrName = this.expression.expr;
         //
         // Create the model reactive attribute
-        model.$set(attrName, this.tag.value);
-
+        model.$set(attrName, this.tag.value());
+        // register dom event
         this.tag.on(model, attrName);
         return model;
     },
 
     refresh: function (model, value) {
-        this.tag.value = value;
+        this.tag.value(value);
     },
 
     destroy: function () {
         this.tag.off();
     }
 };
-
-

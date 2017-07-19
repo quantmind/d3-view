@@ -66,7 +66,11 @@ export default assign({
         var model = this.model;
         // add this model to the form inputs object
         model.form.inputs[data.name] = model;
+        // give name to model (for debugging info messages)
+        model.name = data.name;
         model.$on('value', () => {
+            // set isDirty to false if first time here, otherwise true
+            model.isDirty === null ? model.isDirty = false : model.isDirty = true;
             // trigger a change event in the form
             // required for form method such as $isValid
             model.form.$change();

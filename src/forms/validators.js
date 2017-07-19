@@ -124,8 +124,6 @@ export default {
             validator,
             msg;
 
-        model.isDirty === null ? model.isDirty = false : model.isDirty = true;
-
         for (var i=0; i<validators.length; ++i) {
             validator = validators[i];
             msg = validator.validate(el, value);

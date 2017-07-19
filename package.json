@@ -71,7 +71,7 @@
         "lint": "eslint index.js test src examples",
         "test": "eslint index.js test src examples && npm run-script unit",
         "rollup": "rollup -c --banner \"$(preamble)\"",
-        "dev": "rollup -c --banner \"$(preamble)\" -w",
+        "dev": "rollup -c -w",
         "cover": "karma start test/karma/karma.cover.js",
         "minify": "uglifyjs --preamble \"$(preamble)\" build/d3-view.js -c -m -o build/d3-view.min.js",
         "build": "npm run-script rollup && npm run-script minify",
