@@ -75,4 +75,4 @@ var vm2 = d3.view({
 ```
 
 All properties in the input object are optionals and are used to initialised the view with
-custom data: [model](./model.md), [components](./component.md) and [directives](./directives).
+custom data: [model](./model.md), [components](./component.md) and [directives](./directives.md).
