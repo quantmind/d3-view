@@ -12,7 +12,6 @@
   - [Lazy reactivity](#lazy-reactivity)
 - [Model API](#model-api)
   - [model.parent](#modelparent)
-  - [model.$get (attribute)](#modelget-attribute)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
@@ -162,11 +161,6 @@ model.isValid   //  False
 ### model.parent
 
 Get the ancestor of the model if it exists. It it does not exist, this is a root model.
-
-### model.$get (attribute)
-
-Get an attribute value from the model, traversing the tree. If the ``attribute`` is not available in the model,
-it will recursively retrieve it from its [parent](#modelparent).
 
 ### model.$set (attribute, value)
 

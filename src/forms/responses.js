@@ -5,8 +5,7 @@ export default {
 };
 
 
-function defaultResponse (response) {
-    var data = response.json();
+function defaultResponse (data) {
     this.message(data);
 }
 

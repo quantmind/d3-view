@@ -1,10 +1,8 @@
 import asModel from './as';
 import string from './string';
-import $get from './get';
 import $set from './set';
 import $on from './on';
 import $update from './update';
-import $setbase from './setbase';
 import $off from './off';
 import $change from './change';
 
@@ -27,11 +25,14 @@ Model.prototype.toString = string;
 Model.prototype.$on = $on;
 Model.prototype.$change = $change;
 Model.prototype.$update = $update;
-Model.prototype.$get = $get;
 Model.prototype.$set = $set;
 Model.prototype.$new = $new;
-Model.prototype.$setbase = $setbase;
 Model.prototype.$off = $off;
+Object.defineProperty(Model.prototype, 'root', {
+    get: function () {
+        return this.parent ? this.parent.root : this;
+    }
+});
 
 
 function $new (initials) {

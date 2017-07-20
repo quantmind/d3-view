@@ -1,4 +1,4 @@
-import {isString, isArray} from 'd3-let';
+import {isString} from 'd3-let';
 
 import {formElement} from './field';
 import fieldset from './field-set';
@@ -62,39 +62,23 @@ export default {
         },
         //
         // response from a server submit
-        $response (response) {
-            if (!response) return;
-            var handler;
-
-            if (response.status) {
-                if (response.status < 300) {
-                    if (this.data.resultHandler) {
-                        handler = responses[this.data.resultHandler];
-                        if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
-                        else handler.call(this, response);
-                    } else {
-                        responses.default.call(this, response);
-                    }
-                } else
-                    this.responseError(response);
-            }
-            else if (response.error) {
-                this.error(response.error);
-            } else if (isArray(response.errors)) {
-                var self = this;
-                response.errors.forEach((error) => {
-                    self.inputError(error);
-                });
-            }
-            else {
+        $response (data, status, headers) {
+            if (status < 300) {
                 if (this.data.resultHandler) {
-                    handler = responses[this.data.resultHandler];
+                    var handler = responses[this.data.resultHandler];
                     if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
-                    else handler.call(this, response);
+                    else handler.call(this, data, status, headers);
                 } else {
-                    responses.default.call(this, response);
+                    responses.default.call(this, data, status, headers);
                 }
-            }
+            } else
+                this.$responseError(data, status, headers);
+        },
+        //
+        //  bad response from server submit
+        $responseError (data) {
+            data.level = 'error';
+            this.$message(data);
         }
     },
 
@@ -132,14 +116,6 @@ export default {
             }
             addChildren.call(self, form);
             return form;
-        }
-    },
-
-    inputError (error) {
-        var input = this.model.inputs[error.name];
-        if (!input) {
-            warn('Unknown input, cannot set input error');
-            this.error(error);
         }
     }
 };

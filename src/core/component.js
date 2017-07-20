@@ -14,24 +14,9 @@ import {htmlElement} from '../utils/html';
 
 
 // prototype for both views and components
-export const protoComponent = assign({
+export const protoComponent = assign({}, base, {
     isd3: true,
     providers: providers,
-    //
-    responseError (response) {
-        var self = this;
-        response.json().then((data) => {
-            self.error(data, response);
-        });
-    },
-    error (data) {
-        data.level = 'error';
-        this.message(data);
-    },
-    message (data) {
-        var self = this;
-        this.root.events.call('message', self, data);
-    },
 
     // Shortcut for fetch function in providers
     fetch (url, options) {
@@ -102,7 +87,7 @@ export const protoComponent = assign({
                 return compile(this, el, newEl, onMounted);
         }
     }
-}, base);
+});
 
 // factory of View and Component constructors
 export function createComponent (name, o, prototype, coreDirectives) {
