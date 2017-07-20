@@ -19,13 +19,28 @@ rebuilds:
 yarn dev
 ```
 
+## Contributing
+
+We welcome all type of contributions, all you need to do is to
+check the very minimal [contributing](../contributing.md) guidelines and
+contribute in the form of
+
+* bug fixes
+* feature requests
+* API design
+* Documentation
+* Examples as blocks
+Check the very minimal [contributing](../contributing.md) guidelines and hope
+to see your patch or idea soon.
+
 ## Other Frameworks
 
-In order of complexity
+d3-view is a model-view library, lightweight by design. There are several other
+libraries or frameworks doing or aim at doing similar things.
 
-* [Angular](https://angularjs.org/)
-* [React](https://facebook.github.io/react/)
-* [Vue](http://vuejs.org/)
+* [Angular](https://angularjs.org/) - monolitic framework
+* [React](https://facebook.github.io/react/) - very popular
+* [Vue](http://vuejs.org/) - popular - d3-view has taken some idea from it
 
 
 ## D3 plugins

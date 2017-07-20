@@ -33,6 +33,18 @@ vm.mount("#my-element");
 </script>
 ```
 
+## Dependencies
+
+d3-view strictly depends on four d3 plugins:
+
+* [d3-collection](https://github.com/d3/d3-collection)
+* [d3-dispatch](https://github.com/d3/d3-dispatch)
+* [d3-selection](https://github.com/d3/d3-selection)
+* [d3-timer](https://github.com/d3/d3-timer)
+
+However, to write interesting UI components one may want to use many other
+d3 plugins, or the whole d3 library.
+
 ## Creating a view
 
 ``d3.view`` is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building

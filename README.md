@@ -17,13 +17,17 @@ It provides data-reactive components with a simple and flexible API.
 
 ## Contents
 
-* [Getting Started](/docs/getting-started.md)
-* [View](/docs/view.md)
-* [Model](/docs/model.md)
-* [Components](/docs/component.md)
-* [Directives](/docs/directives.md)
-* [Expressions](/docs/expressions.md)
-* [Plugins](/docs/plugins.md)
-* [Providers](/docs/providers.md)
-* [Forms](/docs/forms.md)
-* [Develop](/docs/develop.md)
+* Overview
+    * [Getting Started](/docs/getting-started.md)
+    * [View](/docs/view.md)
+    * [Develop](/docs/develop.md)
+    * [Examples](/docs/examples.md)
+* API
+    * [Model](/docs/model.md)
+    * [Components](/docs/component.md)
+    * [Directives](/docs/directives.md)
+    * [Expressions](/docs/expressions.md)
+* Extending
+    * [Plugins](/docs/plugins.md)
+    * [Providers](/docs/providers.md)
+    * [Forms](/docs/forms.md)
