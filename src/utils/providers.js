@@ -7,8 +7,11 @@ logger.debug = null;
 
 
 export default {
+    // log messages
     logger: logger,
+    // fetch remote resources
     fetch: fetch(),
+    // callbacks when page is loaded in browser
     readyCallbacks: [],
     // Set/unset debug
     setDebug (active) {

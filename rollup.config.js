@@ -6,9 +6,13 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 
 
 export default {
-    entry: 'index.js',
-    format: 'umd',
-    moduleName: 'd3',
+    input: 'index.js',
+    output: {
+        file: 'build/d3-view.js',
+        format: 'umd',
+        sourcemap: true
+    },
+    name: 'd3',
     plugins: [
         json(),
         babel({
@@ -20,8 +24,6 @@ export default {
         sourcemaps()
     ],
     extend: true,
-    sourceMap: true,
-    dest: 'build/d3-view.js',
     external: [
         "d3-collection",
         "d3-dispatch",
