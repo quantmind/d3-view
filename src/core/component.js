@@ -7,34 +7,12 @@ import {dispatch} from 'd3-dispatch';
 import createDirective, {base} from './directive';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
-import providers from '../utils/providers';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
-import {htmlElement} from '../utils/html';
 
 
 // prototype for both views and components
 export const protoComponent = assign({}, base, {
-    isd3: true,
-    providers: providers,
-
-    // Shortcut for fetch function in providers
-    fetch (url, options) {
-        var fetch = providers.fetch;
-        return arguments.length == 1 ? fetch(url) : fetch(url, options);
-    },
-
-    //
-    // render a template from a url
-    renderFromUrl (url, context) {
-        var cache = this.cache;
-        if (url in cache)
-            return new Promise((resolve) => resolve(htmlElement(cache[url])));
-        return this.fetch(url).then(response => response.text()).then(template => {
-            cache[url] = template;
-            return htmlElement(template, context);
-        });
-    },
     //
     // hooks
     init () {},

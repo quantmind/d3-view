@@ -10,10 +10,7 @@
 This is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
 It provides data-reactive components with a simple and flexible API.
-
-* [Javascript ES6](/docs/develop.md)
-* Minimal footprint  - use only what you need
-* Built on top of [d3](https://github.com/d3)
+Written in [Javascript ES6](/docs/develop.md) with a minimal footprint.
 
 ## Contents
 

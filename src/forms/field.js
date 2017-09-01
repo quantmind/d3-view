@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isString} from 'd3-let';
+import {isString, isObject} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
 
 import warn from './warn';
@@ -15,6 +15,7 @@ export const formElement = {
         model.data = data;
         el.attr('id', data.id);
         if (data.classes) el.classed(data.classes, true);
+        addAttributes(el, model, data.attributes);
 
         if (data.disabled) {
             if (isString(data.disabled))
@@ -100,3 +101,24 @@ export default assign({}, formElement, {
     }
 
 });
+
+
+function addAttributes(el, model, attributes) {
+    var expr, attr, t;
+
+    if (!isObject(attributes)) return;
+
+    for (attr in attributes) {
+        expr = attributes[attr];
+        if (isObject(expr)) {
+            if (attr.substring(0, 3) === 'd3-') {
+                t = attr.replace('-', '_');
+                model.$set(t, expr);
+                expr = t;
+            } else {
+                expr = JSON.stringify(expr);
+            }
+        }
+        el.attr(attr, expr || '');
+    }
+}
