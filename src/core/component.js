@@ -4,7 +4,8 @@ import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
-import createDirective, {base} from './directive';
+import base from './base';
+import createDirective from './directive';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';

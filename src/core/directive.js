@@ -1,5 +1,4 @@
 import assign from 'object-assign';
-import {select} from 'd3-selection';
 import {isFunction, isObject} from 'd3-let';
 import {map, set} from 'd3-collection';
 
@@ -8,38 +7,7 @@ import viewModel from '../model/main';
 import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
-import providers from '../utils/providers';
-import {htmlElement} from '../utils/html';
-
-
-export const base = {
-    isd3: true,
-    //
-    providers: providers,
-    // #TODO: remove this
-    htmlElement: htmlElement,
-    // same as export
-    viewElement: htmlElement,
-    //
-    createElement (tag) {
-        return select(document.createElement(tag));
-    },
-    // Shortcut for fetch function in providers
-    fetch (url, options) {
-        var fetch = providers.fetch;
-        return arguments.length == 1 ? fetch(url) : fetch(url, options);
-    },
-    // render a template from a url
-    renderFromUrl (url, context) {
-        var cache = this.cache;
-        if (url in cache)
-            return new Promise((resolve) => resolve(htmlElement(cache[url])));
-        return this.fetch(url).then(response => response.text()).then(template => {
-            cache[url] = template;
-            return htmlElement(template, context);
-        });
-    }
-};
+import base from './base';
 
 //
 // Directive Prototype
