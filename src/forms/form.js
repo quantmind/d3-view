@@ -56,7 +56,7 @@ export default {
                 value;
             for (var key in inputs) {
                 value = inputs[key].value;
-                if (value !== undefined) data[key] = value;
+                if (value || input.changed) data[key] = value;
             }
             return data;
         },

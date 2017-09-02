@@ -63,6 +63,7 @@ export default assign({}, formElement, {
         value: null,
         error: '',
         isDirty: null,
+        changed: false,
         srOnly: false,
         placeholder: '',
         showError: {
@@ -92,7 +93,12 @@ export default assign({}, formElement, {
         model.name = data.name;
         model.$on('value', () => {
             // set isDirty to false if first time here, otherwise true
-            model.isDirty === null ? model.isDirty = false : model.isDirty = true;
+            if (model.isDirty === null) {
+                model.isDirty = false;
+            } else {
+                model.isDirty = true;
+                model.changed = true;
+            }
             // trigger a change event in the form
             // required for form method such as $isValid
             model.form.$change();

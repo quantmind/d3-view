@@ -24,6 +24,10 @@ export default {
         var fetch = providers.fetch;
         return arguments.length == 1 ? fetch(url) : fetch(url, options);
     },
+    //
+    json (url, ...x) {
+        return this.fetch(url, ...x).then(json);
+    },
     // render a template from a url
     renderFromUrl (url, context) {
         var cache = this.cache;
@@ -35,3 +39,12 @@ export default {
         });
     }
 };
+
+
+function json (response) {
+    var ct = (response.headers.get('content-type') || '').split(';')[0];
+    if (ct === 'application/json')
+        return response.json();
+    else
+        throw new Error(`Expected JSON content type, got ${ct}`);
+}
