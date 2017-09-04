@@ -26,7 +26,7 @@ export default {
     },
     //
     json (url, ...x) {
-        return this.fetch(url, ...x).then(json);
+        return this.fetch(url, ...x).then(jsonResponse);
     },
     // render a template from a url
     renderFromUrl (url, context) {
@@ -41,7 +41,7 @@ export default {
 };
 
 
-function json (response) {
+export function jsonResponse (response) {
     var ct = (response.headers.get('content-type') || '').split(';')[0];
     if (ct === 'application/json')
         return response.json();

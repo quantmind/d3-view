@@ -17,3 +17,5 @@ export {
     compile as viewTemplate,
     html as viewHtml
 } from './src/utils/html';
+
+export {jsonResponse} from './src/core/base';
