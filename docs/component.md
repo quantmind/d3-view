@@ -141,7 +141,11 @@ The [model](#model) bound to the component, the combo gives the name to the **vi
 
 ### vm.el
 
-Root HTMLElement of the view.
+The HTMLElement of the component.
+
+### vm.sel
+
+Equivalent to ``d3.select(vm.el)``, d3 selection of the component element.
 
 ### vm.parent
 
