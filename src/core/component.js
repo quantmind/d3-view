@@ -27,15 +27,15 @@ export const protoComponent = assign({}, base, {
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
                 model = this.model;
-            let key, value;
+            let key, value, target;
 
             data = assign({}, sel.datum(), data);
 
             // override model keys from data object and element attributes
             for (key in model) {
-                value = data[key] === undefined ? dattrs[key] : data[key];
-                if (value !== undefined)
-                    model[key] = maybeJson(pop(data, key));
+                target = data[key] === undefined ? dattrs : data;
+                if (target[key] !== undefined)
+                    model[key] = maybeJson(pop(target, key));
             }
 
             // Create model

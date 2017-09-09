@@ -1,7 +1,7 @@
 import {select} from 'd3-selection';
 
 import providers from '../utils/providers';
-import {htmlElement} from '../utils/html';
+import {htmlElement, html} from '../utils/html';
 
 //
 //  Base d3-view Object
@@ -25,17 +25,24 @@ export default {
         return arguments.length == 1 ? fetch(url) : fetch(url, options);
     },
     //
+    fetchText (url, ...x) {
+        return this.fetch(url, ...x).then(response => response.text());
+    },
+    //
     json (url, ...x) {
         return this.fetch(url, ...x).then(jsonResponse);
     },
+    //
     // render a template from a url
-    renderFromUrl (url, context) {
+    renderFromUrl (url, context, asElement=true) {
         var cache = this.cache;
         if (url in cache)
-            return new Promise((resolve) => resolve(htmlElement(cache[url])));
-        return this.fetch(url).then(response => response.text()).then(template => {
+            return new Promise((resolve) => resolve(
+                asElement ? htmlElement(cache[url]) : cache[url]
+            ));
+        return this.fetchText(url).then(template => {
             cache[url] = template;
-            return htmlElement(template, context);
+            return asElement ? htmlElement(template, context) : html(template, context);
         });
     }
 };
