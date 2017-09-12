@@ -209,7 +209,7 @@ If the optional ``context`` object is provided, it renders the remote html strin
 
 ### vm.select(HTMLElement)
 
-Return a [d3-selection][] of the ``HTMLElement``.
+Return a [d3.selection][] of the ``HTMLElement``.
 
 ## Selection
 
