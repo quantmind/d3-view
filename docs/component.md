@@ -26,7 +26,10 @@
   - [vm.createElement (tag)](#vmcreateelement-tag)
   - [vm.viewElement (html, [context])](#vmviewelement-html-context)
   - [vm.fetch (url, [options])](#vmfetch-url-options)
+  - [fetchText (url, [options])](#fetchtext-url-options)
+  - [json (url, [options])](#json-url-options)
   - [vm.renderFromUrl (url, [context])](#vmrenderfromurl-url-context)
+  - [vm.select(HTMLElement)](#vmselecthtmlelement)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -190,11 +193,23 @@ If the optional ``context`` object is provided, it renders the html string using
 Fetch a resource from a ``url``. This is a convinient method which uses the
 ``fetch`` [provider](./providers.md).
 
+### fetchText (url, [options])
+
+Fetch a resource from a ``url`` and return the text value
+
+### json (url, [options])
+
+Fetch a resource from a ``url`` and return the object obtained after parsing text as JSON.
+
 ### vm.renderFromUrl (url, [context])
 
 Fetch an ``html`` template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][].
 If the optional ``context`` object is provided, it renders the remote html string using
 [handlebars][] template engine (requires handlebars to be available).
+
+### vm.select(HTMLElement)
+
+Return a [d3-selection][] of the ``HTMLElement``.
 
 ## Selection
 

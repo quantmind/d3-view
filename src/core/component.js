@@ -1,6 +1,5 @@
 import assign from 'object-assign';
 import {isFunction, isArray, isPromise, isString, pop} from 'd3-let';
-import {select} from 'd3-selection';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
@@ -25,7 +24,7 @@ export const protoComponent = assign({}, base, {
     mount: function (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
-            var sel = select(el),
+            var sel = this.select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
                 model = this.model;
@@ -195,7 +194,7 @@ export function asView(vm, element, onMounted) {
         }
     });
     // Apply model to element and mount
-    var p = select(element).view(vm).mount(null, onMounted);
+    var p = vm.select(element).view(vm).mount(null, onMounted);
     if (isPromise(p))
         return p.then(() => {
             vm.mounted();
@@ -219,7 +218,7 @@ function compile (cm, el, element, onMounted) {
     // Insert before the component element
     el.parentNode.insertBefore(element, el);
     // remove the component element
-    select(el).remove();
+    cm.select(el).remove();
     //
     return asView(cm, element, onMounted);
 }

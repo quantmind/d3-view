@@ -16,6 +16,10 @@ export default {
     // Create a view element, same as createElement but compile it
     viewElement: htmlElement,
     //
+    select (el) {
+        return select(el);
+    },
+    //
     createElement (tag) {
         return select(document.createElement(tag));
     },
