@@ -91,8 +91,8 @@ var component = {
 
 ### props
 
-The optional ``props`` array can specify a set of HTML attributes which contribute to the component properties.
-The html properties can contain
+Optional array to specify a set of HTML attributes which contribute to the component properties, the object passed to the [render][] method.
+The HTML properties can contain
 
 * JSON strings
 * Model attribute name
@@ -117,9 +117,9 @@ Importantly, this function can also return a [Promise][] which resolve in an HTM
 
 The input parameters are:
 
-* ``props`` an object with keys given by the **props** array and value given by the corresponding values found in the ``HTMLElement`` the component is mounted
+* ``props`` an object with keys given by the [props][] array and value given by the corresponding values found in the original ``HTMLElement`` of the component
 * ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement``
-* ``HTMLElement`` the HTML element the component is mounted
+* ``HTMLElement`` the original HTML element of the component
 
 ### mounted ()
 
@@ -255,7 +255,8 @@ and the result
 
 [d3.view]: ./view.md
 [cache]: #vmcache
-[render]: render
+[props]: #props
+[render]: #render-props-htmlattrs-htmlelement
 [d3.selection]: https://github.com/d3/d3-selection
 [handlebars]: http://handlebarsjs.com/
 [Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
