@@ -20,6 +20,8 @@ export const protoComponent = assign({}, base, {
     render () {},
     mounted () {},
     //
+    // Mount the component into an element
+    // If this component is already mounted it does nothing
     mount: function (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
@@ -55,7 +57,7 @@ export const protoComponent = assign({}, base, {
             if (!model.name) model.name = this.name;
             //
             // create the new element from the render function
-            var newEl = this.render(data, dattrs);
+            var newEl = this.render(data, dattrs, el);
             if (isPromise(newEl)) {
                 var self = this;
                 return newEl.then((element) => {

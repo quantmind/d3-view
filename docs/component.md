@@ -7,15 +7,17 @@
 - [Overview](#overview)
 - [Registration](#registration)
 - [Creating a Component](#creating-a-component)
+  - [props](#props)
   - [model](#model)
   - [init (options)](#init-options)
-  - [render (data, attrs)](#render-data-attrs)
+  - [render (props, HTMLAttrs, HTMLElement)](#render-props-htmlattrs-htmlelement)
   - [mounted ()](#mounted-)
   - [destroy ()](#destroy-)
 - [Component API](#component-api)
   - [vm.name](#vmname)
   - [vm.model](#vmmodel)
   - [vm.el](#vmel)
+  - [vm.sel](#vmsel)
   - [vm.parent](#vmparent)
   - [vm.root](#vmroot)
   - [vm.cache](#vmcache)
@@ -78,7 +80,7 @@ var component = {
     props: [...],
     init (options) {
     },
-    render (data, attr) {
+    render (props, htmlAttr, htmlElement) {
     },
     mounted () {
     },
@@ -87,8 +89,9 @@ var component = {
 };
 ```
 
-The optional ``props`` array can specify a set of html attributes which
-contribute to the component data.
+### props
+
+The optional ``props`` array can specify a set of HTML attributes which contribute to the component properties.
 The html properties can contain
 
 * JSON strings
@@ -106,15 +109,17 @@ of the component.
 
 Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
 
-### render (data, attrs)
+### render (props, HTMLAttrs, HTMLElement)
 
-This is **the only required hook**. It is called once only while the component is being mounted into the DOM
-and must return a single HTMLElement or a d3 selector with one node only.
+This is **the only required method**. It is called once only while the component is being mounted into the DOM and must return a single HTMLElement or a d3 selector with one node only.
 The returned element replaces the component element in the DOM.
 Importantly, this function can also return a [Promise][] which resolve in an HTMLElement or selector.
 
-* ``data`` is the data object in the component element
-* ``attrs`` is an object containing the key-value of attributes in the component element
+The input parameters are:
+
+* ``props`` an object with keys given by the **props** array and value given by the corresponding values found in the ``HTMLElement`` the component is mounted
+* ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement``
+* ``HTMLElement`` the HTML element the component is mounted
 
 ### mounted ()
 

@@ -5,6 +5,7 @@
 
 
 - [ES6](#es6)
+- [Contributing](#contributing)
 - [Other Frameworks](#other-frameworks)
 - [D3 plugins](#d3-plugins)
 
