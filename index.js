@@ -1,5 +1,6 @@
 export {default as view} from './src/main';
 export {default as viewMount} from './src/mount';
+export {default as viewBase} from './src/core/base';
 export {default as viewModel} from './src/model/main';
 export {default as viewExpression} from './src/parser/expression';
 export {default as viewReady} from './src/utils/dom';
