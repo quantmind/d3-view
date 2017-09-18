@@ -30,6 +30,7 @@
   - [json (url, [options])](#json-url-options)
   - [vm.renderFromUrl (url, [context])](#vmrenderfromurl-url-context)
   - [vm.select(HTMLElement)](#vmselecthtmlelement)
+  - [vm.mountInner(element, html)](#vmmountinnerelement-html)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -190,7 +191,7 @@ If the optional ``context`` object is provided, it renders the html string using
 
 ### vm.fetch (url, [options])
 
-Fetch a resource from a ``url``. This is a convinient method which uses the
+Fetch a resource from a ``url``. This is a convenient method which uses the
 ``fetch`` [provider](./providers.md).
 
 ### fetchText (url, [options])
@@ -210,6 +211,12 @@ If the optional ``context`` object is provided, it renders the remote html strin
 ### vm.select(HTMLElement)
 
 Return a [d3.selection][] of the ``HTMLElement``.
+
+### vm.mountInner(element, html)
+
+Mount inner html into a selection element (usually the element the component is creating).
+This function is useful when creating components which contain inner html.
+It returns the same element of a promise resulting in the element.
 
 ## Selection
 

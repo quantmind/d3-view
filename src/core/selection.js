@@ -64,6 +64,8 @@ function mount (data, onMounted) {
 
 // mount an element into a given model
 function mountElement (element, vm, data, onMounted) {
+    if (!element || !element.tagName) return;
+    
     var component = vm.components.get(element.tagName.toLowerCase()),
         directives = getdirs(element, vm.directives),
         preMount = directives.preMount();

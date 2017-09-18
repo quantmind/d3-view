@@ -8,6 +8,7 @@
 - [Contributing](#contributing)
 - [Other Frameworks](#other-frameworks)
 - [D3 plugins](#d3-plugins)
+- [CI](#ci)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -56,5 +57,14 @@ Some plugin we really like
 
 Discover more at [npm d3-plugins](https://www.npmjs.com/browse/keyword/d3-module)
 
+## CI
+
+For continuous integration there are few steps to go through:
+
+* [qmbot](https://github.com/qmbot) user must be able to push to the repo (for this make sure this repository is part of the [boot](https://github.com/orgs/quantmind/teams/boot/members) team with **write permissions**)
+* Login to CircleCI as qmbot and [follow this project](https://circleci.com/add-projects/gh/quantmind)
+* Go to this project settings, permissions, Checkout SSH keys and add user key
+* Learn about [NPM Tokens](https://www.npmjs.com/settings/tokens) to push releases from CI
+* Add the token as environment variable ``NPM_TOKEN``
 
 [rollup]: https://github.com/rollup/rollup

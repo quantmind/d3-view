@@ -1,5 +1,5 @@
 {
-    "version": "0.5.2",
+    "version": "0.5.3",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -29,7 +29,7 @@
         "d3-timer": "1.0"
     },
     "devDependencies": {
-        "babel-eslint": "7.2",
+        "babel-eslint": "8.0",
         "babel-plugin-transform-async-to-generator": "6.24",
         "babel-polyfill": "6.26",
         "babel-preset-es2015": "6.24",
@@ -38,7 +38,7 @@
         "browserify": "14.4",
         "browserify-istanbul": "2.0",
         "d3-let": "0.3",
-        "eslint": "4.5",
+        "eslint": "4.7",
         "handlebars": "4",
         "istanbul": "0.4",
         "jasmine-core": "2.8",
@@ -56,7 +56,7 @@
         "phantomjs-prebuilt": "2.1",
         "publish": "0.6",
         "requirejs": "2.3",
-        "rollup": "0.49",
+        "rollup": "0.50",
         "rollup-plugin-babel": "3.0",
         "rollup-plugin-commonjs": "8.2",
         "rollup-plugin-json": "2.3",
