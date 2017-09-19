@@ -2,6 +2,7 @@ import {select} from 'd3-selection';
 
 import providers from '../utils/providers';
 import {htmlElement, html} from '../utils/html';
+import {HttpError} from '../utils/errors';
 
 //
 //  Base d3-view Object
@@ -53,6 +54,7 @@ export default {
 
 
 export function jsonResponse (response) {
+    if (response.status >= 300) throw new HttpError(response);
     var ct = (response.headers.get('content-type') || '').split(';')[0];
     if (ct === 'application/json')
         return response.json();

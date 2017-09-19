@@ -60,7 +60,7 @@ export const protoComponent = assign({}, base, {
             var newEl = this.render(data, dattrs, el);
             if (isPromise(newEl)) {
                 var self = this;
-                return newEl.then((element) => {
+                return newEl.then(element => {
                     return compile(self, el, element, onMounted);
                 });
             }

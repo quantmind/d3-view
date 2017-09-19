@@ -1,5 +1,7 @@
 # d3-view
 
+[![NPM](https://badge.fury.io/js/d3-view.svg)](https://www.npmjs.com/package/d3-view)
+
 [![CircleCI](https://circleci.com/gh/quantmind/d3-view.svg?style=svg&circle-token=f84972c3cf4e8f17d74066ead28544da990115c3)](https://circleci.com/gh/quantmind/d3-view)
 [![codecov](https://codecov.io/gh/quantmind/d3-view/branch/master/graph/badge.svg)](https://codecov.io/gh/quantmind/d3-view)
 
