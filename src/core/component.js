@@ -18,6 +18,7 @@ export const protoComponent = assign({}, base, {
     // hooks
     init () {},
     render () {},
+    childrenMounted () {},
     mounted () {},
     //
     // Mount the component into an element
@@ -210,17 +211,28 @@ export function asView(vm, element, onMounted) {
     });
     // Apply model to element and mount
     var p = vm.select(element).view(vm).mount(null, onMounted);
-    if (isPromise(p))
-        return p.then(() => {
-            vm.mounted();
-            if (onMounted) onMounted(vm);
-        });
-    else {
-        vm.mounted();
-        if (onMounted) onMounted(vm);
-    }
+    if (isPromise(p)) return p.then(() => vmMounted(vm, onMounted));
+    else vmMounted(vm, onMounted);
 }
 
+
+//
+//  Component/View mounted
+//  =========================
+//
+//  This function is called when a component/view has all its children added
+function vmMounted(vm, onMounted) {
+    vm.childrenMounted();
+    if (vm.parent) vm.parent.events.on(`mounted.${vm.uid}`, _mounted);
+    else _mounted();
+
+    function _mounted() {
+        vm.mounted();
+        if (onMounted) onMounted(vm);
+        // last invoke the view mounted event
+        vm.events.call('mounted', undefined, vm);
+    }
+}
 
 // Compile a component model
 // This function is called once a component has rendered the component element
