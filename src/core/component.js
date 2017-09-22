@@ -174,17 +174,7 @@ export function createComponent (name, o, prototype, coreDirectives) {
 }
 
 
-export function mounted (view) {
-    var mounted = view.isMounted;
-    if (!mounted)
-        Object.defineProperty(view, 'isMounted', {
-            get: function () {
-                return true;
-            }
-        });
-    return mounted;
-}
-
+// Used by both Component and view
 
 export function extendComponents (container, components) {
     map(components).each((obj, key) => {
@@ -215,6 +205,29 @@ export function asView(vm, element, onMounted) {
     else vmMounted(vm, onMounted);
 }
 
+export function mounted (vm, onMounted) {
+    if (vm.isMounted === undefined) {
+        vm.isMounted = false;
+        return false;
+    }
+    else if (vm.isMounted) {
+        warn(`view ${vm.name} already mounted`);
+    }
+    else {
+        vm.isMounted = true;
+        // invoke mounted component hook
+        vm.mounted();
+        // invoke onMounted callback if available
+        if (onMounted) onMounted(vm);
+        // last invoke the view mounted events
+        vm.events.call('mounted', undefined, vm, onMounted);
+        // remove mounted events
+        vm.events.on('mounted', null);
+    }
+    return true;
+}
+
+// Internals
 
 //
 //  Component/View mounted
@@ -222,15 +235,15 @@ export function asView(vm, element, onMounted) {
 //
 //  This function is called when a component/view has all its children added
 function vmMounted(vm, onMounted) {
+    var parent = vm.parent;
     vm.childrenMounted();
-    if (vm.parent) vm.parent.events.on(`mounted.${vm.uid}`, _mounted);
-    else _mounted();
-
-    function _mounted() {
-        vm.mounted();
-        if (onMounted) onMounted(vm);
-        // last invoke the view mounted event
-        vm.events.call('mounted', undefined, vm);
+    if (parent && !parent.isMounted) {
+        parent.events.on(`mounted.${vm.uid}`, () => {
+            mounted(vm, onMounted);
+        });
+    }
+    else {
+        mounted(vm, onMounted);
     }
 }
 

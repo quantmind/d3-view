@@ -19,14 +19,12 @@ export default assign({}, protoComponent, {
     },
 
     addComponent: function (name, obj) {
-        if (this.isMounted) return warn('already mounted, cannot add component');
         var component = createComponent(name, obj, protoComponent);
         this.components.set(name, component);
         return component;
     },
 
     addDirective: function (name, obj) {
-        if (this.isMounted) return warn('already mounted, cannot add directive');
         var directive = createDirective(obj);
         this.directives.set(name, directive);
         return directive;

@@ -128,8 +128,8 @@ The input parameters are:
 ### mounted ()
 
 Hook called after the component has been mounted in to the DOM.
-In this state the component has the full API available
-and all its children elements are mounted too.
+In this state the component has the full API available, its parent elements
+are in the DOM. The mounted hook is called in the same order as the render method.
 
 ### destroy ()
 
