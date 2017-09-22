@@ -7,7 +7,7 @@ export default function (attribute) {
     var name = arguments.length ? attribute : '',
         event = this.$events.get(name),
         args = slice(arguments, 1);
-    if (event) event.trigger.call(this, ...args);
+    if (event) event.trigger.apply(this, args);
     else warn(`attribute '${name}' is not a reactive property this model`);
     return this;
 }

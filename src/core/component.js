@@ -16,13 +16,12 @@ import sel from '../utils/sel';
 export const protoComponent = assign({}, base, {
     //
     // hooks
-    init () {},
     render () {},
     childrenMounted () {},
     mounted () {},
     //
     // Mount the component into an element
-    // If this component is already mounted it does nothing
+    // If this component is already mounted, or it is mounting, it does nothing
     mount: function (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
@@ -159,7 +158,6 @@ export function createComponent (name, o, prototype, coreDirectives) {
             }
         });
         this.model = assign({}, isFunction(model) ? model() : model, pop(options, 'model'));
-        this.init(options);
     }
 
     Component.prototype = assign({}, prototype, obj);

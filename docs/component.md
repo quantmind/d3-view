@@ -109,10 +109,6 @@ Once the component has been mounted, this is becomes the
 model associated with the component and therefore an API property
 of the component.
 
-### init (options)
-
-Hook called once only at the beginning of the component initialisation process, before it is mounted into the DOM.
-
 ### render (props, HTMLAttrs, HTMLElement)
 
 This is **the only required method**. It is called once only while the component is being mounted into the DOM and must return a single HTMLElement or a d3 selector with one node only.
@@ -125,9 +121,14 @@ The input parameters are:
 * ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement``
 * ``HTMLElement`` the original HTML element of the component
 
+### childrenMounted ()
+
+Hook called when all the children of the component have been attached to the component element.
+The component is not yet attached to the DOM.
+
 ### mounted ()
 
-Hook called after the component has been mounted in to the DOM.
+Hook called after the component element has been attached in to the DOM.
 In this state the component has the full API available, its parent elements
 are in the DOM. The mounted hook is called in the same order as the render method.
 

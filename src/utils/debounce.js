@@ -20,7 +20,7 @@ export default function (callback, delay) {
             timeout(() => {
                 promise = null;
                 try {
-                    resolve(callback ? callback.call(self, ...args) : undefined);
+                    resolve(callback ? callback.apply(self, args) : undefined);
                 } catch (err) {
                     reject(err);
                 }

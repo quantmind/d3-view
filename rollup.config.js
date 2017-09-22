@@ -1,7 +1,6 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
-import node from 'rollup-plugin-node-resolve';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 
 
@@ -20,7 +19,6 @@ export default {
             presets: ['es2015-rollup']
         }),
         commonjs(),
-        node(),
         sourcemaps()
     ],
     extend: true,
@@ -31,7 +29,8 @@ export default {
         "d3-selection",
         "d3-timer",
         "d3-transition",
-        "d3-view"
+        "d3-view",
+        "object-assign"
     ],
     globals: {
         "d3-collection": "d3",
@@ -40,6 +39,7 @@ export default {
         "d3-selection": "d3",
         "d3-timer": "d3",
         "d3-transition": "d3",
-        "d3-view": "d3"
+        "d3-view": "d3",
+        "object-assign": "assign"
     }
 };
