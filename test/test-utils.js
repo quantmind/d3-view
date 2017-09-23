@@ -1,4 +1,4 @@
-import {viewProviders, viewReady, viewDebounce, viewMount} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewMount, resolvedPromise} from '../index';
 import maybeJson from '../src/utils/maybeJson';
 import view, {testAsync} from './utils';
 
@@ -52,4 +52,8 @@ describe('model', () => {
         expect(vm.sel.select('p').html()).toBe('Bye');
     }));
 
+    it ('resolvedPromise', testAsync(async () => {
+        var result = await (resolvedPromise('ciao'));
+        expect(result).toBe('ciao');
+    }));
 });

@@ -13,6 +13,8 @@ export {default as viewUid} from './src/utils/uid';
 export {default as viewDebounce} from './src/utils/debounce';
 export {version as viewVersion} from './package.json';
 
+// general exports
+export {default as resolvedPromise} from './src/utils/promise';
 export {
     htmlElement as viewElement,
     compile as viewTemplate,
