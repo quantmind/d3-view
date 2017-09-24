@@ -1,5 +1,5 @@
 {
-    "version": "0.6.1",
+    "version": "0.6.2",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -75,7 +75,7 @@
         "unit": "karma start test/karma/karma.unit.js",
         "debug": "karma start test/karma/karma.debug.js",
         "asset": "cd build && POST https://<upload_url>/repos/quantmind/d3-view/releases/:id/assets?name=d3-view.zip",
-        "prepare": "npm run-script build",
+        "prepublish": "npm run-script build",
         "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags && mkdir -p ../giottojs.org/latest && mkdir -p ../giottojs.org/d3-view/${VERSION} && cp build/* ../giottojs.org/d3-view/${VERSION}/ && cp build/* ../giottojs.org/latest/ && cd ../giottojs.org && git add d3-view/${VERSION} latest && git commit -a -m \"d3-view ${VERSION}\" && git push",
         "release": "publish"
     }
