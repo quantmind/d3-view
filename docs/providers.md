@@ -37,3 +37,14 @@ Retrieve data from urls
 ```javascript
 d3.viewProviders.fetch
 ```
+
+## Require
+
+The library export the ``require`` function for asynchronously load modules
+```javascript
+require(name).then(...)
+```
+The function has the ``libs`` map for mapping name to url if needed:
+```javascript
+require.libs.set('marked', '/assets/marked.min.js');
+```
