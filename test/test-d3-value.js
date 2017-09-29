@@ -4,7 +4,7 @@ import view, {trigger} from './utils';
 import {viewElement} from '../index';
 
 
-describe('d3-value directive', function() {
+describe('d3-value directive', () => {
 
     it('textarea', (done) => {
         var el = viewElement('<textarea d3-value="foo">Initial text value</textarea>'),

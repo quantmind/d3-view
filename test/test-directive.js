@@ -4,7 +4,7 @@ import {viewDebounce} from '../index';
 import view, {testAsync} from './utils';
 
 
-describe('directive', function() {
+describe('directive', () => {
 
     const nextTick = viewDebounce();
 

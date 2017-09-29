@@ -7,6 +7,7 @@
 - [Access Providers](#access-providers)
   - [Logger](#logger)
   - [Fetch](#fetch)
+- [Require](#require)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

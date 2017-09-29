@@ -91,12 +91,18 @@ The display style is preserved.
 
 ### d3-on
 
-The [d3-on][] directive attaches an event listener to the element. The event type is denoted by the argument.
-The expression should be model method call, the event ``callback``. if the attribute is omitted
-it is assumed to be a ``click`` event.
+The [d3-on][] directive attaches an event listener to the element.
+The event type is denoted by the argument postfix, ``d3-click-<arg>``.
+if the ``arg`` part is omitted it is assumed to be a ``click`` event.
+The expression should be a model method call and it is the event ``callback``.
 The event ``callback`` listens to **native DOM events only**.
 ```html
 <button d3-on-click="submit()">Submit</button>
+```
+The [d3.event]() object is available in the model context as ``$event``
+and can be passed to the callback function. For example
+```html
+<button d3-on-click="submit($event)">Submit</button>
 ```
 
 ### d3-value

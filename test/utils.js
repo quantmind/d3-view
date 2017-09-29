@@ -22,6 +22,15 @@ export const logger = {
     }
 };
 
+//
+//  Return an object with a promise and the resolve function for the promise
+export function getWaiter () {
+    var waiter = {};
+    waiter.promise = new Promise(function (resolve) {
+        waiter.resolve = resolve;
+    });
+    return waiter;
+}
 
 export function trigger (target, event, process) {
     var e = document.createEvent('HTMLEvents');
