@@ -9,9 +9,9 @@ export default {
     output: {
         file: 'build/d3-view.js',
         format: 'umd',
-        sourcemap: true
+        sourcemap: true,
+        name: 'd3'
     },
-    name: 'd3',
     plugins: [
         json(),
         babel({
@@ -29,8 +29,6 @@ export default {
         "d3-require",
         "d3-selection",
         "d3-timer",
-        "d3-transition",
-        "d3-view",
         "object-assign"
     ],
     globals: {
@@ -40,8 +38,6 @@ export default {
         "d3-require": "d3",
         "d3-selection": "d3",
         "d3-timer": "d3",
-        "d3-transition": "d3",
-        "d3-view": "d3",
         "object-assign": "assign"
     }
 };
