@@ -31,10 +31,10 @@
 Directives are special HTML attributes with the ``d3-`` prefix.
 They apply special reactive behavior to the rendered element they belong to.
 Differently from [components](./component.md), a directive doesn't replace
-the HTML element they belong to, instead they apply special reactive behavior to it.
+the HTML element they belong to.
 
 Directive attribute values are often binding [expressions](#expressions) or empty.
-The attribute values can be a non binding expression provided the [create][] method
+A directive attribute value can be a non binding expression provided the [create][] method
 returns nothing and set the ``active`` attribute to ``true``.
 
 The library provides several directives for every day task.
@@ -135,7 +135,7 @@ var mydir = {
     },
     refresh (model, value) {
     },
-    destroy () {
+    destroy (model) {
 
     }
 };
