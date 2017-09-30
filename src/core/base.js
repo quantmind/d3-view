@@ -1,4 +1,4 @@
-import {select} from 'd3-selection';
+import {select, selectAll} from 'd3-selection';
 
 import providers from '../utils/providers';
 import {htmlElement, html} from '../utils/html';
@@ -20,6 +20,10 @@ export default {
     //
     select (el) {
         return select(el);
+    },
+    //
+    selectAll (el) {
+        return selectAll(el);
     },
     //
     createElement (tag) {

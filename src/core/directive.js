@@ -63,12 +63,15 @@ const prototype = assign({}, base, {
         if (!model) return;
 
         var dir = this,
+            destroy = this.destroy,
             sel = this.sel,
             refresh = function () {
                 let value = dir.expression ? dir.expression.eval(model) : undefined;
                 dir.refresh(model, value);
             };
 
+        // bind destroy to the model
+        dir.destroy = () => destroy.call(dir, model);
         // Bind expression identifiers with model
         let bits, target, attr, i;
         dir.identifiers = [];
@@ -142,7 +145,8 @@ export default function (obj) {
         this.arg = arg;
         var expr = sel(uid(this)).create(attr.value);
         if (expr) this.expression = viewExpression(expr);
-        this.active = !attr.value || this.expression;
+        if (!this.active)
+            this.active = !attr.value || this.expression;
     }
 
     Directive.prototype = assign({}, prototype, obj);

@@ -19,6 +19,7 @@ export const protoComponent = assign({}, base, {
     render () {},
     childrenMounted () {},
     mounted () {},
+    destroy () {},
     //
     // Mount the component into an element
     // If this component is already mounted, or it is mounting, it does nothing

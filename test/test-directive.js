@@ -1,7 +1,8 @@
 import {map} from 'd3-collection';
+import {isString} from 'd3-let';
 
 import {viewDebounce} from '../index';
-import view, {testAsync} from './utils';
+import view, {testAsync, getWaiter} from './utils';
 
 
 describe('directive', () => {
@@ -43,6 +44,49 @@ describe('directive', () => {
         var num2 = +vm.sel.html();
         expect(num2>0).toBe(true);
         expect(num2 !== num).toBe(true);
+    }));
+
+    it ('active', testAsync(async () => {
+
+        var vm = view(),
+            el = vm.select('body').append('div').html('<div id="target"></div><div id="key" d3-collapse="#target"></div>'),
+            gone = getWaiter();
+
+        vm.addDirective('collapse', {
+            create (expr) {
+                this.target = expr;
+                this.active = true;
+            },
+            refresh (model) {
+                // the model is the root model
+                expect(model.parent).toBe(undefined);
+                model.testingFlag = true;
+                if (isString(this.target)) this.target = this.select(this.target);
+                this.target.classed('foo', true);
+            },
+            destroy (model) {
+                gone.resolve();
+                expect(model.parent).toBe(undefined);
+                expect(model.testingFlag).toBe(true);
+            }
+        });
+        vm.mount(el);
+        await nextTick();
+
+        var dirs = vm.sel.select('#key').directives();
+        expect(dirs).toBeTruthy();
+        expect(dirs.all.length).toBe(1);
+        var dir = dirs.all[0];
+        expect(dir.uid).toBeTruthy();
+        expect(dir.name).toBe('d3-collapse');
+        expect(dir.active).toBe(true);
+        expect(dir.target).toBeTruthy();
+        expect(dir.target.attr('id')).toBe('target');
+        expect(dir.expression).toBe(undefined);
+        //
+        // remove element
+        vm.sel.remove();
+        await gone.promise;
     }));
 
 });
