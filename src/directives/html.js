@@ -1,4 +1,3 @@
-import {select} from 'd3-selection';
 import {isString, isNumber} from 'd3-let';
 
 import slice from '../utils/slice';
@@ -19,7 +18,7 @@ export default {
             this.sel.html(html);
             var children = slice(this.el.children);
             for (let i=0; i<children.length; ++i)
-                select(children[i]).mount();
+                this.select(children[i]).mount();
         }
     }
 };

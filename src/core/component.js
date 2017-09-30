@@ -23,7 +23,7 @@ export const protoComponent = assign({}, base, {
     //
     // Mount the component into an element
     // If this component is already mounted, or it is mounting, it does nothing
-    mount: function (el, data, onMounted) {
+    mount (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
             var sel = this.select(el),

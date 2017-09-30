@@ -9,7 +9,7 @@ import warn from '../utils/warn';
 //  Two-way data binding for HTML elements supporting the value property
 export default {
 
-    create: function (expression) {
+    create (expression) {
         var type = this.sel.attr('type'),
             tag = this.el.tagName.toLowerCase(),
             ValueType = types[type] || types[tag];
@@ -19,7 +19,7 @@ export default {
         return expression;
     },
 
-    mount: function (model) {
+    mount (model) {
         var expr = this.expression;
         // TODO: relax this constraint
         if (expr.parsed.type !== expr.codes.IDENTIFIER)
@@ -33,11 +33,11 @@ export default {
         return model;
     },
 
-    refresh: function (model, value) {
+    refresh (model, value) {
         this.tag.value(value);
     },
 
-    destroy: function () {
+    destroy () {
         this.tag.off();
     }
 };
