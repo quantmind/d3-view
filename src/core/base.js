@@ -1,10 +1,10 @@
-import {select, selectAll} from 'd3-selection';
+import {select, selectAll, event} from 'd3-selection';
 
 import providers from '../utils/providers';
 import {htmlElement, html} from '../utils/html';
 import {HttpError} from '../utils/errors';
 import resolvedPromise from '../utils/promise';
-
+import asSelect from '../utils/select';
 //
 //  Base d3-view Object
 //  =====================
@@ -52,6 +52,12 @@ export default {
             cache[url] = template;
             return asElement ? htmlElement(template, context) : html(template, context);
         });
+    },
+    //
+    on (el, name, callback) {
+        el = asSelect(el);
+        if (callback === null) return el.on(name, null);
+        else el.on(name, () => callback(event));
     }
 };
 

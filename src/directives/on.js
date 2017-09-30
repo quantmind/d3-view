@@ -1,15 +1,13 @@
-import {event} from 'd3-selection';
-
 //
 //  d3-on directive
 export default {
 
-    mount: function (model) {
+    mount (model) {
         var eventName = this.arg || 'click',
             expr = this.expression;
 
         // DOM event => model binding
-        this.sel.on(`${eventName}.${this.uid}`, () => {
+        this.on(this.sel, `${eventName}.${this.uid}`, (event) => {
             model.$event = event;
             try {
                 expr.eval(model);
@@ -17,5 +15,10 @@ export default {
                 delete model.$event;
             }
         });
+    },
+
+    destroy () {
+        var eventName = this.arg || 'click';
+        this.on(this.sel, `${eventName}.${this.uid}`, null);
     }
 };

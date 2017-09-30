@@ -1,6 +1,6 @@
 import {select} from 'd3-selection';
 
-import view, {testAsync} from './utils';
+import view, {testAsync, trigger, getWaiter} from './utils';
 import {viewElement} from '../index';
 
 
@@ -141,4 +141,21 @@ describe('Components - ', function() {
         expect(select(b.children[1]).html()).toBe('This is a test');
     }));
 
+    it ('Test on method', testAsync(async () => {
+        var vm = view(),
+            el = vm.createElement('div'),
+            waiter = getWaiter();
+
+        vm.on(el, 'click.test', testOn);
+
+        trigger(el.node(), 'click');
+
+        await waiter.promise;
+
+        function testOn (event) {
+            waiter.resolve();
+            expect(event).toBeTruthy();
+            expect(event.type).toBe('click');
+        }
+    }));
 });
