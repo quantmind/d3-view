@@ -12,7 +12,7 @@ function urlIsAbsolute (url) {
 
 export const require = requireFrom(name => {
     var nameUrl = require.libs.get(name) || name;
-    if (urlIsAbsolute(nameUrl)) return name;
+    if (urlIsAbsolute(nameUrl)) return nameUrl;
     return `https://unpkg.com/${name}`;
 });
 
