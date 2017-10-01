@@ -10,6 +10,7 @@ import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import slice from '../utils/slice';
 import sel from '../utils/sel';
+import viewEvents from './events';
 
 
 // prototype for both views and components
@@ -26,6 +27,7 @@ export const protoComponent = assign({}, base, {
     mount (el, data, onMounted) {
         if (mounted(this)) warn('already mounted');
         else {
+            viewEvents.call('component-mount', undefined, this, el, data);
             var sel = this.select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
@@ -159,6 +161,7 @@ export function createComponent (name, o, prototype, coreDirectives) {
             }
         });
         this.model = assign({}, isFunction(model) ? model() : model, pop(options, 'model'));
+        viewEvents.call('component-created', undefined, this);
     }
 
     Component.prototype = assign({}, prototype, obj);
@@ -222,6 +225,8 @@ export function mounted (vm, onMounted) {
         vm.events.call('mounted', undefined, vm, onMounted);
         // remove mounted events
         vm.events.on('mounted', null);
+        // fire global event
+        viewEvents.call('component-mounted', undefined, vm);
     }
     return true;
 }

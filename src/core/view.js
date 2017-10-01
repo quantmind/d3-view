@@ -4,6 +4,7 @@ import {select} from 'd3-selection';
 
 import './selection';
 import {createComponent, protoComponent, mounted, asView} from './component';
+import viewEvents from './events';
 import createDirective from './directive';
 import viewModel from '../model/main';
 import warn from '../utils/warn';
@@ -33,6 +34,7 @@ export default assign({}, protoComponent, {
     mount: function (el, callback) {
         if (mounted(this)) warn('already mounted');
         else {
+            viewEvents.call('component-mount', undefined, this, el);
             el = element(el);
             if (el) {
                 this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);

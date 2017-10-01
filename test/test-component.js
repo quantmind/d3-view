@@ -1,7 +1,7 @@
 import {select} from 'd3-selection';
 
 import view, {testAsync, trigger, getWaiter} from './utils';
-import {viewElement} from '../index';
+import {viewElement, viewEvents} from '../index';
 
 
 describe('Components - ', function() {
@@ -116,29 +116,64 @@ describe('Components - ', function() {
     }));
 
     it ('Component inner html', testAsync(async () => {
-        var vm = view({
-            components: {
-                bla (props, attr, el) {
-                    return this.mountInner(
-                        this.createElement('div').classed('bla', true),
-                        this.select(el).html()
-                    );
-                },
-                year: year,
-                remote () {
-                    return this.renderFromUrl('/test');
-                }
-            }
-        });
+        let count_created = 0,
+            count_mount = 0,
+            count_mounted = 0;
 
-        expect(vm.components.size()).toBe(3);
-        await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
-        var b = vm.sel.select('div.bla').node();
-        expect(b).toBeTruthy();
-        expect(b.children.length).toBe(2);
-        expect(b.children[0].tagName).toBe('SPAN');
-        expect(b.children[1].tagName).toBe('P');
-        expect(select(b.children[1]).html()).toBe('This is a test');
+        viewEvents
+            .on('component-created.test', _created)
+            .on('component-mount.test', _mount)
+            .on('component-mounted.test', _mounted);
+        try {
+            var vm = view({
+                components: {
+                    bla (props, attr, el) {
+                        return this.mountInner(
+                            this.createElement('div').classed('bla', true),
+                            this.select(el).html()
+                        );
+                    },
+                    year: year,
+                    remote () {
+                        return this.renderFromUrl('/test');
+                    }
+                }
+            });
+
+            expect(vm.components.size()).toBe(3);
+            await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
+            var b = vm.sel.select('div.bla').node();
+            expect(b).toBeTruthy();
+            expect(b.children.length).toBe(2);
+            expect(b.children[0].tagName).toBe('SPAN');
+            expect(b.children[1].tagName).toBe('P');
+            expect(select(b.children[1]).html()).toBe('This is a test');
+            expect(count_created).toBe(4);
+            expect(count_mount).toBe(4);
+            expect(count_mounted).toBe(4);
+        } finally {
+            viewEvents
+                .on('component-created.test', null)
+                .on('component-mount.test', null)
+                .on('component-mounted.test', null);
+        }
+
+        function _created (arg) {
+            count_created += 1;
+            expect(arg).toBeTruthy();
+            expect(arg.model).toBeTruthy();
+        }
+
+        function _mount (arg, el) {
+            count_mount += 1;
+            expect(arg).toBeTruthy();
+            expect(el).toBeTruthy();
+        }
+
+        function _mounted (arg) {
+            count_mounted += 1;
+            expect(arg).toBeTruthy();
+        }
     }));
 
     it ('Test on method', testAsync(async () => {
