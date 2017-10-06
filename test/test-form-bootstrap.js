@@ -52,4 +52,15 @@ describe('Bootstrap plugin', () => {
         expect(model.inputs.token).toBeTruthy();
     });
 
+    it ('Small form', () => {
+        var vm = view().use(viewForms).use(viewBootstrapForms),
+            schema = JSON.parse(jsonform);
+        schema.size = 'sm';
+        vm.mount(viewElement('<div>/<div>'));
+        //
+        vm.sel.html('<d3form></d3form').mount({schema: schema});
+        var inputs = vm.sel.select('form').selectAll('.form-control-sm');
+        expect(inputs.size()).toBe(2);
+    });
+
 });

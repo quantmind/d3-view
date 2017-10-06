@@ -1,6 +1,8 @@
 export default function (field, wrappedEl, fieldEl) {
-    var data = field.model.data;
-    fieldEl.classed('form-control', true).attr('d3-class',
+    var data = field.model.data,
+        size = data.size !== undefined ? data.size : field.model.form.data.size,
+        fc = size ? `form-control-${size}` : 'form-control';
+    fieldEl.classed(fc, true).attr('d3-class',
         `[${data.required || false} ? "form-control-required" : null, showError ? "form-control-danger" : null]`
     );
     return field.wrapTemplate(wrappedEl, groupTpl(data));

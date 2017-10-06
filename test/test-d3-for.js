@@ -66,4 +66,34 @@ describe('d3-for directive', function() {
             done();
         });
     });
+
+    it('d3-for update', (done) => {
+        var text = ["blaaaaaa", "foooooooo"],
+            newText = ["whaatt", "kaput"],
+            vm = view({
+            model: {
+                bla: text
+            }
+        });
+        vm.mount(
+            viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
+        );
+
+        expect(vm.isMounted).toBe(true);
+        var paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+        vm.model.bla = newText;
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+
+        timeout(() => {
+            done();
+            paragraphs = vm.sel.selectAll('p');
+            expect(paragraphs.size()).toBe(2);
+            paragraphs.each(function (d, i) {
+                expect(d).toBe(newText[i]);
+                expect(vm.select(this).html()).toBe(newText[i]);
+            });
+        });
+    });
 });

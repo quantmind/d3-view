@@ -71,12 +71,11 @@ export default {
                         // This allow for reactivity when d is an object
                         items[index] = vm.model[itemName];
                     });
+                })
+            .merge(entries)
+                .each(function (d) {
+                    // update model itemName property
+                    this.__d3_view__.model[itemName] = d;
                 });
-            //.merge(entries)
-            //    .each(function () {
-            //        var vm = this.__d3_view__;
-            //        if (vm._refresh) vm.refresh();
-            //        vm._refresh = true;
-            //    });
     }
 };
