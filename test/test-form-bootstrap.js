@@ -61,6 +61,8 @@ describe('Bootstrap plugin', () => {
         vm.sel.html('<d3form></d3form').mount({schema: schema});
         var inputs = vm.sel.select('form').selectAll('.form-control-sm');
         expect(inputs.size()).toBe(2);
+        inputs = vm.sel.select('form').selectAll('.form-control');
+        expect(inputs.size()).toBe(2);
     });
 
 });
