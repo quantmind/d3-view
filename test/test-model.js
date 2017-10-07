@@ -187,4 +187,22 @@ describe('model', function() {
             expect(event.on('change')).toBe(undefined);
         });
     }));
+
+    it ('model isReactive', testAsync(async () => {
+        var model = viewModel({
+            a: 4
+        });
+        expect(model.$isReactive('a')).toBe(true);
+        expect(model.$isReactive('b')).toBe(false);
+        model.b = 5;
+        expect(model.$isReactive('b')).toBe(false);
+        var b = model.$new();
+        expect(b.$isReactive('a')).toBe(false);
+        expect(b.$isReactive('b')).toBe(false);
+        expect(b.isolated).toBe(true)
+        var c = model.$child({b: 6});
+        expect(c.$isReactive('a')).toBe(true);
+        expect(c.$isReactive('b')).toBe(true);
+        expect(c.isolated).toBe(false)
+    }));
 });

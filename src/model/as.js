@@ -14,7 +14,7 @@ export default function asModel (model, initials) {
 
     Object.defineProperties(uid(model), {
         $events: {
-            get: function () {
+            get () {
                 return events;
             }
         }
@@ -32,9 +32,16 @@ function createChildConstructor (model) {
 
     function Child (initials) {
         asModel(this, initials);
-        Object.defineProperty(this, 'parent', {
-            get: function () {
-                return model;
+        Object.defineProperties(this, {
+            parent: {
+                get () {
+                    return model;
+                }
+            },
+            isolated: {
+                get () {
+                    return false;
+                }
             }
         });
     }

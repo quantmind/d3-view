@@ -181,8 +181,7 @@ function addTarget (modelEvents, model, attr) {
         addTarget(modelEvents, value);
     } else {
         // make sure attr is a reactive property of model
-        if (!model.$events.has(attr))
-            model.$set(attr, null);
+        if (!model.$isReactive(attr)) model.$set(attr, model[attr]);
         target.events.add(attr);
     }
 }

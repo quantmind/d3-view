@@ -5,6 +5,7 @@
 
 
 - [Hierarchical Reactive Model](#hierarchical-reactive-model)
+- [Hierarchical](#hierarchical)
 - [Reactivity](#reactivity)
   - [Overview](#overview)
   - [Objects](#objects)
@@ -12,6 +13,7 @@
   - [Lazy reactivity](#lazy-reactivity)
 - [Model API](#model-api)
   - [model.parent](#modelparent)
+  - [model.isolated](#modelisolated)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
@@ -43,6 +45,14 @@ vm.model.parent
 * **Reactive**: model properties which are registered to be reactive, dispatch a ``change`` event when their value change.
 
 A model is usually associated with a given [component][], the model-view pair, but it can also be used in other contexts.
+
+## Hierarchical
+
+The first important property of a d3 view model is the hierarchical inheritance.
+There are two methods for creating derived children
+
+* [$child](#modelchild-object) create a child model with prototypical inheritance
+* [$new](#modelnew-object) create a child model, with no inheritance from the parent (an isolated model)
 
 ## Reactivity
 
@@ -156,11 +166,18 @@ model.score = -2;
 // at the next event loop tick
 model.isValid   //  False
 ```
+
 ## Model API
 
 ### model.parent
 
 Get the ancestor of the model if it exists. It it does not exist, this is a root model.
+
+### model.isolated
+
+This property is ``true`` when the model was created via the [$new](#modelnew-object) method
+from its parent. An isolated model does not share any property with its parent model.
+
 
 ### model.$set (attribute, value)
 
@@ -214,7 +231,7 @@ Remove all callbacks from reactive attributes and the model.
 
 ### model.$child ([object])
 
-Crate a child model with prototypical inheritance from the model.
+Create a child model with prototypical inheritance from the model.
 ```javascript
 var a = d3.viewModel({foo: 4});
 var b = model.$child({bla: 3});

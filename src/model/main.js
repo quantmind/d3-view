@@ -5,6 +5,7 @@ import $on from './on';
 import $update from './update';
 import $off from './off';
 import $change from './change';
+import $isreactive from './isreactive';
 
 //
 //  Model class
@@ -28,6 +29,7 @@ Model.prototype.$update = $update;
 Model.prototype.$set = $set;
 Model.prototype.$new = $new;
 Model.prototype.$off = $off;
+Model.prototype.$isReactive = $isreactive;
 Object.defineProperty(Model.prototype, 'root', {
     get: function () {
         return this.parent ? this.parent.root : this;
@@ -40,9 +42,16 @@ function $new (initials) {
     var parent = this,
         child = model(initials);
 
-    Object.defineProperty(child, 'parent', {
-        get: function () {
-            return parent;
+    Object.defineProperties(child, {
+        parent: {
+            get () {
+                return parent;
+            },
+        },
+        isolated: {
+            get () {
+                return true;
+            }
         }
     });
 
