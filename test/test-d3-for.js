@@ -95,5 +95,58 @@ describe('d3-for directive', function() {
                 expect(vm.select(this).html()).toBe(newText[i]);
             });
         });
+
+    });
+
+    it('d3-for update object', (done) => {
+        var data = [
+                {
+                    text: "blaaaaaa",
+                    active: true
+                },
+                {
+                    text: "foooooooo",
+                }
+            ],
+            vm = view({
+            model: {
+                bla: data
+            }
+        });
+        vm.mount(
+            viewElement(`<div><p d3-for="foo in bla" d3-html="foo.text" d3-class="foo.active ? 'active' : null"></p></div>`)
+        );
+
+        expect(vm.isMounted).toBe(true);
+        var paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+        var bla = [
+            {
+                text: "foooo",
+                active: true
+            },
+            {
+                text: "kaput",
+                active: true
+            },
+            {
+                text: "ciao",
+            }
+        ];
+        vm.model.bla = bla;
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+
+        timeout(() => {
+            done();
+            paragraphs = vm.sel.selectAll('p');
+            expect(paragraphs.size()).toBe(3);
+            paragraphs.each(function (d, i) {
+                expect(d.text).toBe(bla[i].text);
+                expect(vm.select(this).html()).toBe(bla[i].text);
+                expect(vm.select(this).classed('active')).toBe(bla[i].active || false);
+            });
+        });
+
     });
 });

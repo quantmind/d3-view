@@ -172,11 +172,17 @@ function addTarget (modelEvents, model, attr) {
         modelEvents.set(model.uid, target);
     }
     //
+    // a method of the model, event is at model level
     if (isFunction(value) || arguments.length === 2)
         target.events.add('');
+    // value is another model, events at both target model level and value model level
     else if (value instanceof viewModel) {
         target.events.add('');
         addTarget(modelEvents, value);
-    } else
+    } else {
+        // make sure attr is a reactive property of model
+        if (!model.$events.has(attr))
+            model.$set(attr, null);
         target.events.add(attr);
+    }
 }

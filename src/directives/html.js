@@ -12,7 +12,7 @@ import slice from '../utils/slice';
 //      <div id="foo" d3-html="output"></div>
 export default {
 
-    refresh: function (model, html) {
+    refresh (model, html) {
         if (isNumber(html)) html = ''+html;
         if (isString(html)) {
             this.sel.html(html);

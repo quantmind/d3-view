@@ -1,4 +1,4 @@
-import {isFunction} from 'd3-let';
+import {isFunction, isArray} from 'd3-let';
 
 import warn from '../utils/warn';
 import debug from '../utils/debug';
@@ -15,6 +15,11 @@ export default function (key, value) {
     // property not reactive - make it as such
     if (!this.$events.get(key)) reactive(this, key, value);
     else this[key] = value;
+}
+
+
+function isModel (value) {
+    return value && value.toString && value.toString() === '[object d3Model]';
 }
 
 
@@ -35,7 +40,7 @@ function reactive (model, key, value) {
         if (newValue === value) return;
         // trigger lazy callbacks
         var oldValue = value;
-        value = isObject(newValue) ? model.$new(newValue) : newValue;
+        value = typeValue (newValue, oldValue);
         //
         // Fire model events
         var modelName = model.name || 'model';
@@ -70,5 +75,35 @@ function reactive (model, key, value) {
             prop.set = update;
 
         return prop;
+    }
+
+    function typeValue (newValue, oldValue) {
+        if (newValue === oldValue)
+            return oldValue;
+        if (isArray(newValue))
+            return arrayValue(newValue, oldValue);
+        else if (isModel(oldValue))
+            return modelValue(newValue, oldValue);
+        else
+            return isObject(newValue) ? model.$new(newValue) : newValue;
+    }
+
+    function arrayValue (newValue, oldValue) {
+        if (isModel(oldValue)) oldValue.$off();
+        else if (isArray(oldValue))
+            newValue.forEach((o, i) => {
+                if (i < oldValue.length) newValue[i] = typeValue(newValue[i], oldValue[i]);
+            });
+        return newValue;
+    }
+
+    function modelValue (newValue, oldValue) {
+        if (isObject(newValue)) {
+            oldValue.$update(newValue);
+            return oldValue;
+        } else {
+            oldValue.$off();
+            return newValue;
+        }
     }
 }

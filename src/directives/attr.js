@@ -12,19 +12,19 @@ const properties = ['disabled', 'readonly', 'required'];
 //
 export default {
 
-    create: function (expression) {
+    create (expression) {
         if (!this.arg) return warn('Cannot bind to empty attribute. Specify :<attr-name>');
         return expression;
     },
 
-    refresh: function (model, value) {
+    refresh (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
         if (properties.indexOf(this.arg) > -1) this.sel.property(this.arg, value || false);
         else this.sel.attr(this.arg, value || null);
     },
 
-    refreshClass: function (value) {
+    refreshClass (value) {
         var sel = this.sel;
 
         if (!isArray(value)) value = [value];
