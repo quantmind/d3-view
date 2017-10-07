@@ -1,8 +1,8 @@
-import {isFunction, isArray} from 'd3-let';
+import {isFunction, isArray, isObject} from 'd3-let';
 
 import warn from '../utils/warn';
 import debug from '../utils/debug';
-import isObject from '../utils/object';
+import isVanillaObject from '../utils/object';
 import ddispatch from './dispatch';
 
 
@@ -19,7 +19,7 @@ export default function (key, value) {
 
 
 function isModel (value) {
-    return value && value.toString && value.toString() === '[object d3Model]';
+    return isObject(value) && value.toString() === '[object d3Model]';
 }
 
 
@@ -31,7 +31,7 @@ function reactive (model, key, value) {
     Object.defineProperty(model, key, property());
 
     // Create a new model if value is an object
-    value = isObject(value) ? model.$new(value) : value;
+    value = isVanillaObject(value) ? model.$new(value) : value;
     // Trigger the callback once for initialization
     model.$change(key);
 
@@ -59,7 +59,7 @@ function reactive (model, key, value) {
         if (isFunction(value)) value = {get: value};
 
         // calculated attribute
-        if (isObject(value) && isFunction(value.get)) {
+        if (isVanillaObject(value) && isFunction(value.get)) {
             lazy = value;
             value = lazy.get.call(model);
 
@@ -85,20 +85,20 @@ function reactive (model, key, value) {
         else if (isModel(oldValue))
             return modelValue(newValue, oldValue);
         else
-            return isObject(newValue) ? model.$new(newValue) : newValue;
+            return isVanillaObject(newValue) ? model.$new(newValue) : newValue;
     }
 
     function arrayValue (newValue, oldValue) {
-        if (isModel(oldValue)) oldValue.$off();
-        else if (isArray(oldValue))
+        if (isArray(oldValue))
             newValue.forEach((o, i) => {
                 if (i < oldValue.length) newValue[i] = typeValue(newValue[i], oldValue[i]);
             });
+        else if (isModel(oldValue)) oldValue.$off();
         return newValue;
     }
 
     function modelValue (newValue, oldValue) {
-        if (isObject(newValue)) {
+        if (isVanillaObject(newValue)) {
             oldValue.$update(newValue);
             return oldValue;
         } else {

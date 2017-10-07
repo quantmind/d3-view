@@ -1,5 +1,5 @@
 import {timeout} from 'd3-timer';
-import {isFunction} from 'd3-let';
+import {isFunction, isArray} from 'd3-let';
 
 import {viewModel, viewDebounce} from '../index';
 import {testAsync} from './utils';
@@ -160,5 +160,31 @@ describe('model', function() {
         model.bla.a = 5;
         await nextTick();
         expect(called).toBe(1);
+    }));
+
+    it ('model child override', testAsync(async () => {
+        var model = viewModel({
+            foo: 5,
+            bla: {
+                a: 'test',
+                b: {
+                    c: 2
+                }
+            }
+        });
+        expect(model.bla instanceof viewModel).toBe(true);
+        expect(model.bla.b instanceof viewModel).toBe(true);
+        var b = model.bla.b;
+        var called = 0;
+        model.bla.$on('b', () => {
+            called += 1;
+        });
+        model.bla.b = [1, 3, 4];
+        await nextTick();
+        expect(called).toBe(1);
+        expect(isArray(model.bla.b)).toBe(true);
+        b.$events.each(event => {
+            expect(event.on('change')).toBe(undefined);
+        });
     }));
 });
