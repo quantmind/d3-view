@@ -199,10 +199,10 @@ describe('model', function() {
         var b = model.$new();
         expect(b.$isReactive('a')).toBe(false);
         expect(b.$isReactive('b')).toBe(false);
-        expect(b.isolated).toBe(true)
+        expect(b.isolated).toBe(true);
         var c = model.$child({b: 6});
         expect(c.$isReactive('a')).toBe(true);
         expect(c.$isReactive('b')).toBe(true);
-        expect(c.isolated).toBe(false)
+        expect(c.isolated).toBe(false);
     }));
 });
