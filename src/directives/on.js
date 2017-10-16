@@ -8,7 +8,9 @@ export default {
 
         // DOM event => model binding
         this.on(this.sel, `${eventName}.${this.uid}`, (event) => {
-            expr.eval(model.$child({$event: event}));
+            var md = model.$child();
+            md.$event = event;
+            expr.eval(md);
         });
 
         return model;
