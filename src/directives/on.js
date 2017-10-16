@@ -8,13 +8,10 @@ export default {
 
         // DOM event => model binding
         this.on(this.sel, `${eventName}.${this.uid}`, (event) => {
-            model.$event = event;
-            try {
-                expr.eval(model);
-            } finally {
-                delete model.$event;
-            }
+            expr.eval(model.$child({$event: event}));
         });
+
+        return model;
     },
 
     destroy () {

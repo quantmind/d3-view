@@ -51,8 +51,11 @@ describe('d3-on directive', function() {
         trigger(sel.node(), 'click');
 
         function test () {
-            expect(this).toBe(vm.model);
-            done();
+            if (vm.isMounted) {
+                expect(this.parent).toBe(vm.model);
+                expect(this.isolated).toBe(false);
+                done();
+            }
         }
     });
 });
