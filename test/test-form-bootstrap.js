@@ -1,11 +1,11 @@
 import {isObject, isFunction, isArray} from 'd3-let';
 
-import view from './utils';
+import view, {test} from './utils';
 import {viewForms, viewElement, viewBootstrapForms} from '../index';
 import jsonform from './fixtures/jsonform';
 
 
-describe('Bootstrap plugin', () => {
+describe('Bootstrap plugin -', () => {
 
     let el;
 
@@ -18,20 +18,20 @@ describe('Bootstrap plugin', () => {
         expect(isFunction(viewBootstrapForms.install)).toBe(true);
     });
 
-    it('test install', () => {
+    it('install', () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
         expect(isArray(vm.$formExtensions)).toBe(true);
         expect(vm.$formExtensions.length).toBe(1);
     });
 
-    it('mount empty form', () => {
+    test('mount empty form', async () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
-        vm.mount(viewElement('<div><d3form></d3form></div>'));
+        await vm.mount(viewElement('<div><d3form></d3form></div>'));
     });
 
-    it ('form model', () => {
+    test('form model', async () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
-        vm.mount(el);
+        await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
         expect(isObject(model.inputs)).toBe(true);
@@ -40,11 +40,11 @@ describe('Bootstrap plugin', () => {
         expect(model.formPending).toBe(false);
     });
 
-    it ('Dynamic mount', () => {
+    test('dynamic mount', async () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
-        vm.mount(viewElement('<div>/<div>'));
+        await vm.mount(vm.viewElement('<div>/<div>'));
         //
-        vm.sel.html('<d3form></d3form').mount({schema: JSON.parse(jsonform)});
+        await vm.sel.html('<d3form></d3form').mount({schema: JSON.parse(jsonform)});
         var fv = vm.sel.select('form').view(),
             model = fv.model;
 
@@ -52,13 +52,13 @@ describe('Bootstrap plugin', () => {
         expect(model.inputs.token).toBeTruthy();
     });
 
-    it ('Small form', () => {
+    test('small form', async () => {
         var vm = view().use(viewForms).use(viewBootstrapForms),
             schema = JSON.parse(jsonform);
         schema.size = 'sm';
-        vm.mount(viewElement('<div>/<div>'));
+        await vm.mount(viewElement('<div>/<div>'));
         //
-        vm.sel.html('<d3form></d3form').mount({schema: schema});
+        await vm.sel.html('<d3form></d3form').mount({schema: schema});
         var inputs = vm.sel.select('form').selectAll('.form-control-sm');
         expect(inputs.size()).toBe(2);
         inputs = vm.sel.select('form').selectAll('.form-control');

@@ -1,17 +1,12 @@
-import {timeout} from 'd3-timer';
-
-import view, {logger} from './utils';
-import {viewElement} from '../index';
+import view, {test, nextTick, logger} from './utils';
 
 
-describe('d3-for directive', function() {
+describe('d3-for directive -', () => {
 
-    it('bad template', () => {
+    test('bad template', async () => {
         logger.pop();
         var vm = view();
-        vm.mount(
-            viewElement('<div><p d3-for="foo bo bla"></p></div>')
-        );
+        await vm.mount(vm.viewElement('<div><p d3-for="foo bo bla"></p></div>'));
 
         expect(vm.isMounted).toBe(true);
         expect(logger.pop()[0]).toBe(
@@ -19,7 +14,7 @@ describe('d3-for directive', function() {
         );
     });
 
-    it('d3-for to paragraph', () => {
+    test('paragraph', async () => {
         logger.pop();
         var text = ["blaaaaaa", "foooooooo"],
             vm = view({
@@ -27,9 +22,7 @@ describe('d3-for directive', function() {
                 bla: text
             }
         });
-        vm.mount(
-            viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
-        );
+        await vm.mount(vm.viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>'));
 
         expect(vm.isMounted).toBe(true);
         var paragraphs = vm.sel.selectAll('p');
@@ -41,16 +34,14 @@ describe('d3-for directive', function() {
         expect(logger.pop().length).toBe(0);
     });
 
-    it('d3-for refresh', (done) => {
+    test('refresh', async () => {
         var text = ["blaaaaaa", "foooooooo"],
             vm = view({
             model: {
                 bla: text
             }
         });
-        vm.mount(
-            viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
-        );
+        await vm.mount(vm.viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>'));
 
         expect(vm.isMounted).toBe(true);
         var paragraphs = vm.sel.selectAll('p');
@@ -59,15 +50,12 @@ describe('d3-for directive', function() {
         vm.model.$change('bla');
         paragraphs = vm.sel.selectAll('p');
         expect(paragraphs.size()).toBe(2);
-
-        timeout(() => {
-            paragraphs = vm.sel.selectAll('p');
-            expect(paragraphs.size()).toBe(3);
-            done();
-        });
+        await nextTick();
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(3);
     });
 
-    it('d3-for update', (done) => {
+    test('update', async () => {
         var text = ["blaaaaaa", "foooooooo"],
             newText = ["whaatt", "kaput"],
             vm = view({
@@ -75,9 +63,7 @@ describe('d3-for directive', function() {
                 bla: text
             }
         });
-        vm.mount(
-            viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>')
-        );
+        await vm.mount(vm.viewElement('<div><p d3-for="foo in bla" d3-html="foo"></p></div>'));
 
         expect(vm.isMounted).toBe(true);
         var paragraphs = vm.sel.selectAll('p');
@@ -85,20 +71,16 @@ describe('d3-for directive', function() {
         vm.model.bla = newText;
         paragraphs = vm.sel.selectAll('p');
         expect(paragraphs.size()).toBe(2);
-
-        timeout(() => {
-            done();
-            paragraphs = vm.sel.selectAll('p');
-            expect(paragraphs.size()).toBe(2);
-            paragraphs.each(function (d, i) {
-                expect(d).toBe(newText[i]);
-                expect(vm.select(this).html()).toBe(newText[i]);
-            });
+        await nextTick();
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(2);
+        paragraphs.each(function (d, i) {
+            expect(d).toBe(newText[i]);
+            expect(vm.select(this).html()).toBe(newText[i]);
         });
-
     });
 
-    it('d3-for update object', (done) => {
+    test('update object', async () => {
         var data = [
                 {
                     text: "blaaaaaa",
@@ -113,8 +95,8 @@ describe('d3-for directive', function() {
                 bla: data
             }
         });
-        vm.mount(
-            viewElement(`<div><p d3-for="foo in bla" d3-html="foo.text" d3-class="foo.active ? 'active' : null"></p></div>`)
+        await vm.mount(
+            vm.viewElement(`<div><p d3-for="foo in bla" d3-html="foo.text" d3-class="foo.active ? 'active' : null"></p></div>`)
         );
 
         expect(vm.isMounted).toBe(true);
@@ -136,17 +118,13 @@ describe('d3-for directive', function() {
         vm.model.bla = bla;
         paragraphs = vm.sel.selectAll('p');
         expect(paragraphs.size()).toBe(2);
-
-        timeout(() => {
-            done();
-            paragraphs = vm.sel.selectAll('p');
-            expect(paragraphs.size()).toBe(3);
-            paragraphs.each(function (d, i) {
-                expect(d.text).toBe(bla[i].text);
-                expect(vm.select(this).html()).toBe(bla[i].text);
-                expect(vm.select(this).classed('active')).toBe(bla[i].active || false);
-            });
+        await nextTick();
+        paragraphs = vm.sel.selectAll('p');
+        expect(paragraphs.size()).toBe(3);
+        paragraphs.each(function (d, i) {
+            expect(d.text).toBe(bla[i].text);
+            expect(vm.select(this).html()).toBe(bla[i].text);
+            expect(vm.select(this).classed('active')).toBe(bla[i].active || false);
         });
-
     });
 });

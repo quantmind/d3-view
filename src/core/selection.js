@@ -1,5 +1,4 @@
 import {select, selection} from 'd3-selection';
-import {isPromise} from 'd3-let';
 
 import getdirs from './getdirs';
 import slice from '../utils/slice';
@@ -48,17 +47,12 @@ function view (value) {
 // THis method returns nothing or a promise
 function mount (data, onMounted) {
     var promises = [];
-    let promise;
     this.each(function () {
         var view = select(this).view();
-        if (view) {
-            promise = mountElement(this, view, data, onMounted);
-            if (isPromise(promise)) promises.push(promise);
-        } else {
-            warn('Cannot mount, no view object available to mount to');
-        }
+        if (view) promises.push(mountElement(this, view, data, onMounted));
+        else warn('Cannot mount, no view object available to mount to');
     });
-    return promises.length ? Promise.all(promises) : null;
+    return Promise.all(promises);
 }
 
 
@@ -73,26 +67,14 @@ function mountElement (element, vm, data, onMounted) {
     if (preMount)
         return preMount.execute(vm.model);
     else {
-        let promise;
-        if (component) {
-            vm = component({parent: vm});
-            promise = vm.mount(element, data, onMounted);
-        } else {
-            var promises = [],
-                children = slice(element.children);
-            for (let i=0; i<children.length; ++i) {
-                promise = mountElement(children[i], vm, data, onMounted);
-                if (isPromise(promise)) promises.push(promise);
-            }
-            if (promises.length)
-                promise = Promise.all(promises);
-        }
-
-        if (isPromise(promise))
-            return promise.then(() => {
-                return directives.execute(vm.model);
-            });
+        let promises;
+        if (component)
+            promises = [component({parent: vm}).mount(element, data, onMounted)];
         else
+            promises = slice(element.children).map(c => mountElement(c, vm, data, onMounted));
+
+        return Promise.all(promises).then(() => {
             return directives.execute(vm.model);
+        });
     }
 }

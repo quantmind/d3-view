@@ -1,4 +1,4 @@
-import view, {trigger, getWaiter, testAsync, nextTick} from './utils';
+import view, {trigger, getWaiter, test, nextTick} from './utils';
 
 const dropdown = `
 <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
@@ -11,10 +11,10 @@ const dropdown = `
 `;
 
 
-describe('d3-on directive', () => {
+describe('d3-on directive -', () => {
 
 
-    it('test no expression', testAsync(async () => {
+    test('toggleMenu', async () => {
         var ev,
             waiter = getWaiter(),
             vm = view({
@@ -25,6 +25,16 @@ describe('d3-on directive', () => {
                     dropdown: {
                         model: {
                             menuExpanded: false,
+                            menuItems: [
+                                {
+                                    label: 'foo',
+                                    $callback() {}
+                                },
+                                {
+                                    label: 'pippo',
+                                    $callback() {}
+                                }
+                            ],
                             $toggleMenu: toggleMenu
                         },
                         render () {
@@ -33,7 +43,7 @@ describe('d3-on directive', () => {
                     }
                 }
             });
-        vm.mount(vm.viewElement('<div><dropdown></dropdown></div>'));
+        await vm.mount(vm.viewElement('<div><dropdown></dropdown></div>'));
 
         var sel = vm.sel.selectAll('a'),
             dirs = sel.directives(),
@@ -47,6 +57,13 @@ describe('d3-on directive', () => {
         expect(dirs['d3-attr-aria-expanded'].arg).toBe('aria-expanded');
         expect(model.parent).toBe(vm.model);
         expect(sel.attr('aria-expanded')).toBe('false');
+
+        model.menuItems.forEach(item => {
+            expect(item.parent).toBe(model);
+            expect(item.isolated).toBe(true);
+            expect(item.label).toBeTruthy();
+            expect(item.$isReactive('label')).toBe(true);
+        });
 
         trigger(sel.node(), 'click');
         await waiter.promise;
@@ -63,7 +80,7 @@ describe('d3-on directive', () => {
             this.menuExpanded = true;
             waiter.resolve(null);
         }
-    }));
+    });
 
 
 });

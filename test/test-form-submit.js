@@ -5,16 +5,11 @@ import jsonform from './fixtures/jsonform2';
 
 describe('submit field', () => {
 
-    let vm;
-
-    beforeEach(() => {
-        vm = view().use(viewForms);
-
-        vm.mount(vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`));
-    });
-
-
     it ('disabled', testAsync(async () => {
+
+        var vm = view().use(viewForms);
+
+        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`));
 
         var form = vm.sel.select('form').model();
         expect(form.$isValid()).toBe(false);

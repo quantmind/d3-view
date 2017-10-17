@@ -1,29 +1,29 @@
 import {isString, isFunction} from 'd3-let';
 
-import view from './utils';
+import view, {test, getWaiter} from './utils';
 import {viewProviders, viewVersion, viewElement} from '../index';
 
 
 var logger = viewProviders.logger;
 
 
-describe('view meta', function() {
+describe('view meta -', () => {
 
     it('view function', () => {
         expect(isFunction(view)).toBe(true);
         expect(isString(viewVersion)).toBe(true);
     });
 
-    it('No element', function () {
+    test('No element', async () => {
         logger.pop();
-        view().mount();
+        await view().mount();
         expect(logger.pop().length).toBe(1);
     });
 
 });
 
 
-describe('view', function() {
+describe('view -', () => {
 
     let el;
 
@@ -31,7 +31,7 @@ describe('view', function() {
         el = document.createElement('div');
     });
 
-    it('API', () => {
+    test('API', async () => {
         var vm = view();
         expect(vm.el).toBe(undefined);
         expect(vm.sel).toBe(undefined);
@@ -39,7 +39,7 @@ describe('view', function() {
         expect(vm.parent).toBe(undefined);
         expect(vm.directives.size()).toBe(6);
 
-        vm.mount(el);
+        await vm.mount(el);
         expect(vm.el).toBe(el);
         expect(vm.sel.node()).toBe(el);
         expect(vm.uid).toBeGreaterThan('d3v0');
@@ -50,29 +50,30 @@ describe('view', function() {
         expect(() => {vm.model.uid = -5;}).toThrow();
     });
 
-    it('view.mounted hook', () => {
+    test('mounted hook', async () => {
         var mounted = false;
         var vm = view({});
-        vm.mount(viewElement('<div id="test1"><year></year></div>'), () => {
+        await vm.mount(viewElement('<div id="test1"><year></year></div>'), () => {
             mounted = true;
         });
         expect(mounted).toBe(true);
         expect(vm.sel.view()).toBe(vm);
     });
 
-    it('view.model.$on warn', () => {
+    test('model.$on warn', async () => {
         logger.pop();
         var vm = view();
-        vm.mount(el);
+        await vm.mount(el);
         vm.model.$on('bla');
         var logs = logger.pop();
         expect(logs.length).toBe(1);
         expect(logs[0]).toBe(`[d3-view] Cannot bind to "bla" - no such reactive property`);
     });
 
-    it('view.model.$on', (done) => {
-        var vm = view();
-        vm.mount(el);
+    test('model.$on', async () => {
+        var vm = view(),
+            waiter = getWaiter();
+        await vm.mount(el);
 
         var model = vm.model;
         model.$set('bla', 5);
@@ -80,6 +81,7 @@ describe('view', function() {
         expect(model.bla).toBe(5);
         model.bla = 6;
         expect(model.bla).toBe(6);
+        await waiter.promise;
 
         function changed (oldValue) {
             expect(this).toBe(model);
@@ -94,17 +96,17 @@ describe('view', function() {
             expect(this).toBe(model);
             expect(model.bla).toBe(4);
             expect(oldValue).toBe(6);
-            done();
+            waiter.resolve();
         }
     });
 
-    it('model with no binding properties', () => {
+    test('model with no binding properties', async () => {
         var vm = view({
             model: {
                 $test: 'this is a test'
             }
         });
-        vm.mount(el);
+        await vm.mount(el);
         var model = vm.model;
         expect(model.$events.get('$test')).toBe(undefined);
         logger.pop();

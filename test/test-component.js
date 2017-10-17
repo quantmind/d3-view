@@ -1,10 +1,10 @@
 import {select} from 'd3-selection';
 
-import view, {testAsync, trigger, getWaiter} from './utils';
+import view, {test, trigger, getWaiter} from './utils';
 import {viewElement, viewEvents} from '../index';
 
 
-describe('Components - ', function() {
+describe('Components -', function() {
 
     var year = {
         render: function () {
@@ -22,7 +22,7 @@ describe('Components - ', function() {
         }
     };
 
-    it('simple - no binding', () => {
+    test('simple - no binding', async () => {
         var vm = view({
             components: {
                 year: year
@@ -33,7 +33,7 @@ describe('Components - ', function() {
         expect(vm.components.get('year')).toBeTruthy();
         expect(vm.components.get('year').prototype.isd3).toBe(true);
         // mount
-        vm.mount(viewElement('<div id="test1"><year></year></div>'));
+        await vm.mount(viewElement('<div id="test1"><year></year></div>'));
         expect(vm.el.tagName).toBe('DIV');
 
         var span = select(vm.el).select('span');
@@ -45,13 +45,13 @@ describe('Components - ', function() {
     });
 
 
-    it('simple - sandwiched between standard elements', () => {
+    test('simple - sandwiched between standard elements', async () => {
         var vm = view({
             components: {
                 year: year
             }
         });
-        vm.mount(viewElement('<div id="test1"><h1>This Year</h1><year></year><p>Hi there</p></div>'));
+        await vm.mount(viewElement('<div id="test1"><h1>This Year</h1><year></year><p>Hi there</p></div>'));
         var div = vm.el;
         expect(div.tagName).toBe('DIV');
         expect(div.children.length).toBe(3);
@@ -65,7 +65,7 @@ describe('Components - ', function() {
     });
 
 
-    it('with model', () => {
+    test('with model', async () => {
         var vm = view({
             components: {
                 text: text
@@ -73,7 +73,7 @@ describe('Components - ', function() {
         });
         expect(vm.components.size()).toBe(1);
 
-        vm.mount(viewElement('<div id="test1"><text></text></div>'));
+        await vm.mount(viewElement('<div id="test1"><text></text></div>'));
         expect(vm.el.tagName).toBe('DIV');
         var p = select(vm.el).select('p');
         var model = p.model();
@@ -81,7 +81,7 @@ describe('Components - ', function() {
         expect(model.parent).toBe(vm.model);
     });
 
-    it('component function', () => {
+    test('component function', async () => {
         var vm = view({
             components: {
                 bla: function () {
@@ -91,13 +91,13 @@ describe('Components - ', function() {
         });
         expect(vm.components.size()).toBe(1);
 
-        vm.mount(viewElement('<div><bla></bla></div>'));
+        await vm.mount(viewElement('<div><bla></bla></div>'));
         var p = vm.sel.select('p');
         expect(p.size()).toBe(1);
         expect(p.html()).toBe('bla bla');
     });
 
-    it ('renderFromUrl', testAsync(async () => {
+    test('renderFromUrl', async () => {
         var vm = view({
             components: {
                 bla: function () {
@@ -113,9 +113,9 @@ describe('Components - ', function() {
         expect('/test' in vm.cache).toBe(true);
         var el = await vm.renderFromUrl('/test');
         expect(el.tagName).toBe('P');
-    }));
+    });
 
-    it ('Component inner html', testAsync(async () => {
+    test('Component inner html', async () => {
         let count_created = 0,
             count_mount = 0,
             count_mounted = 0;
@@ -174,9 +174,9 @@ describe('Components - ', function() {
             count_mounted += 1;
             expect(arg).toBeTruthy();
         }
-    }));
+    });
 
-    it ('Test on method', testAsync(async () => {
+    test('Test on method', async () => {
         var vm = view(),
             el = vm.createElement('div'),
             waiter = getWaiter();
@@ -192,5 +192,5 @@ describe('Components - ', function() {
             expect(event).toBeTruthy();
             expect(event.type).toBe('click');
         }
-    }));
+    });
 });

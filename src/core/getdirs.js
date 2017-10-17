@@ -1,5 +1,4 @@
 import {select} from 'd3-selection';
-import {isPromise} from 'd3-let';
 
 import warn from '../utils/warn';
 
@@ -79,13 +78,6 @@ Directives.prototype = {
 
     execute (model) {
         if (!this.size()) return;
-        var promises = [];
-        let promise;
-        this.forEach((d) => {
-            promise = d.execute(model);
-            if (isPromise(promise)) promises.push(promise);
-        });
-        if (promises.length)
-            return Promise.all(promises);
+        return Promise.all(this.all.map(d => d.execute(model)));
     }
 };

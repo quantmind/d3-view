@@ -1,11 +1,11 @@
-import view from './utils';
+import view, {test, nextTick} from './utils';
 import {viewUid} from '../index';
-import {timeout} from 'd3-timer';
 import {select} from 'd3-selection';
 
-describe('d3-if directive', function() {
 
-    it('block', (done) => {
+describe('d3-if directive', () => {
+
+    test('block', async () => {
         var uid = 'test' + viewUid(),
             vm = view({
                 model: {
@@ -18,7 +18,7 @@ describe('d3-if directive', function() {
             .attr('id', uid)
             .html('<p d3-if="foo">Hi</p>');
 
-        vm.mount(`#${uid}`);
+        await vm.mount(`#${uid}`);
 
         expect(vm.sel.selectAll('p').size()).toBe(1);
         var p = vm.sel.select('p');
@@ -26,15 +26,12 @@ describe('d3-if directive', function() {
         expect(p.style('display')).toBe('none');
         vm.model.foo = true;
         expect(p.style('display')).toBe('none');
-
-        timeout(() => {
-            expect(p.style('display')).toBe('block');
-            vm.sel.remove();
-            done();
-        });
+        await nextTick();
+        expect(p.style('display')).toBe('block');
+        vm.sel.remove();
     });
 
-    it('inline', (done) => {
+    test('inline', async () => {
         var uid = 'test' + viewUid(),
             vm = view({
                 model: {
@@ -47,18 +44,15 @@ describe('d3-if directive', function() {
             .attr('id', uid)
             .html('<p d3-if="foo" style="display: inline">Hi there</p>');
 
-        vm.mount(`#${uid}`);
+        await vm.mount(`#${uid}`);
 
         expect(vm.sel.selectAll('p').size()).toBe(1);
         var p = vm.sel.select('p');
         expect(p.style('display')).toBe('none');
         vm.model.foo = true;
         expect(p.style('display')).toBe('none');
-
-        timeout(() => {
-            expect(p.style('display')).toBe('inline');
-            vm.sel.remove();
-            done();
-        });
+        await nextTick();
+        expect(p.style('display')).toBe('inline');
+        vm.sel.remove();
     });
 });

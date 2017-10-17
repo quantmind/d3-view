@@ -13,8 +13,7 @@ describe('d3-attr directive', function() {
                 test: 'This is a test'
             }
         });
-        vm.mount(vm.viewElement('<div d3-attr-foo="test">Bla</div>'));
-        await nextTick();
+        await vm.mount(vm.viewElement('<div d3-attr-foo="test">Bla</div>'));
 
         expect(vm.sel.attr('foo')).toBe('This is a test');
         vm.model.test = 'test reactivity';
@@ -31,8 +30,7 @@ describe('d3-attr directive', function() {
                 test: 'bright'
             }
         });
-        vm.mount(vm.viewElement('<div d3-class="test">Bla</div>'));
-        await nextTick();
+        await vm.mount(vm.viewElement('<div d3-class="test">Bla</div>'));
 
         expect(vm.sel.classed('bright')).toBe(true);
         vm.model.test = 'dark foo';

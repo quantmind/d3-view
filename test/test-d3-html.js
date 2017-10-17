@@ -14,7 +14,7 @@ describe('d3-html directive', function() {
                 test: 'This is a test'
             }
         });
-        vm.mount(el);
+        await vm.mount(el);
 
         await nextTick();
         expect(vm.sel.html()).toBe('This is a test');
@@ -37,7 +37,7 @@ describe('d3-html directive', function() {
                 }
             }
         });
-        vm.mount(vm.viewElement('<div d3-html="messages.msg1"></div>'));
+        await vm.mount(vm.viewElement('<div d3-html="messages.msg1"></div>'));
         await nextTick();
         expect(vm.sel.html()).toBe('This is a test');
 
@@ -57,7 +57,7 @@ describe('d3-html directive', function() {
                 }
             }
         });
-        vm.mount(vm.viewElement('<div d3-html="messages.next.msg1"></div>'));
+        await vm.mount(vm.viewElement('<div d3-html="messages.next.msg1"></div>'));
         await nextTick();
         expect(vm.sel.html()).toBe('This is a test');
 
@@ -79,7 +79,7 @@ describe('d3-html directive', function() {
                 }
             }
         });
-        vm.mount(vm.viewElement('<div d3-html="html"></div>'));
+        await vm.mount(vm.viewElement('<div d3-html="html"></div>'));
         await nextTick();
         expect(vm.sel.html()).toBe('simple');
         vm.model.html = '<boom></boom>';

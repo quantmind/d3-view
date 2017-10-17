@@ -1,10 +1,9 @@
-import view, {trigger, getWaiter, testAsync} from './utils';
-import {viewElement} from '../index';
+import view, {trigger, getWaiter, test} from './utils';
 
 
-describe('d3-on directive', function() {
+describe('d3-on directive -', function() {
 
-    it('test no expression', testAsync(async () => {
+    test('no expression', async () => {
         var ev,
             waiter = getWaiter(),
             vm = view({
@@ -12,7 +11,7 @@ describe('d3-on directive', function() {
                     $test: test
                 }
             });
-        vm.mount(viewElement('<div><p d3-on="$test($event)">Bla</p></div>'));
+        await vm.mount(vm.viewElement('<div><p d3-on="$test($event)">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 
@@ -31,15 +30,18 @@ describe('d3-on directive', function() {
             ev = event;
             waiter.resolve(null);
         }
-    }));
 
-    it('test function', (done) => {
-        var vm = view({
-            model: {
-                $test: test
-            }
-        });
-        vm.mount(viewElement('<div><p d3-on="$test()">Bla</p></div>'));
+        vm.destroy();
+    });
+
+    test('model function', async () => {
+        var waiter = getWaiter(),
+            vm = view({
+                model: {
+                    $test: test
+                }
+            });
+        await vm.mount(vm.viewElement('<div><p d3-on="$test()">Bla</p></div>'));
 
         var sel = vm.sel.select('p');
 
@@ -49,13 +51,12 @@ describe('d3-on directive', function() {
         expect(d.name).toBe('d3-on');
 
         trigger(sel.node(), 'click');
+        await waiter.promise;
 
         function test () {
-            if (vm.isMounted) {
-                expect(this.parent).toBe(vm.model);
-                expect(this.isolated).toBe(false);
-                done();
-            }
+            expect(this.parent).toBe(vm.model);
+            expect(this.isolated).toBe(false);
+            waiter.resolve();
         }
     });
 });

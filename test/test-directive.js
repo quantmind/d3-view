@@ -1,13 +1,10 @@
 import {map} from 'd3-collection';
 import {isString} from 'd3-let';
 
-import {viewDebounce} from '../index';
-import view, {testAsync, getWaiter} from './utils';
+import view, {testAsync, getWaiter, nextTick} from './utils';
 
 
 describe('directive', () => {
-
-    const nextTick = viewDebounce();
 
     it ('custom', testAsync(async () => {
 
@@ -22,8 +19,7 @@ describe('directive', () => {
                 this.sel.html(''+Math.random());
             }
         });
-        vm.mount(vm.viewElement('<div d3-random d3-dummy></div>'));
-        await nextTick();
+        await vm.mount(vm.viewElement('<div d3-random d3-dummy></div>'));
 
         var dirs = vm.sel.directives();
         expect(dirs).toBeTruthy();
@@ -70,8 +66,7 @@ describe('directive', () => {
                 expect(model.testingFlag).toBe(true);
             }
         });
-        vm.mount(el);
-        await nextTick();
+        await vm.mount(el);
 
         var dirs = vm.sel.select('#key').directives();
         expect(dirs).toBeTruthy();

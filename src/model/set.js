@@ -31,7 +31,7 @@ function reactive (model, key, value) {
     Object.defineProperty(model, key, property());
 
     // Create a new model if value is an object
-    value = isVanillaObject(value) ? model.$new(value) : value;
+    value = typeValue(value);
     // Trigger the callback once for initialization
     model.$change(key);
 
@@ -80,7 +80,7 @@ function reactive (model, key, value) {
     function typeValue (newValue, oldValue) {
         if (newValue === oldValue)
             return oldValue;
-        if (isArray(newValue))
+        else if (isArray(newValue))
             return arrayValue(newValue, oldValue);
         else if (isModel(oldValue))
             return modelValue(newValue, oldValue);
@@ -89,11 +89,10 @@ function reactive (model, key, value) {
     }
 
     function arrayValue (newValue, oldValue) {
-        if (isArray(oldValue))
-            newValue.forEach((o, i) => {
-                if (i < oldValue.length) newValue[i] = typeValue(newValue[i], oldValue[i]);
-            });
-        else if (isModel(oldValue)) oldValue.$off();
+        if (isModel(oldValue)) oldValue.$off();
+        if (!isArray(oldValue)) oldValue = [];
+        for (let i=0; i<newValue.length; ++i)
+            newValue[i] = typeValue(newValue[i], oldValue[i]);
         return newValue;
     }
 
@@ -103,7 +102,7 @@ function reactive (model, key, value) {
             return oldValue;
         } else {
             oldValue.$off();
-            return newValue;
+            return typeValue(newValue);
         }
     }
 }

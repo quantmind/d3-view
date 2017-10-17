@@ -1,15 +1,14 @@
 import {isObject} from 'd3-let';
 import {select} from 'd3-selection';
 
-import view, {nextTick, testAsync} from './utils';
+import view, {nextTick, test} from './utils';
 
 import {viewForms} from '../index';
 
 
-describe('json form select field', () => {
+describe('json form -', () => {
 
-    var vm,
-        form = {
+    var form = {
             type: "form",
             action: "/login",
             resultHandler: "redirect",
@@ -26,17 +25,13 @@ describe('json form select field', () => {
             ]
         };
 
-    beforeEach(() => {
-        vm = view({
+    test('select field', async () => {
+        var vm = view({
             model: {
-                selectForm: form
+                $selectForm: form
             }
         }).use(viewForms);
-
-        vm.mount(vm.viewElement(`<div><d3form schema='selectForm'></d3form></div>`));
-    });
-
-    it ('select', testAsync(async () => {
+        await vm.mount(vm.viewElement(`<div><d3form schema='$selectForm'></d3form></div>`));
         var fv = vm.sel.select('form').view();
         var model = fv.model;
         expect(isObject(model.inputs)).toBe(true);
@@ -56,5 +51,5 @@ describe('json form select field', () => {
         await nextTick();
         options = vm.sel.selectAll('option');
         expect(options.size()).toBe(4);
-    }));
+    });
 });

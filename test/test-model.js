@@ -5,7 +5,7 @@ import {viewModel, viewDebounce} from '../index';
 import {testAsync} from './utils';
 
 
-describe('model', function() {
+describe('model -', function() {
 
     const nextTick = viewDebounce(),
           delayAdd = viewDebounce((a, b) => a + b),
@@ -79,7 +79,7 @@ describe('model', function() {
         expect(model.$test()).toBe('a test');
     });
 
-    it('model.$off', (done) => {
+    it('$off', (done) => {
         var model = viewModel({
             foo: 5,
             bla: 2
@@ -112,7 +112,7 @@ describe('model', function() {
         });
     });
 
-    it('model.$off attribute', testAsync(async () => {
+    it('$off attribute', testAsync(async () => {
         var model = viewModel({
             foo: 5,
             bla: 2
@@ -139,7 +139,7 @@ describe('model', function() {
         }
     }));
 
-    it ('model child', testAsync(async () => {
+    it ('child', testAsync(async () => {
         var model = viewModel({
             foo: 5,
             bla: {
@@ -162,7 +162,7 @@ describe('model', function() {
         expect(called).toBe(1);
     }));
 
-    it ('model child override', testAsync(async () => {
+    it ('child override', testAsync(async () => {
         var model = viewModel({
             foo: 5,
             bla: {
@@ -188,7 +188,7 @@ describe('model', function() {
         });
     }));
 
-    it ('model isReactive', testAsync(async () => {
+    it ('$isReactive', testAsync(async () => {
         var model = viewModel({
             a: 4
         });

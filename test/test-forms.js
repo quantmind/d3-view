@@ -1,6 +1,6 @@
 import {isObject, isFunction, isArray} from 'd3-let';
 
-import view, {testAsync, nextTick} from './utils';
+import view, {test, testAsync, nextTick} from './utils';
 import {viewForms, viewElement} from '../index';
 import jsonform from './fixtures/jsonform';
 
@@ -17,9 +17,9 @@ describe('view meta', () => {
         expect(vm.components.get('d3form')).toBeTruthy();
     });
 
-    it('mount empty form', () => {
+    test('mount empty form', async () => {
         var vm = view().use(viewForms);
-        vm.mount(viewElement('<div><d3form></d3form></div>'));
+        await vm.mount(viewElement('<div><d3form></d3form></div>'));
     });
 });
 
@@ -32,9 +32,9 @@ describe('json form', () => {
         el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
     });
 
-    it ('form model', () => {
+    test ('form model', async () => {
         var vm = view().use(viewForms);
-        vm.mount(el);
+        await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
         expect(isObject(model.inputs)).toBe(true);
@@ -46,7 +46,7 @@ describe('json form', () => {
 
     it ('maxLength - minLength validation', testAsync(async () => {
         var vm = view().use(viewForms);
-        vm.mount(el);
+        await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
 
@@ -72,7 +72,7 @@ describe('json form', () => {
 
     it ('test children errors', testAsync(async () => {
         var vm = view().use(viewForms);
-        vm.mount(el);
+        await vm.mount(el);
 
         var form = vm.sel.select('form');
 

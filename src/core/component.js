@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isFunction, isArray, isPromise, isString, pop} from 'd3-let';
+import {isFunction, isArray, isString, pop} from 'd3-let';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
@@ -10,6 +10,7 @@ import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import slice from '../utils/slice';
 import sel from '../utils/sel';
+import resolvedPromise from '../utils/promise';
 import viewEvents from './events';
 
 
@@ -61,14 +62,8 @@ export const protoComponent = assign({}, base, {
             //
             // create the new element from the render function
             var newEl = this.render(data, dattrs, el);
-            if (isPromise(newEl)) {
-                var self = this;
-                return newEl.then(element => {
-                    return compile(self, el, element, onMounted);
-                });
-            }
-            else
-                return compile(this, el, newEl, onMounted);
+            if (!newEl.then) newEl = resolvedPromise(newEl);
+            return newEl.then(element => compile(this, el, element, onMounted));
         }
     },
     //
@@ -202,9 +197,7 @@ export function asView(vm, element, onMounted) {
         }
     });
     // Apply model to element and mount
-    var p = vm.select(element).view(vm).mount(null, onMounted);
-    if (isPromise(p)) return p.then(() => vmMounted(vm, onMounted));
-    else vmMounted(vm, onMounted);
+    return vm.select(element).view(vm).mount(null, onMounted).then(() => vmMounted(vm, onMounted));
 }
 
 export function mounted (vm, onMounted) {

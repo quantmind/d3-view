@@ -46,6 +46,10 @@ export function testAsync (runAsync) {
     };
 }
 
+export function test (name, runAsync) {
+    return it(name, testAsync(runAsync));
+}
+
 export const nextTick = viewDebounce();
 
 viewProviders.logger = logger;

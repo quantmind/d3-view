@@ -41,7 +41,7 @@ describe('model', () => {
             }
         });
         var el = vm.viewElement('<div></div>');
-        vm.mount(el);
+        await vm.mount(el);
         await viewMount(vm.el, '<msg></msg>', {message: 'test message'});
         expect(vm.sel.select('p').html()).toBe('test message');
 
