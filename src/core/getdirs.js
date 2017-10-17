@@ -18,10 +18,11 @@ export default function (element, directives) {
     for (let i = 0; i < element.attributes.length; ++i) {
         let attr = element.attributes[i],
             bits = attr.name.split('-'),
-            arg = bits[2],
-            dirName = bits[0] === 'd3' ? bits[1] : null;
+            dirName = bits[0] === 'd3' ? bits[1] : null,
+            arg;
 
         if (dirName) {
+            arg = bits.slice(2).join('-');
             if (!arg && attributes.indexOf(dirName) > -1) {
                 arg = dirName;
                 dirName = 'attr';

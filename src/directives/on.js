@@ -1,5 +1,8 @@
 //
 //  d3-on directive
+//
+//  A one-way data binding from dom events to model properties/methods
+//  Event listeners are on the DOM, not on the model
 export default {
 
     mount (model) {
@@ -13,7 +16,8 @@ export default {
             expr.eval(md);
         });
 
-        return model;
+        this.bindDestroy(model);
+        // Does not return the model so that model data binding is not performed
     },
 
     destroy () {

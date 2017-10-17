@@ -57,24 +57,21 @@ const prototype = assign({}, base, {
     execute (model) {
         if (!this.active) return;
         this.removeAttribute();
-
+        this.identifiers = [];
         model = this.mount(model);
-        // No model returned - abort execution
-        if (!model) return;
+        // If model returned, bind the element to its properties
+        if (model) this.bindModel(model);
+    },
 
+    bindModel (model) {
         var dir = this,
-            destroy = this.destroy,
-            sel = this.sel,
             refresh = function () {
                 let value = dir.expression ? dir.expression.eval(model) : undefined;
                 dir.refresh(model, value);
             };
 
-        // bind destroy to the model
-        dir.destroy = () => destroy.call(dir, model);
         // Bind expression identifiers with model
         let bits, target, attr, i;
-        dir.identifiers = [];
         if (!this.expression) {
             dir.identifiers.push({
                 model: model,
@@ -125,14 +122,23 @@ const prototype = assign({}, base, {
             identifier.model.$on(event, refresh);
         });
 
-        sel.on(`remove.${dir.uid}`, () => {
+        this.bindDestroy(model);
+
+        refresh();
+    },
+
+    bindDestroy (model) {
+        var dir = this,
+            destroy = this.destroy;
+        // bind destroy to the model
+        dir.destroy = () => destroy.call(dir, model);
+
+        this.sel.on(`remove.${dir.uid}`, () => {
             this.identifiers.forEach(identifier => {
                 identifier.model.$off(`${identifier.attr}.${dir.uid}`);
             });
-            dir.destroy(model);
+            dir.destroy();
         });
-
-        refresh();
     }
 });
 
