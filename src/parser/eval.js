@@ -3,16 +3,15 @@ import {set} from 'd3-collection';
 import {code} from './jsep';
 
 
-export function evaluate (self, expr) {
-
+export function evaluate (self, expr, nested) {
     switch(expr.type) {
         case code.IDENTIFIER: return self[expr.name];
-        case code.LITERAL: return expr.value;
+        case code.LITERAL: return nested ? self[expr.value] : expr.value;
         case code.ARRAY_EXP: return expr.elements.map((elem) => {return evaluate(self, elem);});
         case code.LOGICAL_EXP:
         case code.BINARY_EXP: return binaryExp(expr.operator, evaluate(self, expr.left), evaluate(self, expr.right));
         case code.CALL_EXP: return callExpression(self, expr.callee, expr.arguments);
-        case code.MEMBER_EXP: return evaluate(evaluate(self, expr.object), expr.property);
+        case code.MEMBER_EXP: return evaluate(evaluate(self, expr.object), expr.property, true);
         case code.CONDITIONAL_EXP: return evaluate(self, expr.test) ? evaluate(self, expr.consequent) : evaluate(self, expr.alternate);
         case code.UNARY_EXP: return unaryExp(expr.operator, evaluate(self, expr.argument));
     }

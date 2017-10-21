@@ -129,4 +129,14 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('a + 2.1*b').eval({a: 1, b: 3})).toBeCloseTo(7.3);
         expect(viewExpression('.5e3 + a').eval({a: 1})).toBeCloseTo(501);
     });
+
+    it('Array number', () => {
+        expect(viewExpression('d[0]').eval({d: [0, 3, 4]})).toEqual(0);
+        expect(viewExpression('d[1]').eval({d: [0, 3, 4]})).toEqual(3);
+        expect(viewExpression('d[2]').eval({d: [0, 3, 4.5]})).toEqual(4.5);
+        expect(viewExpression('2*d[2]').eval({d: [0, 3, 4.5]})).toEqual(9);
+        expect(viewExpression('d.length').eval({d: [0, 3, 4.5]})).toEqual(3);
+        expect(viewExpression('d.shift()').eval({d: [0, 3, 4.5]})).toEqual(0);
+        expect(viewExpression('d.slice(0, 2)').eval({d: [0, 3, 4.5]})).toEqual([0, 3]);
+    });
 });

@@ -1,5 +1,5 @@
 {
-    "version": "0.8.0",
+    "version": "0.8.1",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -36,7 +36,7 @@
         "babel-preset-env": "1.6",
         "babel-preset-es2015-rollup": "3.0",
         "babelify": "7.3",
-        "browserify": "14.4",
+        "browserify": "14.5",
         "browserify-istanbul": "3.0",
         "d3-let": "0.3",
         "eslint": "4.9",
