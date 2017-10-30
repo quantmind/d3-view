@@ -74,8 +74,10 @@ export const protoComponent = assign({}, base, {
         sel.html(inner);
         if (el.childNodes.length) {
             var children = slice(el.childNodes);
-            var p = sel.view(this).selectAll(function(){return children;}).mount();
-            return p ? p.then(() => {return sel;}) : sel;
+            return sel.view(this)
+                        .selectAll(function(){return children;})
+                        .mount()
+                        .then(() => sel);
         } else {
             return sel;
         }

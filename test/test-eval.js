@@ -139,4 +139,10 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('d.shift()').eval({d: [0, 3, 4.5]})).toEqual(0);
         expect(viewExpression('d.slice(0, 2)').eval({d: [0, 3, 4.5]})).toEqual([0, 3]);
     });
+
+    it('Array bug', () => {
+        var d = [0, 3, 4];
+        d.key = 'test';
+        expect(viewExpression('d.key + ": " + d[1]').eval({d: d})).toEqual('test: 3');
+    });
 });
