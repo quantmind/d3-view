@@ -128,10 +128,7 @@ describe('Components -', function() {
             var vm = view({
                 components: {
                     bla (props, attr, el) {
-                        return this.mountInner(
-                            this.createElement('div').classed('bla', true),
-                            this.select(el).html()
-                        );
+                        return this.createElement('div').classed('bla', true).html(this.select(el).html());
                     },
                     year: year,
                     remote () {

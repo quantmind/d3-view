@@ -213,12 +213,6 @@ If the optional ``context`` object is provided, it renders the remote html strin
 
 Return a [d3.selection][] of the ``HTMLElement``.
 
-### vm.mountInner(element, html)
-
-Mount inner html into a selection element (usually the element the component is creating).
-This function is useful when creating components which contain inner html.
-It returns the same element of a promise resulting in the element.
-
 ## Selection
 
 This plugins extend the [d3.selection][] API with three additional methods for retrieving mounted component from a given element and mounting components on a selection.

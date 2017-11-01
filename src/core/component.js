@@ -8,7 +8,6 @@ import createDirective from './directive';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
-import slice from '../utils/slice';
 import sel from '../utils/sel';
 import resolvedPromise from '../utils/promise';
 import viewEvents from './events';
@@ -64,22 +63,6 @@ export const protoComponent = assign({}, base, {
             var newEl = this.render(data, dattrs, el);
             if (!newEl.then) newEl = resolvedPromise(newEl);
             return newEl.then(element => compile(this, el, element, onMounted));
-        }
-    },
-    //
-    //  Mount an inner html into an element
-    //  This function should be used with the view element as first parameter
-    mountInner (sel, inner) {
-        var el = sel.node();
-        sel.html(inner);
-        if (el.childNodes.length) {
-            var children = slice(el.childNodes);
-            return sel.view(this)
-                        .selectAll(function(){return children;})
-                        .mount()
-                        .then(() => sel);
-        } else {
-            return sel;
         }
     }
 });
