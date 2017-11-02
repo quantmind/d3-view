@@ -5,9 +5,6 @@ import {createComponent} from '../core/component';
 import protoView from '../core/view';
 import warn from '../utils/warn';
 
-
-export const forView = createComponent('forView', null, protoView);
-
 //
 //  d3-for directive
 //  ======================
@@ -48,6 +45,7 @@ export default {
             itemName = this.itemName,
             sel = this.sel,
             entries = sel.selectAll(selector).data(items),
+            forView = createComponent('forView', protoView),
             vm = sel.view();
 
         let x;

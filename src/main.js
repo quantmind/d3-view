@@ -9,4 +9,7 @@ import './core/clean';
 const coreDirectives = extendDirectives(map(), directives);
 
 // the view constructor
-export default createComponent('view', null, protoView, coreDirectives);
+export default function (config) {
+    const viewClass = createComponent('view', protoView, coreDirectives);
+    return viewClass(config);
+}

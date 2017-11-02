@@ -1,7 +1,7 @@
 import {isString, isFunction} from 'd3-let';
 
 import view, {test, getWaiter} from './utils';
-import {viewProviders, viewVersion, viewElement} from '../index';
+import {viewProviders, viewVersion, viewElement, viewBase} from '../index';
 
 
 var logger = viewProviders.logger;
@@ -115,5 +115,13 @@ describe('view -', () => {
         expect(logs.length).toBe(1);
         expect(logs[0]).toBe(`[d3-view] Cannot bind to "$test" - no such reactive property`);
         expect(model.$test).toBe('this is a test');
+    });
+
+    it('exndibility', () => {
+        viewBase.fooo = function () {
+            return 'OK';
+        };
+        var vm = view();
+        expect(vm.fooo()).toBe('OK');
     });
 });

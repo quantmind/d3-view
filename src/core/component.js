@@ -15,7 +15,7 @@ import viewEvents from './events';
 
 
 // prototype for both views and components
-export const protoComponent = assign({}, base, {
+const protoComponent = {
     //
     // hooks
     render () {},
@@ -82,10 +82,10 @@ export const protoComponent = assign({}, base, {
             return newEl.then(element => compile(this, el, element, onMounted));
         }
     }
-});
+};
 
 // factory of View and Component constructors
-export function createComponent (name, o, prototype, coreDirectives) {
+export function createComponent (name, o, coreDirectives) {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -161,7 +161,7 @@ export function createComponent (name, o, prototype, coreDirectives) {
         viewEvents.call('component-created', undefined, this);
     }
 
-    Component.prototype = assign({}, prototype, obj);
+    Component.prototype = assign({}, base, protoComponent, obj);
 
     function component (options) {
         return new Component(options);
