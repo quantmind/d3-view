@@ -39,18 +39,27 @@ export default {
 
     refresh (model, items) {
         if (!isArray(items)) return;
+        let d;
 
         var creator = this.creator,
             selector = `${creator.tagName}.${this.itemClass}`,
             itemName = this.itemName,
             sel = this.sel,
-            entries = sel.selectAll(selector).data(items),
+            allItems = sel.selectAll(selector),
+            entries = allItems.filter(function () {
+                d = this.__d3_view__.model[itemName];
+                return items.indexOf(d) > -1;
+            }).data(items),
+            exits = allItems.filter(function () {
+                d = this.__d3_view__.model[itemName];
+                return items.indexOf(d) === -1;
+            }),
             forView = createComponent('forView', protoView),
             vm = sel.view();
 
         let x;
 
-        entries.exit().remove();
+        this.transition(exits).style('opacity', 0).remove();
 
         entries
             .enter()

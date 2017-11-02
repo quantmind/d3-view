@@ -5,4 +5,4 @@
 ```
 doctoc docs
 ```
-* If add an example in [bl.ocks.org](https://bl.ocks.org), please submit a pull request with a link in [examples](./docs/examples.md).
+* When adding an example in [bl.ocks.org](https://bl.ocks.org), please submit a pull request with a link in [examples](./docs/examples.md).

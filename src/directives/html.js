@@ -15,7 +15,8 @@ export default {
     refresh (model, html) {
         if (isNumber(html)) html = ''+html;
         if (isString(html)) {
-            this.sel.html(html);
+            this.transition(this.sel.style('opacity', 0).html(html))
+                .style('opacity', 1);
             var children = slice(this.el.children);
             for (let i=0; i<children.length; ++i)
                 this.select(children[i]).mount();

@@ -1,8 +1,13 @@
 import {isArray} from 'd3-let';
+import {map} from 'd3-collection';
 
 import warn from '../utils/warn';
 
-const properties = ['disabled', 'readonly', 'required'];
+const properties = map({
+    disabled: 'disabled',
+    readonly: 'readOnly',
+    required: 'required'
+});
 
 //
 //  d3-attr-<attr> directive
@@ -20,8 +25,9 @@ export default {
     refresh (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
-        if (properties.indexOf(this.arg) > -1) this.sel.property(this.arg, value || false);
-        else this.sel.attr(this.arg, value || null);
+        var prop = properties.get(this.arg);
+        if (prop) this.sel.property(prop, value || false);
+        else this.transition().attr(this.arg, value || null);
     },
 
     refreshClass (value) {

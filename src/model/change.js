@@ -8,6 +8,7 @@ export default function (attribute) {
         event = this.$events.get(name),
         args = slice(arguments, 1);
     if (event) event.trigger.apply(this, args);
+    else if (!this.isolated) this.parent.$change(name);
     else warn(`attribute '${name}' is not a reactive property this model`);
     return this;
 }

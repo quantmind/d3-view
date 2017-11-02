@@ -49,6 +49,15 @@ const prototype = assign({}, base, {
 
     },
 
+    hasTransition (sel) {
+        return isFunction(sel.transition);
+    },
+
+    transition (sel) {
+        if (!arguments.length) sel = this.sel;
+        return this.hasTransition(sel) ? sel.transition() : sel;
+    },
+
     removeAttribute () {
         this.el.removeAttribute(this.name);
     },
