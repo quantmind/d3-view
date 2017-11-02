@@ -10,7 +10,7 @@ import {timeout} from 'd3-timer';
 export default function (callback, delay) {
     var promise = null;
 
-    return function () {
+    function debounce () {
         if (promise !== null) return promise;
         var self = this,
             args = arguments;
@@ -28,5 +28,11 @@ export default function (callback, delay) {
         });
 
         return promise;
+    }
+
+    debounce.promise = function () {
+        return promise;
     };
+
+    return debounce;
 }

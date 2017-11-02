@@ -5,7 +5,7 @@ import ddispatch from './dispatch';
 
 //
 // Initialise a model
-export default function asModel (model, initials) {
+export default function asModel (model, initials, parent, isolated) {
     var events = map(),
         Child = null;
 
@@ -16,6 +16,16 @@ export default function asModel (model, initials) {
         $events: {
             get () {
                 return events;
+            }
+        },
+        parent: {
+            get () {
+                return parent;
+            }
+        },
+        isolated: {
+            get () {
+                return isolated;
             }
         }
     });
@@ -31,19 +41,7 @@ export default function asModel (model, initials) {
 function createChildConstructor (model) {
 
     function Child (initials) {
-        asModel(this, initials);
-        Object.defineProperties(this, {
-            parent: {
-                get () {
-                    return model;
-                }
-            },
-            isolated: {
-                get () {
-                    return false;
-                }
-            }
-        });
+        asModel(this, initials, model, false);
     }
 
     Child.prototype = model;

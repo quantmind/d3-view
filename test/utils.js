@@ -52,10 +52,11 @@ export function test (name, runAsync) {
 
 export const nextTick = viewDebounce();
 
-viewProviders.logger = logger;
 viewProviders.fetch = testFetch;
+// comment this line for logs
+viewProviders.logger = logger;
 // uncomment this line for debug logs
-// viewProviders.setDebug();
+//viewProviders.setDebug();
 
 export default view;
 

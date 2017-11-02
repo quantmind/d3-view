@@ -26,6 +26,7 @@ export function identifiers (expr, all) {
         case code.ARRAY_EXP:
             expr.elements.forEach(elem => identifiers(elem, all));
             break;
+        case code.LOGICAL_EXP:
         case code.BINARY_EXP:
             identifiers(expr.left, all);
             identifiers(expr.right, all);

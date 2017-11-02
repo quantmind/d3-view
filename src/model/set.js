@@ -39,14 +39,12 @@ function reactive (model, key, value) {
         if (lazy) newValue = lazy.get.call(model);
         if (newValue === value) return;
         // trigger lazy callbacks
-        var oldValue = value;
-        value = typeValue (newValue, oldValue);
         //
         // Fire model events
-        var modelName = model.name || 'model';
+        var modelName = model.$$name || 'model';
         debug(`updating ${modelName}.${key}`);
-        model.$change(key, oldValue);   // attribute change event
-        model.$change();                // model change event
+        model.$change(key, value).$change();
+        value = typeValue (newValue, value);
     }
 
     function property () {

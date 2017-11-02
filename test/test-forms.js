@@ -49,10 +49,13 @@ describe('json form', () => {
         await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
+        var token = model.inputs.token;
 
+        expect(token.isDirty).toBe(null);
+        expect(token.error).toBe('');
+        expect(token.showError).toBe(false);
         await nextTick();
 
-        var token = model.inputs.token;
         token.value = 'xxy';
         expect(token.isDirty).toBe(false);
         expect(token.error).toBe('required');
@@ -68,6 +71,12 @@ describe('json form', () => {
         expect(token.isDirty).toBe(true);
         expect(token.error).toBe('');
         expect(token.showError).toBe(false);
+
+        token.value = '';
+        await nextTick();
+        expect(token.isDirty).toBe(true);
+        expect(token.error).toBe('required');
+        expect(token.showError).toBe(true);
     }));
 
     it ('test children errors', testAsync(async () => {

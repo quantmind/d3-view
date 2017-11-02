@@ -1,5 +1,5 @@
 import assign from 'object-assign';
-import {isFunction, isArray, isString, pop} from 'd3-let';
+import {isFunction, isArray, isObject, isString, pop} from 'd3-let';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
@@ -10,6 +10,7 @@ import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import resolvedPromise from '../utils/promise';
+import dataAttributes from '../utils/data';
 import viewEvents from './events';
 
 
@@ -31,33 +32,49 @@ export const protoComponent = assign({}, base, {
             var sel = this.select(el),
                 directives = sel.directives(),
                 dattrs = directives ? directives.attrs : attributes(el),
-                model = this.model;
-            let key, value, target;
+                parentModel = this.parent.model,
+                datum = sel.datum();
 
-            data = assign({}, sel.datum(), data);
+            let props = this.props,
+                model = this.model,
+                modelData = assign(dataAttributes(dattrs), datum, data),
+                key, value;
+
+            data = assign({}, datum, data);
 
             // override model keys from data object and element attributes
             for (key in model) {
-                target = data[key] === undefined ? dattrs : data;
-                if (target[key] !== undefined)
-                    model[key] = maybeJson(pop(target, key));
+                if (modelData[key] !== undefined) {
+                    value = modelData[key];
+                    if (isString(value)) {
+                        if (parentModel.$isReactive(value)) value = reactiveParentProperty(value);
+                        else value = maybeJson(value);
+                    }
+                    model[key] = value;
+                }
             }
 
             // Create model
-            this.model = model = this.parent.model.$child(model);
+            this.model = model = parentModel.$child(model);
+            if (isArray(props)) props = props.reduce((o, key) => {
+                o[key] = undefined;
+                return o;
+            }, {});
 
-            if (isArray(this.props)) {
-                this.props.forEach(prop => {
-                    value = maybeJson(data[prop] === undefined ? dattrs[prop] : data[prop]);
+            if (isObject(props)) {
+                Object.keys(props).forEach(key => {
+                    value = maybeJson(data[key] === undefined ? dattrs[key] : data[key]);
                     if (value !== undefined) {
                         // data point to a model attribute
                         if (isString(value) && model[value]) value = model[value];
-                        data[prop] = value;
+                        data[key] = value;
+                    } else if (props[key] !== undefined) {
+                        data[key] = props[key];
                     }
                 });
             }
             // give the model a name
-            if (!model.name) model.name = this.name;
+            if (!model.$$name) model.$$name = this.name;
             //
             // create the new element from the render function
             var newEl = this.render(data, dattrs, el);
@@ -254,4 +271,14 @@ function attributes (element) {
         attrs[attr.name] = attr.value;
     }
     return attrs;
+}
+
+
+function reactiveParentProperty (value) {
+    return {
+        reactOn: [value],
+        get () {
+            return this[value];
+        }
+    };
 }

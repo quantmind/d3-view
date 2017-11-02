@@ -4,7 +4,7 @@ import view, {test, trigger, getWaiter} from './utils';
 import {viewElement, viewEvents} from '../index';
 
 
-describe('Components -', function() {
+describe('Components -', () => {
 
     var year = {
         render: function () {

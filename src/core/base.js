@@ -47,10 +47,10 @@ export default {
     renderFromUrl (url, context, asElement=true) {
         var cache = this.cache;
         if (url in cache)
-            return resolvedPromise(asElement ? htmlElement(cache[url]) : cache[url]);
+            return resolvedPromise(render(cache[url], context, asElement));
         return this.fetchText(url).then(template => {
             cache[url] = template;
-            return asElement ? htmlElement(template, context) : html(template, context);
+            return render(template, context, asElement);
         });
     },
     //
@@ -69,4 +69,9 @@ export function jsonResponse (response) {
         return response.json();
     else
         throw new Error(`Expected JSON content type, got ${ct}`);
+}
+
+
+function render (template, context, asElement) {
+    return asElement ? htmlElement(template, context) : html(template, context);
 }

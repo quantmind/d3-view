@@ -1,5 +1,5 @@
 import './utils';
-import {viewExpression} from '../index';
+import {viewExpression, jsep} from '../index';
 import {viewProviders} from '../index';
 
 
@@ -112,6 +112,8 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo.bla', 'foo']);
         expect(viewExpression('[pippo.bla.test(), foo.go(bla)]').identifiers()).toEqual(
             ['pippo.bla.test', 'foo.go', 'bla']);
+        expect(viewExpression('item.label || item.name').identifiers()).toEqual(
+            ['item.label', 'item.name']);
     });
 
     it('binary precedence', () => {
@@ -144,5 +146,18 @@ describe('viewExpression.eval', function() {
         var d = [0, 3, 4];
         d.key = 'test';
         expect(viewExpression('d.key + ": " + d[1]').eval({d: d})).toEqual('test: 3');
+    });
+
+    it('special identifiers', () => {
+        expect(viewExpression('false').eval({})).toEqual(false);
+        expect(viewExpression('true').eval({})).toEqual(true);
+        expect(viewExpression('null').eval({})).toEqual(null);
+    });
+
+    it('add/remove literals', () => {
+        jsep.addLiteral('vero', true);
+        expect(viewExpression('vero').eval({vero: 'fooo'})).toEqual(true);
+        jsep.removeLiteral('vero');
+        expect(viewExpression('vero').eval({vero: 'fooo'})).toEqual('fooo');
     });
 });

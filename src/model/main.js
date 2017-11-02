@@ -11,8 +11,8 @@ import $isreactive from './isreactive';
 //  Model class
 //
 //  The model is at the core of d3-view reactive data component
-function Model (initials) {
-    asModel(this, initials);
+function Model (initials, parent) {
+    asModel(this, initials, parent, true);
 }
 
 export default function model (initials) {
@@ -38,22 +38,5 @@ Object.defineProperty(Model.prototype, 'root', {
 
 
 function $new (initials) {
-
-    var parent = this,
-        child = model(initials);
-
-    Object.defineProperties(child, {
-        parent: {
-            get () {
-                return parent;
-            },
-        },
-        isolated: {
-            get () {
-                return true;
-            }
-        }
-    });
-
-    return child;
+    return new Model(initials, this);
 }

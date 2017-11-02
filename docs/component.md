@@ -30,7 +30,6 @@
   - [json (url, [options])](#json-url-options)
   - [vm.renderFromUrl (url, [context])](#vmrenderfromurl-url-context)
   - [vm.select(HTMLElement)](#vmselecthtmlelement)
-  - [vm.mountInner(element, html)](#vmmountinnerelement-html)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -95,11 +94,32 @@ var component = {
 
 ### props
 
-Optional array to specify a set of HTML attributes which contribute to the component properties, the object passed to the [render][] method.
+Optional array or object to specify a set of HTML attributes which contribute to the component properties.
+Component properties are non-reactive attributes and are passed as an object to the component [render][] method.
 The HTML properties can contain
 
 * JSON strings
 * Model attribute name
+
+For example:
+```javascript
+var hi = {
+    props: {
+        id: 'defaultid'
+    },
+    render(props) {
+        return `<p id="${props.id}">Hi</p>`;
+    }
+};
+```
+and in the html
+```html
+<hi id="ciao"></hi>
+```
+will render as
+```html
+<p id="ciao">Hi</p>
+```
 
 ### model
 

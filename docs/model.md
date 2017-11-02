@@ -16,6 +16,7 @@
   - [model.isolated](#modelisolated)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
+  - [model.$isReactive (attribute)](#modelisreactive-attribute)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
   - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$off ()](#modeloff-)
@@ -204,6 +205,17 @@ m.$update({
 });
 m.a     // 5
 m.b     // 11
+```
+
+### model.$isReactive (attribute)
+
+Check if ``attribute`` is a reactive property of the model (including its parents if the model is not isolated). Return ``true`` or ``false``.
+```javascript
+m.$isReactive('a')  // true
+c1 = m.$child();
+c1.$isReactive('a')  // true
+c2 = m.$new();
+c2.$isReactive('a')  // false
 ```
 
 ### model.$on (attribute, callback)

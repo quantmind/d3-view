@@ -92,7 +92,7 @@ export default {
         model.actions = {};
         model.form = model; // inject self for children models
         //
-        var schema = data['schema'];
+        var schema = data.schema;
         if (isString(schema)) {
             var fetch = providers.fetch;
             return fetch(schema, {method: 'GET'}).then((response) => {

@@ -17,6 +17,7 @@ export function html (source, context) {
         if (context) {
             var s = compile(source);
             if (!s) return source;
+            source = s;
         }
         else
             return source;
