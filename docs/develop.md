@@ -32,6 +32,7 @@ contribute in the form of
 * API design
 * Documentation
 * Examples as blocks
+
 Check the very minimal [contributing](../contributing.md) guidelines and hope
 to see your patch or idea soon.
 

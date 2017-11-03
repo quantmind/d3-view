@@ -2,11 +2,13 @@ import {inBrowser, isString} from 'd3-let';
 import {select} from 'd3-selection';
 
 import warn from './warn';
+import providers from './providers';
 
 
 // require handlebar
 export function compile (text) {
-    var handlebars = inBrowser ? window.handlebars : require('handlebars');
+    var handlebars = providers.handlebars;
+    if (!handlebars) handlebars = inBrowser ? window.handlebars : require('handlebars');
     if (handlebars) return handlebars.compile(text);
     warn('compile function requires handlebars');
 }

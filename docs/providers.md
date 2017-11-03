@@ -7,6 +7,7 @@
 - [Access Providers](#access-providers)
   - [Logger](#logger)
   - [Fetch](#fetch)
+  - [Handlebars](#handlebars)
 - [Require](#require)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -37,6 +38,17 @@ d3.viewProviders.logger
 Retrieve data from urls
 ```javascript
 d3.viewProviders.fetch
+```
+
+### Handlebars
+
+[Handlebars](http://handlebarsjs.com/) is required when rendering templates with static context.
+To use handlebars, one can either include it as a script in the page or load it via require and
+store it as a view provider:
+```javascript
+require('handlebars').then(handlebars => {
+    viewProviders.handlebars = handlebars;
+});
 ```
 
 ## Require

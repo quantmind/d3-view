@@ -58,7 +58,7 @@ describe('Component data -', () => {
         expect(vm.components.get('sidebar')).toBeTruthy();
         //
         await vm.mount(vm.viewElement(
-            `<div><sidebar id="bang" brand="Big bang" data-primary-items="sidebarItems"><p id="innerBang">bla bla bla</p></sidebar></div>`
+            `<div><sidebar id="bang" data-brand="Big bang" data-brand-url='/big' data-primary-items="sidebarItems"><p id="innerBang">bla bla bla</p></sidebar></div>`
         ));
         var bar = vm.sel.selectAll('#bang');
         expect(bar.size()).toBe(1);
@@ -66,7 +66,9 @@ describe('Component data -', () => {
         expect(model.parent).toBe(vm.model);
         expect(model.primaryItems).toBe(vm.model.sidebarItems);
 
-        expect(bar.selectAll('.sidebar-brand').html()).toBe('Big bang');
+        var link = bar.selectAll('.sidebar-brand');
+        expect(link.html()).toBe('Big bang');
+        expect(link.attr('href')).toBe('/big');
         var items = bar.selectAll('.list-group-item-primary');
         expect(items.size()).toBe(2);
         items.each(function (d, idx) {

@@ -44,8 +44,8 @@ const protoComponent = {
 
             // override model keys from data object and element attributes
             for (key in model) {
-                if (modelData[key] !== undefined) {
-                    value = modelData[key];
+                value = pop(modelData, key);
+                if (value !== undefined) {
                     if (isString(value)) {
                         if (parentModel.$isReactive(value)) value = reactiveParentProperty(value);
                         else value = maybeJson(value);
@@ -63,7 +63,7 @@ const protoComponent = {
 
             if (isObject(props)) {
                 Object.keys(props).forEach(key => {
-                    value = maybeJson(data[key] === undefined ? dattrs[key] : data[key]);
+                    value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
                     if (value !== undefined) {
                         // data point to a model attribute
                         if (isString(value) && model[value]) value = model[value];
