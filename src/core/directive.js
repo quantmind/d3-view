@@ -24,8 +24,7 @@ import base from './base';
 //  * refresh
 //  * destroy
 //
-const prototype = assign({}, base, {
-    priority: 1,
+const prototype = {
 
     // hooks
     create (expression) {
@@ -149,7 +148,7 @@ const prototype = assign({}, base, {
             dir.destroy();
         });
     }
-});
+};
 
 // Directive constructor
 export default function (obj) {
@@ -164,7 +163,7 @@ export default function (obj) {
             this.active = !attr.value || this.expression;
     }
 
-    Directive.prototype = assign({}, prototype, obj);
+    Directive.prototype = assign({}, base, prototype, obj);
 
     function directive (el, attr, arg) {
         return new Directive(el, attr, arg);
