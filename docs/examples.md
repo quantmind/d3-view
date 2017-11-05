@@ -7,4 +7,5 @@
 
 * [markdown editor](https://bl.ocks.org/lsbardel/29fe806656fc6b77df9239186e456ff2)
 * [dynamic forms](https://bl.ocks.org/lsbardel/ee4ca05791e13997b7289a538ad7864d)
-* [Todo web app](https://bl.ocks.org/lsbardel/caf173c3eb284c56edadc0e03179fb27)
+* [todo web app](https://bl.ocks.org/lsbardel/caf173c3eb284c56edadc0e03179fb27)
+* [modal](https://bl.ocks.org/lsbardel/964b454dd40bc32082a0753e9106a707)
