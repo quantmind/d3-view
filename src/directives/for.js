@@ -57,14 +57,17 @@ export default {
             forView = createComponent('forView', protoView),
             vm = sel.view();
 
-        let x;
+        let x, el, fel, tr;
 
-        this.transition(exits).style('opacity', 0).remove();
+        (this.transition(exits) || exits).style('opacity', 0).remove();
 
         entries
             .enter()
                 .append(() => {
-                    return creator.cloneNode(true);
+                    el = creator.cloneNode(true);
+                    fel = vm.select(el);
+                    if (vm.transitionDuration(fel) > 0) fel.style('opacity', 0);
+                    return el;
                 })
                 .classed(this.itemClass, true)
                 .each(function (d, index) {
@@ -73,10 +76,12 @@ export default {
                     forView({
                         model: x,
                         parent: vm
-                    }).mount(this, (vm) => {
+                    }).mount(this, (fv) => {
                         // replace the item with a property from the model
                         // This allow for reactivity when d is an object
-                        items[index] = vm.model[itemName];
+                        items[index] = fv.model[itemName];
+                        tr = fv.transition();
+                        if (tr) tr.style('opacity', 1);
                     });
                 })
             .merge(entries)

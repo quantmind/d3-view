@@ -1,5 +1,4 @@
-import assign from 'object-assign';
-import {isString, isObject} from 'd3-let';
+import {isString, isObject, assign} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
 
 import warn from './warn';

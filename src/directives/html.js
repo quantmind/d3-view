@@ -1,8 +1,4 @@
 import {isString, isNumber} from 'd3-let';
-
-import slice from '../utils/slice';
-
-
 //
 //  d3-html
 //  =============
@@ -15,11 +11,19 @@ export default {
     refresh (model, html) {
         if (isNumber(html)) html = ''+html;
         if (isString(html)) {
-            this.transition(this.sel.style('opacity', 0).html(html))
-                .style('opacity', 1);
-            var children = slice(this.el.children);
-            for (let i=0; i<children.length; ++i)
-                this.select(children[i]).mount();
+            var dir = this,
+                sel = this.sel,
+                transition = this.passes ? this.transition(sel) : null;
+            if (transition) {
+                transition.style('opacity', 0).on('end', () => {
+                    sel.html(html);
+                    dir.selectChildren().mount();
+                    dir.transition(sel).style('opacity', 1);
+                });
+            } else {
+                sel.html(html);
+                this.selectChildren().mount();
+            }
         }
     }
 };

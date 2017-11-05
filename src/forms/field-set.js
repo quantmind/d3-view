@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+import {assign} from 'd3-let';
 
 import {formElement} from './field';
 import {addChildren} from './utils';

@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+import {assign} from 'd3-let';
 
 import field from './field';
 import validators from './validators';
@@ -13,7 +13,7 @@ export default assign({}, field, {
     render (data) {
         var el = this.createElement('input');
         data = this.inputData(el, data);
-        
+
         el.attr('type', data.type || 'text')
             .attr('d3-value', 'value');
 

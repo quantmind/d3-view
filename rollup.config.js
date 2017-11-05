@@ -17,8 +17,7 @@ export default {
             "d3-let": "d3",
             "d3-require": "d3",
             "d3-selection": "d3",
-            "d3-timer": "d3",
-            "object-assign": "assign"
+            "d3-timer": "d3"
         }
     },
     plugins: [
@@ -37,7 +36,6 @@ export default {
         "d3-let",
         "d3-require",
         "d3-selection",
-        "d3-timer",
-        "object-assign"
+        "d3-timer"
     ]
 };

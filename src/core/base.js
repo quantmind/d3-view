@@ -58,6 +58,11 @@ export default {
         el = asSelect(el);
         if (callback === null) return el.on(name, null);
         else el.on(name, () => callback(event));
+    },
+    //
+    selectChildren (el) {
+        if (!arguments.length) el = this.el;
+        return this.selectAll(Array.prototype.slice.call(el.children));
     }
 };
 

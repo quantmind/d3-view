@@ -1,4 +1,4 @@
-import assign from 'object-assign';
+import {assign} from 'd3-let';
 
 import providers from './providers';
 import warn from './warn';

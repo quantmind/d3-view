@@ -1,5 +1,4 @@
-import assign from 'object-assign';
-import {isFunction, isObject} from 'd3-let';
+import {isFunction, isObject, assign} from 'd3-let';
 import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
@@ -7,7 +6,7 @@ import viewModel from '../model/main';
 import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
-import base from './base';
+import base from './transition';
 
 //
 // Directive Prototype
@@ -48,15 +47,6 @@ const prototype = {
 
     },
 
-    hasTransition (sel) {
-        return isFunction(sel.transition);
-    },
-
-    transition (sel) {
-        if (!arguments.length) sel = this.sel;
-        return this.hasTransition(sel) ? sel.transition() : sel;
-    },
-
     removeAttribute () {
         this.el.removeAttribute(this.name);
     },
@@ -76,6 +66,7 @@ const prototype = {
             refresh = function () {
                 let value = dir.expression ? dir.expression.eval(model) : undefined;
                 dir.refresh(model, value);
+                dir.passes++;
             };
 
         // Bind expression identifiers with model
@@ -157,6 +148,7 @@ export default function (obj) {
         this.el = el;
         this.name = attr.name;
         this.arg = arg;
+        this.passes = 0;
         var expr = sel(uid(this)).create(attr.value);
         if (expr) this.expression = viewExpression(expr);
         if (!this.active)

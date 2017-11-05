@@ -1,9 +1,8 @@
-import assign from 'object-assign';
-import {isFunction, isArray, isObject, isString, pop} from 'd3-let';
+import {isFunction, isArray, isObject, isString, pop, assign} from 'd3-let';
 import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
-import base from './base';
+import base from './transition';
 import createDirective from './directive';
 import warn from '../utils/warn';
 import asSelect from '../utils/select';
