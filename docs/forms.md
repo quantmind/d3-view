@@ -17,6 +17,7 @@
   - [endpoint](#endpoint)
 - [Extensions](#extensions)
 - [Bootstrap Plugin](#bootstrap-plugin)
+  - [Size](#size)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -150,6 +151,18 @@ It is possible to use bootstrap layouts for d3 forms by importing and using the 
 import {view, viewForms, viewBootstrapForms} from 'd3-view';
 
 var vm = view().use(viewForms).use(viewBootstrapForms);
+```
+
+### Size
+
+To control the size of the form or each indivisual field one can use the ``size``
+attribute in the JSON object:
+```javascript
+size: "sm"  // small form
+```
+or
+```javascript
+size: "lg"  // large form
 ```
 
 [component]: ./component.md
