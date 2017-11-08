@@ -17,6 +17,7 @@
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$isReactive (attribute)](#modelisreactive-attribute)
+  - [model.$owner (attribute)](#modelowner-attribute)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
   - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$off ()](#modeloff-)
