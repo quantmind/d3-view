@@ -26,8 +26,18 @@ export default {
         if (this.arg === 'class') return this.refreshClass(value);
         if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
         var prop = properties.get(this.arg);
-        if (prop) this.sel.property(prop, value || false);
-        else this.sel.attr(this.arg, value || null);
+        if (prop) {
+            if (!value) {
+                this.el[prop] = false;
+                try {
+                    delete this.el[prop];
+                } catch (e) {
+                    // pass
+                }
+            } else
+                this.sel.property(prop, value);
+        } else
+            this.sel.attr(this.arg, value || null);
     },
 
     refreshClass (value) {
