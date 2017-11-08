@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   override:
+    - sudo apt-get update && sudo apt-get install libpango1.0-0 && sudo apt-get install firefox
     - npm install
 
 
