@@ -100,7 +100,9 @@ const prototype = {
                 }
             });
 
+            // register with model reactive properties
             modelEvents.each(target => {
+                // if we are listening to all event simply bind to the model changes
                 if (target.events.has(''))
                     dir.identifiers.push({
                         model: target.model,
@@ -167,9 +169,26 @@ export default function (obj) {
 
 
 function addTarget (modelEvents, model, attr) {
-    var target = modelEvents.get(model.uid),
-        value = arguments.length === 3 ? model[attr] : undefined;
+    var value = arguments.length === 3 ? model[attr] : undefined;
+    //
+    // a method of the model, event is at model level
+    if (isFunction(value) || arguments.length === 2)
+        getTarget(modelEvents, model).events.add('');
+    // value is another model, events at both target model level and value model level
+    else if (value instanceof viewModel) {
+        addTarget(modelEvents, value);
+        model = model.$owner(attr);
+        if (model) getTarget(modelEvents, model).events.add('');
+    } else {
+        // make sure attr is a reactive property of model
+        model = model.$owner(attr) || model;
+        if (!model.$isReactive(attr)) model.$set(attr, value);
+        getTarget(modelEvents, model).events.add(attr);
+    }
+}
 
+function getTarget(modelEvents, model) {
+    var target = modelEvents.get(model.uid);
     if (!target) {
         target = {
             model: model,
@@ -177,17 +196,5 @@ function addTarget (modelEvents, model, attr) {
         };
         modelEvents.set(model.uid, target);
     }
-    //
-    // a method of the model, event is at model level
-    if (isFunction(value) || arguments.length === 2)
-        target.events.add('');
-    // value is another model, events at both target model level and value model level
-    else if (value instanceof viewModel) {
-        target.events.add('');
-        addTarget(modelEvents, value);
-    } else {
-        // make sure attr is a reactive property of model
-        if (!model.$isReactive(attr)) model.$set(attr, model[attr]);
-        target.events.add(attr);
-    }
+    return target;
 }

@@ -1,12 +1,12 @@
 import {map} from 'd3-collection';
 import {isString} from 'd3-let';
 
-import view, {testAsync, getWaiter, nextTick} from './utils';
+import view, {test, getWaiter, nextTick} from './utils';
 
 
-describe('directive', () => {
+describe('directive -', () => {
 
-    it ('custom', testAsync(async () => {
+    test ('custom', async () => {
 
         var vm = view({
             directives: {
@@ -40,9 +40,9 @@ describe('directive', () => {
         var num2 = +vm.sel.html();
         expect(num2>0).toBe(true);
         expect(num2 !== num).toBe(true);
-    }));
+    });
 
-    it ('active', testAsync(async () => {
+    test ('active', async () => {
 
         var vm = view(),
             el = vm.select('body').append('div').html('<div id="target"></div><div id="key" d3-collapse="#target"></div>'),
@@ -82,6 +82,53 @@ describe('directive', () => {
         // remove element
         vm.sel.remove();
         await gone.promise;
-    }));
+    });
+
+    // d3-if='$active(show, rootShow)'
+    test ('issue#21', async () => {
+        var vm = view({
+            model: {
+                rootShow: true
+            },
+            components: {
+                simple: {
+                    model: {
+                        tabs: [
+                            {
+                                show: true,
+                                label: 'test'
+                            }
+                        ],
+                        $active (s1, s2) {
+                            return s1 && s2;
+                        }
+                    },
+                    render () {
+                        return this.viewElement(
+                            `<ul><li d3-for='tab in tabs' d3-if='$active(tab.show, rootShow)' d3-html='tab.label' style="display: inline;"></li></ul>`
+                        );
+                    }
+                }
+            }
+        });
+        await vm.mount(vm.viewElement('<div><simple></simple></div>'));
+        var tab = vm.sel.selectAll('li');
+        expect(tab.size()).toBe(1);
+        expect(tab.style('display')).toBe('inline');
+        var model = tab.model();
+        expect(model.tab.$isReactive('show')).toBe(true);
+        model.tab.show = false;
+        await nextTick();
+        expect(tab.style('display')).toBe('none');
+        model.tab.show = true;
+        await nextTick();
+        expect(tab.style('display')).toBe('inline');
+        vm.model.rootShow = false;
+        await nextTick();
+        expect(tab.style('display')).toBe('none');
+        model.rootShow = true;
+        await nextTick();
+        expect(tab.style('display')).toBe('inline');
+    });
 
 });

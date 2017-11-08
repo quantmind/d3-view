@@ -8,7 +8,7 @@ const required = {
         if (isString(value))
             el.attr(`d3-required`, value);
         else
-            el.property('required', value || null);
+            el.property('required', value || false);
     },
 
     validate (el, value) {

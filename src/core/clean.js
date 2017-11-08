@@ -18,16 +18,14 @@ function visualManager (records) {
     records.forEach(record => {
         var nodes = record.removedNodes;
         let sel;
-        if (!nodes || !nodes.length) return;  // phantomJs hack
-        nodes.forEach(node => {
-            if (node.nodeName !== '#text') {
-                sel = select(node);
-                if (sel.view()) {
-                    sel.selectAll('*').each(destroy);
-                    destroy.call(node);
-                }
+        if (!nodes || !nodes.length) return;
+        for (let i=0; i<nodes.length; ++i) {
+            sel = select(nodes[i]);
+            if (sel.view()) {
+                sel.selectAll('*').each(destroy);
+                destroy.call(nodes[i]);
             }
-        });
+        }
     });
 }
 

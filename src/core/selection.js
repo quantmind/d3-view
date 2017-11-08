@@ -30,8 +30,8 @@ function view (value) {
         return this.property("__d3_view__", value);
     } else {
         var element = this.node(),
-            view = element.__d3_view__,
-            parent = element.parentNode;
+            view = element ? element.__d3_view__ : null,
+            parent = element ? element.parentNode : null;
 
         while (parent && !view) {
             view = parent.__d3_view__;

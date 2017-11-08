@@ -218,6 +218,18 @@ c2 = m.$new();
 c2.$isReactive('a')  // false
 ```
 
+### model.$owner (attribute)
+
+Return the first model owning the reactive ``attribute`` following the model
+hierarchical tree. Return nothing if no model was found.
+```javascript
+m.$owner('a') === m     // true
+c1 = m.$child();
+c1.$owner('a') === m    // true
+c2 = m.$new();
+c2.$owner('a')          // undefined
+```
+
 ### model.$on (attribute, callback)
 
 Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when

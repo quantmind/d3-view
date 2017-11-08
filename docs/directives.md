@@ -89,11 +89,19 @@ and ``index`` is set to the item index or key.
 The [d3-html][] directive creates a **one-way-binding** between a model property
 and the innerHtml property of the hosting HTML element.
 You can use it to attach html or text to element dynamically.
+Add ``data-transition-duration`` to your element to allow transitions:
+```html
+<p d3-html="message" data-transition-duration="250"></p>
+```
 
 ### d3-if
 
 The [d3-if][] directive displays or hides an element depending on the binding expression.
-The display style is preserved.
+The display style is preserved. Add ``data-transition-duration`` to your element
+to allow transitions:
+```html
+<div d3-if="showMe" data-transition-duration="250">...</div>
+```
 
 ### d3-on
 

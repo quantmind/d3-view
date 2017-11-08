@@ -6,7 +6,7 @@ import {viewProviders} from '../index';
 var logger = viewProviders.logger;
 
 
-describe('viewExpression.eval', function() {
+describe('viewExpression -', function() {
 
     var ctx = {
         foo: 'ciao',
@@ -60,7 +60,7 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('!xxx').eval(ctx)).toBe(true);
     });
 
-    it('test conditional viewExpression', () => {
+    it('conditional viewExpression', () => {
         expect(viewExpression('foo ? foo : "bla"').eval(ctx)).toBe('ciao');
         expect(viewExpression('pippo.bla > 10000 ? pippo.bla-10000 : pippo.bla').eval(ctx)).toBe(2345);
     });
@@ -132,7 +132,7 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('.5e3 + a').eval({a: 1})).toBeCloseTo(501);
     });
 
-    it('Array number', () => {
+    it('array number', () => {
         expect(viewExpression('d[0]').eval({d: [0, 3, 4]})).toEqual(0);
         expect(viewExpression('d[1]').eval({d: [0, 3, 4]})).toEqual(3);
         expect(viewExpression('d[2]').eval({d: [0, 3, 4.5]})).toEqual(4.5);
@@ -142,7 +142,7 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('d.slice(0, 2)').eval({d: [0, 3, 4.5]})).toEqual([0, 3]);
     });
 
-    it('Array bug', () => {
+    it('array bug', () => {
         var d = [0, 3, 4];
         d.key = 'test';
         expect(viewExpression('d.key + ": " + d[1]').eval({d: d})).toEqual('test: 3');
@@ -159,5 +159,11 @@ describe('viewExpression.eval', function() {
         expect(viewExpression('vero').eval({vero: 'fooo'})).toEqual(true);
         jsep.removeLiteral('vero');
         expect(viewExpression('vero').eval({vero: 'fooo'})).toEqual('fooo');
+    });
+
+    it('identifiers issue #21', () => {
+        var expr = viewExpression('$active(tab.show, rootShow)'),
+            identifiers = expr.identifiers();
+        expect(identifiers.length).toBe(3);
     });
 });

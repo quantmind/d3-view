@@ -9,7 +9,6 @@ export default {
     mount (model) {
         var sel = this.sel;
         this.display = sel.style('display');
-        this.opacity = sel.style('opacity');
         if (!this.display || this.display === 'none') this.display = 'block';
         return model;
     },
@@ -23,7 +22,7 @@ export default {
 
         if (transition) {
             if (value)
-                transition.style('opacity', this.opacity);
+                transition.style('opacity', 1);
             else
                 transition
                     .style('opacity', 0)
