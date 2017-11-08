@@ -14,12 +14,12 @@ jobs:
       - run:
           name: Install
           command: yarn install
-       - run:
-           name: Test
-           command: yarn test
-       - run:
-           name: Coverage
-           command: yarn cover
+      - run:
+          name: Test
+          command: yarn test
+      - run:
+          name: Coverage
+          command: yarn cover
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
