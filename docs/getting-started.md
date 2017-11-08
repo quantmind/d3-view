@@ -63,7 +63,6 @@ To create a view object for you application, invoke the ``d3.view`` function
 ```javascript
 var vm = d3.view({
     model: {...},
-    props: [...],
     components: {...},
     directives: {...}
 });
@@ -72,12 +71,11 @@ var vm = d3.view({
 You can create more than one view:
 ```javascript
 var vm2 = d3.view({
-    model: {},
-    props: [...],
-    components: {},
-    directives: {}
+    model: {...},
+    components: {...},
+    directives: {...}
 });
 ```
 
-All properties in the input object are optionals and are used to initialised the view with
-custom data: [model](./model.md), [components](./component.md) and [directives](./directives.md).
+All properties in the input object are optionals and are used to initialise the view with
+custom data reactive data ([model](./model.md)), [components](./component.md) and [directives](./directives.md).

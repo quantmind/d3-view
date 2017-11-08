@@ -46,10 +46,11 @@ const protoComponent = {
                 value = pop(modelData, key);
                 if (value !== undefined) {
                     if (isString(value)) {
-                        if (parentModel.$isReactive(value)) value = reactiveParentProperty(value);
-                        else value = maybeJson(value);
-                    }
-                    model[key] = value;
+                        if (parentModel.$isReactive(value)) {
+                            if (value !== key) model[key] = reactiveParentProperty(value);
+                            else delete model[key];
+                        } else model[key] = maybeJson(value);
+                    } else model[key] = value;
                 }
             }
 

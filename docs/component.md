@@ -79,16 +79,12 @@ A component is defined by the [render][] method. However, there are optional pro
 methods that can be used to customize construction and lifecycle of a component.
 ```javascript
 var component = {
+    props: {...},
     model: {...},
-    props: [...],
-    init (options) {
-    },
-    render (props, htmlAttr, htmlElement) {
-    },
-    mounted () {
-    },
-    destroy () {
-    }
+    render (props, htmlAttr, htmlElement) {},
+    childrenMounted () {}
+    mounted () {},
+    destroy () {}
 };
 ```
 
@@ -123,11 +119,33 @@ will render as
 
 ### model
 
-A function or an object which specifies the default values of the component model.
+An object or a function returning an object.
 
-Once the component has been mounted, this is becomes the
-model associated with the component and therefore an API property
-of the component.
+Once the component has been mounted, this object/function is replaced by the [model][] associated with the component. Its properties are reactive properties of the component model.
+```javascript
+vm = view({
+    components: {
+        hi: {
+            model: {
+                message: 'Hi!'
+            },
+            render() {
+                return `<p id="test" d3-html="message"></p>`;
+            }
+        }
+    }
+});
+```
+After mounting the view
+```javascript
+await vm.mount('body');
+```
+One can select the component via the [selection.view](#selectionview-) method and test the model reactivity:
+```javascript
+var hi = vm.sel.selectAll('#test').view();
+hi.model.message // 'Hi!'
+hi.model.$isReactive('message') //  true
+```
 
 ### render (props, HTMLAttrs, HTMLElement)
 
@@ -292,6 +310,7 @@ and the result
 
 [d3.view]: ./view.md
 [cache]: #vmcache
+[model]: #vmmodel
 [props]: #props
 [render]: #render-props-htmlattrs-htmlelement
 [d3.selection]: https://github.com/d3/d3-selection

@@ -15,31 +15,44 @@
 A **view** is the entry-point for creating reactive d3 based web applications.
 ```javascript
 var vm = d3.view({
-    model: {},
-    components: [],
-    directives: []
+    model: {...},
+    components: {...},
+    directives: {...}
 });
 ```
 ## Mount
 
-To **mount** a view model into an HTML ``element`` one uses the **view.mount** method.
-
-vm.**mount**(element, *callback*)
-
+When a new view is created with the statement above, no binding with the DOM has occurred
+and the view is in an unmounted state
+```javascript
+vm.isMounted    //  undefined
+vm.el           //  undefined
+vm.sel          //  undefined
+```
+To bind a view object into an HTML ``element`` one uses the **view.mount** method.
 The view only affect ``element`` and its children.
-This method can be called **once only** for a given view model.
+This method should be called **once only** for a given view object:
 ```javascript
 vm.mount('#app', function () {
     d3.viewWarn('View mounted');
+    vm.isMounted    //  true
 });
 ```
 
 The element can be a selector, an HTML element or a d3 selection. The optional *callback* function
 is invoked once the view is fully mounted in the DOM, including all the view components.
 
+The mount method always return a ``Promise`` resolved once the view is fully mounted. Therefore one could write the above statement as:
+```javascript
+vm.mount('#app').then(function () {
+    d3.viewWarn('View mounted');
+    vm.isMounted    //  true
+});
+```
+
 ## Plugins
 
-Views are extandible via [plugins](./plugins.md). To add plugins into a view
+Views are extendible via [plugins](./plugins.md). To add plugins into a view
 ```javascript
 vm.use(myPlugin);
 ```

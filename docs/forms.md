@@ -6,7 +6,9 @@
 
 - [Overview](#overview)
 - [Usage](#usage)
+  - [Field inputs](#field-inputs)
 - [Form API](#form-api)
+  - [inputs](#inputs)
   - [actions](#actions)
   - [$inputData ()](#inputdata-)
   - [$isValid ()](#isvalid-)
@@ -43,6 +45,7 @@ tree-shaking.
 Create a form schema along these lines:
 ```json
 schema = {
+    "name": "myform",
     "children": [
         {
             "type": "text",
@@ -50,7 +53,11 @@ schema = {
             "minLength": 2,
             "label": "Full name",
             "required": true,
-            "name": "fullName"
+            "name": "fullName",
+            "attributes": {
+                "attr1": "fooo",
+                "d3-attr-disabled": "blabla"
+            }
         },
         {
             "type": "number",
@@ -73,10 +80,25 @@ Alternatively, one can mount the form via a remote url
 ```javascript
 d3.select('#form-container').html('<d3form schema="https://goo.gl/fRVi9w"><d3form>');
 ```
+### Field inputs
+
+A field in the form schema has the following attributes:
+
+* **name** (required) the field name, must be unique amongst fields in the same form. It sets the html ``name`` attribute and it is the key used to access the field model from the form model [inputs](#inputs).
+
+* **type** (optional) the field type, if not supplied it is assumed to be "text" and rendered as ``input type="text"``. Valid options are: text, email, password, checkbox, number, date, url, textarea, select.
+
+* **label** (optional) field label, displayed unless `srOnly` is set to true. If not supplied, the name is used instead.
+
+* **attributes** (optional) an object with additional attributes to apply to the form field HTML element. These attributes can be directives too.
 
 ## Form API
 
 The form API is exposed to the [model](./model.md) bound to the form component.
+
+### inputs
+
+Object containing the form model fields by field name.
 
 ### actions
 

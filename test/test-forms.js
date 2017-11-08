@@ -1,8 +1,9 @@
 import {isObject, isFunction, isArray} from 'd3-let';
 
-import view, {test, testAsync, nextTick} from './utils';
+import view, {test, nextTick} from './utils';
 import {viewForms, viewElement} from '../index';
 import jsonform from './fixtures/jsonform';
+import jsonform3 from './fixtures/jsonform3';
 
 
 describe('view meta', () => {
@@ -44,7 +45,7 @@ describe('json form', () => {
         expect(model.formPending).toBe(false);
     });
 
-    it ('maxLength - minLength validation', testAsync(async () => {
+    test('maxLength - minLength validation', async () => {
         var vm = view().use(viewForms);
         await vm.mount(el);
         var fv = vm.sel.select('form').view();
@@ -77,9 +78,9 @@ describe('json form', () => {
         expect(token.isDirty).toBe(true);
         expect(token.error).toBe('required');
         expect(token.showError).toBe(true);
-    }));
+    });
 
-    it ('test children errors', testAsync(async () => {
+    test('test children errors', async () => {
         var vm = view().use(viewForms);
         await vm.mount(el);
 
@@ -117,6 +118,36 @@ describe('json form', () => {
 
         expect(id.showError).toBe(true);
         expect(token.showError).toBe(true);
-    }));
+    });
+});
+
+
+describe('json form 3 -', () => {
+
+    let el;
+
+    beforeEach(() => {
+        el = viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`);
+    });
+
+    test('attributes', async () => {
+        var vm = view({
+            model: {
+                showId: true
+            }
+        }).use(viewForms);
+        await vm.mount(el);
+
+        var form = vm.sel.select('form'),
+            fel = vm.sel.selectAll('#fooId'),
+            model = form.model(),
+            foo = model.inputs.foo;
+        expect(foo).toBeTruthy();
+        expect(fel.size()).toBe(1);
+        expect(fel.property('disabled')).toBe(false);
+        vm.model.showId = false;
+        await nextTick();
+        expect(fel.property('disabled')).toBe(true);
+    });
 
 });

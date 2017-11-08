@@ -32,8 +32,10 @@ describe('Component data -', () => {
             }
         };
 
-    test ('properties', async () => {
-        var vm = view({
+    let vm;
+
+    beforeEach(() => {
+        vm = view({
             model: {
                 sidebarItems: [
                     {
@@ -53,6 +55,9 @@ describe('Component data -', () => {
                 append: append
             }
         });
+    });
+
+    test ('properties', async () => {
         // API pre-mount
         expect(vm.components.size()).toBe(1);
         expect(vm.components.get('sidebar')).toBeTruthy();
@@ -86,5 +91,35 @@ describe('Component data -', () => {
             expect(vm.select(this).attr('href')).toBe(vm.model.sidebarItems[idx].url);
             expect(vm.select(this).select('span').html()).toBe(vm.model.sidebarItems[idx].name);
         });
+    });
+
+    test ('same property name', async () => {
+        vm.model.secondaryItems = [
+            {
+                url: '/fooo',
+                name: 'second1'
+            }
+        ];
+        await vm.mount(vm.viewElement(
+            `<div><sidebar id="bang2"
+data-brand="Test" data-brand-url='/big'
+data-primary-items="sidebarItems"
+data-secondary-items="secondaryItems">
+<p id="innerBang">bla bla bla</p></sidebar>
+</div>`));
+        var bar = vm.sel.selectAll('#bang2');
+        expect(bar.size()).toBe(1);
+        var model = bar.model();
+        expect(model.parent).toBe(vm.model);
+        expect(model.primaryItems).toBe(vm.model.sidebarItems);
+        expect(model.secondaryItems).toBe(vm.model.secondaryItems);
+        let items = bar.selectAll('.list-group-item-secondary');
+        expect(items.size()).toBe(1);
+        //
+        // we should not be able to set the property on the model
+        model.secondaryItems = [];
+        await nextTick();
+        items = vm.sel.selectAll('.list-group-item-secondary');
+        expect(items.size()).toBe(0);
     });
 });
