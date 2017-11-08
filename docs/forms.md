@@ -85,11 +85,9 @@ d3.select('#form-container').html('<d3form schema="https://goo.gl/fRVi9w"><d3for
 A field in the form schema has the following attributes:
 
 * **name** (required) the field name, must be unique amongst fields in the same form. It sets the html ``name`` attribute and it is the key used to access the field model from the form model [inputs](#inputs).
-
 * **type** (optional) the field type, if not supplied it is assumed to be "text" and rendered as ``input type="text"``. Valid options are: text, email, password, checkbox, number, date, url, textarea, select.
-
 * **label** (optional) field label, displayed unless `srOnly` is set to true. If not supplied, the name is used instead.
-
+* **required**/**disabled**/**readonly** (optional) DOM attributes for the field. They can be either strings (in which case they are considered expressions for the ``d3-attr-*`` directive) or booleans.
 * **attributes** (optional) an object with additional attributes to apply to the form field HTML element. These attributes can be directives too.
 
 ## Form API

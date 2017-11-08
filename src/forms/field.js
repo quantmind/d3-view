@@ -3,6 +3,8 @@ import {select, selectAll} from 'd3-selection';
 
 import warn from './warn';
 
+const properties = ['readonly', 'required', 'disabled'];
+
 //
 // Mixin for all form elements
 export const formElement = {
@@ -15,13 +17,15 @@ export const formElement = {
         el.attr('id', data.id);
         if (data.classes) el.classed(data.classes, true);
         addAttributes(el, model, data.attributes);
-
-        if (data.disabled) {
-            if (isString(data.disabled))
-                el.attr('d3-attr-disabled', data.disabled);
-            else
-                el.property('disabled', true);
-        }
+        properties.forEach(prop => {
+            var value = data[prop];
+            if (value) {
+                if (isString(value))
+                    el.attr(`d3-attr-${prop}`, value);
+                else
+                    el.property('disabled', true);
+            }
+        });
         return data;
     },
 

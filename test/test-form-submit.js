@@ -3,7 +3,7 @@ import {viewForms} from '../index';
 import jsonform from './fixtures/jsonform2';
 
 
-describe('submit field', () => {
+describe('submit field -', () => {
 
     it ('disabled', testAsync(async () => {
 

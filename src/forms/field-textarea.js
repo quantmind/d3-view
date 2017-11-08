@@ -7,7 +7,7 @@ import validators from './validators';
 // Textarea element
 export default assign({}, field, {
 
-    render: function (data) {
+    render (data) {
         var el = this.createElement('textarea');
         data = this.inputData(el, data);
         el.attr('placeholder', data.placeholder)
