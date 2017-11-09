@@ -56,6 +56,7 @@ const protoComponent = {
 
             // Create model
             this.model = model = parentModel.$child(model);
+            this.model.$$view = this;
             if (isArray(props)) props = props.reduce((o, key) => {
                 o[key] = undefined;
                 return o;

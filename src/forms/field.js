@@ -1,9 +1,14 @@
 import {isString, isObject, assign} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
+import {map} from 'd3-collection';
 
 import warn from './warn';
 
-const properties = ['readonly', 'required', 'disabled'];
+const properties = map({
+    disabled: 'disabled',
+    readonly: 'readOnly',
+    required: 'required'
+});
 
 //
 // Mixin for all form elements
@@ -17,13 +22,13 @@ export const formElement = {
         el.attr('id', data.id);
         if (data.classes) el.classed(data.classes, true);
         addAttributes(el, model, data.attributes);
-        properties.forEach(prop => {
-            var value = data[prop];
+        properties.each((prop, key) => {
+            var value = data[key];
             if (value) {
                 if (isString(value))
-                    el.attr(`d3-attr-${prop}`, value);
+                    el.attr(`d3-attr-${key}`, value);
                 else
-                    el.property('disabled', true);
+                    el.property(prop, true);
             }
         });
         return data;

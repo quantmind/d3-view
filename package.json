@@ -26,7 +26,6 @@
         "d3-collection": "1.0",
         "d3-dispatch": "1.0",
         "d3-let": "0.3.2",
-        "d3-require": "0.4.5",
         "d3-selection": "1.1",
         "d3-timer": "1.0"
     },

@@ -17,8 +17,8 @@ import {addChildren} from './utils';
 // Main form component
 export default {
 
-    // make sure a new model is created for this component
-    props: ['schema'],
+    // Allow to specify form schema and initial values
+    props: ['schema', 'values'],
 
     components: {
         'd3-form-fieldset': fieldset,
@@ -82,7 +82,7 @@ export default {
         }
     },
 
-    render: function (data) {
+    render (data) {
         var model = this.model,
             form = this.createElement('form').attr('novalidate', ''),
             self = this;
@@ -93,6 +93,7 @@ export default {
         model.form = model; // inject self for children models
         //
         var schema = data.schema;
+        if (data.values) schema.values = data.values;
         if (isString(schema)) {
             var fetch = providers.fetch;
             return fetch(schema, {method: 'GET'}).then((response) => {
@@ -117,5 +118,15 @@ export default {
             addChildren.call(self, form);
             return form;
         }
+    },
+
+    childrenMounted () {
+        var model = this.model,
+            values = model.data.values;
+
+        if (values) Object.keys(values).forEach(key => {
+            var inp = model.inputs[key];
+            if (inp) inp.value = values[key];
+        });
     }
 };

@@ -63,6 +63,10 @@ export default {
     selectChildren (el) {
         if (!arguments.length) el = this.el;
         return this.selectAll(Array.prototype.slice.call(el.children));
+    },
+    //
+    domEvent () {
+        return event;
     }
 };
 

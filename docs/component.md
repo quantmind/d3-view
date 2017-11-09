@@ -217,6 +217,16 @@ Unique identifier
 ### vm.events
 
 Events object which can be used for registering event listeners or firing events.
+This is a [d3-dispatch](https://github.com/d3/d3-dispatch) object with
+``message`` and ``mounted`` named events.
+To register event handles
+```javascript
+vm.events.on('message.foo', callback);
+```
+to fire an event
+```javascript
+vm.events.call('message', ...);
+```
 
 ### vm.createElement (tag)
 
