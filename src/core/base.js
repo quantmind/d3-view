@@ -3,7 +3,6 @@ import {select, selectAll, event} from 'd3-selection';
 import providers from '../utils/providers';
 import {htmlElement, html} from '../utils/html';
 import {HttpError} from '../utils/errors';
-import resolvedPromise from '../utils/promise';
 import asSelect from '../utils/select';
 //
 //  Base d3-view Object
@@ -47,7 +46,7 @@ export default {
     renderFromUrl (url, context, asElement=true) {
         var cache = this.cache;
         if (url in cache)
-            return resolvedPromise(render(cache[url], context, asElement));
+            return Promise.resolve(render(cache[url], context, asElement));
         return this.fetchText(url).then(template => {
             cache[url] = template;
             return render(template, context, asElement);

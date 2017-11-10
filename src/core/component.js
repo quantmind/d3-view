@@ -8,7 +8,6 @@ import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
-import resolvedPromise from '../utils/promise';
 import dataAttributes from '../utils/data';
 import viewEvents from './events';
 
@@ -79,7 +78,7 @@ const protoComponent = {
             //
             // create the new element from the render function
             var newEl = this.render(data, dattrs, el);
-            if (!newEl.then) newEl = resolvedPromise(newEl);
+            if (!newEl.then) newEl = Promise.resolve(newEl);
             return newEl.then(element => compile(this, el, element, onMounted));
         }
     }

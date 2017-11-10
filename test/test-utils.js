@@ -1,6 +1,6 @@
-import {viewProviders, viewReady, viewDebounce, viewMount, resolvedPromise} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewMount} from '../index';
 import maybeJson from '../src/utils/maybeJson';
-import view, {testAsync} from './utils';
+import view, {test} from './utils';
 
 
 describe('model', () => {
@@ -11,7 +11,7 @@ describe('model', () => {
         expect(maybeJson('foo')).toBe('foo');
     });
 
-    it ('viewReady', testAsync(async () => {
+    test ('viewReady', async () => {
         var cbs = viewProviders.readyCallbacks,
             called = 0;
 
@@ -25,9 +25,9 @@ describe('model', () => {
         function ready () {
             called += 1;
         }
-    }));
+    });
 
-    it ('viewMount', testAsync(async () => {
+    test ('viewMount', async () => {
         var vm = view({
             components: {
                 msg: {
@@ -50,10 +50,14 @@ describe('model', () => {
         cm.model.message = 'Bye';
         await nextTick();
         expect(vm.sel.select('p').html()).toBe('Bye');
-    }));
+    });
 
-    it ('resolvedPromise', testAsync(async () => {
-        var result = await (resolvedPromise('ciao'));
-        expect(result).toBe('ciao');
-    }));
+    test ('require', async () => {
+        var p = viewProviders.require('balbla');
+        try {
+            await p;
+        } catch (e) {
+            expect(''+e).toBe('Error: Cannot requires libraries, d3-require is not available');
+        }
+    });
 });
