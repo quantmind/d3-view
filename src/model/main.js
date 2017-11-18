@@ -7,6 +7,7 @@ import $off from './off';
 import $change from './change';
 import $isReactive from './isreactive';
 import $owner from './owner';
+import {$push, $splice} from './array';
 
 //
 //  Model class
@@ -31,7 +32,9 @@ model.prototype = Model.prototype = {
     $new,
     $off,
     $isReactive,
-    $owner
+    $owner,
+    $push,
+    $splice
 };
 
 Object.defineProperty(Model.prototype, 'root', {

@@ -55,7 +55,8 @@ const protoComponent = {
 
             // Create model
             this.model = model = parentModel.$child(model);
-            this.model.$$view = this;
+            model.$$view = this;
+            model.$$name = this.name;
             if (isArray(props)) props = props.reduce((o, key) => {
                 o[key] = undefined;
                 return o;
@@ -73,8 +74,6 @@ const protoComponent = {
                     }
                 });
             }
-            // give the model a name
-            if (!model.$$name) model.$$name = this.name;
             //
             // create the new element from the render function
             var newEl = this.render(data, dattrs, el);
