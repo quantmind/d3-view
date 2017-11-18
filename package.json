@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -22,6 +22,9 @@
     "main": "build/d3-view.js",
     "module": "index",
     "jsnext:main": "index",
+    "bin": {
+        "view-require": "bin/view-require"
+    },
     "dependencies": {
         "d3-collection": "1.0",
         "d3-dispatch": "1.0",

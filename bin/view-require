@@ -47,9 +47,17 @@ function writeData(files, d3deps) {
         if (file) writeFile(file, files, d3deps);
         else writeData(files, d3deps);
     } else {
+        var clean = {};
+        Object.keys(d3deps).forEach(function (key) {
+            var value = d3deps[key],
+                t = value.split('.').reduce(function (s, v) {return s + (+v);}, 0);
+            if (t === t) clean[key] = value;
+            else logger.error('Cannot set dependency ' + key + ' ' + value);
+        });
         out.write(START);
-        out.write("var dependencies = '" + JSON.stringify(d3deps) + "';\n");
+        out.write("var dependencies = '" + JSON.stringify(clean) + "';\n");
         out.write(END);
+        logger.info('Created “' + commander.out + '”');
     }
 }
 
