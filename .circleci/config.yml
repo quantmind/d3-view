@@ -3,7 +3,7 @@ jobs:
     tests:
         working_directory: ~/tests
         docker:
-          - image: circleci/node
+          - image: circleci/node:latest-browsers
         steps:
           - checkout
           - run:
@@ -18,7 +18,7 @@ jobs:
     coverage:
         working_directory: ~/tests
         docker:
-          - image: circleci/node
+          - image: circleci/node:latest-browsers
         steps:
           - checkout
           - run:
@@ -32,7 +32,7 @@ jobs:
               command: bash <(curl -s https://codecov.io/bash)
     release:
         docker:
-          - image: circleci/node
+          - image: circleci/node:latest-browsers
         steps:
           - checkout
           - run:
