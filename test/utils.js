@@ -2,7 +2,7 @@ import 'es6-promise';
 import {view, viewProviders, viewDebounce} from '../index';
 import fixtures from './fixtures/fetch';
 import promise from './promise';
-import 'd3-transition';
+//import 'd3-transition';
 
 window.handlebars = require('handlebars');
 
