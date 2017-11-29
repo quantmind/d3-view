@@ -7,9 +7,6 @@ jobs:
         steps:
           - checkout
           - run:
-              name: install firefox
-              command: .circleci/firefox.sh
-          - run:
               name: install
               command: yarn install
           - run:

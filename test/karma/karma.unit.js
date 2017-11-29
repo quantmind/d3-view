@@ -13,7 +13,8 @@ module.exports = function (config) {
     });
 
     if(process.env.TRAVIS || process.env.CIRCLECI) {
-        options.browsers = ['PhantomJS', 'ChromeNoSandbox', 'Firefox'];
+        // options.browsers = ['PhantomJS', 'ChromeNoSandbox', 'Firefox'];
+        options.browsers = ['PhantomJS', 'ChromeNoSandbox'];
     }
 
     config.set(options);
