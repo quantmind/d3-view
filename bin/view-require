@@ -6,10 +6,11 @@ var fs = require("fs"),
 commander
     .version(require("../package.json").version)
     .usage("[options] [file]")
-    .description("Create a d3-require.js file with dependencies and additional javascript prepended")
-    .option("-o, --out <file>", "output file name; defaults to “d3-require.js”", "d3-require.js")
+    .description("Create a d3-require.js file with dependencies, additional javascript prepended and optional custom library setting")
+    .option("-o, --out <file>", "output file name", "d3-require.js")
     .option("-m, --node_modules <dir>", "Node modules location", "node_modules")
     .option("-p, --prepend <files>", "Additional javascript files to prepend, comma separated", "")
+    .option("-a, --append <files>", "Additional javascript files to append, comma separated", "")
     .parse(process.argv);
 
 if (commander.args.length === 0) commander.args[0] = "d3-require.js";

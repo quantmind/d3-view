@@ -30,3 +30,5 @@ Written in [Javascript ES6](/docs/develop.md) with a minimal footprint.
     * [Plugins](/docs/plugins.md)
     * [Providers](/docs/providers.md)
     * [Forms](/docs/forms.md)
+* Addons
+    * [view-require](/docs/require.md)
