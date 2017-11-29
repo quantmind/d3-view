@@ -7,9 +7,9 @@ import providers from './providers';
 
 // require handlebar
 export function compile (text) {
-    var handlebars = providers.handlebars;
-    if (!handlebars) handlebars = inBrowser ? window.handlebars : require('handlebars');
-    if (handlebars) return handlebars.compile(text);
+    var handlebars = providers.Handlebars;
+    if (!handlebars) handlebars = inBrowser ? window.Handlebars : require('handlebars');
+    if (handlebars) return Handlebars.compile(text);
     warn('compile function requires handlebars');
 }
 

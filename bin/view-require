@@ -32,22 +32,25 @@ fs.readFile("package.json", "utf8", function(error, text) {
     var json = JSON.parse(text),
         d3deps = d3Dependencies(json.dependencies),
         d3dev = d3Dependencies(json.devDependencies),
-        files = commander.prepend ? commander.prepend.split(",") : [];
-    files.push('d3-view/build/d3-require.js');
+        prepend = commander.prepend ? commander.prepend.split(",") : [],
+        append = commander.append ? commander.append.split(",") : [];
+    prepend.push('d3-view/build/d3-require.js');
     d3Dependencies2(Object.keys(d3deps), d3deps, [], function () {
         d3Dependencies2(Object.keys(d3dev), d3deps, [], function () {
-            writeData(files, d3deps);
+            writeData(prepend, append, d3deps);
         });
     });
 });
 
 
-function writeData(files, d3deps) {
-    if (files.length) {
-        var file = files.splice(0, 1)[0].trim();
-        if (file) writeFile(file, files, d3deps);
-        else writeData(files, d3deps);
-    } else {
+function writeData(prepend, append, d3deps) {
+    var file;
+    if (prepend.length) {
+        file = prepend.splice(0, 1)[0].trim();
+        if (file) writeFile(file, prepend, append, d3deps);
+        else writeData(prepend, append, d3deps);
+        return;
+    } else if (d3deps) {
         var clean = {};
         Object.keys(d3deps).forEach(function (key) {
             var value = d3deps[key],
@@ -56,25 +59,31 @@ function writeData(files, d3deps) {
             else logger.error('Cannot set dependency ' + key + ' ' + value);
         });
         out.write(START);
-        out.write("var dependencies = '" + JSON.stringify(clean) + "';\n");
+        out.write("var dependencies = " + JSON.stringify(clean) + ";\n");
         out.write(END);
-        logger.info('Created “' + commander.out + '”');
+        return writeData(prepend, append);
+    } else if (append.length) {
+        file = append.splice(0, 1)[0].trim();
+        if (file) writeFile(file, prepend, append);
+        else writeData(prepend, append);
+        return;
     }
+    logger.info('Created “' + commander.out + '”');
 }
 
 
-function writeFile(file, files, d3deps, prefix) {
+function writeFile(file, prepend, append, d3deps, prefix) {
     file = (prefix || '') + file;
     fs.readFile(file, "utf8", function(error, text) {
         if (error) {
             if (error.code === "ENOENT" && !prefix)
-                writeFile(file, files, d3deps, node_modules + "/");
+                writeFile(file, prepend, append, d3deps, node_modules + "/");
             else
                 throw error;
         } else {
             logger.info('include “' + file + '”');
             out.write(text);
-            writeData(files, d3deps);
+            writeData(prepend, append, d3deps);
         }
     });
 }
