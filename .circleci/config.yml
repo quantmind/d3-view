@@ -34,7 +34,7 @@ jobs:
           - checkout
           - run:
               name: authenticate
-              command: .ci/authenticate.sh
+              command: .circleci/authenticate.sh
           - run:
               name: release
               command: npm run-script release
