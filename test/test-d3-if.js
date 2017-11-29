@@ -1,7 +1,5 @@
 import view, {test, nextTick} from './utils';
 import {viewUid} from '../index';
-import {select} from 'd3-selection';
-
 
 describe('d3-if directive', () => {
 
@@ -13,7 +11,7 @@ describe('d3-if directive', () => {
                 }
             });
 
-        select('body')
+        vm.select('body')
             .append('div')
             .attr('id', uid)
             .html('<p d3-if="foo">Hi</p>');
@@ -39,7 +37,7 @@ describe('d3-if directive', () => {
                 }
             });
 
-        select('body')
+        vm.select('body')
             .append('div')
             .attr('id', uid)
             .html('<p d3-if="foo" style="display: inline">Hi there</p>');

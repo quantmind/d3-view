@@ -1,7 +1,5 @@
-import {map} from 'd3-collection';
-import {isString} from 'd3-let';
-
 import view, {test, getWaiter, nextTick} from './utils';
+import {isString} from 'd3-let';
 
 
 describe('directive -', () => {
@@ -24,7 +22,7 @@ describe('directive -', () => {
         var dirs = vm.sel.directives();
         expect(dirs).toBeTruthy();
         expect(dirs.all.length).toBe(2);
-        var mdir = map();
+        var mdir = new Map;
         dirs.all.forEach(d => {mdir.set(d.name, d);});
         var dir = mdir.get('d3-random');
         expect(dir.uid).toBeTruthy();

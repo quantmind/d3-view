@@ -1,9 +1,6 @@
-import {isObject} from 'd3-let';
-import {select} from 'd3-selection';
-
 import view, {nextTick, test} from './utils';
-
 import {viewForms} from '../index';
+import {isObject} from 'd3-let';
 
 
 describe('json form -', () => {
@@ -41,10 +38,10 @@ describe('json form -', () => {
         expect(inp.isDirty).toBe(false);
         var options = vm.sel.selectAll('option').nodes();
         expect(options.length).toBe(3);
-        expect(select(options[0]).attr('value')).toBe('o1');
-        expect(select(options[0]).html()).toBe('o1');
-        expect(select(options[1]).attr('value')).toBe('o2');
-        expect(select(options[1]).html()).toBe('option 2');
+        expect(vm.select(options[0]).attr('value')).toBe('o1');
+        expect(vm.select(options[0]).html()).toBe('o1');
+        expect(vm.select(options[1]).attr('value')).toBe('o2');
+        expect(vm.select(options[1]).html()).toBe('option 2');
 
         inp.options.push('o4');
         inp.$change('options');

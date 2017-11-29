@@ -1,8 +1,8 @@
+import {testAsync} from './utils';
+
 import {timeout} from 'd3-timer';
 import {isFunction, isArray} from 'd3-let';
-
 import {viewModel, viewDebounce} from '../index';
-import {testAsync} from './utils';
 
 
 describe('model -', function() {

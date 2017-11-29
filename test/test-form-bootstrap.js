@@ -1,8 +1,8 @@
-import {isObject, isFunction, isArray} from 'd3-let';
-
 import view, {test} from './utils';
 import {viewForms, viewElement, viewBootstrapForms} from '../index';
 import jsonform from './fixtures/jsonform';
+
+import {isObject, isFunction, isArray} from 'd3-let';
 
 
 describe('Bootstrap plugin -', () => {

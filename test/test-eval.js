@@ -1,6 +1,5 @@
 import './utils';
-import {viewExpression, jsep} from '../index';
-import {viewProviders} from '../index';
+import {viewExpression, jsep, viewProviders} from '../index';
 
 
 var logger = viewProviders.logger;

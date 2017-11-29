@@ -29,7 +29,7 @@
         "d3-collection": "1.0",
         "d3-dispatch": "1.0",
         "d3-let": "0.3",
-        "d3-selection": "1.1",
+        "d3-selection": "1.2",
         "d3-timer": "1.0"
     },
     "devDependencies": {
@@ -43,7 +43,7 @@
         "browserify-istanbul": "3.0",
         "d3-require": "0.4",
         "d3-transition": "1.1",
-        "eslint": "4.11",
+        "eslint": "4.12",
         "handlebars": "4",
         "istanbul": "0.4",
         "jasmine-core": "2.8",
@@ -61,13 +61,13 @@
         "phantomjs-prebuilt": "2.1",
         "publish": "0.6",
         "requirejs": "2.3",
-        "rollup": "0.51",
+        "rollup": "0.52",
         "rollup-plugin-babel": "3.0",
         "rollup-plugin-json": "2.3",
         "rollup-plugin-node-resolve": "3.0",
         "rollup-plugin-sourcemaps": "0.4",
         "rollup-watch": "4.3",
-        "uglify-js": "3.1",
+        "uglify-js": "3.2",
         "watchify": "3.9",
         "whatwg-fetch": "2.0"
     },

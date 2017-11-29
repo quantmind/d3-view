@@ -1,5 +1,3 @@
-import {select} from 'd3-selection';
-
 import view, {test, trigger, getWaiter} from './utils';
 import {viewElement, viewEvents} from '../index';
 
@@ -36,7 +34,7 @@ describe('Components -', () => {
         await vm.mount(viewElement('<div id="test1"><year></year></div>'));
         expect(vm.el.tagName).toBe('DIV');
 
-        var span = select(vm.el).select('span');
+        var span = vm.sel.select('span');
         expect(span.attr('class')).toBe('year');
         expect(span.text()+0).toBeGreaterThan(2015);
         var c = span.model();
@@ -58,10 +56,10 @@ describe('Components -', () => {
         expect(div.children[0].tagName).toBe('H1');
         expect(div.children[1].tagName).toBe('SPAN');
         expect(div.children[2].tagName).toBe('P');
-        expect(select(div.children[1]).model()).toBeTruthy();
-        expect(select(div.children[1]).model().parent).toBe(vm.model);
-        expect(select(div.children[0]).model()).toBe(vm.model);
-        expect(select(div.children[2]).model()).toBe(vm.model);
+        expect(vm.select(div.children[1]).model()).toBeTruthy();
+        expect(vm.select(div.children[1]).model().parent).toBe(vm.model);
+        expect(vm.select(div.children[0]).model()).toBe(vm.model);
+        expect(vm.select(div.children[2]).model()).toBe(vm.model);
     });
 
 
@@ -75,7 +73,7 @@ describe('Components -', () => {
 
         await vm.mount(viewElement('<div id="test1"><text></text></div>'));
         expect(vm.el.tagName).toBe('DIV');
-        var p = select(vm.el).select('p');
+        var p = vm.sel.select('p');
         var model = p.model();
         expect(model).toBeTruthy();
         expect(model.parent).toBe(vm.model);
@@ -144,7 +142,7 @@ describe('Components -', () => {
             expect(b.children.length).toBe(2);
             expect(b.children[0].tagName).toBe('SPAN');
             expect(b.children[1].tagName).toBe('P');
-            expect(select(b.children[1]).html()).toBe('This is a test');
+            expect(vm.select(b.children[1]).html()).toBe('This is a test');
             expect(count_created).toBe(4);
             expect(count_mount).toBe(4);
             expect(count_mounted).toBe(4);
