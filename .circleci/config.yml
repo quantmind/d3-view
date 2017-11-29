@@ -1,0 +1,58 @@
+version: 2
+jobs:
+    tests:
+        working_directory: ~/tests
+        docker:
+          - image: circleci/node
+        steps:
+          - checkout
+          - run:
+              name: install firefox
+              command: .circleci/firefox.sh
+          - run:
+              name: install
+              command: yarn install
+          - run:
+              name: test
+              command: yarn test
+    coverage:
+        working_directory: ~/tests
+        docker:
+          - image: circleci/node
+        steps:
+          - checkout
+          - run:
+              name: install
+              command: yarn install
+          - run:
+              name: coverage
+              command: yarn cover
+          - run:
+              name: upload coverage
+              command: bash <(curl -s https://codecov.io/bash)
+    release:
+        docker:
+          - image: circleci/node
+        steps:
+          - checkout
+          - run:
+              name: authenticate
+              command: .ci/authenticate.sh
+          - run:
+              name: release
+              command: npm run-script release
+
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - tests
+      - coverage
+      - release:
+          requires:
+            - tests
+            - coverage
+          filters:
+            branches:
+              only: master
