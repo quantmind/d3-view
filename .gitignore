@@ -1,6 +1,7 @@
 # javascript
 node_modules
 build
+bin/view-require
 
 *.log
 .idea
