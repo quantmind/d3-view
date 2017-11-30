@@ -76,7 +76,7 @@
     "scripts": {
         "lint": "eslint index.js rollup.config.js test src bin/src",
         "test": "npm run-script lint && npm run-script unit",
-        "test-require": "view-require -h",
+        "test-require": "./bin/view-require -h",
         "rollup": "rollup -c --banner \"$(preamble)\" && chmod +x bin/view-require",
         "dev": "rollup -c -w",
         "cover": "karma start test/karma/karma.cover.js",

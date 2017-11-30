@@ -13,6 +13,9 @@ jobs:
               name: test
               command: yarn test
           - run:
+              name: remove dev dependencies
+              command: npm prune --production
+          - run:
               name: run view-require
               command: yarn test-require
     coverage:
