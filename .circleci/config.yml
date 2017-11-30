@@ -13,8 +13,8 @@ jobs:
               name: test
               command: yarn test
           - run:
-              name: prune dev dependencies
-              command: npm prune --production
+              name: remove dev dependencies
+              command: yarn remove commander
           - run:
               name: run view-require
               command: yarn test-require
