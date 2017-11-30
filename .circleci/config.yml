@@ -13,9 +13,6 @@ jobs:
               name: test
               command: yarn test
           - run:
-              name: remove dev dependencies
-              command: yarn remove commander
-          - run:
               name: run view-require
               command: yarn test-require
     coverage:

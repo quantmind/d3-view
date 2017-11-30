@@ -63,6 +63,7 @@ export default [
 		],
 		external: [
 			'fs',
+            'child_process',
             'console',
 			'path',
 			'module',
