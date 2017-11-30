@@ -21,9 +21,9 @@ function readAll(deps, config, resolve) {
         if (error) handleError(error, true);
         else {
             var json = JSON.parse(text),
-                main = current.main || json.main;
-            info(config, dep);
-            config.dependencies[dep.name] = `@${dep.version}/${main}`;
+                main = location(dep.version, current.main || json.main);
+            info(config, `${dep.name} @ ${main}`);
+            config.dependencies[dep.name] = main;
             if (dep.name.substring(0, 3) === 'd3-') extendDeps(deps, json.dependencies, config, true);
         }
         readAll(deps, config, resolve);
@@ -50,4 +50,12 @@ function extendDeps(deps, dependencies, config, d3) {
         }
     });
     return deps;
+}
+
+
+function location (version, main) {
+    if (!main) return version;
+    if (main.substring(0, 1) === '/') main = main.substring(1);
+    else if (main.substring(0, 2) === './') main = main.substring(2);
+    return `${version}/${main}`;
 }

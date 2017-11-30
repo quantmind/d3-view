@@ -1,5 +1,5 @@
 {
-    "version": "1.0.2",
+    "version": "1.0.3",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
@@ -75,7 +75,7 @@
     "scripts": {
         "lint": "eslint index.js rollup.config.js test src bin/src",
         "test": "npm run-script lint && npm run-script unit",
-        "rollup": "rollup -c --banner \"$(preamble)\"",
+        "rollup": "rollup -c --banner \"$(preamble)\" && chmod +x bin/view-require",
         "dev": "rollup -c -w",
         "cover": "karma start test/karma/karma.cover.js",
         "build": "npm run-script rollup && uglifyjs --preamble \"$(preamble)\" build/d3-view.js -c -m -o build/d3-view.min.js",

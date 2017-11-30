@@ -17,7 +17,7 @@ export default function (config) {
     var out = createWriteStream(config.out).on("error", handleEpipe);
     concat(out, config, config.prepend, () => {
         out.write(START);
-        out.write("var dependencies = " + JSON.stringify(config.dependencies) + ";\n");
+        out.write("var dependencies = " + JSON.stringify(config.dependencies, null, 4) + ";\n");
         out.write(END);
         concat(out, config, config.append, () => {
             logger.info('Created “' + config.out + '”');
