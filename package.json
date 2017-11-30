@@ -41,6 +41,7 @@
         "babel-preset-es2015-rollup": "3.0",
         "babelify": "8.0",
         "browserify-istanbul": "3.0",
+        "commander": "2.12",
         "d3-require": "0.5.1",
         "d3-transition": "1.1",
         "eslint": "4.12",
@@ -75,6 +76,7 @@
     "scripts": {
         "lint": "eslint index.js rollup.config.js test src bin/src",
         "test": "npm run-script lint && npm run-script unit",
+        "test-require": "view-require -h",
         "rollup": "rollup -c --banner \"$(preamble)\" && chmod +x bin/view-require",
         "dev": "rollup -c -w",
         "cover": "karma start test/karma/karma.cover.js",

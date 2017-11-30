@@ -67,7 +67,6 @@ export default [
 			'path',
 			'module',
 			'events',
-			'commander',
 			'assert',
 			'os'
 		]

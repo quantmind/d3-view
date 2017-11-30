@@ -12,6 +12,12 @@ jobs:
           - run:
               name: test
               command: yarn test
+          - run:
+              name: prune dev dependencies
+              command: yarn prune --production
+          - run:
+              name: run view-require
+              command: yarn test-require
     coverage:
         working_directory: ~/tests
         docker:
