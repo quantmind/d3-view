@@ -1519,9 +1519,9 @@ d3-let@0.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/d3-let/-/d3-let-0.3.3.tgz#6427d88a7516ad552d61d25fd2c70a967ff73638"
 
-d3-require@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/d3-require/-/d3-require-0.5.1.tgz#1364279c074e29f276352eafc1141a9103161e3d"
+d3-require@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/d3-require/-/d3-require-0.6.1.tgz#fb108a8ac9d11b3c4d8a97f7aa3a3b1a5f4c4431"
 
 d3-selection@1.2, d3-selection@^1.1.0:
   version "1.2.0"
@@ -2939,9 +2939,9 @@ karma-es5-shim@0.0.4:
   dependencies:
     es5-shim "^4.0.5"
 
-karma-firefox-launcher@1.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/karma-firefox-launcher/-/karma-firefox-launcher-1.0.1.tgz#ce58f47c2013a88156d55a5d61337c099cf5bb51"
+karma-firefox-launcher@1.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/karma-firefox-launcher/-/karma-firefox-launcher-1.1.0.tgz#2c47030452f04531eb7d13d4fc7669630bb93339"
 
 karma-jasmine@1.1:
   version "1.1.0"

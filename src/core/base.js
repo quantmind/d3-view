@@ -53,6 +53,12 @@ export default {
         });
     },
     //
+    // render from a distribution name. Use d3-require resolve method to find the url
+    renderFromDist(dist, path, context, asElement=true) {
+        var resolve = providers.require.resolve;
+        return this.renderFromUrl(resolve(dist) + path, context, asElement);
+    },
+    //
     on (el, name, callback) {
         el = asSelect(el);
         if (callback === null) return el.on(name, null);
@@ -66,6 +72,28 @@ export default {
     //
     domEvent () {
         return event;
+    },
+    //
+    logError (err) {
+        if (err.stack) providers.logger.error(err);
+        else providers.logger.error(`[${this.name}] ${err}`);
+        return this;
+    },
+    //
+    logWarn (msg) {
+        providers.logger.warn(`[${this.name}] ${msg}`);
+        return this;
+    },
+    //
+    logInfo (msg) {
+        providers.logger.info(`[${this.name}] ${msg}`);
+        return this;
+    },
+    //
+    logDebug (msg) {
+        if (providers.logger.debug)
+            providers.logger.debug(`[${this.name}] ${msg}`);
+        return this;
     }
 };
 

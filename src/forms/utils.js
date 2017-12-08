@@ -1,8 +1,6 @@
 import {timeout} from 'd3-timer';
 import {isArray} from 'd3-let';
 
-import warn from './warn';
-
 
 const componentsFromType = {
     text: 'input',
@@ -35,7 +33,7 @@ export function addChildren (sel) {
     var children = this.model.data.children;
     if (children) {
         if (!isArray(children)) {
-            warn(`children should be an array of fields, for ${typeof children}`);
+            this.logError(`children should be an array of fields, got ${typeof children}`);
             return sel;
         }
         sel.selectAll('.d3form')
@@ -50,10 +48,5 @@ export function addChildren (sel) {
 
 function formChild (child) {
     var component = formComponent(child);
-    if (!component) {
-        warn(`Could not find form component ${child.type}`);
-        component = 'input';
-        child.type = 'hidden';
-    }
     return document.createElement(`d3-form-${component}`);
 }

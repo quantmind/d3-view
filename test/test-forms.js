@@ -1,7 +1,7 @@
 import {isObject, isFunction, isArray} from 'd3-let';
 
-import view, {test, nextTick} from './utils';
-import {viewForms, viewElement} from '../index';
+import view, {test, nextTick, logger} from './utils';
+import {viewForms} from '../index';
 import jsonform from './fixtures/jsonform';
 import jsonform3 from './fixtures/jsonform3';
 
@@ -20,21 +20,21 @@ describe('view meta', () => {
 
     test('mount empty form', async () => {
         var vm = view().use(viewForms);
-        await vm.mount(viewElement('<div><d3form></d3form></div>'));
+        await vm.mount(vm.viewElement('<div><d3form></d3form></div>'));
     });
 });
 
 
 describe('json form', () => {
 
-    let el;
+    let el, vm;
 
     beforeEach(() => {
-        el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
+        vm = view().use(viewForms);
+        el = vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
     });
 
     test ('form model', async () => {
-        var vm = view().use(viewForms);
         await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
@@ -46,7 +46,6 @@ describe('json form', () => {
     });
 
     test('maxLength - minLength validation', async () => {
-        var vm = view().use(viewForms);
         await vm.mount(el);
         var fv = vm.sel.select('form').view();
         var model = fv.model;
@@ -81,7 +80,6 @@ describe('json form', () => {
     });
 
     test('test children errors', async () => {
-        var vm = view().use(viewForms);
         await vm.mount(el);
 
         var form = vm.sel.select('form');
@@ -119,23 +117,32 @@ describe('json form', () => {
         expect(id.showError).toBe(true);
         expect(token.showError).toBe(true);
     });
+
+    test('invalid children', async () => {
+        logger.pop();
+        var schema = JSON.stringify({type: 'form', children: {}});
+        el = vm.viewElement(`<div><d3form schema='${schema}'></d3form></div>`);
+        await vm.mount(el);
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+    });
 });
 
 
 describe('json form 3 -', () => {
 
-    let el;
+    let el, vm;
 
     beforeEach(() => {
-        el = viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`);
-    });
-
-    test('attributes', async () => {
-        var vm = view({
+        vm = view({
             model: {
                 showId: true
             }
         }).use(viewForms);
+        el = vm.viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`);
+    });
+
+    test('attributes', async () => {
         await vm.mount(el);
 
         var form = vm.sel.select('form'),

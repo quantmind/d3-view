@@ -11,7 +11,15 @@ export const logger = {
     logs: [],
     debugLogs: [],
 
+    error: function (msg) {
+        logger.logs.push(msg);
+    },
+
     warn: function (msg) {
+        logger.logs.push(msg);
+    },
+
+    info: function (msg) {
         logger.logs.push(msg);
     },
 

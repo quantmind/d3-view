@@ -31,7 +31,7 @@ function fetch() {
 function d3Require () {
     var require = null;
     if (inBrowser) {
-        if (window.d3) require =window.d3.require;
+        if (window.d3) require = window.d3.require;
     }
     return require || unsupportedRequire;
 }
@@ -40,3 +40,7 @@ function d3Require () {
 function unsupportedRequire () {
     return Promise.reject(new Error('Cannot requires libraries, d3-require is not available'));
 }
+
+unsupportedRequire.resolve = function  (name) {
+    return name;
+};

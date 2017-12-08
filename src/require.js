@@ -1,25 +1,12 @@
 export {requireFrom} from 'd3-require';
-import {requireFrom} from 'd3-require';
+import {requireFrom, resolve as d3Resolve} from 'd3-require';
 
-var isAbsolute = new RegExp('^([a-z]+://|//)'),
-    libs = new Map;
+var libs = new Map;
 
-
-function urlIsAbsolute (url) {
-    return typeof url === 'string' && isAbsolute.test(url);
+export function resolve (name, base) {
+    return d3Resolve(libs.get(name) || name, base);
 }
 
-export var require = requireFrom(function (name) {
-    var nameUrl = libs.get(name) || name;
-    if (nameUrl.local) return nameUrl.url;
-    else if (urlIsAbsolute(nameUrl)) return nameUrl;
-    return 'https://unpkg.com/' + nameUrl;
-});
+export var require = requireFrom(resolve);
 
 require.libs = libs;
-require.local = function (name, url) {
-    libs.set(name, {
-        local: true,
-        url: url
-    });
-};

@@ -117,11 +117,32 @@ describe('view -', () => {
         expect(model.$test).toBe('this is a test');
     });
 
-    it('exndibility', () => {
+    it('extendibility', () => {
         viewBase.fooo = function () {
             return 'OK';
         };
         var vm = view();
         expect(vm.fooo()).toBe('OK');
+    });
+
+    it('logging', () => {
+        logger.pop();
+        var vm = view();
+        expect(vm.logError('test1')).toBe(vm);
+        expect(logger.pop()).toEqual(['[view] test1']);
+        expect(vm.logWarn('test2')).toBe(vm);
+        expect(logger.pop()).toEqual(['[view] test2']);
+        expect(vm.logInfo('test3')).toBe(vm);
+        expect(logger.pop()).toEqual(['[view] test3']);
+        expect(vm.logDebug('test4')).toBe(vm);
+        expect(logger.pop()).toEqual([]);
+        try {
+            throw new Error('kaputt');
+        } catch (err) {
+            vm.logError(err);
+        }
+        var stack = logger.pop();
+        expect(stack.length).toBe(1);
+        expect(''+stack[0]).toBe('Error: kaputt');
     });
 });
