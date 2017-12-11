@@ -126,6 +126,16 @@ describe('json form', () => {
         var logs = logger.pop();
         expect(logs.length).toBe(1);
     });
+
+    test('no field name', async () => {
+        logger.pop();
+        var schema = JSON.stringify({type: 'form', children: [{type: 'input'}]});
+        el = vm.viewElement(`<div><d3form schema='${schema}'></d3form></div>`);
+        await vm.mount(el);
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe('[d3-form-input] Input field without a name');
+    });
 });
 
 

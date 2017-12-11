@@ -89,7 +89,7 @@ export default assign({}, formElement, {
         // call parent method
         data = formElement.inputData.call(this, el, data);
         if (!data.name)
-            return warn ('Input field without a name');
+            return this.logError('Input field without a name');
 
         el.attr('name', data.name);
         data.placeholder = data.placeholder || data.label || data.name;

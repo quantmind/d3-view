@@ -10,6 +10,7 @@ describe('d3.resolve -', () => {
         expect(viewResolve('/foo')).toBe(`${origin}/foo`);
         expect(viewResolve('/foo', {base: 'http://bla.com'})).toBe('http://bla.com/foo');
         expect(viewResolve('/foo', {path: 'bla'})).toBe(`${origin}/bla`);
+        expect(viewResolve('http://bla.com/foo')).toBe('http://bla.com/foo');
     });
 
     it ('dist', () => {
