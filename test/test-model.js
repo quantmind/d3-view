@@ -1,4 +1,4 @@
-import {testAsync} from './utils';
+import {test} from './utils';
 
 import {timeout} from 'd3-timer';
 import {isFunction, isArray} from 'd3-let';
@@ -13,7 +13,7 @@ describe('model -', function() {
               throw new Error(text);
           });
 
-    it ('debounce', testAsync(async () => {
+    test ('debounce', async () => {
         var promise = nextTick();
         expect(nextTick()).toBe(promise);
         var value = await promise;
@@ -24,14 +24,14 @@ describe('model -', function() {
         await promise2;
         value = await delayAdd(2, 4);
         expect(value).toBe(6);
-    }));
+    });
 
-    it ('debounce reject', testAsync(async () => {
+    test ('debounce reject', async () => {
         var message = await delayError('whaaa!').catch((err) => {
             return err.message;
         });
         expect(message).toBe('whaaa!');
-    }));
+    });
 
     it('parent-child binding', (done) => {
 
@@ -112,7 +112,7 @@ describe('model -', function() {
         });
     });
 
-    it('$off attribute', testAsync(async () => {
+    test ('$off attribute', async () => {
         var model = viewModel({
             foo: 5,
             bla: 2
@@ -137,9 +137,9 @@ describe('model -', function() {
         function handler () {
             called += 1;
         }
-    }));
+    });
 
-    it ('child', testAsync(async () => {
+    test ('child', async () => {
         var model = viewModel({
             foo: 5,
             bla: {
@@ -160,9 +160,9 @@ describe('model -', function() {
         model.bla.a = 5;
         await nextTick();
         expect(called).toBe(1);
-    }));
+    });
 
-    it ('child override', testAsync(async () => {
+    test ('child override', async () => {
         var model = viewModel({
             foo: 5,
             bla: {
@@ -186,9 +186,9 @@ describe('model -', function() {
         b.$events.each(event => {
             expect(event.on('change')).toBe(undefined);
         });
-    }));
+    });
 
-    it ('$isReactive', testAsync(async () => {
+    test ('$isReactive', async () => {
         var model = viewModel({
             a: 4
         });
@@ -204,5 +204,27 @@ describe('model -', function() {
         expect(c.$isReactive('a')).toBe(true);
         expect(c.$isReactive('b')).toBe(true);
         expect(c.isolated).toBe(false);
-    }));
+    });
+
+    test ('$push & $splice', async () => {
+        var model = viewModel({
+            a: []
+        });
+        expect(model.$isReactive('a')).toBe(true);
+        model.$push('a', 4).$push('a', 5).$push('a', 8);
+        var event = model.$events.get('a');
+        expect(event.triggered()).toBe(0);
+        await nextTick();
+        expect(event.triggered()).toBe(1);
+        expect(model.a).toEqual([4, 5, 8]);
+        model.$splice('a', 1);
+        await nextTick();
+        expect(event.triggered()).toBe(2);
+        expect(model.a).toEqual([4]);
+        model.$push('a', 5).$push('a', 8);
+        model.$splice('a', 1, 1);
+        await nextTick();
+        expect(event.triggered()).toBe(3);
+        expect(model.a).toEqual([4, 8]);
+    });
 });
