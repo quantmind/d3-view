@@ -22,5 +22,5 @@ export {
     html as viewHtml
 } from './src/utils/html';
 
-export {isAbsoluteUrl} from './src/require';
+export {isAbsoluteUrl, viewRequire, viewResolve} from './src/require';
 export {jsonResponse} from './src/core/base';

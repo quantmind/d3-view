@@ -1,5 +1,5 @@
 import {logger, inBrowser, isFunction} from 'd3-let';
-import {requireFrom, resolve, require} from '../require';
+import {viewResolve, viewRequire} from '../require';
 import {defaultDebug} from './debug';
 
 
@@ -38,9 +38,8 @@ function globalD3 () {
         window.d3 = gd3;
     }
     if (!gd3.require) {
-        gd3.require = require;
-        gd3.resolve = resolve;
-        gd3.requireFrom = requireFrom;
+        gd3.require = viewRequire;
+        gd3.resolve = viewResolve;
     }
     return gd3;
 }

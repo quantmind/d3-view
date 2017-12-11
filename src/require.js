@@ -1,9 +1,12 @@
-export {requireFrom} from 'd3-require';
 import {requireFrom} from 'd3-require';
+
 
 var isAbsolute = new RegExp('^([a-z]+://|//)'),
     isRelative = new RegExp('^[.]{0,2}/'),
     libs = new Map;
+
+
+export const viewRequire = requireWithLibs();
 
 
 export function isAbsoluteUrl (url) {
@@ -11,7 +14,7 @@ export function isAbsoluteUrl (url) {
 }
 
 
-export function resolve (name, options) {
+export function viewResolve (name, options) {
     var dist = libs.get(name),
         main = name,
         path = null,
@@ -47,9 +50,12 @@ export function resolve (name, options) {
     }
 }
 
-export var require = requireFrom(resolve);
 
-require.libs = libs;
+function requireWithLibs () {
+    var r = requireFrom(viewResolve);
+    r.libs = libs;
+    return r;
+}
 
 
 function removeFrontSlash (path) {

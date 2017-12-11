@@ -36,7 +36,7 @@ export default [
     {
         input: 'src/require.js',
         output: {
-            file: 'build/d3-require.js',
+            file: 'build/d3-view-require.js',
             format: 'umd',
             sourcemap: false,
             extend: true,

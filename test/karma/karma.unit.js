@@ -11,11 +11,11 @@ function browsers (b) {
 module.exports = function (config) {
 
     var options = assign(base, {
+        singleRun: true,
         phantomjsLauncher: {
             exitOnResourceError: true
         },
-        browsers: browsers(['Chrome', 'Firefox']),
-        reporters: ['progress']
+        browsers: browsers(['Chrome', 'Firefox'])
     });
 
     if(process.env.TRAVIS || process.env.CIRCLECI) {

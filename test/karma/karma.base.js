@@ -1,8 +1,9 @@
 module.exports = {
 
     basePath: '../../',
-    singleRun: true,
+    singleRun: false,
     frameworks: ['jasmine', 'browserify'],
+    reporters: ['progress'],
 
     files: [
         './node_modules/babel-polyfill/dist/polyfill.js',
@@ -10,15 +11,12 @@ module.exports = {
     ],
 
     preprocessors: {
-        './node_modules/whatwg-url/lib/*.js': ['browserify'],
         './test/*.js': ['browserify']
     },
 
     browserify: {
         debug: true,
-        transform: [
-            ['babelify', {presets: ["env"]}]
-        ]
+        transform: ['babelify']
     },
 
     customLaunchers: {
