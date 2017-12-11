@@ -8,13 +8,13 @@ module.exports = function (config) {
         phantomjsLauncher: {
             exitOnResourceError: true
         },
-        browsers: ['PhantomJS', 'Chrome', 'Firefox'],
+        browsers: ['Chrome', 'Firefox', 'Safari'],
         reporters: ['progress']
     });
 
     if(process.env.TRAVIS || process.env.CIRCLECI) {
         // options.browsers = ['PhantomJS', 'ChromeNoSandbox', 'Firefox'];
-        options.browsers = ['PhantomJS', 'ChromeNoSandbox'];
+        options.browsers = ['ChromeNoSandbox', 'Safari'];
     }
 
     config.set(options);

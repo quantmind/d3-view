@@ -32,7 +32,7 @@ function fetch() {
 
 
 function globalD3 () {
-    var gd3 = {}
+    var gd3 = {};
     if (inBrowser) {
         gd3 = window.d3 || gd3;
         window.d3 = gd3;

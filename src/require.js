@@ -15,9 +15,7 @@ export function resolve (name, options) {
     var dist = libs.get(name),
         main = name,
         path = null,
-        version = null,
-        base = location,
-        url;
+        base = location;
 
     if (options) {
         if (typeof options.base === 'string') base = options.base;
