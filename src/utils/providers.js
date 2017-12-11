@@ -1,4 +1,4 @@
-import {logger, inBrowser, isFunction} from 'd3-let';
+import {logger, inBrowser, isFunction, assign} from 'd3-let';
 import {viewResolve, viewRequire} from '../require';
 import {defaultDebug} from './debug';
 
@@ -6,14 +6,15 @@ import {defaultDebug} from './debug';
 logger.debug = null;
 
 
-export default {
+export default assign({
     //
-    // Additional d3 modules, usually imported via d3.require
-    d3: globalD3(),
+    require: viewRequire,
+    //
+    resolve: viewResolve,
+    //
     // log messages
     logger: logger,
-    // fetch remote resources
-    fetch: fetch(),
+    //
     // callbacks when page is loaded in browser
     readyCallbacks: [],
     // Set/unset debug
@@ -23,23 +24,10 @@ export default {
         else
             this.logger.debug = null;
     }
-};
-
-
-function fetch() {
-    if (inBrowser) return window.fetch;
-}
-
-
-function globalD3 () {
-    var gd3 = {};
+}, function () {
     if (inBrowser) {
-        gd3 = window.d3 || gd3;
-        window.d3 = gd3;
+        return assign({
+            fetch: window.fetch,
+        }, window.d3);
     }
-    if (!gd3.require) {
-        gd3.require = viewRequire;
-        gd3.resolve = viewResolve;
-    }
-    return gd3;
-}
+}());

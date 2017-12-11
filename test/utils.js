@@ -4,7 +4,7 @@ import fixtures from './fixtures/fetch';
 import promise from './promise';
 //import 'd3-transition';
 
-window.Handlebars = require('handlebars');
+viewProviders.compileHtml = require('handlebars').compile;
 
 
 export const logger = {

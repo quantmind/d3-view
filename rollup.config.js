@@ -34,9 +34,9 @@ export default [
         ]
     },
     {
-        input: 'src/require.js',
+        input: 'index-require.js',
         output: {
-            file: 'build/d3-view-require.js',
+            file: 'build/d3-require.js',
             format: 'umd',
             sourcemap: false,
             extend: true,
@@ -49,28 +49,26 @@ export default [
     {
         input: 'bin/src/index.js',
         output: {
-			file: 'bin/view-require',
-			format: 'cjs',
-			banner: '#!/usr/bin/env node'
-		},
+            file: 'bin/view-require',
+            format: 'cjs',
+            banner: '#!/usr/bin/env node'
+        },
         plugins: [
-			//string({ include: '**/*.md' }),
-			json(),
-			//buble({ target: { node: 4 } }),
-			commonjs({
-				include: 'node_modules/**'
-			}),
-			resolve()
-		],
-		external: [
-			'fs',
+            json(),
+            commonjs({
+                include: 'node_modules/**'
+            }),
+            resolve()
+        ],
+        external: [
+            'fs',
             'child_process',
             'console',
-			'path',
-			'module',
-			'events',
-			'assert',
-			'os'
-		]
+            'path',
+            'module',
+            'events',
+            'assert',
+            'os'
+        ]
     }
 ];

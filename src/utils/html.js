@@ -1,4 +1,4 @@
-import {inBrowser, isString} from 'd3-let';
+import {isString} from 'd3-let';
 import {select} from 'd3-selection';
 
 import warn from './warn';
@@ -7,13 +7,9 @@ import providers from './providers';
 
 // require handlebar
 export function compile (text) {
-    var compile = providers.d3.compile;
-    if (!compile) {
-        var handlebars = inBrowser ? window.Handlebars : require('handlebars');
-        compile = handlebars ? handlebars.compile : null;
-    }
+    var compile = providers.compileHtml;
     if (compile) return compile(text);
-    warn('No compile function available to render templates');
+    warn('No compileHtml function available in viewProviders, cannot render template');
 }
 
 

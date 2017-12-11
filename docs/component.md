@@ -28,7 +28,8 @@
   - [vm.fetch (url, [options])](#vmfetch-url-options)
   - [fetchText (url, [options])](#fetchtext-url-options)
   - [json (url, [options])](#json-url-options)
-  - [vm.renderFromUrl (url, [context])](#vmrenderfromurl-url-context)
+  - [vm.renderFromUrl (url, [context], [asElement])](#vmrenderfromurl-url-context-aselement)
+  - [vm.renderFromDist (name, path, [context], [asElement])](#vmrenderfromdist-name-path-context-aselement)
   - [vm.select(HTMLElement)](#vmselecthtmlelement)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
@@ -251,11 +252,29 @@ Fetch a resource from a ``url`` and return the text value
 
 Fetch a resource from a ``url`` and return the object obtained after parsing text as JSON.
 
-### vm.renderFromUrl (url, [context])
+### vm.renderFromUrl (url, [context], [asElement])
 
-Fetch an ``html`` template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][].
+Fetch a template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][] if ``asElement`` is ``true`` (by default it is true).
+
 If the optional ``context`` object is provided, it renders the remote html string using
-[handlebars][] template engine (requires handlebars to be available).
+the ``compileHtml`` function in ``viewProviders`` (provided this functin is available).
+
+The ``compileHtml`` function is not available in the standard ``d3-view`` distribution.
+One could use [handlebars][] compile function for example:
+```javascript
+import Handlebars from 'handlebars';
+import {viewProviders} from 'd3-view';
+
+viewProviders.compileHtml = Handlebars.compile;
+```
+
+The ``asElement`` parameter can be set to ``false`` if the the template is not a valid html and therefore no conversion to d3-selection is required. This is useful for any other template such as text, json and so forth.
+
+
+### vm.renderFromDist (name, path, [context], [asElement])
+
+Similar to the previous function, but fetches the template/file form a distribution.
+
 
 ### vm.select(HTMLElement)
 

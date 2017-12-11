@@ -53,11 +53,12 @@ describe('Utils -', () => {
     });
 
     test ('require', async () => {
-        var p = viewProviders.d3.require('balbla');
+        var p = viewProviders.require('balbla');
         try {
             await p;
         } catch (e) {
             expect(''+e).toBe('Error: unable to load module');
         }
     });
+
 });
