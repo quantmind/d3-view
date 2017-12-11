@@ -1,5 +1,11 @@
+var os = require('os');
 var assign = require('object-assign');
 var base = require('./karma.base.js');
+
+function browsers (b) {
+    if (os.platform() === 'darwin') b.push('Safari');
+    return b;
+}
 
 
 module.exports = function (config) {
@@ -8,13 +14,13 @@ module.exports = function (config) {
         phantomjsLauncher: {
             exitOnResourceError: true
         },
-        browsers: ['Chrome', 'Firefox', 'Safari'],
+        browsers: browsers(['Chrome', 'Firefox']),
         reporters: ['progress']
     });
 
     if(process.env.TRAVIS || process.env.CIRCLECI) {
         // options.browsers = ['PhantomJS', 'ChromeNoSandbox', 'Firefox'];
-        options.browsers = ['ChromeNoSandbox', 'Safari'];
+        options.browsers = browsers(['ChromeNoSandbox']);
     }
 
     config.set(options);
