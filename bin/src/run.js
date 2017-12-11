@@ -7,6 +7,8 @@ import dependencies from './deps';
 import writeData from './write';
 
 
+//
+//  The main run command
 export default function (command) {
 
     let configFile = command.config === true ? defaultConfigFile : command.config;

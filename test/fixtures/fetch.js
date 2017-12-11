@@ -10,6 +10,12 @@ export default {
         else
             return notFound();
     },
+    '/fake/test': (o) => {
+        if (!o || o.method === 'get')
+            return asText('<p>This is a test</p>');
+        else
+            return notFound();
+    },
     '/submitTest': (o) => {
         if (o.method === 'post')
             return asJson(o, {success: true});

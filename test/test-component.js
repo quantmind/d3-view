@@ -193,7 +193,7 @@ describe('Components -', () => {
         var vm = view({
             components: {
                 bla: function () {
-                    return this.renderFromDist('', '/test');
+                    return this.renderFromDist('fake', '/test');
                 }
             }
         });
@@ -202,7 +202,7 @@ describe('Components -', () => {
         var p = vm.sel.select('p');
         expect(p.size()).toBe(1);
         expect(p.html()).toBe('This is a test');
-        expect('/test' in vm.cache).toBe(true);
+        expect('https://unpkg.com/fake/test' in vm.cache).toBe(true);
         var el = await vm.renderFromUrl('/test');
         expect(el.tagName).toBe('P');
     });

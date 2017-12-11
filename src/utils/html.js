@@ -7,10 +7,13 @@ import providers from './providers';
 
 // require handlebar
 export function compile (text) {
-    var handlebars = providers.Handlebars;
-    if (!handlebars) handlebars = inBrowser ? window.Handlebars : require('handlebars');
-    if (handlebars) return handlebars.compile(text);
-    warn('compile function requires handlebars');
+    var compile = providers.d3.compile;
+    if (!compile) {
+        var handlebars = inBrowser ? window.Handlebars : require('handlebars');
+        compile = handlebars ? handlebars.compile : null;
+    }
+    if (compile) return compile(text);
+    warn('No compile function available to render templates');
 }
 
 

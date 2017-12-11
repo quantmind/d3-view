@@ -29,7 +29,8 @@ export default [
                 presets: ['es2015-rollup'],
                 externalHelpers: true
             }),
-            sourcemaps()
+            sourcemaps(),
+            resolve()
         ]
     },
     {

@@ -46,7 +46,6 @@
         "d3-transition": "1.1",
         "eslint": "4.12",
         "handlebars": "4",
-        "istanbul": "0.4",
         "jasmine-core": "2.8",
         "karma": "1.7",
         "karma-browserify": "5.1",

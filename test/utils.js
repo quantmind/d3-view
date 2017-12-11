@@ -1,5 +1,5 @@
 import 'es6-promise';
-import {view, viewProviders, viewDebounce} from '../index';
+import {view, viewProviders, viewDebounce, isAbsoluteUrl} from '../index';
 import fixtures from './fixtures/fetch';
 import promise from './promise';
 //import 'd3-transition';
@@ -71,6 +71,7 @@ export default view;
 
 
 function testFetch (url, ...o) {
+    if (isAbsoluteUrl(url)) url = new URL(url).pathname;
     var result = fixtures[url];
     if (result) return promise.ok(result(...o));
     else return promise.error('404 - Not Found');

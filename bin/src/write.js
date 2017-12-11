@@ -7,7 +7,7 @@ import {handleError, info} from './error';
 var START = '(function (require) {\n',
     END = [
         "Object.keys(dependencies).forEach(function (name) {",
-        "    require.libs.set(name, name + '@' + dependencies[name]);",
+        "    require.libs.set(name, dependencies[name]);",
         "})",
         "}(this.d3.require));",
         ""].join('\n');

@@ -1,4 +1,5 @@
 import {logger, inBrowser, isFunction} from 'd3-let';
+import {requireFrom, resolve, require} from '../require';
 import {defaultDebug} from './debug';
 
 
@@ -6,6 +7,9 @@ logger.debug = null;
 
 
 export default {
+    //
+    // Additional d3 modules, usually imported via d3.require
+    d3: globalD3(),
     // log messages
     logger: logger,
     // fetch remote resources
@@ -18,8 +22,7 @@ export default {
             this.logger.debug = isFunction(active) ? active : defaultDebug;
         else
             this.logger.debug = null;
-    },
-    require: d3Require()
+    }
 };
 
 
@@ -28,19 +31,16 @@ function fetch() {
 }
 
 
-function d3Require () {
-    var require = null;
+function globalD3 () {
+    var gd3 = {}
     if (inBrowser) {
-        if (window.d3) require = window.d3.require;
+        gd3 = window.d3 || gd3;
+        window.d3 = gd3;
     }
-    return require || unsupportedRequire;
+    if (!gd3.require) {
+        gd3.require = require;
+        gd3.resolve = resolve;
+        gd3.requireFrom = requireFrom;
+    }
+    return gd3;
 }
-
-
-function unsupportedRequire () {
-    return Promise.reject(new Error('Cannot requires libraries, d3-require is not available'));
-}
-
-unsupportedRequire.resolve = function  (name) {
-    return name;
-};

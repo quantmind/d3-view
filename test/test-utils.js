@@ -3,7 +3,7 @@ import maybeJson from '../src/utils/maybeJson';
 import view, {test} from './utils';
 
 
-describe('model', () => {
+describe('Utils -', () => {
 
     const nextTick = viewDebounce();
 
@@ -53,11 +53,11 @@ describe('model', () => {
     });
 
     test ('require', async () => {
-        var p = viewProviders.require('balbla');
+        var p = viewProviders.d3.require('balbla');
         try {
             await p;
         } catch (e) {
-            expect(''+e).toBe('Error: Cannot requires libraries, d3-require is not available');
+            expect(''+e).toBe('Error: unable to load module');
         }
     });
 });

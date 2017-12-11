@@ -6,6 +6,9 @@
 
 - [Overview](#overview)
 - [d3-require.js](#d3-requirejs)
+  - [Version](#version)
+  - [Main](#main)
+  - [Local module](#local-module)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -25,8 +28,42 @@ with the following additional features:
 ```javascript
 d3.require.libs
 ```
-a Map matching library names with url or partial url and
+a Map matching library names with url or partial url. The ``d3.resolve`` method
+first check if the ``name`` is contained in the ``libs`` map.
+
+### Version
+
+THe ``libs`` map is useful for setting vesions:
 ```javascript
-d3.require.local
+d3.require.libs.set('d3-selection', {
+    version: '1.1'
+});
 ```
-a function for matching a library name with a local url (in the same domain as the html page)
+The required url will be
+```
+https://unpkg.com/d3-selection@1.1
+```
+
+### Main
+
+THe ``libs`` map is useful for setting the main file of a distribution:
+```javascript
+d3.require.libs.set('d3-selection', {
+    version: '1.1',
+    main: 'build/d3-selection.min.js'
+});
+```
+The required url will be
+```
+https://unpkg.com/d3-selection@1.1/build/d3-selection.min.js
+```
+
+### Local module
+
+This example will set the ``mylib`` requirement to a local module
+```javascript
+d3.require.libs.set('mylib', {
+    origin: '/',
+    main: 'the/main/module.js'
+});
+```

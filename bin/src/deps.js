@@ -2,6 +2,14 @@ import {readFile} from 'fs';
 import {handleError, info} from './error';
 
 
+//
+//  Create an object which maps names with package information and stores it
+//  in the ``condig.dependencies`` attribute.
+//
+//  The ``dependencies`` object is of the form
+//  {
+//      <dep-name>: {version: <dep-version>, main: <dep-main-file>}
+//  }
 export default function (deps, config, d3) {
     return new Promise((resolve) => {
         deps = extendDeps([], deps, config, d3);
@@ -21,9 +29,12 @@ function readAll(deps, config, resolve) {
         if (error) handleError(error, true);
         else {
             var json = JSON.parse(text),
-                main = location(dep.version, current.main || json.main);
-            info(config, `${dep.name} @ ${main}`);
-            config.dependencies[dep.name] = main;
+                main = location(current.main || json.main);
+            info(config, `${dep.name} @ ${dep.version}/${main}`);
+            config.dependencies[dep.name] = {
+                version: dep.version,
+                main: main
+            };
             if (dep.name.substring(0, 3) === 'd3-') extendDeps(deps, json.dependencies, config, true);
         }
         readAll(deps, config, resolve);
@@ -53,9 +64,9 @@ function extendDeps(deps, dependencies, config, d3) {
 }
 
 
-function location (version, main) {
-    if (!main) return version;
+function location (main) {
+    if (!main) return '';
     if (main.substring(0, 1) === '/') main = main.substring(1);
     else if (main.substring(0, 2) === './') main = main.substring(2);
-    return `${version}/${main}`;
+    return main;
 }
