@@ -227,4 +227,15 @@ describe('model -', function() {
         expect(event.triggered()).toBe(3);
         expect(model.a).toEqual([4, 8]);
     });
+
+    test ('$data', async () => {
+        var model = viewModel({
+            a: [3, 4],
+            b: 'hello'
+        });
+        var data = model.$data();
+        expect(Object.keys(data).length).toBe(2);
+        expect(data.a).toEqual([3, 4]);
+        expect(data.b).toEqual('hello');
+    });
 });

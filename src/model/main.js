@@ -7,6 +7,7 @@ import $off from './off';
 import $change from './change';
 import $isReactive from './isreactive';
 import $owner from './owner';
+import $data from './data';
 import {$push, $splice} from './array';
 
 //
@@ -33,6 +34,7 @@ model.prototype = Model.prototype = {
     $off,
     $isReactive,
     $owner,
+    $data,
     $push,
     $splice
 };

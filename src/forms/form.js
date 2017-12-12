@@ -7,8 +7,6 @@ import textarea from './field-textarea';
 import select from './field-select';
 import submit from './field-submit';
 import responses from './responses';
-import warn from './warn';
-import providers from './providers';
 import actions from './actions';
 import validators from './validators';
 import {addChildren} from './utils';
@@ -66,7 +64,7 @@ export default {
             if (status < 300) {
                 if (this.data.resultHandler) {
                     var handler = responses[this.data.resultHandler];
-                    if (!handler) warn(`Could not find ${this.data.resultHandler} result handler`);
+                    if (!handler) this.$$view.logError(`Could not find ${this.data.resultHandler} result handler`);
                     else handler.call(this, data, status, headers);
                 } else {
                     responses.default.call(this, data, status, headers);
@@ -94,13 +92,8 @@ export default {
         //
         var schema = data.schema;
         if (data.values) schema.values = data.values;
-        if (isString(schema)) {
-            var fetch = providers.fetch;
-            return fetch(schema, {method: 'GET'}).then((response) => {
-                if (response.status === 200) return response.json().then(build);
-                else warn(`Could not load form from ${schema}: status ${response.status}`);
-            });
-        }
+        if (isString(schema))
+            return this.json(schema).then(build);
         else return build(schema);
 
         function build (schema) {

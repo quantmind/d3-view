@@ -27,6 +27,11 @@ export default JSON.stringify({
                     type: "checkbox",
                     label: "Remember me",
                     name: "remember"
+                },
+                {
+                    type: "textarea",
+                    label: "Notes",
+                    name: "notes"
                 }
             ]
         },

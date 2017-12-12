@@ -13,7 +13,6 @@ export function isAbsoluteUrl (url) {
     return isAbsolute.test(url);
 }
 
-
 export function viewResolve (name, options) {
     var dist = libs.get(name),
         main = name,

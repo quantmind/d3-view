@@ -14,6 +14,7 @@
 - [Model API](#model-api)
   - [model.parent](#modelparent)
   - [model.isolated](#modelisolated)
+  - [model.$data ()](#modeldata-)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$isReactive (attribute)](#modelisreactive-attribute)
@@ -23,6 +24,7 @@
   - [model.$off ()](#modeloff-)
   - [model.$child ([object])](#modelchild-object)
   - [model.$new ([object])](#modelnew-object)
+- [Component bound](#component-bound)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -181,6 +183,10 @@ This property is ``true`` when the model was created via the [$new](#modelnew-ob
 from its parent. An isolated model does not share any property with its parent model.
 
 
+### model.$data ()
+
+Return the data stored in the model as a vanilla object.
+
 ### model.$set (attribute, value)
 
 Set a reactive attribute value in the model. If the attribute is not a reactive attribute it becomes one.
@@ -283,3 +289,11 @@ All models, with the exception of component models, are created in this way.
 [$set]: #modelset-attribute-value
 [component]: ./component.md
 [HRM]: #hierarchical-reactive-model
+
+## Component bound
+
+When a model is bount to a [component](./component.md)/[view](./view.md)
+it has the following attributes
+
+* ``$$view`` the component/view bound to the model
+* ``$$name`` the name of the component/view
