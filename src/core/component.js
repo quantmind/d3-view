@@ -54,8 +54,6 @@ const protoComponent = {
 
         // Create model
         this.model = model = parentModel.$child(model);
-        model.$$view = this;
-        model.$$name = this.name;
         if (isArray(props)) props = props.reduce((o, key) => {
             o[key] = undefined;
             return o;
@@ -186,10 +184,15 @@ export function extendDirectives (container, directives) {
     return container;
 }
 
-// Finalise the binding between the view and the model
-// inject the model into the view element
-// call the mounted hook and can return a Promise
+//
+//  Finalise the binding between the view and the model
+//  inject the model into the view element
+//  call the mounted hook and can return a Promise
 export function asView(vm, element, onMounted) {
+    var model = vm.model;
+    model.$$view = vm;
+    model.$$name = vm.name;
+
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
             return element;
