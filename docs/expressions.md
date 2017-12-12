@@ -34,6 +34,8 @@ user.groups().join(", ")
 [theme, user.groups(), "Hi"]
 ```
 
+The original implementation of the expression API was taken from [jsep](https://github.com/soney/jsep).
+
 ## Expressions API
 
 Expression can be created via the javascript API:

@@ -84,6 +84,21 @@ describe('viewExpression -', function() {
         expect(ctx.nested.v2).toBe("OK");
     });
 
+    it('parser exception', () => {
+        expect(() => viewExpression('1.2.3')).toThrow(
+            new Error('Unexpected period at character 3'));
+        expect(() => viewExpression('1ab')).toThrow(
+            new Error('Variable names cannot start with a number (1a) at character 1'));
+        expect(() => viewExpression('1e')).toThrow(
+            new Error('Expected exponent (1e) at character 2'));
+        expect(() => viewExpression('(a+b')).toThrow(
+            new Error('Unclosed ( at character 4'));
+        expect(() => viewExpression('.a')).toThrow(
+            new Error('Variable names cannot start with a number (.a) at character 1'));
+        expect(() => viewExpression('a=4')).toThrow(
+            new Error('Unexpected "=" at character 1'));
+    });
+
     it('eval exceptions', () => {
         expect(() => viewExpression('nested.fdsg()').eval(ctx)).toThrow();
         expect(() => viewExpression('gddgd.bla()').eval(ctx)).toThrow();
@@ -129,6 +144,7 @@ describe('viewExpression -', function() {
     it('numeric literals', () => {
         expect(viewExpression('a + 2.1*b').eval({a: 1, b: 3})).toBeCloseTo(7.3);
         expect(viewExpression('.5e3 + a').eval({a: 1})).toBeCloseTo(501);
+        expect(viewExpression('(a + b)*c').eval({a: 1, b: 3, c: 2})).toBe(8);
     });
 
     it('array number', () => {
