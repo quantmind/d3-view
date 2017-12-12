@@ -1,7 +1,7 @@
 import view, {trigger, test, nextTick} from './utils';
 
 
-describe('d3-value directive', () => {
+describe('d3-value -', () => {
 
     test('textarea', async () => {
         var vm = new view(),

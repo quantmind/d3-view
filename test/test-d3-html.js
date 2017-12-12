@@ -1,35 +1,52 @@
-import view, {testAsync} from './utils';
-import {viewElement, viewDebounce} from '../index';
+import view, {test} from './utils';
+import {viewDebounce} from '../index';
 
 
-describe('d3-html directive', function() {
+describe('d3-html -', function() {
 
     const nextTick = viewDebounce();
 
-    it('test simple', testAsync(async () => {
-        var el = viewElement('<div d3-html="test">Bla</div>');
-
+    test ('simple', async () => {
         var vm = view({
-            model: {
-                test: 'This is a test'
-            }
-        });
+                model: {
+                    test: 'This is a test'
+                }
+            }),
+            el = vm.select('body').append('div');
+
+        el.append('p').attr('d3-html', "test").html('Bla');
         await vm.mount(el);
 
         await nextTick();
-        expect(vm.sel.html()).toBe('This is a test');
+        expect(vm.sel.html()).toBe('<p>This is a test</p>');
 
         vm.model.test = 'test reactivity';
-        expect(vm.sel.html()).toBe('This is a test');
+        expect(vm.sel.html()).toBe('<p>This is a test</p>');
         await nextTick();
-        expect(vm.sel.html()).toBe('test reactivity');
+        expect(vm.sel.html()).toBe('<p>test reactivity</p>');
         // test with number
         vm.model.test = 11;
         await nextTick();
-        expect(vm.sel.html()).toBe('11');
-    }));
+        expect(vm.sel.html()).toBe('<p>11</p>');
+        //
+        var event = vm.model.$events.get('test'),
+            p = vm.sel.select('p'),
+            dir = p.directives().all[0],
+            callback = event.on(`change.${dir.uid}`);
+        expect(dir.name).toBe('d3-html');
+        expect(callback).toBeTruthy();
+        //
+        // Remove the element
+        p.remove();
+        //
+        while (callback) {
+            await nextTick();
+            callback = event.on(`change.${dir.uid}`);
+        }
+        vm.destroy();
+    });
 
-    it('test nested one level', testAsync(async () => {
+    test ('nested one level', async () => {
         var vm = view({
             model: {
                 messages: {
@@ -45,9 +62,9 @@ describe('d3-html directive', function() {
         expect(vm.sel.html()).toBe('This is a test');
         await nextTick();
         expect(vm.sel.html()).toBe('test reactivity');
-    }));
+    });
 
-    it('test nested two levels', testAsync(async () => {
+    test ('nested two levels', async () => {
         var vm = view({
             model: {
                 messages: {
@@ -66,9 +83,9 @@ describe('d3-html directive', function() {
         expect(vm.sel.html()).toBe('This is a test');
         await nextTick();
         expect(vm.sel.html()).toBe('test reactivity2');
-    }));
+    });
 
-    it('test html mount', testAsync(async () => {
+    test ('html mount', async () => {
         var vm = view({
             model: {
                 html: 'simple'
@@ -85,5 +102,5 @@ describe('d3-html directive', function() {
         vm.model.html = '<boom></boom>';
         await nextTick();
         expect(vm.sel.html()).toBe('<p>Boom!</p>');
-    }));
+    });
 });

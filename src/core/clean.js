@@ -13,15 +13,20 @@ if (inBrowser) {
 }
 
 //
-//  Clears visualisation going out of scope
+//  Clears element going out of scope
 function visualManager (records) {
+    let sel, nodes, node, vm;
+
     records.forEach(record => {
-        var nodes = record.removedNodes;
-        let sel;
+        nodes = record.removedNodes;
         if (!nodes || !nodes.length) return;
+        vm = record.target ? select(record.target).view() : null;
+
         for (let i=0; i<nodes.length; ++i) {
-            sel = select(nodes[i]);
-            if (sel.view()) {
+            node = nodes[i];
+            if (!node.querySelectorAll) continue;
+            sel = select(node);
+            if (vm || sel.view()) {
                 sel.selectAll('*').each(destroy);
                 destroy.call(nodes[i]);
             }

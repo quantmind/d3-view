@@ -48,6 +48,13 @@ describe('view -', () => {
         expect(vm.root).toBe(vm);
         expect(vm.parent).toBe(undefined);
         expect(() => {vm.model.uid = -5;}).toThrow();
+        //
+        // test mounted already
+        logger.pop();
+        vm.mount(el);
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe('[view] component already mounted');
     });
 
     test('mounted hook', async () => {

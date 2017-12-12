@@ -1,7 +1,7 @@
 import view, {trigger, getWaiter, test} from './utils';
 
 
-describe('d3-on directive -', function() {
+describe('d3-on -', function() {
 
     test('no expression', async () => {
         var ev,

@@ -1,7 +1,7 @@
 import view, {test, nextTick} from './utils';
 import {viewUid} from '../index';
 
-describe('d3-if directive', () => {
+describe('d3-if -', () => {
 
     test('block', async () => {
         var uid = 'test' + viewUid(),

@@ -1,11 +1,11 @@
-import view, {testAsync, nextTick, trigger} from './utils';
+import view, {test, nextTick, trigger} from './utils';
 import {viewForms} from '../index';
 import jsonform from './fixtures/jsonform2';
 
 
 describe('submit field -', () => {
 
-    it ('disabled', testAsync(async () => {
+    test ('disabled', async () => {
 
         var vm = view().use(viewForms);
 
@@ -45,5 +45,5 @@ describe('submit field -', () => {
         await nextTick();
 
         expect(responses.length).toBe(1);
-    }));
+    });
 });

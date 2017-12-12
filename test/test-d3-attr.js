@@ -1,12 +1,12 @@
-import view, {testAsync} from './utils';
+import view, {test} from './utils';
 import {viewDebounce} from '../index';
 
 
-describe('d3-attr directive', function() {
+describe('d3-attr -', function() {
 
     const nextTick = viewDebounce();
 
-    it('test simple', testAsync(async () => {
+    test ('simple', async () => {
 
         var vm = view({
             model: {
@@ -21,10 +21,10 @@ describe('d3-attr directive', function() {
 
         await nextTick();
         expect(vm.sel.attr('foo')).toBe('test reactivity');
-    }));
+    });
 
 
-    it('test class', testAsync(async () => {
+    it('class', async () => {
         var vm = view({
             model: {
                 test: 'bright'
@@ -42,5 +42,5 @@ describe('d3-attr directive', function() {
         expect(vm.sel.classed('bright')).toBe(false);
         expect(vm.sel.classed('dark')).toBe(true);
         expect(vm.sel.classed('foo')).toBe(true);
-    }));
+    });
 });

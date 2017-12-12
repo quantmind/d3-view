@@ -11,7 +11,7 @@ const dropdown = `
 `;
 
 
-describe('d3-on directive -', () => {
+describe('d3-on recursive -', () => {
 
 
     test('toggleMenu', async () => {

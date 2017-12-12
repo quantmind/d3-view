@@ -1,4 +1,4 @@
-import view, {test, getWaiter, nextTick} from './utils';
+import view, {test, getWaiter, nextTick, logger} from './utils';
 import {isString} from 'd3-let';
 
 
@@ -47,6 +47,7 @@ describe('directive -', () => {
             gone = getWaiter();
 
         vm.addDirective('collapse', {
+            // set target and set active
             create (expr) {
                 this.target = expr;
                 this.active = true;
@@ -129,4 +130,14 @@ describe('directive -', () => {
         expect(tab.style('display')).toBe('inline');
     });
 
+    test ('unreactive identifier', async () => {
+        logger.pop();
+        var vm = view(),
+            el = vm.viewElement('<div id="target" d3-html="xxxx.docs"></div>');
+
+        await vm.mount(el);
+        var logs=  logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe('[d3-html] "xxxx" is not an object, cannot bind to "xxxx.docs" identifier');
+    });
 });

@@ -2,7 +2,7 @@ import 'es6-promise';
 import {view, viewProviders, viewDebounce, isAbsoluteUrl} from '../index';
 import fixtures from './fixtures/fetch';
 import promise from './promise';
-//import 'd3-transition';
+import 'd3-transition';
 
 viewProviders.compileHtml = require('handlebars').compile;
 
@@ -48,13 +48,6 @@ export function trigger (target, event, process) {
     target.dispatchEvent(e);
 }
 
-
-export function testAsync (runAsync) {
-    return (done) => {
-        runAsync().then(done, done.fail);
-    };
-}
-
 export function test (name, runAsync) {
     return it(name, testAsync(runAsync));
 }
@@ -68,6 +61,13 @@ viewProviders.logger = logger;
 //viewProviders.setDebug();
 
 export default view;
+
+
+function testAsync (runAsync) {
+    return (done) => {
+        runAsync().then(done, done.fail);
+    };
+}
 
 
 function testFetch (url, ...o) {

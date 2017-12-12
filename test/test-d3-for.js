@@ -1,7 +1,7 @@
 import view, {test, nextTick, logger} from './utils';
 
 
-describe('d3-for directive -', () => {
+describe('d3-for -', () => {
 
     test('bad template', async () => {
         logger.pop();

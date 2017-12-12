@@ -3,7 +3,6 @@ import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
-import warn from '../utils/warn';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
 import base from './transition';
@@ -63,6 +62,7 @@ const prototype = {
 
     bindModel (model) {
         var dir = this,
+            error = false,
             refresh = function () {
                 let value = dir.expression ? dir.expression.eval(model) : undefined;
                 dir.refresh(model, value);
@@ -87,16 +87,19 @@ const prototype = {
                     target = target[bits[i]];
                     if (!isObject(target)) {
                         attr = bits.slice(0, i+1).join('.');
-                        warn(`Property ${attr} is not an object. Directive ${dir.name} cannot bind to ${identifier}`);
+                        dir.logError(`"${attr}" is not an object, cannot bind to "${identifier}" identifier`);
+                        error = true;
                         break;
                     }
                 }
 
                 // process attribute
                 if (attr === null) {
-                    if (!(target instanceof viewModel))
-                        return warn(`${identifier} is not a reactive model. Directive ${dir.name} cannot bind to it`);
-                    addTarget(modelEvents, target, bits[bits.length-1]);
+                    if (!(target instanceof viewModel)) {
+                        dir.logError(`${identifier} is not a reactive model. Cannot bind to it`);
+                        error = true;
+                    } else
+                        addTarget(modelEvents, target, bits[bits.length-1]);
                 }
             });
 
@@ -118,6 +121,8 @@ const prototype = {
             });
         }
 
+        if (error) return;
+
         this.identifiers.forEach(identifier => {
             var event = `${identifier.attr}.${dir.uid}`;
             identifier.model.$on(event, refresh);
@@ -132,14 +137,12 @@ const prototype = {
         var dir = this,
             destroy = this.destroy;
         // bind destroy to the model
-        dir.destroy = () => destroy.call(dir, model);
-
-        this.sel.on(`remove.${dir.uid}`, () => {
-            this.identifiers.forEach(identifier => {
+        dir.destroy = function () {
+            dir.identifiers.forEach(identifier => {
                 identifier.model.$off(`${identifier.attr}.${dir.uid}`);
             });
-            dir.destroy();
-        });
+            destroy.call(dir, model);
+        };
     }
 };
 

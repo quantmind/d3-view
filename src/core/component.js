@@ -24,62 +24,60 @@ const protoComponent = {
     // Mount the component into an element
     // If this component is already mounted, or it is mounting, it does nothing
     mount (el, data, onMounted) {
-        if (mounted(this)) warn('already mounted');
-        else {
-            viewEvents.call('component-mount', undefined, this, el, data);
-            var sel = this.select(el),
-                directives = sel.directives(),
-                dattrs = directives ? directives.attrs : attributes(el),
-                parentModel = this.parent.model,
-                datum = sel.datum();
+        if (mounted(this)) return;
+        viewEvents.call('component-mount', undefined, this, el, data);
+        var sel = this.select(el),
+            directives = sel.directives(),
+            dattrs = directives ? directives.attrs : attributes(el),
+            parentModel = this.parent.model,
+            datum = sel.datum();
 
-            let props = this.props,
-                model = this.model,
-                modelData = assign(dataAttributes(dattrs), datum, data),
-                key, value;
+        let props = this.props,
+            model = this.model,
+            modelData = assign(dataAttributes(dattrs), datum, data),
+            key, value;
 
-            data = assign({}, datum, data);
+        data = assign({}, datum, data);
 
-            // override model keys from data object and element attributes
-            for (key in model) {
-                value = pop(modelData, key);
-                if (value !== undefined) {
-                    if (isString(value)) {
-                        if (parentModel.$isReactive(value)) {
-                            if (value !== key) model[key] = reactiveParentProperty(value);
-                            else delete model[key];
-                        } else model[key] = maybeJson(value);
-                    } else model[key] = value;
-                }
+        // override model keys from data object and element attributes
+        for (key in model) {
+            value = pop(modelData, key);
+            if (value !== undefined) {
+                if (isString(value)) {
+                    if (parentModel.$isReactive(value)) {
+                        if (value !== key) model[key] = reactiveParentProperty(value);
+                        else delete model[key];
+                    } else model[key] = maybeJson(value);
+                } else model[key] = value;
             }
-
-            // Create model
-            this.model = model = parentModel.$child(model);
-            model.$$view = this;
-            model.$$name = this.name;
-            if (isArray(props)) props = props.reduce((o, key) => {
-                o[key] = undefined;
-                return o;
-            }, {});
-
-            if (isObject(props)) {
-                Object.keys(props).forEach(key => {
-                    value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
-                    if (value !== undefined) {
-                        // data point to a model attribute
-                        if (isString(value) && model[value]) value = model[value];
-                        data[key] = value;
-                    } else if (props[key] !== undefined) {
-                        data[key] = props[key];
-                    }
-                });
-            }
-            //
-            // create the new element from the render function
-            var newEl = this.render(data, dattrs, el);
-            if (!newEl.then) newEl = Promise.resolve(newEl);
-            return newEl.then(element => compile(this, el, element, onMounted));
         }
+
+        // Create model
+        this.model = model = parentModel.$child(model);
+        model.$$view = this;
+        model.$$name = this.name;
+        if (isArray(props)) props = props.reduce((o, key) => {
+            o[key] = undefined;
+            return o;
+        }, {});
+
+        if (isObject(props)) {
+            Object.keys(props).forEach(key => {
+                value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
+                if (value !== undefined) {
+                    // data point to a model attribute
+                    if (isString(value) && model[value]) value = model[value];
+                    data[key] = value;
+                } else if (props[key] !== undefined) {
+                    data[key] = props[key];
+                }
+            });
+        }
+        //
+        // create the new element from the render function
+        var newEl = this.render(data, dattrs, el);
+        if (!newEl.then) newEl = Promise.resolve(newEl);
+        return newEl.then(element => compile(this, el, element, onMounted));
     }
 };
 
@@ -207,7 +205,7 @@ export function mounted (vm, onMounted) {
         return false;
     }
     else if (vm.isMounted) {
-        warn(`view ${vm.name} already mounted`);
+        vm.logWarn(`component already mounted`);
     }
     else {
         vm.isMounted = true;

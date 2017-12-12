@@ -31,14 +31,12 @@ export default {
     },
 
     mount: function (el, callback) {
-        if (mounted(this)) warn('already mounted');
-        else {
-            viewEvents.call('component-mount', undefined, this, el);
-            el = element(el);
-            if (el) {
-                this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);
-                return asView(this, el, callback);
-            }
+        if (mounted(this)) return;
+        viewEvents.call('component-mount', undefined, this, el);
+        el = element(el);
+        if (el) {
+            this.model = this.parent ? this.parent.model.$child(this.model) : viewModel(this.model);
+            return asView(this, el, callback);
         }
     }
 };
