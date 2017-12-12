@@ -3,7 +3,6 @@ import formGroup from './form-group';
 import inputGroup from './input-group';
 import formCheck from './check';
 import submit from './submit';
-import warn from '../warn';
 
 
 const bootstrap = {
@@ -33,7 +32,7 @@ export default {
 
     install (vm) {
         if (!vm.$formExtensions)
-            return warn('form bootstrap requires the form plugin installed first!');
+            return vm.logWarn('form bootstrap requires the form plugin installed first!');
         vm.$formExtensions.push(wrapBootstrap);
     }
 };
@@ -47,7 +46,7 @@ function wrapBootstrap(field, wrappedEl, fieldEl) {
     wrappers.forEach(wrapper => {
         wrap = bootstrap.wrappers[wrapper];
         if (wrap) wrappedEl = wrap(field, wrappedEl, fieldEl);
-        else warn(`Could not find form field wrapper ${wrapper}`);
+        else field.logWarn(`Could not find form field wrapper ${wrapper}`);
     });
 
     return wrappedEl;

@@ -1,7 +1,5 @@
 import types from './types/index';
 
-import warn from '../utils/warn';
-
 //
 //  d3-value directive
 //  ===================
@@ -14,7 +12,10 @@ export default {
             tag = this.el.tagName.toLowerCase(),
             ValueType = types[type] || types[tag];
 
-        if (!ValueType) return warn(`Cannot apply d3-value directive to ${tag}`);
+        if (!ValueType) {
+            this.logWarn(`Cannot apply d3-value directive to ${tag}`);
+            return;
+        }
         this.tag = new ValueType(this.el);
         return expression;
     },
@@ -22,8 +23,10 @@ export default {
     mount (model) {
         var expr = this.expression;
         // TODO: relax this constraint
-        if (expr.parsed.type !== expr.codes.IDENTIFIER)
-            return warn(`d3-value expression support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
+        if (expr.parsed.type !== expr.codes.IDENTIFIER) {
+            this.logWarn(`support identifiers only, got "${expr.parsed.type}": ${this.expression}`);
+            return;
+        }
         var attrName = this.expression.expr;
         //
         // Create the model reactive attribute

@@ -1,9 +1,5 @@
 import {assign} from 'd3-let';
 
-import providers from './providers';
-import warn from './warn';
-
-
 //
 // Form Actions
 export default {
@@ -21,6 +17,7 @@ const endpointDefauls = {
 function submit (e) {
     var submit = this,
         form = submit.form,
+        view = submit.$$view,
         endpoint = assign({}, endpointDefauls, submit.endpoint);
 
     if (e) {
@@ -28,17 +25,11 @@ function submit (e) {
         e.stopPropagation();
     }
 
-    var fetch = providers.fetch,
-        data = form.$inputData(),
+    var data = form.$inputData(),
         options = {};
 
-    if (!fetch) {
-        warn('fetch provider not available, cannot submit');
-        return;
-    }
-
     if (!endpoint.url) {
-        warn('No url, cannot submit');
+        view.logError('No url, cannot submit');
         return;
     }
 
@@ -60,7 +51,7 @@ function submit (e) {
         form.$setSubmitDone();
     } else {
         options.method = endpoint.method;
-        fetch(endpoint.url, options).then(success, failure);
+        view.fetch(endpoint.url, options).then(success, failure);
     }
 
 
@@ -72,7 +63,7 @@ function submit (e) {
                 form.$response(data, response.status, response.headers);
             });
         else {
-            warn(`Cannot load content type '${ct}'`);
+            view.logError(`Cannot load content type '${ct}'`);
         }
     }
 

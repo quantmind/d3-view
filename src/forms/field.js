@@ -2,7 +2,6 @@ import {isString, isObject, assign} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
 import {map} from 'd3-collection';
 
-import warn from './warn';
 
 const properties = map({
     disabled: 'disabled',
@@ -52,7 +51,7 @@ export const formElement = {
             slot = outer.select('slot');
 
         if (!slot.size()) {
-            warn('template does not provide a slot element');
+            this.logWarn('template does not provide a slot element');
             return sel;
         }
         var target = select(slot.node().parentNode);
@@ -97,8 +96,11 @@ export default assign({}, formElement, {
         //
         // add this model to the form inputs object
         model.form.inputs[data.name] = model;
+        //
         // give name to model (for debugging info messages)
         model.name = data.name;
+        //
+        // bind to the value property (two-way binding when used with d3-value)
         model.$on('value', () => {
             // set isDirty to false if first time here, otherwise true
             if (model.isDirty === null) {
