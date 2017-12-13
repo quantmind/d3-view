@@ -7,18 +7,20 @@ import sel from '../../utils/sel';
 const base = {
 
     on (model, attrName) {
-        var refresh = refreshFunction(this, model, attrName);
+        var refresh = refreshFunction(this, model, attrName),
+            uid = model.uid;
 
         // DOM => model binding
         this.sel
-            .on('input', refresh)
-            .on('change', refresh);
+            .on(`input.${uid}`, refresh)
+            .on(`change.${uid}`, refresh);
     },
 
-    off () {
+    off (model) {
+        var uid = model.uid;
         this.sel
-            .on('input', null)
-            .on('change', null);
+            .on(`input.${uid}`, null)
+            .on(`change.${uid}`, null);
     },
 
     value (value) {

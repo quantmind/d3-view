@@ -40,7 +40,7 @@ export default {
         this.tag.value(value);
     },
 
-    destroy () {
-        this.tag.off();
+    destroy (model) {
+        this.tag.off(model);
     }
 };

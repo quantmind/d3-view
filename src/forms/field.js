@@ -121,21 +121,13 @@ export default assign({}, formElement, {
 
 
 function addAttributes(el, model, attributes) {
-    var expr, attr, t;
+    var expr, attr;
 
     if (!isObject(attributes)) return;
 
     for (attr in attributes) {
         expr = attributes[attr];
-        if (isObject(expr)) {
-            if (attr.substring(0, 3) === 'd3-') {
-                t = attr.replace('-', '_');
-                model.$set(t, expr);
-                expr = t;
-            } else {
-                expr = JSON.stringify(expr);
-            }
-        }
+        if (isObject(expr)) expr = JSON.stringify(expr);
         el.attr(attr, expr || '');
     }
 }
