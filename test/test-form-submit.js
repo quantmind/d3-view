@@ -1,6 +1,7 @@
-import view, {test, nextTick, trigger} from './utils';
+import view, {test, nextTick, trigger, logger} from './utils';
 import {viewForms} from '../index';
-import jsonform from './fixtures/jsonform2';
+import jsonform from './fixtures/jsonform';
+import jsonform2 from './fixtures/jsonform2';
 
 
 describe('submit field -', () => {
@@ -9,7 +10,7 @@ describe('submit field -', () => {
 
         var vm = view().use(viewForms);
 
-        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform2}'></d3form></div>`));
 
         var form = vm.sel.select('form').model();
         expect(form.$isValid()).toBe(false);
@@ -26,7 +27,6 @@ describe('submit field -', () => {
 
         var button = vm.sel.select('button');
         trigger(button.node(), 'click');
-        // expect(viewProviders.logger.pop(1)[0]).toBe('[d3-form] No url, cannot submit');
 
         await nextTick();
 
@@ -45,5 +45,15 @@ describe('submit field -', () => {
         await nextTick();
 
         expect(responses.length).toBe(1);
+    });
+
+    test ('no url', async () => {
+        var vm = view().use(viewForms);
+
+        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`));
+        logger.pop();
+        var button = vm.sel.select('button');
+        trigger(button.node(), 'click');
+        expect(logger.pop(1)[0]).toBe('[d3-form-submit] No url, cannot submit form');
     });
 });

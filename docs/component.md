@@ -14,23 +14,11 @@
   - [mounted ()](#mounted-)
   - [destroy ()](#destroy-)
 - [Component API](#component-api)
-  - [vm.name](#vmname)
   - [vm.model](#vmmodel)
-  - [vm.el](#vmel)
-  - [vm.sel](#vmsel)
   - [vm.parent](#vmparent)
   - [vm.root](#vmroot)
   - [vm.cache](#vmcache)
-  - [vm.uid](#vmuid)
   - [vm.events](#vmevents)
-  - [vm.createElement (tag)](#vmcreateelement-tag)
-  - [vm.viewElement (html, [context])](#vmviewelement-html-context)
-  - [vm.fetch (url, [options])](#vmfetch-url-options)
-  - [fetchText (url, [options])](#fetchtext-url-options)
-  - [json (url, [options])](#json-url-options)
-  - [vm.renderFromUrl (url, [context], [asElement])](#vmrenderfromurl-url-context-aselement)
-  - [vm.renderFromDist (name, path, [context], [asElement])](#vmrenderfromdist-name-path-context-aselement)
-  - [vm.select(HTMLElement)](#vmselecthtmlelement)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -177,24 +165,12 @@ Called when the component HTML element is removed from the DOM.
 
 ## Component API
 
-Components and [views](./view.md) share the same API.
-
-### vm.name
-
-Component name, for a view this is `view`, for any other component it is the name
-the component has been registered with.
+Components and [views](./view.md) share the same API which exyends the [viewBase](./base.md) prototype
+with the following properties.
 
 ### vm.model
 
 The [model](#model) bound to the component, the combo gives the name to the **view-model object**, often shortened to ``vm`` or ``cm``.
-
-### vm.el
-
-The HTMLElement of the component.
-
-### vm.sel
-
-Equivalent to ``d3.select(vm.el)``, d3 selection of the component element.
 
 ### vm.parent
 
@@ -211,10 +187,6 @@ An object for storing data. This object is the same across all components in a g
 vm.cache.foo = 'test';
 ```
 
-### vm.uid
-
-Unique identifier
-
 ### vm.events
 
 Events object which can be used for registering event listeners or firing events.
@@ -228,57 +200,6 @@ to fire an event
 ```javascript
 vm.events.call('message', ...);
 ```
-
-### vm.createElement (tag)
-
-Create a new HTML Element with the given tag. Return a [d3.selection][] of the new element.
-
-### vm.viewElement (html, [context])
-
-Render an ``html`` string into an HTML Element. This method returns a [d3.selection][].
-If the optional ``context`` object is provided, it renders the html string using
-[handlebars][] template engine (requires handlebars to be available).
-
-### vm.fetch (url, [options])
-
-Fetch a resource from a ``url``. This is a convenient method which uses the
-``fetch`` [provider](./providers.md).
-
-### fetchText (url, [options])
-
-Fetch a resource from a ``url`` and return the text value
-
-### json (url, [options])
-
-Fetch a resource from a ``url`` and return the object obtained after parsing text as JSON.
-
-### vm.renderFromUrl (url, [context], [asElement])
-
-Fetch a template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][] if ``asElement`` is ``true`` (by default it is true).
-
-If the optional ``context`` object is provided, it renders the remote html string using
-the ``compileHtml`` function in ``viewProviders`` (provided this functin is available).
-
-The ``compileHtml`` function is not available in the standard ``d3-view`` distribution.
-One could use [handlebars][] compile function for example:
-```javascript
-import Handlebars from 'handlebars';
-import {viewProviders} from 'd3-view';
-
-viewProviders.compileHtml = Handlebars.compile;
-```
-
-The ``asElement`` parameter can be set to ``false`` if the the template is not a valid html and therefore no conversion to d3-selection is required. This is useful for any other template such as text, json and so forth.
-
-
-### vm.renderFromDist (name, path, [context], [asElement])
-
-Similar to the previous function, but fetches the template/file form a distribution.
-
-
-### vm.select(HTMLElement)
-
-Return a [d3.selection][] of the ``HTMLElement``.
 
 ## Selection
 

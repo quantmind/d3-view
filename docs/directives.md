@@ -19,9 +19,6 @@
   - [directive.refresh (model, newValue)](#directiverefresh-model-newvalue)
   - [directive.destroy (model)](#directivedestroy-model)
 - [Directive API](#directive-api)
-  - [directive.el](#directiveel)
-  - [directive.name](#directivename)
-  - [directive.uid](#directiveuid)
   - [directive.expression](#directiveexpression)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -220,18 +217,9 @@ Called **once only** when the element hosting the directive is removed from the 
 
 ## Directive API
 
-### directive.el
+A directive prototype exyends the [viewBase](./base.md) prototype
+with the following properties and methods.
 
-The HTML Element hosting the directive, available after initialisation and therefore accessible by all
-API methods.
-
-### directive.name
-
-The name of the directive (including the ``d3-`` prefix)
-
-### directive.uid
-
-The unique identifier of the directive.
 
 ### directive.expression
 

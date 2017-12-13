@@ -25,7 +25,6 @@ Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
 <script src="https://unpkg.com/d3-let/build/d3-let.min.js"></script>
 <script src="https://d3js.org/d3-selection.v1.min.js"></script>
 <script src="https://d3js.org/d3-timer.v1.min.js"></script>
-<script src="https://d3js.org/d3-require.v1.min.js"></script>
 <script src="https://unpkg.com/d3-view/build/d3-view.min.js"></script>
 <script>
 
@@ -43,7 +42,6 @@ d3-view strictly depends on five d3 plugins:
 * [d3-collection](https://github.com/d3/d3-collection)
 * [d3-dispatch](https://github.com/d3/d3-dispatch)
 * [d3-let](https://github.com/d3/d3-let)
-* [d3-require](https://github.com/d3/d3-require)
 * [d3-selection](https://github.com/d3/d3-selection)
 * [d3-timer](https://github.com/d3/d3-timer)
 

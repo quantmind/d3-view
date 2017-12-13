@@ -29,7 +29,7 @@ function submit (e) {
         options = {};
 
     if (!endpoint.url) {
-        view.logError('No url, cannot submit');
+        view.logError('No url, cannot submit form');
         return;
     }
 

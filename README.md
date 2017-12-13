@@ -23,6 +23,7 @@ Written in [Javascript ES6](/docs/develop.md) with a minimal footprint.
     * [Examples](/docs/examples.md)
 * API
     * [Model](/docs/model.md)
+    * [View base](/docs/base.md)
     * [Components](/docs/component.md)
     * [Directives](/docs/directives.md)
     * [Expressions](/docs/expressions.md)

@@ -152,4 +152,9 @@ describe('view -', () => {
         expect(stack.length).toBe(1);
         expect(''+stack[0]).toBe('Error: kaputt');
     });
+
+    it ('domEvent', () => {
+        var vm = view();
+        expect(vm.domEvent()).toBe(null);
+    });
 });

@@ -6,7 +6,7 @@ import jsonform from './fixtures/jsonform';
 import jsonform3 from './fixtures/jsonform3';
 
 
-describe('view meta', () => {
+describe('view meta -', () => {
 
     it('viewForms', () => {
         expect(isObject(viewForms)).toBe(true);
@@ -25,7 +25,7 @@ describe('view meta', () => {
 });
 
 
-describe('json form', () => {
+describe('json form -', () => {
 
     let el, vm;
 
@@ -79,7 +79,7 @@ describe('json form', () => {
         expect(token.showError).toBe(true);
     });
 
-    test('test children errors', async () => {
+    test('children errors', async () => {
         await vm.mount(el);
 
         var form = vm.sel.select('form');
