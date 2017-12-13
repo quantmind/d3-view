@@ -43,7 +43,9 @@ export default JSON.stringify({
             name: "login",
             disabled: "!form.$isValid()",
             endpoint: {
-                url: '/submitTest'
+                url: '/submitTest',
+                contentType: 'multipart/form-data',
+                method: 'put'
             }
         }
     ]

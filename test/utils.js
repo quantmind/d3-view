@@ -1,10 +1,10 @@
 import 'es6-promise';
-import {view, viewProviders, viewDebounce, isAbsoluteUrl} from '../index';
-import fixtures from './fixtures/fetch';
-import promise from './promise';
+import {view, viewProviders, viewDebounce} from '../index';
+import testFetch from './fixtures/fetch';
 import 'd3-transition';
 
 viewProviders.compileTemplate = require('handlebars').compile;
+viewProviders.location = {};
 
 
 export const logger = {
@@ -69,14 +69,6 @@ function testAsync (runAsync) {
     return (done) => {
         runAsync().then(done, done.fail);
     };
-}
-
-
-function testFetch (url, ...o) {
-    if (isAbsoluteUrl(url)) url = new URL(url).pathname;
-    var result = fixtures[url];
-    if (result) return promise.ok(result(...o));
-    else return promise.error('404 - Not Found');
 }
 
 

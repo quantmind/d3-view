@@ -42,7 +42,7 @@ function submit (e) {
     else {
         options.body = new FormData();
         for (var key in data)
-            options.body.set(key, data[key]);
+            options.body.append(key, data[key]);
     }
 
     // Flag the form as submitted
@@ -51,12 +51,13 @@ function submit (e) {
         form.$setSubmitDone();
     } else {
         options.method = endpoint.method;
-        view.json(endpoint.url, options).then(done);
+        view.json(endpoint.url, options).then(done, done);
     }
 
 
     function done (response) {
         form.$setSubmitDone();
-        form.$response(response);
+        if (response.status && response.headers)
+            form.$response(response);
     }
 }

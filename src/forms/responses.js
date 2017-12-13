@@ -15,11 +15,16 @@ export default {
 };
 
 
-function defaultResponse (data) {
-    this.message(data);
+function defaultResponse (response) {
+    this.$emit('message', {
+        level: 'info',
+        msg: response.data,
+        response: response
+    });
 }
 
 
-function redirect (data) {
-    window.location.href = data.redirectTo || '/';
+function redirect (response) {
+    var location = this.$$view.providers.location;
+    location.href = response.data.redirectTo || '/';
 }

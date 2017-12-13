@@ -1,7 +1,6 @@
 export default JSON.stringify({
     type: "form",
     action: "/login",
-    resultHandler: "redirect",
     children: [
         {
             type: "fieldset",

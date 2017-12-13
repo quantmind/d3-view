@@ -112,6 +112,7 @@ export default assign({}, formElement, {
             // trigger a change event in the form
             // required for form method such as $isValid
             model.form.$change();
+            model.$emit('formValueChange', model);
         });
         return data;
     }

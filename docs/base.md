@@ -25,6 +25,7 @@
   - [.renderFromDist (name, path, [context], [asElement])](#renderfromdist-name-path-context-aselement)
   - [.select(HTMLElement)](#selecthtmlelement)
   - [.selectAll(HTMLElement)](#selectallhtmlelement)
+  - [.selectChildren ([HTMLElement])](#selectchildren-htmlelement)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -140,3 +141,8 @@ Return a [d3.selection][] of the ``HTMLElement``.
 ### .selectAll(HTMLElement)
 
 Equivalent to ``d3.selectAll(HTMLElement)``.
+
+### .selectChildren ([HTMLElement])
+
+Select all children of a given HTMLElement, if the HTMLElement is not given
+select all children of the [.el](#el) element.

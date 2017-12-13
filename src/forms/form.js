@@ -60,23 +60,26 @@ export default {
         },
         //
         // response from a server submit
-        $response (data, status, headers) {
-            if (status < 300) {
+        $response (response) {
+            if (response.data) {
                 if (this.data.resultHandler) {
                     var handler = responses[this.data.resultHandler];
                     if (!handler) this.$$view.logError(`Could not find ${this.data.resultHandler} result handler`);
-                    else handler.call(this, data, status, headers);
+                    else handler.call(this, response);
                 } else {
-                    responses.default.call(this, data, status, headers);
+                    responses.default.call(this, response);
                 }
             } else
-                this.$responseError(data, status, headers);
+                this.$responseError(response);
         },
         //
         //  bad response from server submit
-        $responseError (data) {
-            data.level = 'error';
-            this.$message(data);
+        $responseError (response) {
+            this.$emit('message', {
+                level: 'error',
+                msg: response.description || response.status,
+                response: response
+            });
         }
     },
 

@@ -27,6 +27,7 @@ export default assign({
     if (inBrowser) {
         return assign({
             fetch: window.fetch,
+            location: window.location
         }, window.d3);
     }
 }());

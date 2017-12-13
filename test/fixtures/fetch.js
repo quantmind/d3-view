@@ -1,48 +1,56 @@
-import {map} from 'd3-collection';
-
-import promise from '../promise';
+import {isAbsoluteUrl} from '../../index';
 
 
-export default {
+export default function (url, ...o) {
+    if (isAbsoluteUrl(url)) url = new URL(url).pathname;
+    var result = fixtures[url];
+    if (result) return Promise.resolve(result(...o));
+    else return Promise.resolve(error(404));
+}
+
+
+const fixtures = {
     '/test': (o) => {
         if (!o || o.method === 'get')
             return asText('<p>This is a test</p>');
         else
-            return notFound();
+            return error(405);
     },
     '/fake/test': (o) => {
         if (!o || o.method === 'get')
             return asText('<p>This is a test</p>');
         else
-            return notFound();
+            return error(405);
     },
     '/submitTest': (o) => {
         if (o.method === 'post')
             return asJson(o, {success: true});
         else
-            return notFound();
+            return error(405);
     },
     '/sidebar': (o) => {
         if (!o || o.method === 'get')
             return asText(sidebar);
         else
-            return notFound();
+            return error(405);
     },
 };
 
 
-function notFound () {
+function error (status) {
     return {
-        status: 404
+        status: status,
+        headers: new Map
     };
 }
+
 
 function asText (text) {
     return {
         status: 200,
-        headers: map({'content-type': 'text/plain'}),
+        headers: new Map([['content-type', 'text/plain']]),
         text () {
-            return promise.ok(text);
+            return Promise.resolve(text);
         }
     };
 }
@@ -52,9 +60,9 @@ function asJson (input, data) {
     return {
         input: input,
         status: 200,
-        headers: map({'content-type': 'application/json'}),
+        headers: new Map([['content-type', 'application/json']]),
         json () {
-            return promise.ok(data);
+            return Promise.resolve(data);
         }
     };
 }

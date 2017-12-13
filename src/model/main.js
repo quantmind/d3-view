@@ -8,6 +8,7 @@ import $change from './change';
 import $isReactive from './isreactive';
 import $owner from './owner';
 import $data from './data';
+import $emit from './emit';
 import {$push, $splice} from './array';
 
 //
@@ -28,6 +29,7 @@ model.prototype = Model.prototype = {
     toString,
     $on,
     $change,
+    $emit,
     $update,
     $set,
     $new,

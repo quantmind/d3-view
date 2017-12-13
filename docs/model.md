@@ -15,6 +15,7 @@
   - [model.parent](#modelparent)
   - [model.isolated](#modelisolated)
   - [model.$data ()](#modeldata-)
+  - [model.$emit (eventName, [data])](#modelemit-eventname-data)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$isReactive (attribute)](#modelisreactive-attribute)
@@ -186,6 +187,27 @@ from its parent. An isolated model does not share any property with its parent m
 ### model.$data ()
 
 Return the data stored in the model as a vanilla object.
+
+### model.$emit (eventName, [data])
+
+Propagate an event up the chain of [parent](./modelparent) models. This
+method is used by models to communicate back to the parent when
+something of interest happens. This is the custom event system of d3-view.
+Parent models that needs to listent to a given event must implement a function
+``eventName`` prefixed by ``$``. For example:
+```javascript
+model.$emit('something')
+```
+In order to receive the event, a parent model must implement the ``$something``
+listnener:
+```javascript
+{
+    $something (data) {
+        ...
+    }
+}
+```
+``data`` is an optional data to be passed to listeners.
 
 ### model.$set (attribute, value)
 
