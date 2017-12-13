@@ -1,5 +1,5 @@
 {
-    "version": "1.0.4",
+    "version": "1.1.0",
     "name": "d3-view",
     "description": "View-model d3 plugin for building interactive data-driven web interfaces",
     "author": {
