@@ -14,14 +14,14 @@
 - [Model API](#model-api)
   - [model.parent](#modelparent)
   - [model.isolated](#modelisolated)
+  - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$data ()](#modeldata-)
   - [model.$emit (eventName, [data])](#modelemit-eventname-data)
+  - [model.$isReactive (attribute)](#modelisreactive-attribute)
   - [model.$set (attribute, value)](#modelset-attribute-value)
   - [model.$update (object, [override])](#modelupdate-object-override)
-  - [model.$isReactive (attribute)](#modelisreactive-attribute)
   - [model.$owner (attribute)](#modelowner-attribute)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
-  - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$off ()](#modeloff-)
   - [model.$child ([object])](#modelchild-object)
   - [model.$new ([object])](#modelnew-object)
@@ -58,6 +58,11 @@ There are two methods for creating derived children
 
 * [$child](#modelchild-object) create a child model with prototypical inheritance
 * [$new](#modelnew-object) create a child model, with no inheritance from the parent (an isolated model)
+
+Parent models can listen for events emitted by children models, regarthless if
+created with the ``$new`` or ``$child`` method, via implementing listeners methods
+as discussed in the [$emit](#modelemit-eventname-data) method.
+
 
 ## Reactivity
 
@@ -183,6 +188,19 @@ Get the ancestor of the model if it exists. It it does not exist, this is a root
 This property is ``true`` when the model was created via the [$new](#modelnew-object) method
 from its parent. An isolated model does not share any property with its parent model.
 
+### model.$change ([attribute])
+
+If ``attribute`` is not specified or it is an empty string, this method dispatches the ``change`` event for the model.
+Alternatively, it dispatches the ``change`` event for ``attribute`` (it must be a reactive attribute otherwise it is a no operation).
+
+This is useful when updating a composite model attribute (an array for example).
+```javascript
+var model = d3.viewModel({
+    data: []
+});
+model.data.push(4);
+model.$change('data');
+```
 
 ### model.$data ()
 
@@ -190,16 +208,16 @@ Return the data stored in the model as a vanilla object.
 
 ### model.$emit (eventName, [data])
 
-Propagate an event up the chain of [parent](./modelparent) models. This
+Propagate an event up the chain of [parent](#modelparent) models. This
 method is used by models to communicate back to the parent when
 something of interest happens. This is the custom event system of d3-view.
-Parent models that needs to listent to a given event must implement a function
+Parent models that need to listen to a given event must implement a function
 ``eventName`` prefixed by ``$``. For example:
 ```javascript
 model.$emit('something')
 ```
-In order to receive the event, a parent model must implement the ``$something``
-listnener:
+In order to receive the ``something`` event, a parent model must implement the ``$something``
+listener:
 ```javascript
 {
     $something (data) {
@@ -208,6 +226,17 @@ listnener:
 }
 ```
 ``data`` is an optional data to be passed to listeners.
+
+### model.$isReactive (attribute)
+
+Check if ``attribute`` is a reactive property of the model (including its parents if the model is not isolated). Return ``true`` or ``false``.
+```javascript
+m.$isReactive('a')  // true
+c1 = m.$child();
+c1.$isReactive('a')  // true
+c2 = m.$new();
+c2.$isReactive('a')  // false
+```
 
 ### model.$set (attribute, value)
 
@@ -236,17 +265,6 @@ m.a     // 5
 m.b     // 11
 ```
 
-### model.$isReactive (attribute)
-
-Check if ``attribute`` is a reactive property of the model (including its parents if the model is not isolated). Return ``true`` or ``false``.
-```javascript
-m.$isReactive('a')  // true
-c1 = m.$child();
-c1.$isReactive('a')  // true
-c2 = m.$new();
-c2.$isReactive('a')  // false
-```
-
 ### model.$owner (attribute)
 
 Return the first model owning the reactive ``attribute`` following the model
@@ -263,20 +281,6 @@ c2.$owner('a')          // undefined
 
 Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which case it is triggered when any of the model **own attributes** change.
-
-### model.$change ([attribute])
-
-If ``attribute`` is not specified or it is an empty string, this method dispatches the ``change`` event for the model.
-Alternatively, it dispatches the ``change`` event for ``attribute`` (it must be a reactive attribute otherwise it is a no operation).
-
-This is useful when updating a composite model attribute (an array for example).
-```javascript
-var model = d3.viewModel({
-    data: []
-});
-model.data.push(4);
-model.$change('data');
-```
 
 ### model.$off ()
 

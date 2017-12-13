@@ -19,7 +19,9 @@
   - [directive.refresh (model, newValue)](#directiverefresh-model-newvalue)
   - [directive.destroy (model)](#directivedestroy-model)
 - [Directive API](#directive-api)
+  - [directive.active](#directiveactive)
   - [directive.expression](#directiveexpression)
+  - [directive.passes](#directivepasses)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -30,7 +32,12 @@ They apply special reactive behavior to the rendered element they belong to.
 Differently from [components](./component.md), a directive doesn't replace
 the HTML element they belong to.
 
-Directive attribute values are often binding [expressions](#expressions) or empty.
+Directive attribute values are one of
+
+* binding [expressions](#expressions)
+* JSON string
+* empty
+
 A directive attribute value can be a non binding expression provided the [create][] method
 returns nothing and set the ``active`` attribute to ``true``.
 
@@ -217,14 +224,24 @@ Called **once only** when the element hosting the directive is removed from the 
 
 ## Directive API
 
-A directive prototype exyends the [viewBase](./base.md) prototype
-with the following properties and methods.
+A directive has all the properties and methods of the [viewBase](./base.md) prototype
+with these additional properties.
+
+
+### directive.active
+
+``true`` when the directive is active
 
 
 ### directive.expression
 
 The parsed expression, available after the [create](#directivecreateexpression)
 method has been called.
+
+
+### directive.passes
+
+Number of times the directive has been refreshed by a change in the reactive model
 
 
 [d3-attr]: https://github.com/quantmind/d3-view/blob/master/src/directives/attr.js

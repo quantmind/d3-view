@@ -7,6 +7,7 @@
 - [Overview](#overview)
 - [Usage](#usage)
   - [Field inputs](#field-inputs)
+  - [formFieldChange event](#formfieldchange-event)
 - [Form API](#form-api)
   - [inputs](#inputs)
   - [actions](#actions)
@@ -92,6 +93,13 @@ A field in the form schema has the following attributes:
 * **required**/**disabled**/**readonly** (optional) DOM attributes for the field. They can be either strings (in which case they are considered expressions for the ``d3-attr-*`` directive) or booleans.
 * **placeholder** (optional) a string for the placeholder
 * **attributes** (optional) an object with additional attributes to apply to the form field HTML element. These attributes can be directives too.
+
+### formFieldChange event
+
+Whenever the value of a form field changes, the model associated with the field component
+emits the ``formFieldChange`` event with data given by the field model itself.
+See the [$emit](./model#modelemit-eventname-data) documentation for more information
+on how to listen to custom events.
 
 ## Form API
 

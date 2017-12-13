@@ -1,4 +1,5 @@
 import {isAbsoluteUrl} from '../../index';
+import jsonform from './jsonform';
 
 
 export default function (url, ...o) {
@@ -34,6 +35,12 @@ const fixtures = {
         else
             return error(405);
     },
+    '/jsonform': (o) => {
+        if (!o || o.method === 'get')
+            return asJson(o, JSON.parse(jsonform));
+        else
+            return error(405);
+    }
 };
 
 

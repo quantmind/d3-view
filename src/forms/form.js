@@ -96,7 +96,7 @@ export default {
         var schema = data.schema;
         if (data.values) schema.values = data.values;
         if (isString(schema))
-            return this.json(schema).then(build);
+            return this.json(schema).then(response => build(response.data));
         else return build(schema);
 
         function build (schema) {

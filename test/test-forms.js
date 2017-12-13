@@ -13,7 +13,7 @@ describe('view meta -', () => {
         expect(isFunction(viewForms.install)).toBe(true);
     });
 
-    it('test install', () => {
+    it('install plugin', () => {
         var vm = view().use(viewForms);
         expect(vm.components.get('d3form')).toBeTruthy();
     });
@@ -21,6 +21,13 @@ describe('view meta -', () => {
     test('mount empty form', async () => {
         var vm = view().use(viewForms);
         await vm.mount(vm.viewElement('<div><d3form></d3form></div>'));
+    });
+
+    test('remote schema', async () => {
+        var vm = view().use(viewForms);
+        await vm.mount(vm.viewElement('<div><d3form data-schema="/jsonform"></d3form></div>'));
+        var form = vm.sel.select('form').model();
+        expect(Object.keys(form.inputs).length).toBe(4);
     });
 });
 

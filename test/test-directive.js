@@ -140,4 +140,25 @@ describe('directive -', () => {
         expect(logs.length).toBe(1);
         expect(logs[0]).toBe('[d3-html] "xxxx" is not an object, cannot bind to "xxxx.docs" identifier');
     });
+
+    test ('json data', async () => {
+
+        var vm = view();
+
+        vm.addDirective('random', {
+            refresh (model, options) {
+                var min = options ? options.min || 0 : 0;
+                this.sel.html(''+ (min + Math.random()));
+            }
+        });
+        await vm.mount(vm.viewElement(`<div d3-random='{"min": 5}'></div>`));
+        var dirs = vm.sel.directives();
+        expect(dirs).toBeTruthy();
+        expect(dirs.all.length).toBe(1);
+        var dir = dirs.all[0];
+        expect(dir.data).toBeTruthy();
+        expect(dir.data.min).toBe(5);
+        var num = +vm.sel.html();
+        expect(num > 5).toBe(true);
+    });
 });

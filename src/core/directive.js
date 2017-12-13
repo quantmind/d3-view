@@ -64,14 +64,20 @@ const prototype = {
         var dir = this,
             error = false,
             refresh = function () {
-                let value = dir.expression ? dir.expression.eval(model) : undefined;
+                let value = dir.expression ? dir.expression.eval(model) : dir.data;
                 dir.refresh(model, value);
                 dir.passes++;
             };
 
         // Bind expression identifiers with model
         let bits, target, attr, i;
-        if (!this.expression) {
+        if (dir.data) {
+            dir.data = model.$new(dir.data);
+            dir.identifiers.push({
+                model: dir.data,
+                attr: ''
+            });
+        } else if (!this.expression) {
             dir.identifiers.push({
                 model: model,
                 attr: ''
@@ -155,9 +161,19 @@ export default function (obj) {
         this.arg = arg;
         this.passes = 0;
         var expr = sel(uid(this)).create(attr.value);
-        if (expr) this.expression = viewExpression(expr);
+        if (expr) {
+            try {
+                this.expression = viewExpression(expr);
+            } catch (e) {
+                try {
+                    this.data = JSON.parse(expr);
+                } catch (m) {
+                    this.logError(e);
+                }
+            }
+        }
         if (!this.active)
-            this.active = !attr.value || this.expression;
+            this.active = Boolean(!attr.value || this.expression || this.data);
     }
 
     Directive.prototype = assign({}, base, prototype, obj);
