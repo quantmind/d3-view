@@ -5,9 +5,9 @@
 
 
 - [Access Providers](#access-providers)
-  - [Logger](#logger)
-  - [Fetch](#fetch)
-  - [Handlebars](#handlebars)
+  - [logger](#logger)
+  - [fetch](#fetch)
+  - [compileTemplate (text)](#compiletemplate-text)
 - [Require](#require)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -26,28 +26,30 @@ import {viewProviders} from 'd3-view'
 d3.viewProviders
 ```
 
-### Logger
+### logger
 
 The logger is available at
 ```javascript
 d3.viewProviders.logger
 ```
 
-### Fetch
+### fetch
 
 Retrieve data from urls
 ```javascript
 d3.viewProviders.fetch
 ```
 
-### Handlebars
+### compileTemplate (text)
 
 [Handlebars](http://handlebarsjs.com/) is required when rendering templates with static context.
 To use handlebars, one can either include it as a script in the page or load it via require and
 store it as a view provider:
 ```javascript
+import {viewProviders} from 'd3-view';
+
 require('handlebars').then(handlebars => {
-    viewProviders.handlebars = handlebars;
+    viewProviders.compileTemplate = handlebars.compile;
 });
 ```
 

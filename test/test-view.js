@@ -140,9 +140,9 @@ describe('view -', () => {
         expect(vm.logWarn('test2')).toBe(vm);
         expect(logger.pop()).toEqual(['[view] test2']);
         expect(vm.logInfo('test3')).toBe(vm);
-        expect(logger.pop()).toEqual(['[view] test3']);
+        expect(logger.popInfo()).toEqual(['[view] test3']);
         expect(vm.logDebug('test4')).toBe(vm);
-        expect(logger.pop()).toEqual([]);
+        expect(logger.popInfo()).toEqual([]);
         try {
             throw new Error('kaputt');
         } catch (err) {
@@ -151,6 +151,18 @@ describe('view -', () => {
         var stack = logger.pop();
         expect(stack.length).toBe(1);
         expect(''+stack[0]).toBe('Error: kaputt');
+    });
+
+    test ('debug', async () => {
+        viewProviders.setDebug();
+        var vm = view();
+        expect(logger.popInfo().length).toBe(0);
+        expect(vm.logDebug('test debug')).toBe(vm);
+        var logs = logger.popInfo();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe('[view] test debug');
+        viewProviders.setDebug(false);
+        expect(logger.debug).toBe(null);
     });
 
     it ('domEvent', () => {

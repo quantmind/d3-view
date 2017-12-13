@@ -1,6 +1,5 @@
 import {logger, inBrowser, isFunction, assign} from 'd3-let';
 import {viewResolve, viewRequire} from '../require';
-import {defaultDebug} from './debug';
 
 
 logger.debug = null;
@@ -31,3 +30,8 @@ export default assign({
         }, window.d3);
     }
 }());
+
+
+function defaultDebug (msg) {
+    this.info(msg);
+}

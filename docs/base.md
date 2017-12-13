@@ -6,10 +6,10 @@
 
 - [Overview](#overview)
 - [Properties](#properties)
-  - [vm.name](#vmname)
-  - [vm.el](#vmel)
-  - [vm.sel](#vmsel)
-  - [vm.uid](#vmuid)
+  - [.name](#name)
+  - [.el](#el)
+  - [.sel](#sel)
+  - [.uid](#uid)
 - [Methods](#methods)
   - [.createElement (tag)](#createelement-tag)
   - [.viewElement (html, [context])](#viewelement-html-context)
@@ -32,26 +32,32 @@
 ## Overview
 
 
-The ``viewBase`` object is the prototype for both view/component and directives
-and therfore it is at the core of the extendibility for the framework.
+The ``viewBase`` object is the base prototype for both view/component and directives
+prototypes and therefore it is at the core of the extendibility for the framework.
+```javascript
+import {viewBase} from 'd3-view';
+
+viewBase.myMethod = function () {
+}
+```
 
 
 ## Properties
 
-### vm.name
+### .name
 
 Component name, for a view this is `view`, for any other component/directive it is the name
-the component has been registered with.
+the component has been registered with. For directives, this is always prefixed with ``d3-``.
 
-### vm.el
+### .el
 
 The HTMLElement of the component.
 
-### vm.sel
+### .sel
 
 Equivalent to ``d3.select(vm.el)``, d3 selection of the component element.
 
-### vm.uid
+### .uid
 
 Unique identifier
 

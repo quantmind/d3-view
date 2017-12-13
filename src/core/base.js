@@ -1,8 +1,8 @@
 import {select, selectAll, event} from 'd3-selection';
 
 import providers from '../utils/providers';
-import {htmlElement, html} from '../utils/html';
-import {HttpError} from '../utils/errors';
+import {htmlElement, template} from '../utils/template';
+import {jsonResponse} from '../utils/http';
 import asSelect from '../utils/select';
 //
 //  Base d3-view Object
@@ -47,9 +47,9 @@ export default {
         var cache = this.cache;
         if (url in cache)
             return Promise.resolve(render(cache[url], context, asElement));
-        return this.fetchText(url).then(template => {
-            cache[url] = template;
-            return render(template, context, asElement);
+        return this.fetchText(url).then(text => {
+            cache[url] = text;
+            return render(text, context, asElement);
         });
     },
     //
@@ -98,16 +98,6 @@ export default {
 };
 
 
-export function jsonResponse (response) {
-    if (response.status >= 300) throw new HttpError(response);
-    var ct = (response.headers.get('content-type') || '').split(';')[0];
-    if (ct === 'application/json')
-        return response.json();
-    else
-        throw new Error(`Expected JSON content type, got ${ct}`);
-}
-
-
-function render (template, context, asElement) {
-    return asElement ? htmlElement(template, context) : html(template, context);
+function render (text, context, asElement) {
+    return asElement ? htmlElement(text, context) : template(text, context);
 }

@@ -4,12 +4,12 @@ import fixtures from './fixtures/fetch';
 import promise from './promise';
 import 'd3-transition';
 
-viewProviders.compileHtml = require('handlebars').compile;
+viewProviders.compileTemplate = require('handlebars').compile;
 
 
 export const logger = {
     logs: [],
-    debugLogs: [],
+    infoLogs: [],
 
     error: function (msg) {
         logger.logs.push(msg);
@@ -20,16 +20,18 @@ export const logger = {
     },
 
     info: function (msg) {
-        logger.logs.push(msg);
+        logger.infoLogs.push(msg);
     },
 
     pop: function (num) {
-        if (arguments.length === 1)
-            return logger.logs.splice(logger.logs.length-num);
-        else
-            return logger.logs.splice(0);
+        return popLogs(logger.logs, num);
+    },
+
+    popInfo: function (num) {
+        return popLogs(logger.infoLogs, num);
     }
 };
+
 
 //
 //  Return an object with a promise and the resolve function for the promise
@@ -75,4 +77,12 @@ function testFetch (url, ...o) {
     var result = fixtures[url];
     if (result) return promise.ok(result(...o));
     else return promise.error('404 - Not Found');
+}
+
+
+function popLogs (logs, num) {
+    if (num !== undefined)
+        return logs.splice(logs.length-num);
+    else
+        return logs.splice(0);
 }

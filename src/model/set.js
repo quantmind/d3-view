@@ -1,7 +1,7 @@
 import {isFunction, isArray, isObject} from 'd3-let';
 
 import warn from '../utils/warn';
-import debug from '../utils/debug';
+import providers from '../utils/providers';
 import isVanillaObject from '../utils/object';
 import ddispatch from './dispatch';
 
@@ -42,7 +42,8 @@ function reactive (model, key, value) {
         //
         // Fire model events
         var modelName = model.$$name || 'model';
-        debug(`updating ${modelName}.${key}`);
+        if (providers.logger.debug)
+            providers.logger.debug(`[d3-model] updating ${modelName}.${key}`);
         model.$change(key, value).$change();
         value = typeValue (newValue, value);
     }

@@ -27,6 +27,7 @@ Written in [Javascript ES6](/docs/develop.md) with a minimal footprint.
     * [Components](/docs/component.md)
     * [Directives](/docs/directives.md)
     * [Expressions](/docs/expressions.md)
+    * [Tools](/docs/tools.md)
 * Extending
     * [Plugins](/docs/plugins.md)
     * [Providers](/docs/providers.md)

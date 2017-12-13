@@ -2,7 +2,7 @@ import {test} from './utils';
 
 import {timeout} from 'd3-timer';
 import {isFunction, isArray} from 'd3-let';
-import {viewModel, viewDebounce} from '../index';
+import {viewModel, viewDebounce, viewProviders} from '../index';
 
 
 describe('model -', function() {
@@ -237,5 +237,21 @@ describe('model -', function() {
         expect(Object.keys(data).length).toBe(2);
         expect(data.a).toEqual([3, 4]);
         expect(data.b).toEqual('hello');
+    });
+
+    test ('debug', async () => {
+        const logger = viewProviders.logger;
+        viewProviders.setDebug();
+        var model = viewModel({a: 3});
+        expect(logger.popInfo().length).toBe(0);
+        // set a new value
+        model.a = 4;
+        model.a = 5;
+        var logs = logger.popInfo();
+        expect(logs.length).toBe(2);
+        expect(logs[0]).toBe('[d3-model] updating model.a');
+        expect(logs[1]).toBe('[d3-model] updating model.a');
+        viewProviders.setDebug(false);
+        expect(logger.debug).toBe(null);
     });
 });

@@ -21,10 +21,12 @@ describe('Component data -', () => {
                 brandUrl: '/'
             },
             // reactive properties
-            model: {
-                sidebarContent: '',
-                primaryItems: [],
-                secondaryItems: []
+            model () {
+                return {
+                    sidebarContent: '',
+                    primaryItems: [],
+                    secondaryItems: []
+                };
             },
             render (props, attrs, el) {
                 this.model.sidebarContent = this.select(el).html();

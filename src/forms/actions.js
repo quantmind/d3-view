@@ -51,23 +51,12 @@ function submit (e) {
         form.$setSubmitDone();
     } else {
         options.method = endpoint.method;
-        view.fetch(endpoint.url, options).then(success, failure);
+        view.json(endpoint.url, options).then(done);
     }
 
 
-    function success (response) {
+    function done (response) {
         form.$setSubmitDone();
-        var ct = (response.headers.get('content-type') || '').split(';')[0];
-        if (ct === 'application/json')
-            response.json().then(data => {
-                form.$response(data, response.status, response.headers);
-            });
-        else {
-            view.logError(`Cannot load content type '${ct}'`);
-        }
-    }
-
-    function failure () {
-        form.$setSubmitDone();
+        form.$response(response);
     }
 }
