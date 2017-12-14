@@ -29,4 +29,12 @@ export function jsonResponse (response) {
 }
 
 
+export function textResponse (response) {
+    if (response.status < 300)
+        return response.text().then(data => new HttpResponse(response, data));
+    else {
+        throw new HttpError(response);
+    }
+}
+
 HttpError.prototype = Error.prototype;

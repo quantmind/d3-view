@@ -2,7 +2,7 @@ import {select, selectAll, event} from 'd3-selection';
 
 import providers from '../utils/providers';
 import {htmlElement, template} from '../utils/template';
-import {jsonResponse} from '../utils/http';
+import {jsonResponse, textResponse} from '../utils/http';
 import asSelect from '../utils/select';
 //
 //  Base d3-view Object
@@ -35,7 +35,7 @@ export default {
     },
     //
     fetchText (url, ...x) {
-        return this.fetch(url, ...x).then(response => response.text());
+        return this.fetch(url, ...x).then(textResponse);
     },
     //
     json (url, ...x) {
@@ -47,9 +47,9 @@ export default {
         var cache = this.cache;
         if (url in cache)
             return Promise.resolve(render(cache[url], context, asElement));
-        return this.fetchText(url).then(text => {
-            cache[url] = text;
-            return render(text, context, asElement);
+        return this.fetchText(url).then(response => {
+            cache[url] = response.data;
+            return render(response.data, context, asElement);
         });
     },
     //

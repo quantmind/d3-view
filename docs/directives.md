@@ -220,7 +220,7 @@ This method is called **every time** the model associated with the element hosti
 ### directive.destroy (model)
 
 Called **once only** when the element hosting the directive is removed from the DOM.
-
+When the directive has been removed, the ``destroyDirective`` custom event is emitted by the model.
 
 ## Directive API
 

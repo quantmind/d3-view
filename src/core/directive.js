@@ -147,7 +147,12 @@ const prototype = {
             dir.identifiers.forEach(identifier => {
                 identifier.model.$off(`${identifier.attr}.${dir.uid}`);
             });
-            destroy.call(dir, model);
+            if (dir.data) dir.data.$off();
+            try {
+                destroy.call(dir, model);
+            } finally {
+                model.$emit('destroyDirective', dir);
+            }
         };
     }
 };
