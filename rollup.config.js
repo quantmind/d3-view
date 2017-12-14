@@ -43,7 +43,12 @@ export default [
             name: 'd3'
         },
         plugins: [
-            resolve()
+            resolve(),
+            babel({
+                babelrc: false,
+                plugins: ['external-helpers'],
+                presets: ['es2015-rollup']
+            })
         ]
     },
     {

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>d3-require</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://unpkg.com/d3-view/build/d3-require.js" type="application/javascript"></script>
+</head>
+<body>
+    <script>
+        function assert(condition, message) {
+            if (!condition) throw message;
+        }
+        assert(d3.require, 'No require');
+        assert(d3.resolve, 'No resolve');
+        assert(d3.require.libs, 'No require.libs');
+    </script>
+</body>
+</html>
