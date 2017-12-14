@@ -1,4 +1,4 @@
-import {viewProviders, viewReady, viewDebounce, viewMount} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewMount, viewSlugify} from '../index';
 import maybeJson from '../src/utils/maybeJson';
 import view, {test} from './utils';
 
@@ -61,4 +61,10 @@ describe('Utils -', () => {
         }
     });
 
+    test ('viewSlugify', async () => {
+        expect(viewSlugify('ABC')).toBe('abc');
+        expect(viewSlugify('A c')).toBe('a-c');
+        expect(viewSlugify('how are you??')).toBe('how-are-you');
+        expect(viewSlugify('???')).toBe('');
+    });
 });

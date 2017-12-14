@@ -9,6 +9,7 @@
 - [viewRequire (name, [name, ...])](#viewrequire-name-name-)
 - [viewResolve (name, [options])](#viewresolve-name-options)
 - [viewElement (text, [context])](#viewelement-text-context)
+- [viewSlugify (text)](#viewslugify-text)
 - [viewTemplate (text, [context])](#viewtemplate-text-context)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -33,6 +34,10 @@ See the [providers](./providers.md) documentation.
 
 Compile an HTML text template via the [viewTemplate](#viewtemplate-text-context) function and return
 a new HTMLElement.
+
+## viewSlugify (text)
+
+Convert a text string into a [slug](https://en.wikipedia.org/wiki/Semantic_URL).
 
 ## viewTemplate (text, [context])
 
