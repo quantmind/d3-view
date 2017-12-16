@@ -13,6 +13,7 @@
   - [childrenMounted ()](#childrenmounted-)
   - [mounted ()](#mounted-)
   - [destroy ()](#destroy-)
+- [Using Components](#using-components)
 - [Component API](#component-api)
   - [vm.model](#vmmodel)
   - [vm.parent](#vmparent)

@@ -67,6 +67,7 @@ const prototype = {
                 let value = dir.expression ? dir.expression.eval(model) : dir.data;
                 dir.refresh(model, value);
                 dir.passes++;
+                dir.events.call('directive-refresh', undefined, dir, model, value);
             };
 
         // Bind expression identifiers with model

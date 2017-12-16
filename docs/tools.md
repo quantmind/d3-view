@@ -4,6 +4,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [viewEvents](#viewevents)
 - [viewProviders](#viewproviders)
 - [Require](#require)
   - [isAbsoluteUrl (url)](#isabsoluteurl-url)
@@ -17,6 +18,36 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+
+## viewEvents
+
+A global [d3-dispatch](https://github.com/d3/d3-dispatch) object for registering events triggered by views, components and directives:
+
+* ``component-created``: fired when a component was created
+* ``component-mount``: fired when the component is about to be mounted
+* ``component-mounted``: fired when a componened has been fully mounted
+* ``directive-refresh``: fired when a directive refresh
+
+To bind to the events:
+```
+import viewEvents from 'd3-view';
+
+viewEvent.on('component-created', (vm) {
+    vm.logInfo("Hi, I've just been created");
+});
+
+viewEvent.on('component-mount', (vm, el, data) {
+    vm.logInfo("Hi, I'm about to be mouned");
+});
+
+viewEvent.on('component-mounted', (vm) {
+    vm.logInfo("Hi, I'm fully mounted");
+});
+
+viewEvent.on('directive-refresh', (dir, model, value) {
+    dir.logInfo("Hi, I've just refreshed");
+});
+```
 
 ## viewProviders
 

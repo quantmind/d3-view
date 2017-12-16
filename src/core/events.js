@@ -5,5 +5,6 @@ export default dispatch(
     'message',
     'component-created',
     'component-mount',
-    'component-mounted'
+    'component-mounted',
+    'directive-refresh'
 );

@@ -1,6 +1,7 @@
 import {select, selectAll, event} from 'd3-selection';
 
 import providers from '../utils/providers';
+import events from './events';
 import {htmlElement, template} from '../utils/template';
 import {jsonResponse, textResponse} from '../utils/http';
 import asSelect from '../utils/select';
@@ -13,6 +14,8 @@ export default {
     isd3: true,
     //
     providers: providers,
+    //
+    events: events,
     //
     // Create a view element, same as createElement but compile it
     viewElement: htmlElement,
