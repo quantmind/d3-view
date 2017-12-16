@@ -45,10 +45,10 @@ export default {
     // render a template from a url
     renderFromUrl (url, context, asElement=true) {
         var cache = this.cache;
-        if (url in cache)
-            return Promise.resolve(render(cache[url], context, asElement));
+        if (cache.has(url))
+            return Promise.resolve(render(cache.get(url), context, asElement));
         return this.fetchText(url).then(response => {
-            cache[url] = response.data;
+            cache.set(url, response.data);
             return render(response.data, context, asElement);
         });
     },

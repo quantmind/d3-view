@@ -163,9 +163,25 @@ are in the DOM. The mounted hook is called in the same order as the render metho
 
 Called when the component HTML element is removed from the DOM.
 
+## Using Components
+
+Components are meant to be used together, most commonly in parent-child relationships.
+Component A may use component B in its own template.
+They inevitably need to communicate to one another: the parent may need to pass
+data down to the child, and the child may need to inform the parent of something
+that happened in the child. However, it is also very important to keep the parent
+and the child as decoupled as possible via a clearly-defined interface.
+This ensures each component’s code can be written and reasoned about in relative
+isolation, thus making them more maintainable and potentially easier to reuse.
+
+Composing components can be summarised as follow:
+
+* Parent components pass ``props`` and ``model`` data down to children components
+* Children components emit custom events up to ancestors
+
 ## Component API
 
-Components and [views](./view.md) share the same API which exyends the [viewBase](./base.md) prototype
+Components and [views](./view.md) share the same API which extends the [viewBase](./base.md) prototype
 with the following properties.
 
 ### vm.model
@@ -184,7 +200,19 @@ The [d3.view][] object the component belongs to. Equal to itself if the componen
 
 An object for storing data. This object is the same across all components in a given [d3.view][].
 ```
-vm.cache.foo = 'test';
+vm.cache.set('foo', 'test');
+vm.cache.get('foo') //  'test'
+vm.cache.has('foo') //  true
+```
+To disable the cache
+```
+vm.cache.active = false;
+vm.cache.get('foo') //  undefined
+```
+and to re-enable it
+```
+vm.cache.active = true;
+vm.cache.get('foo') //  'test'
 ```
 
 ### vm.events

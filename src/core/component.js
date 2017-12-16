@@ -4,12 +4,13 @@ import {dispatch} from 'd3-dispatch';
 
 import base from './transition';
 import createDirective from './directive';
-import warn from '../utils/warn';
 import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import dataAttributes from '../utils/data';
 import viewEvents from './events';
+import viewModel from '../model/main';
+import Cache from './cache';
 
 
 // prototype for both views and components
@@ -45,7 +46,7 @@ const protoComponent = {
             if (value !== undefined) {
                 if (isString(value)) {
                     if (parentModel.$isReactive(value)) {
-                        if (value !== key) model[key] = reactiveParentProperty(value);
+                        if (value !== key) model[key] = reactiveParentProperty(key, value);
                         else delete model[key];
                     } else model[key] = maybeJson(value);
                 } else model[key] = value;
@@ -53,7 +54,7 @@ const protoComponent = {
         }
 
         // Create model
-        this.model = model = parentModel.$child(model);
+        this.model = model = this.createModel(model);
         if (isArray(props)) props = props.reduce((o, key) => {
             o[key] = undefined;
             return o;
@@ -76,6 +77,13 @@ const protoComponent = {
         var newEl = this.render(data, dattrs, el);
         if (!newEl.then) newEl = Promise.resolve(newEl);
         return newEl.then(element => compile(this, el, element, onMounted));
+    },
+
+    createModel (data) {
+        var model = this.parent ? this.parent.model.$child(data) : viewModel(data);
+        model.$$view = this;
+        model.$$name = this.name;
+        return model;
     }
 };
 
@@ -94,7 +102,7 @@ export function createComponent (name, o, coreDirectives) {
             components = map(parent ? parent.components : null),
             directives = map(parent ? parent.directives : coreDirectives),
             events = dispatch('message', 'mounted'),
-            cache = {};
+            cache = parent ? null : new Cache;
 
         classComponents.each((comp, key) => {
             components.set(key, comp);
@@ -189,9 +197,6 @@ export function extendDirectives (container, directives) {
 //  inject the model into the view element
 //  call the mounted hook and can return a Promise
 export function asView(vm, element, onMounted) {
-    var model = vm.model;
-    model.$$view = vm;
-    model.$$name = vm.name;
 
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
@@ -249,9 +254,9 @@ function vmMounted(vm, onMounted) {
 // Compile a component model
 // This function is called once a component has rendered the component element
 function compile (cm, el, element, onMounted) {
-    if (!element) return warn('render function must return a single HTML node. It returned nothing!');
+    if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
-    if (element.size() !== 1) warn('render function must return a single HTML node');
+    if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');
     element = element.node();
     //
     // Insert before the component element
@@ -274,11 +279,14 @@ function attributes (element) {
 }
 
 
-function reactiveParentProperty (value) {
+function reactiveParentProperty (key, value) {
     return {
         reactOn: [value],
         get () {
             return this[value];
+        },
+        set () {
+            this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
 }

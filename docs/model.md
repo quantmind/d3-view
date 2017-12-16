@@ -139,6 +139,7 @@ model.nested.bla
 In other words, the ``nested`` model has been created via the [$new](#modelnew-object) method.
 
 ### Collections
+
 The ``$change`` method is useful when dealing with reactive collections, for example:
 ```javascript
 model = d3.viewModel({
@@ -179,14 +180,24 @@ model.isValid   //  False
 
 ## Model API
 
-### model.parent
-
-Get the ancestor of the model if it exists. It it does not exist, this is a root model.
-
 ### model.isolated
 
-This property is ``true`` when the model was created via the [$new](#modelnew-object) method
+Read-only property which is ``true`` when the model was created via the [$new](#modelnew-object) method
 from its parent. An isolated model does not share any property with its parent model.
+For the root model it is always ``true``.
+
+### model.parent
+
+Read-only property which gives the ancestor of the model if it exists.
+It it does not exist, this is a root model.
+
+### model.parent
+
+Read-only property which point to the root model.
+
+### model.uid
+
+Read-only unique id.
 
 ### model.$change ([attribute])
 
