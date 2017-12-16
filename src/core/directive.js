@@ -69,6 +69,9 @@ const prototype = {
                 dir.passes++;
                 dir.events.call('directive-refresh', undefined, dir, model, value);
             };
+        //
+        // get the cache instance
+        dir.cache = model.$$view.cache;
 
         // Bind expression identifiers with model
         let bits, target, attr, i;

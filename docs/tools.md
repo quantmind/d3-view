@@ -29,22 +29,22 @@ A global [d3-dispatch](https://github.com/d3/d3-dispatch) object for registering
 * ``directive-refresh``: fired when a directive refresh
 
 To bind to the events:
-```
+```javascript
 import viewEvents from 'd3-view';
 
-viewEvent.on('component-created', (vm) {
+viewEvent.on('component-created', function (vm) {
     vm.logInfo("Hi, I've just been created");
 });
 
-viewEvent.on('component-mount', (vm, el, data) {
+viewEvent.on('component-mount', function (vm, el, data) {
     vm.logInfo("Hi, I'm about to be mouned");
 });
 
-viewEvent.on('component-mounted', (vm) {
+viewEvent.on('component-mounted', function (vm) {
     vm.logInfo("Hi, I'm fully mounted");
 });
 
-viewEvent.on('directive-refresh', (dir, model, value) {
+viewEvent.on('directive-refresh', function (dir, model, value) {
     dir.logInfo("Hi, I've just refreshed");
 });
 ```

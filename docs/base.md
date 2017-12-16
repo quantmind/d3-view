@@ -104,22 +104,22 @@ Fetch a resource from a ``url`` and return the object obtained after parsing tex
 ### .logDebug (msg)
 
 Convenience method for logging a debug message (only when debug is turned on).
-Uses the ``viewProvider.logger`` instance with the ``.name`` prefix.
+Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 
 ### .logInfo (msg)
 
 Convenience method for logging a info message.
-Uses the ``viewProvider.logger`` instance with the ``.name`` prefix.
+Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 
 ### .logWarn (msg)
 
 Convenience method for logging a warning message.
-Uses the ``viewProvider.logger`` instance with the ``.name`` prefix.
+Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 
 ### .logError (err)
 
 Convenience method for logging an error message or a stack trace in case ``err`` is an exception.
-Uses the ``viewProvider.logger`` instance with the ``.name`` prefix.
+Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 
 ### .renderFromUrl (url, [context], [asElement])
 
@@ -156,3 +156,8 @@ Equivalent to ``d3.selectAll(HTMLElement)``.
 
 Select all children of a given HTMLElement, if the HTMLElement is not given
 select all children of the [.el](#el) element.
+
+[cache]: ./component#vmcache
+[d3.selection]: https://github.com/d3/d3-selection
+[Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[handlebars]: http://handlebarsjs.com/
