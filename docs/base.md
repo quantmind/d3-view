@@ -8,7 +8,6 @@
 - [Properties](#properties)
   - [.name](#name)
   - [.el](#el)
-  - [.events](#events)
   - [.providers](#providers)
   - [.sel](#sel)
   - [.uid](#uid)
@@ -55,10 +54,6 @@ the component has been registered with. For directives, this is always prefixed 
 ### .el
 
 The HTMLElement of the component.
-
-### .events
-
-Same as [viewEvents](./tools.md#viewevents)
 
 ### .providers
 

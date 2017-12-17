@@ -3,6 +3,7 @@ import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
+import viewEvents from './events';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
 import base from './transition';
@@ -67,7 +68,7 @@ const prototype = {
                 let value = dir.expression ? dir.expression.eval(model) : dir.data;
                 dir.refresh(model, value);
                 dir.passes++;
-                dir.events.call('directive-refresh', undefined, dir, model, value);
+                viewEvents.call('directive-refresh', undefined, dir, model, value);
             };
         //
         // get the cache instance

@@ -15,11 +15,12 @@
   - [destroy ()](#destroy-)
 - [Using Components](#using-components)
 - [Component API](#component-api)
+  - [vm.events](#vmevents)
   - [vm.model](#vmmodel)
   - [vm.parent](#vmparent)
   - [vm.root](#vmroot)
   - [vm.cache](#vmcache)
-  - [vm.events](#vmevents)
+  - [vm.events](#vmevents-1)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -184,6 +185,21 @@ Composing components can be summarised as follow:
 
 Components and [views](./view.md) share the same API which extends the [viewBase](./base.md) prototype
 with the following properties.
+
+### vm.events
+
+A [d3-dispatch][] object for registering events triggered by this component/view.
+Differently from [viewEvents](./tools#viewevents) this object is different for each
+component and can be used to register callbacks for a specifi component only.
+```javascript
+vm.events.on('mount', function (vm, el, data) {
+    vm.logInfo("Hi, I'm about to be mouned");
+});
+
+vm.events.on('mounted', function (vm) {
+    vm.logInfo("Hi, I'm fully mounted");
+});
+```
 
 ### vm.model
 

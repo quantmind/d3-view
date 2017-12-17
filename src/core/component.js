@@ -26,6 +26,11 @@ const protoComponent = {
     // If this component is already mounted, or it is mounting, it does nothing
     mount (el, data, onMounted) {
         if (mounted(this)) return;
+        // fire mount events
+        this.events.call('mount', undefined, this, el, data);
+        // remove mounted events
+        this.events.on('mount', null);
+        // fire global mount event
         viewEvents.call('component-mount', undefined, this, el, data);
         var sel = this.select(el),
             directives = sel.directives(),
@@ -101,7 +106,7 @@ export function createComponent (name, o, coreDirectives) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : null),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message', 'mounted'),
+            events = dispatch('message', 'mount', 'mounted'),
             cache = parent ? null : new Cache;
 
         classComponents.each((comp, key) => {
@@ -222,7 +227,7 @@ export function mounted (vm, onMounted) {
         // invoke onMounted callback if available
         if (onMounted) onMounted(vm);
         // last invoke the view mounted events
-        vm.events.call('mounted', undefined, vm, onMounted);
+        vm.events.call('mounted', undefined, vm);
         // remove mounted events
         vm.events.on('mounted', null);
         // fire global event
