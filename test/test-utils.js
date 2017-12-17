@@ -67,4 +67,15 @@ describe('Utils -', () => {
         expect(viewSlugify('how are you??')).toBe('how-are-you');
         expect(viewSlugify('???')).toBe('');
     });
+
+    test ('viewDebounce', async () => {
+        var debounced = viewDebounce((a, b) => {
+            return a+b;
+        });
+        expect(debounced.promise()).toBe(null);
+        expect(debounced(3, 4)).toBe(debounced(5, 6));
+        expect(debounced.promise()).toBe(debounced(7, 8));
+        var result = await debounced(10, 20);
+        expect(result).toBe(30);
+    });
 });

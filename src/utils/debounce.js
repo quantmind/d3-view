@@ -5,15 +5,16 @@ import {timeout} from 'd3-timer';
 //
 // if delay is not given or 0, the callback is evaluated at the next tick
 // of the event loop.
-// Calling this method multiple times in the dsame event loop tick produces
+// Calling this method multiple times in the same event loop tick produces
 // always the initial promise
 export default function (callback, delay) {
-    var promise = null;
+    let promise = null,
+        self, args;
 
     function debounce () {
+        self = this;
+        args = arguments;
         if (promise !== null) return promise;
-        var self = this,
-            args = arguments;
 
         promise = new Promise((resolve, reject) => {
 

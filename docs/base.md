@@ -27,6 +27,8 @@
   - [.select(HTMLElement)](#selecthtmlelement)
   - [.selectAll(HTMLElement)](#selectallhtmlelement)
   - [.selectChildren ([HTMLElement])](#selectchildren-htmlelement)
+  - [.transition ([sel])](#transition-sel)
+  - [.transitionDuration ([sel])](#transitionduration-sel)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -152,7 +154,25 @@ Equivalent to ``d3.selectAll(HTMLElement)``.
 Select all children of a given HTMLElement, if the HTMLElement is not given
 select all children of the [.el](#el) element.
 
+### .transition ([sel])
+
+Return a [d3.transition](https://github.com/d3/d3-transition#transition_transition) object if possible. It requires the [d3-transition][] module to be loaded in the bundle.
+If a selection ``sel`` is not provided, return a transition on [.sel](#sel).
+If [d3-transition][] is not loaded or a transition duration is not specified or equal to 0, this method returns nothing.
+
+### .transitionDuration ([sel])
+
+Fetch a transition duration for the selection ``sel``. If ``sel`` is not provided,
+fetch a transition duration from [.sel](#sel).
+A transition duration is specified in the ``data-transition-duration`` attribute.
+```html
+<div ... data-transition-duration=250></div>
+```
+If [d3-transition][] is not loaded this method always returns 0.
+
+
 [cache]: ./component#vmcache
 [d3.selection]: https://github.com/d3/d3-selection
 [Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [handlebars]: http://handlebarsjs.com/
+[d3-transition]: https://github.com/d3/d3-transition

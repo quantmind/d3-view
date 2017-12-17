@@ -15,6 +15,8 @@
   - [viewElement (text, [context])](#viewelement-text-context)
   - [viewSlugify (text)](#viewslugify-text)
   - [viewTemplate (text, [context])](#viewtemplate-text-context)
+- [Async](#async)
+  - [viewDebounce ([callback], [delay])](#viewdebounce-callback-delay)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -124,3 +126,44 @@ Render a text template with an optional context object. If the ``context``
 object is not given this is a simple passthrough function. If the ``context``
 object is given, it uses the [providers](./providers.md) ``compileTemplate`` function if available, otherwise
 it logs an error and return the ``text`` without compiling the template.
+
+
+## Async
+
+### viewDebounce ([callback], [delay])
+
+Create a function for evaluating an optional ``callback`` with given optional ``delay``.
+If delay is not given or 0, the callback is evaluated at the next tick of the event loop.
+
+**Example 1**: create a function for waiting for the next tick in the event loop
+```javascript
+import {viewDebounce} from 'd3-view';
+
+var nextTick = viewDebounce();
+await nextTick()  //  a Promise
+```
+Calling the function returned by ``viewDebounce`` multiple times in the same event loop tick produces always the initial promise.
+```javascript
+nextTick() === nextTick() //  true
+```
+**Example 2**: create an asynchronous sleep function
+```javascript
+function sleep (delay) {
+    return viewDebounce(null, delay)();
+}
+
+await sleep(100);   //  wait for 100 milliseconds
+```
+**Example 3**: make sure a function is called once only in the same event loop tick
+```javascript
+var obj {
+    debounce: viewDebounce(function (a, b) {
+        // this is preserved
+        return a + b;
+    })
+};
+
+obj.debounce(3, 4) === obj.debounce(5, 6)   //  true (same Promise)
+await obj.debounce(10, 20)  // 30
+```
+The last call in the same event loop tick is used to define the input parameters.

@@ -55,6 +55,7 @@ export function test (name, runAsync) {
 }
 
 export const nextTick = viewDebounce();
+export const sleep = (delay) => viewDebounce(null, delay)();
 
 viewProviders.fetch = testFetch;
 // comment this line for logs

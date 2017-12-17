@@ -1,10 +1,7 @@
-import view, {test} from './utils';
-import {viewDebounce} from '../index';
+import view, {test, sleep, nextTick} from './utils';
 
 
 describe('d3-html -', function() {
-
-    const nextTick = viewDebounce();
 
     test ('simple', async () => {
         var vm = view({
@@ -14,20 +11,24 @@ describe('d3-html -', function() {
             }),
             el = vm.select('body').append('div');
 
-        el.append('p').attr('d3-html', "test").html('Bla');
+        el.append('p')
+            .attr('d3-html', "test")
+            .attr('data-transition-duration', 100)
+            .html('Bla');
         await vm.mount(el);
 
-        await nextTick();
-        expect(vm.sel.html()).toBe('<p>This is a test</p>');
+        expect(vm.sel.html()).toBe('<p data-transition-duration="100">This is a test</p>');
 
         vm.model.test = 'test reactivity';
-        expect(vm.sel.html()).toBe('<p>This is a test</p>');
+        expect(vm.sel.select('p').html()).toBe('This is a test');
         await nextTick();
-        expect(vm.sel.html()).toBe('<p>test reactivity</p>');
+        expect(vm.sel.select('p').html()).toBe('This is a test');
+        await sleep(300);
+        expect(vm.sel.select('p').html()).toBe('test reactivity');
         // test with number
         vm.model.test = 11;
-        await nextTick();
-        expect(vm.sel.html()).toBe('<p>11</p>');
+        await sleep(300);
+        expect(vm.sel.select('p').html()).toBe('11');
         //
         var event = vm.model.$events.get('test'),
             p = vm.sel.select('p'),

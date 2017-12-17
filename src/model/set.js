@@ -41,9 +41,10 @@ function reactive (model, key, value) {
         // trigger lazy callbacks
         //
         // Fire model events
-        var modelName = model.$$name || 'model';
-        if (providers.logger.debug)
+        if (providers.logger.debug) {
+            var modelName = model.$$name || 'model';
             providers.logger.debug(`[d3-model] updating ${modelName}.${key}`);
+        }
         model.$change(key, value).$change();
         value = typeValue (newValue, value);
     }

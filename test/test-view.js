@@ -93,7 +93,7 @@ describe('view -', () => {
         function changed (oldValue) {
             expect(this).toBe(model);
             expect(model.bla).toBe(6);
-            expect(oldValue).toBe(undefined);
+            expect(oldValue).toBe(5);
 
             model.$on('bla.test', changed2);
             model.bla = 4;
