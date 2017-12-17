@@ -207,8 +207,8 @@ vm.cache.get('foo') //  'test'
 ### vm.events
 
 A [d3-dispatch][] object for registering events triggered by this component/view.
-Differently from [viewEvents](./tools#viewevents) this object is different for each
-component and can be used to register callbacks for a specifi component only.
+While [viewEvents](./tools.md#viewevents) are global, this object is different for each
+component and can be used to register callbacks for a specific component only.
 ```javascript
 vm.events.on('mount', function (vm, el, data) {
     vm.logInfo("Hi, I'm about to be mouned");
@@ -218,6 +218,7 @@ vm.events.on('mounted', function (vm) {
     vm.logInfo("Hi, I'm fully mounted");
 });
 ```
+Since both ``mount`` and ``mounted`` are one-time only operation, these events are fired once only for a given component.
 
 ### vm.model
 
