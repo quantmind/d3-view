@@ -15,12 +15,11 @@
   - [destroy ()](#destroy-)
 - [Using Components](#using-components)
 - [Component API](#component-api)
+  - [vm.cache](#vmcache)
   - [vm.events](#vmevents)
   - [vm.model](#vmmodel)
   - [vm.parent](#vmparent)
   - [vm.root](#vmroot)
-  - [vm.cache](#vmcache)
-  - [vm.events](#vmevents-1)
 - [Selection](#selection)
   - [selection.view ()](#selectionview-)
   - [selection.model ()](#selectionmodel-)
@@ -186,6 +185,25 @@ Composing components can be summarised as follow:
 Components and [views](./view.md) share the same API which extends the [viewBase](./base.md) prototype
 with the following properties.
 
+### vm.cache
+
+An object for storing data. This object is the same across all components in a given [d3.view][].
+```
+vm.cache.set('foo', 'test');
+vm.cache.get('foo') //  'test'
+vm.cache.has('foo') //  true
+```
+To disable the cache
+```
+vm.cache.active = false;
+vm.cache.get('foo') //  undefined
+```
+and to re-enable it
+```
+vm.cache.active = true;
+vm.cache.get('foo') //  'test'
+```
+
 ### vm.events
 
 A [d3-dispatch][] object for registering events triggered by this component/view.
@@ -212,39 +230,6 @@ The parent component. If not defined this is the root view, not a component.
 ### vm.root
 
 The [d3.view][] object the component belongs to. Equal to itself if the component is a [d3.view][].
-
-### vm.cache
-
-An object for storing data. This object is the same across all components in a given [d3.view][].
-```
-vm.cache.set('foo', 'test');
-vm.cache.get('foo') //  'test'
-vm.cache.has('foo') //  true
-```
-To disable the cache
-```
-vm.cache.active = false;
-vm.cache.get('foo') //  undefined
-```
-and to re-enable it
-```
-vm.cache.active = true;
-vm.cache.get('foo') //  'test'
-```
-
-### vm.events
-
-Events object which can be used for registering event listeners or firing events.
-This is a [d3-dispatch](https://github.com/d3/d3-dispatch) object with
-``message`` and ``mounted`` named events.
-To register event handles
-```javascript
-vm.events.on('message.foo', callback);
-```
-to fire an event
-```javascript
-vm.events.call('message', ...);
-```
 
 ## Selection
 
@@ -309,5 +294,6 @@ and the result
 [props]: #props
 [render]: #render-props-htmlattrs-htmlelement
 [d3.selection]: https://github.com/d3/d3-selection
+[d3-dispatch]: https://github.com/d3/d3-dispatch
 [handlebars]: http://handlebarsjs.com/
 [Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
