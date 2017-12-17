@@ -24,7 +24,7 @@
   - [model.$update (object, [override])](#modelupdate-object-override)
   - [model.$owner (attribute)](#modelowner-attribute)
   - [model.$on (attribute, callback)](#modelon-attribute-callback)
-  - [model.$off ()](#modeloff-)
+  - [model.$off ([attribute])](#modeloff-attribute)
   - [model.$child ([object])](#modelchild-object)
   - [model.$new ([object])](#modelnew-object)
 - [Component bound](#component-bound)
@@ -295,9 +295,11 @@ c2.$owner('a')          // undefined
 Add a ``callback`` to a model reactive ``attribute``. The callback is invoked when
 the attribute change value only. It is possible to pass the ``callback`` only, in which case it is triggered when any of the model **own attributes** change.
 
-### model.$off ()
+### model.$off ([attribute])
 
-Remove all callbacks from reactive attributes and the model.
+Remove all callbacks for the provided ``attribute``,
+if the attribute is a reactive property of the model.
+If ``attribute`` is not provided, remove all callbacks from reactive attributes and the model.
 
 ### model.$child ([object])
 

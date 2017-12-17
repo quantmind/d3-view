@@ -213,6 +213,8 @@ mount (model) {
 ```
 The input model belongs to the ancestor [component](/component.md).
 
+This method can be used to add additional binding to the ``model`` for example.
+
 ### directive.refresh (model, newValue)
 
 This method is called **every time** the model associated with the element hosting the directive, has changed value. It is also called at the end of a successful [mount](#directivemountmodel). The input ``model`` is the one returned by the ``mount`` method.
