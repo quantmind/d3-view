@@ -246,14 +246,13 @@ export function mounted (vm, onMounted) {
 function vmMounted(vm, onMounted) {
     var parent = vm.parent;
     vm.childrenMounted();
-    if (parent && !parent.isMounted) {
+    if (parent && !parent.isMounted)
         parent.events.on(`mounted.${vm.uid}`, () => {
             mounted(vm, onMounted);
         });
-    }
-    else {
+    else
         mounted(vm, onMounted);
-    }
+    return vm;
 }
 
 // Compile a component model
