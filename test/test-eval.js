@@ -181,4 +181,12 @@ describe('viewExpression -', function() {
             identifiers = expr.identifiers();
         expect(identifiers.length).toBe(3);
     });
+
+    it ('add binary op', () => {
+        jsep.addBinaryOp('**', 3);
+        expect(viewExpression('a**p').eval({a: 2, p: 10})).toEqual(1024);
+        jsep.removeBinaryOp('**');
+        expect(() => viewExpression('a**p')).toThrow(
+            new Error('Expected expression after * at character 2'));
+    });
 });
