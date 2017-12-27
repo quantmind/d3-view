@@ -13,8 +13,9 @@
   - [Lazy reactivity](#lazy-reactivity)
 - [Model API](#model-api)
   - [model.isolated](#modelisolated)
+  - [model.isolatedRoot](#modelisolatedroot)
   - [model.parent](#modelparent)
-  - [model.parent](#modelparent-1)
+  - [model.root](#modelroot)
   - [model.uid](#modeluid)
   - [model.$change ([attribute])](#modelchange-attribute)
   - [model.$data ()](#modeldata-)
@@ -188,14 +189,18 @@ Read-only property which is ``true`` when the model was created via the [$new](#
 from its parent. An isolated model does not share any property with its parent model.
 For the root model it is always ``true``.
 
+### model.isolatedRoot
+
+Read-only property which points to the first ancestor, including self, which is an isolated model.
+
 ### model.parent
 
-Read-only property which gives the ancestor of the model if it exists.
+Read-only property which points to the ancestor of the model if it exists.
 It it does not exist, this is a root model.
 
-### model.parent
+### model.root
 
-Read-only property which point to the root model.
+Read-only property which points to the root model.
 
 ### model.uid
 
