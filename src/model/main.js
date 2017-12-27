@@ -41,9 +41,16 @@ model.prototype = Model.prototype = {
     $splice
 };
 
-Object.defineProperty(Model.prototype, 'root', {
-    get: function () {
-        return this.parent ? this.parent.root : this;
+Object.defineProperties(Model.prototype, {
+    root: {
+        get: function () {
+            return this.parent ? this.parent.root : this;
+        }
+    },
+    isolatedRoot: {
+        get: function () {
+            return !this.isolated && this.parent ? this.parent.isolatedRoot : this;
+        }
     }
 });
 

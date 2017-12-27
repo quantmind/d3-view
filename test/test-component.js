@@ -222,5 +222,6 @@ describe('Components -', () => {
         expect(model.parent).toBe(vm.model);
         expect(model.isolated).toBe(true);
         expect(model.foo).toBe(undefined);
+        expect(model.isolatedRoot).toBe(model);
     });
 });
