@@ -93,7 +93,7 @@ const protoComponent = {
 };
 
 // factory of View and Component constructors
-export function createComponent (name, o, coreDirectives) {
+export function createComponent (name, o, coreDirectives, coreComponents) {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -104,7 +104,7 @@ export function createComponent (name, o, coreDirectives) {
 
     function Component (options) {
         var parent = pop(options, 'parent'),
-            components = map(parent ? parent.components : null),
+            components = map(parent ? parent.components : coreComponents),
             directives = map(parent ? parent.directives : coreDirectives),
             events = dispatch('message', 'mount', 'mounted'),
             cache = parent ? null : new Cache;

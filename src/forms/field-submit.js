@@ -20,6 +20,7 @@ export default assign({}, formElement, {
         //
         // default submit function
         model.$submit = () => {
+            if (event && event.defaultPrevented) return;
             model.actions.submit.call(model, event);
         };
         if (!data.submit) data.submit = '$submit()';

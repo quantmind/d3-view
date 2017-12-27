@@ -1,4 +1,4 @@
-import view, {test, trigger, getWaiter} from './utils';
+import view, {test, trigger, getWaiter, numDefComponents} from './utils';
 import {viewElement, viewEvents} from '../index';
 
 
@@ -27,7 +27,7 @@ describe('Components -', () => {
             }
         });
         // API pre-mount
-        expect(vm.components.size()).toBe(1);
+        expect(vm.components.size()).toBe(numDefComponents + 1);
         expect(vm.components.get('year')).toBeTruthy();
         expect(vm.components.get('year').prototype.isd3).toBe(true);
         // mount
@@ -69,7 +69,7 @@ describe('Components -', () => {
                 text: text
             }
         });
-        expect(vm.components.size()).toBe(1);
+        expect(vm.components.size()).toBe(numDefComponents + 1);
 
         await vm.mount(viewElement('<div id="test1"><text></text></div>'));
         expect(vm.el.tagName).toBe('DIV');
@@ -87,7 +87,7 @@ describe('Components -', () => {
                 }
             }
         });
-        expect(vm.components.size()).toBe(1);
+        expect(vm.components.size()).toBe(numDefComponents + 1);
 
         await vm.mount(viewElement('<div><bla></bla></div>'));
         var p = vm.sel.select('p');
@@ -103,7 +103,7 @@ describe('Components -', () => {
                 }
             }
         });
-        expect(vm.components.size()).toBe(1);
+        expect(vm.components.size()).toBe(numDefComponents + 1);
         await vm.mount(vm.viewElement('<div><bla></bla></div>'));
         var p = vm.sel.select('p');
         expect(p.size()).toBe(1);
@@ -135,7 +135,7 @@ describe('Components -', () => {
                 }
             });
 
-            expect(vm.components.size()).toBe(3);
+            expect(vm.components.size()).toBe(numDefComponents + 3);
             await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
             var b = vm.sel.select('div.bla').node();
             expect(b).toBeTruthy();
@@ -197,7 +197,7 @@ describe('Components -', () => {
                 }
             }
         });
-        expect(vm.components.size()).toBe(1);
+        expect(vm.components.size()).toBe(numDefComponents + 1);
         await vm.mount(vm.viewElement('<div><bla></bla></div>'));
         var p = vm.sel.select('p');
         expect(p.size()).toBe(1);
@@ -205,5 +205,22 @@ describe('Components -', () => {
         expect(vm.cache.has('https://unpkg.com/fake/test')).toBe(true);
         var el = await vm.renderFromUrl('/test');
         expect(el.tagName).toBe('P');
+    });
+
+    test ('isolated', async () => {
+        var vm = view({
+            model: {
+                foo: 5
+            }
+        });
+        expect(vm.components.size()).toBe(numDefComponents);
+        await vm.mount(vm.viewElement('<div><isolated class="test" data-tag="p"><strong>ciao</strong></isolated></div>'));
+        var sel = vm.sel.select('p');
+        expect(sel.classed('test')).toBe(true);
+        expect(sel.html()).toBe('<strong>ciao</strong>');
+        var model = sel.model();
+        expect(model.parent).toBe(vm.model);
+        expect(model.isolated).toBe(true);
+        expect(model.foo).toBe(undefined);
     });
 });
