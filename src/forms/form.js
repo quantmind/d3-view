@@ -75,7 +75,7 @@ export default {
         //
         //  bad response from server submit
         $responseError (response) {
-            this.$emit('message', {
+            this.$emit('formMessage', {
                 level: 'error',
                 msg: response.description || response.status,
                 response: response

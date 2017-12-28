@@ -12,7 +12,7 @@ describe('form submit -', () => {
         var messages = [],
             vm = view({
                 model: {
-                    $message (data) {
+                    $formMessage (data) {
                         messages.push(data);
                     }
                 }
@@ -51,7 +51,7 @@ describe('form submit -', () => {
         var messages = [],
             vm = view({
                 model: {
-                    $message (data) {
+                    $formMessage (data) {
                         messages.push(data);
                     }
                 }

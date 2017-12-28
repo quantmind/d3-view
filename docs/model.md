@@ -232,7 +232,7 @@ something of interest happens. This is the custom event system of d3-view.
 Parent models that need to listen to a given event must implement a function
 ``eventName`` prefixed by ``$``. For example:
 ```javascript
-model.$emit('something')
+model.$emit('something', ...)
 ```
 In order to receive the ``something`` event, a parent model must implement the ``$something``
 listener:

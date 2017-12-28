@@ -7,7 +7,9 @@
 - [Overview](#overview)
 - [Usage](#usage)
   - [Field inputs](#field-inputs)
-  - [formFieldChange event](#formfieldchange-event)
+- [Events](#events)
+  - [formFieldChange](#formfieldchange)
+  - [formMessage](#formmessage)
 - [Form API](#form-api)
   - [inputs](#inputs)
   - [actions](#actions)
@@ -94,12 +96,30 @@ A field in the form schema has the following attributes:
 * **placeholder** (optional) a string for the placeholder
 * **attributes** (optional) an object with additional attributes to apply to the form field HTML element. These attributes can be directives too.
 
-### formFieldChange event
+## Events
+
+The form components emits several custom [events](../model.md#modelemit-eventname-data) which
+allow to write fully responsive applications from from inputs and responses.
+
+### formFieldChange
 
 Whenever the value of a form field changes, the model associated with the field component
 emits the ``formFieldChange`` event with data given by the field model itself.
 See the [$emit](./model#modelemit-eventname-data) documentation for more information
 on how to listen to custom events.
+
+### formMessage
+
+Whenever a form needs to broadcast a message, the ``formMessage`` event is triggered
+with the following data object
+```javascript
+{
+  level: 'info, warning, error',
+  data: {},
+  response: 'optional http response object'
+}
+```
+Form messages are broadcasted whenever the status of the form changes in response to submit events.
 
 ## Form API
 

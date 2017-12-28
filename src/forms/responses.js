@@ -15,10 +15,12 @@ export default {
 };
 
 
+// The default response emit a formMessage to event to parent models
 function defaultResponse (response) {
-    this.$emit('message', {
-        level: 'info',
-        msg: response.data,
+    var level = response.status < 300 ? 'info' : (response.status < 500 ? 'warning' : 'error');
+    this.$emit('formMessage', {
+        level: level,
+        data: response.data,
         response: response
     });
 }
