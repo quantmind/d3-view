@@ -45,7 +45,7 @@ export default JSON.stringify({
             endpoint: {
                 url: '/submitTest',
                 contentType: 'multipart/form-data',
-                method: 'put'
+                method: 'PUT'
             }
         }
     ]

@@ -73,8 +73,8 @@ describe('form submit -', () => {
         //
         // test the redirect
         var submit = button.model();
-        expect(submit.endpoint.method).toBe('put');
-        submit.endpoint.method = 'post';
+        expect(submit.endpoint.method).toBe('PUT');
+        submit.endpoint.method = 'POST';
         trigger(button.node(), 'click');
         await nextTick();
         expect(messages.length).toBe(1);
@@ -89,5 +89,39 @@ describe('form submit -', () => {
         var button = vm.sel.select('button');
         trigger(button.node(), 'click');
         expect(logger.pop(1)[0]).toBe('[d3-form-submit] No url, cannot submit form');
+    });
+
+    test ('error', async () => {
+        var messages = [],
+            vm = view({
+                model: {
+                    $formMessage (data) {
+                        messages.push(data);
+                    }
+                }
+            }).use(viewForms);
+
+        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`));
+        var form = vm.sel.select('form').model(),
+            button = vm.sel.select('button');
+
+        form.inputs.foo.value = 'vhcgdsv';
+        form.inputs.token.value = 'hsjdgvchgjdc';
+        await nextTick();
+        expect(form.$isValid()).toBe(true);
+        trigger(button.node(), 'click');
+        await nextTick();
+        expect(messages.length).toBe(1);
+        expect(messages[0].level).toBe('error');
+        expect(messages[0].response.status).toBe(405);
+        //
+        // test the redirect
+        var submit = button.model();
+        submit.endpoint.url = '/error';
+        trigger(button.node(), 'click');
+        await nextTick();
+        expect(messages.length).toBe(2);
+        expect(messages[1].level).toBe('error');
+        expect(messages[1].response).toBe(undefined);
     });
 });

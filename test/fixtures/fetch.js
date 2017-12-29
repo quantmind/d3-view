@@ -5,41 +5,49 @@ import jsonform from './jsonform';
 export default function (url, ...o) {
     if (isAbsoluteUrl(url)) url = new URL(url).pathname;
     var result = fixtures[url];
-    if (result) return Promise.resolve(result(...o));
-    else return Promise.resolve(error(404));
+    if (result) {
+        try {
+            return Promise.resolve(result(...o));
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    } else return Promise.resolve(error(404));
 }
 
 
 const fixtures = {
     '/test': (o) => {
-        if (!o || o.method === 'get')
+        if (!o || o.method === 'GET')
             return asText('<p>This is a test</p>');
         else
             return error(405);
     },
     '/fake/test': (o) => {
-        if (!o || o.method === 'get')
+        if (!o || o.method === 'GET')
             return asText('<p>This is a test</p>');
         else
             return error(405);
     },
     '/submitTest': (o) => {
-        if (o.method === 'post')
+        if (o.method === 'POST')
             return asJson(o, {success: true});
         else
             return error(405);
     },
     '/sidebar': (o) => {
-        if (!o || o.method === 'get')
+        if (!o || o.method === 'GET')
             return asText(sidebar);
         else
             return error(405);
     },
     '/jsonform': (o) => {
-        if (!o || o.method === 'get')
+        if (!o || o.method === 'GET')
             return asJson(o, JSON.parse(jsonform));
         else
             return error(405);
+    },
+    '/error': () => {
+        throw new Error('error');
     }
 };
 

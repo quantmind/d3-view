@@ -55,19 +55,18 @@ function submit (e) {
         form.$setSubmitDone();
     } else {
         options.method = endpoint.method;
-        view.json(endpoint.url, options).then(done, error);
+        view.json(endpoint.url, options).then(done, done);
     }
 
 
     function done (response) {
         form.$setSubmitDone();
-        form.$response(response);
-    }
-
-    function error (err) {
-        form.$emit('formMessage', {
-            level: 'error',
-            message: messages[err.message] || messages.default,
-        });
+        if (response.status && response.headers)
+            form.$response(response);
+        else
+            form.$emit('formMessage', {
+                level: 'error',
+                message: messages[response.message] || messages.default,
+            });
     }
 }

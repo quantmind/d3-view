@@ -244,9 +244,9 @@ listener:
 }
 ```
 ``data`` is an optional data to be passed to listeners while ``originModel`` is the
-model which originally triggered the evnet via ``$emit``.
-The ``$emit`` propagate through all the ancestor chain and trigger the listeners if found.
-It is possible to stopt the propagation by returning ``false``:
+model which originally triggered the event via ``$emit``.
+The ``$emit`` propagate through the ancestor chain and trigger listeners when found.
+It is possible to stop the propagation by returning ``false``:
 ```javascript
 {
     $something (data, originModel) {
