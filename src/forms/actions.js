@@ -6,10 +6,14 @@ export default {
     submit: submit
 };
 
+const messages = {
+    default: '<strong>Error!</strong> Could not submit form'
+};
+
 
 const endpointDefauls = {
     contentType: 'application/json',
-    method: 'post'
+    method: 'POST'
 };
 
 //
@@ -51,13 +55,19 @@ function submit (e) {
         form.$setSubmitDone();
     } else {
         options.method = endpoint.method;
-        view.json(endpoint.url, options).then(done, done);
+        view.json(endpoint.url, options).then(done, error);
     }
 
 
     function done (response) {
         form.$setSubmitDone();
-        if (response.status && response.headers)
-            form.$response(response);
+        form.$response(response);
+    }
+
+    function error (err) {
+        form.$emit('formMessage', {
+            level: 'error',
+            message: messages[err.message] || messages.default,
+        });
     }
 }

@@ -238,12 +238,23 @@ In order to receive the ``something`` event, a parent model must implement the `
 listener:
 ```javascript
 {
-    $something (data) {
+    $something (data, originModel) {
         ...
     }
 }
 ```
-``data`` is an optional data to be passed to listeners.
+``data`` is an optional data to be passed to listeners while ``originModel`` is the
+model which originally triggered the evnet via ``$emit``.
+The ``$emit`` propagate through all the ancestor chain and trigger the listeners if found.
+It is possible to stopt the propagation by returning ``false``:
+```javascript
+{
+    $something (data, originModel) {
+        ...
+        return false;
+    }
+}
+```
 
 ### model.$isReactive (attribute)
 

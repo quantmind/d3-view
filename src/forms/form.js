@@ -77,7 +77,7 @@ export default {
         $responseError (response) {
             this.$emit('formMessage', {
                 level: 'error',
-                msg: response.description || response.status,
+                data: response.data,
                 response: response
             });
         }

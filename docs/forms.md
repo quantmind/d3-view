@@ -10,6 +10,7 @@
 - [Events](#events)
   - [formFieldChange](#formfieldchange)
   - [formMessage](#formmessage)
+- [Responses](#responses)
 - [Form API](#form-api)
   - [inputs](#inputs)
   - [actions](#actions)
@@ -120,6 +121,17 @@ with the following data object
 }
 ```
 Form messages are broadcasted whenever the status of the form changes in response to submit events.
+
+## Responses
+
+Form responses are callback functions invoked after a form submission. These callback functions
+are accessible in the form plugin:
+```javascript
+import {viewForms} from 'd3-view';
+
+viewForms.responses.default   //  default form response
+viewForms.responses.redirect  //  redirect response
+```
 
 ## Form API
 
