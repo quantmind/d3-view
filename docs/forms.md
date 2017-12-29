@@ -99,14 +99,14 @@ A field in the form schema has the following attributes:
 
 ## Events
 
-The form components emits several custom [events](../model.md#modelemit-eventname-data) which
+The form components emits several custom [events](./model.md#modelemit-eventname-data) which
 allow to write fully responsive applications from from inputs and responses.
 
 ### formFieldChange
 
 Whenever the value of a form field changes, the model associated with the field component
 emits the ``formFieldChange`` event with data given by the field model itself.
-See the [$emit](./model#modelemit-eventname-data) documentation for more information
+See the [$emit](./model.md#modelemit-eventname-data) documentation for more information
 on how to listen to custom events.
 
 ### formMessage
