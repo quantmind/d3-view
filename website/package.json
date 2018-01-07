@@ -1,0 +1,17 @@
+{
+    "scripts": {
+        "js": "view-require -c src/require.config.js  && rm -rf static/d3-fluid.js && cd .. && ln -s $PWD/build/d3-fluid.js $PWD/website/static/d3-fluid.js",
+        "css": "node-sass src/index.scss static/site.css --include-path node_modules --output-style compressed",
+        "build": "npm run-script js && npm run-script css",
+        "serve": "nodemon -w ../bin/d3fluid ../bin/d3fluid --debug"
+    },
+    "dependencies": {
+        "d3-fluid": "0.2",
+        "d3-view": "1.1"
+    },
+    "devDependencies": {
+        "bootstrap": "4.0.0-beta.2",
+        "node-sass": "4.7",
+        "nodemon": "1.14"
+    }
+}
