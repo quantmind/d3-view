@@ -1,10 +1,15 @@
 # javascript
 node_modules
 build
-bin/view-require
-
-*.log
-.idea
-.DS_Store
 coverage
-d3.js
+bin/view-require
+website/static/*.js
+website/static/*.css
+
+# ide
+.idea
+*.sublime-workspace
+
+# files
+*.log
+.DS_Store

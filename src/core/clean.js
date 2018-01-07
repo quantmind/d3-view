@@ -2,7 +2,7 @@ import {select} from 'd3-selection';
 import {inBrowser} from 'd3-let';
 
 
-if (inBrowser && window.MutationObserver) {
+if (inBrowser) {
     // DOM observer
     // Check for changes in the DOM that leads to visual actions
     const observer = new MutationObserver(visualManager);

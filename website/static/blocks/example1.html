@@ -1,0 +1,25 @@
+<div class="row">
+<div class="col-md-4">
+<markdown>
+## A simple component
+
+d3-view components implement a ``render()`` method that takes input data and returns a single node element to display in the DOM.
+</markdown>
+</div>
+<div class="col-md-8">
+<view-live>
+const message = {
+    props: {
+        message: "Hello!"
+    },
+    render (props) {
+        return this.createElement('p').text(props.message);
+    }
+};
+
+view({
+    components: {message}
+}).mount(mountPoint);
+</view-live>
+</div>
+</div>
