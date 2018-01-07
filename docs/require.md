@@ -12,13 +12,37 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Overview
+## view-require
 
 The ``view-require`` executable is useful for creating a ``d3-require`` file with dependencies matching the ``package.json`` file of your module.
 
 For help on how to use the script in terminal
 ```
 view-require -h
+```
+
+### config
+
+It is possible to specify a ``require.config.js`` file of the form:
+```javascript
+
+module.exports = {
+    out: 'build/xxxx.js',
+    prepend: [
+        'whatwg-fetch/fetch.js'
+    ],
+    append: [
+        'build/require.js'
+    ],
+    dependencies: {
+        "ace-builds": {
+            main: "src-min/ace.js"
+        },
+        handlebars: {
+            main: 'dist/handlebars.min.js'
+        }
+    }
+};
 ```
 
 ## d3-require.js
