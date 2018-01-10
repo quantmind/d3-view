@@ -22,8 +22,8 @@ function readAll(deps, config, resolve) {
     if (!deps.length) return resolve(config);
     var dep = deps.splice(0, 1)[0],
         current = config.dependencies[dep.name];
+    if (typeof(current) === 'string') return readAll(deps, config, resolve);
     current = current || {};
-    if (current.origin) return readAll(deps, config, resolve);
 
     readFile(`${config.node_modules}/${dep.name}/package.json`, 'utf-8', (error, text) => {
         if (error) handleError(error, true);
