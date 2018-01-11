@@ -9,6 +9,7 @@ export {default as viewProviders} from './src/utils/providers';
 export {default as viewWarn} from './src/utils/warn';
 export {default as viewForms} from './src/forms/plugin';
 export {default as viewBootstrapForms} from './src/forms/bootstrap/plugin';
+export {default as viewSelect} from './src/utils/select';
 export {default as viewUid} from './src/utils/uid';
 export {default as viewDebounce} from './src/utils/debounce';
 export {default as viewSlugify} from './src/utils/slugify';

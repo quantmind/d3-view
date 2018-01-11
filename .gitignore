@@ -1,8 +1,8 @@
 # javascript
 node_modules
+bin
 build
 coverage
-bin/view-require
 website/static/*.js
 website/static/*.css
 
