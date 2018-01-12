@@ -43,7 +43,7 @@ function destroy () {
         delete this.__d3_directives__;
     }
     if (view) {
-        view.destroy();
+        view.doDestroy();
         delete this.__d3_view__;
     }
 }

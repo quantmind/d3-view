@@ -28,7 +28,7 @@
 ## What is a Directive?
 
 Directives are special HTML attributes with the ``d3-`` prefix.
-They apply special reactive behavior to the rendered element they belong to.
+They apply special reactive behavior to the hosting HTML element.
 Differently from [components](./component.md), a directive doesn't replace
 the HTML element they belong to.
 

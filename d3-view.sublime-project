@@ -3,6 +3,9 @@
 	[
 		{
 			"path": "."
+		},
+		{
+			"path": "/Users/lsbardel/workspace/d3-let"
 		}
 	]
 }

@@ -5,6 +5,8 @@ export default dispatch(
     'message',
     'component-created',
     'component-mount',
+    'component-children-mounted',
     'component-mounted',
+    'component-destroy',
     'directive-refresh'
 );

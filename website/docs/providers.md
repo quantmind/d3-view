@@ -30,6 +30,10 @@ The logger is available at
 ```javascript
 d3.viewProviders.logger
 ```
+### viewProviders.setDebug (active)
+
+Activate or deactivate the logger debug handler. The ``active`` parameter can be ``true``, activate debug logging,
+``false`` deactivate debug logging or a function, in which case it activates debug logging with a custom handler (rather than the default console).
 
 ## fetch
 

@@ -118,6 +118,20 @@ Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 Convenience method for logging an error message or a stack trace in case ``err`` is an exception.
 Uses the ``viewProvider.logger`` instance with the [.name](#name) prefix.
 
+### .on (el, typenames, listener)
+
+Adds or removes a listener to each selected element ``el`` for the specified event ``typenames``. The input ``el`` can be a [W3c selector string](https://www.w3.org/TR/selectors-api/), an HTML element or a [d3 selection](https://github.com/d3/d3-selection).
+The ``typenames`` is a string event type, such as click, mouseover, or submit; any
+[DOM event type](https://developer.mozilla.org/en-US/docs/Web/Events#Standard_events) supported by your browser may be used.
+This method is a proxy for [d3-selection.on](https://github.com/d3/d3-selection#selection_on) with the only difference in the ``listener`` signature:
+```javascript
+function listener (event) {
+    ...
+}
+```
+where ``event`` is the ``d3.event`` fired.
+
+
 ### .renderFromUrl (url, [context], [asElement])
 
 Fetch a template from a ``url`` (or the [cache][] if already loaded) and return a [Promise][] which resolve into a [d3.selection][] if ``asElement`` is ``true`` (by default it is true).

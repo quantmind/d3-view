@@ -4,6 +4,7 @@ import providers from '../utils/providers';
 import {htmlElement, template} from '../utils/template';
 import {jsonResponse, textResponse} from '../utils/http';
 import asSelect from '../utils/select';
+import {formatError, formatWarn} from './errors';
 //
 //  Base d3-view Object
 //  =====================
@@ -76,12 +77,12 @@ export default {
     //
     logError (err) {
         if (err.stack) providers.logger.error(err);
-        else providers.logger.error(`[${this.name}] ${err}`);
+        else providers.logger.error(`[${this.name}] ${formatError(err)}`);
         return this;
     },
     //
     logWarn (msg) {
-        providers.logger.warn(`[${this.name}] ${msg}`);
+        providers.logger.warn(`[${this.name}] ${formatWarn(msg)}`);
         return this;
     },
     //

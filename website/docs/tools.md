@@ -42,8 +42,16 @@ viewEvent.on('component-mount', function (vm, el, data) {
     vm.logInfo("Hi, I'm about to be mouned");
 });
 
+viewEvent.on('component-children-mounted', function (vm) {
+    vm.logInfo("Hi, Children are fully mounted");
+});
+
 viewEvent.on('component-mounted', function (vm) {
     vm.logInfo("Hi, I'm fully mounted");
+});
+
+viewEvent.on('component-mounted', function (vm) {
+    vm.logInfo("I'm gone, Bye");
 });
 
 viewEvent.on('directive-refresh', function (dir, model, value) {
