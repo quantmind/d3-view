@@ -1,5 +1,4 @@
 export {default as view} from './src/main';
-export {default as viewMount} from './src/mount';
 export {default as viewBase} from './src/core/transition';
 export {default as viewEvents} from './src/core/events';
 export {default as viewModel} from './src/model/main';
