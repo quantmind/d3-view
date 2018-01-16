@@ -1,6 +1,6 @@
 # javascript
 node_modules
-bin
+/bin
 build
 coverage
 website/static/*.js
