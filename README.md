@@ -1,4 +1,4 @@
-<a href="https://github.com/quantmind/d3-view"><img src="./website/static/d3view.svg" alt="d3-view" width=200></a>
+<a href="https://github.com/quantmind/d3-view"><img src="./docs/d3view.svg" alt="d3-view" width=200></a>
 
 **d3-view** is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
@@ -15,20 +15,20 @@ Written in [Javascript ES6](/docs/develop.md) with a minimal footprint.
 ## Contents
 
 * Overview
-    * [Getting Started](/docs/getting-started.md)
-    * [View](/docs/view.md)
-    * [Develop](/docs/develop.md)
-    * [Examples](/docs/examples.md)
+    * [Getting Started](/website/docs/getting-started.md)
+    * [View](/website/docs/view.md)
+    * [Develop](/website/docs/develop.md)
+    * [Examples](/website/docs/examples.md)
 * API
-    * [Model](/docs/model.md)
-    * [View base](/docs/base.md)
-    * [Components](/docs/component.md)
-    * [Directives](/docs/directives.md)
-    * [Expressions](/docs/expressions.md)
-    * [Tools](/docs/tools.md)
+    * [Model](/website/docs/model.md)
+    * [View base](/website/docs/base.md)
+    * [Components](/website/docs/component.md)
+    * [Directives](/website/docs/directives.md)
+    * [Expressions](/website/docs/expressions.md)
+    * [Tools](/website/docs/tools.md)
 * Extending
-    * [Plugins](/docs/plugins.md)
-    * [Providers](/docs/providers.md)
-    * [Forms](/docs/forms.md)
+    * [Plugins](/website/docs/plugins.md)
+    * [Providers](/website/docs/providers.md)
+    * [Forms](/website/docs/forms.md)
 * Addons
-    * [view-require](/docs/require.md)
+    * [view-require](/website/docs/require.md)

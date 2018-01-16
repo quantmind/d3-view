@@ -11,7 +11,6 @@ import dataAttributes from '../utils/data';
 import viewEvents from './events';
 import viewModel from '../model/main';
 import Cache from './cache';
-import errors from './errors';
 
 
 // prototype for both views and components
@@ -81,7 +80,6 @@ const protoComponent = {
         //
         // create the new element from the render function
         var newEl = this.render(data, dattrs, el);
-        if (!newEl) return this.logError(errors.noElement);
         if (!newEl.then) newEl = Promise.resolve(newEl);
         return newEl.then(element => compile(this, el, element, onMounted));
     },
@@ -91,17 +89,6 @@ const protoComponent = {
         model.$$view = this;
         model.$$name = this.name;
         return model;
-    },
-
-    doDestroy () {
-        //
-        this.destroy();
-        // fire destroy events
-        this.events.call('destroy', undefined, this);
-        // remove destroy events
-        this.events.on('destroy', null);
-        // fire global destroy event
-        viewEvents.call('component-destroy', undefined, this);
     }
 };
 
@@ -119,7 +106,7 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : coreComponents),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message', 'mount', 'children-mounted', 'mounted', 'destroy'),
+            events = dispatch('message', 'mount', 'mounted'),
             cache = parent ? null : new Cache;
 
         classComponents.each((comp, key) => {
@@ -239,7 +226,7 @@ export function mounted (vm, onMounted) {
         vm.mounted();
         // invoke onMounted callback if available
         if (onMounted) onMounted(vm);
-        // invoke the view mounted events
+        // last invoke the view mounted events
         vm.events.call('mounted', undefined, vm);
         // remove mounted events
         vm.events.on('mounted', null);
@@ -258,15 +245,7 @@ export function mounted (vm, onMounted) {
 //  This function is called when a component/view has all its children added
 function vmMounted(vm, onMounted) {
     var parent = vm.parent;
-    // trigger the children mounted hook
     vm.childrenMounted();
-    // invoke the view mounted events
-    vm.events.call('children-mounted', undefined, vm);
-    // remove mounted events
-    vm.events.on('children-mounted', null);
-    // fire global event
-    viewEvents.call('component-children-mounted', undefined, vm);
-    //
     if (parent && !parent.isMounted)
         parent.events.on(`mounted.${vm.uid}`, () => {
             mounted(vm, onMounted);
@@ -311,7 +290,7 @@ function reactiveParentProperty (key, value) {
             return this[value];
         },
         set () {
-            this.$$view.logError(errors.readOnlyKey(key));
+            this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
 }

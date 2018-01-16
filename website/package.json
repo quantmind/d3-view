@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "js": "view-require -c src/require.config.js  && rm -rf static/d3-fluid.js && ln -s $PWD/node_modules/d3-fluid/build/d3-fluid.js $PWD/static/d3-fluid.js",
+        "js": "webpack --config webpack.config.js",
         "css": "node-sass src/index.scss static/site.css --include-path node_modules --output-style compressed",
         "build": "npm run-script js && npm run-script css",
         "serve": "nodemon ./node_modules/.bin/d3fluid --debug"
@@ -11,8 +11,13 @@
         "d3-view-components": "0.1"
     },
     "devDependencies": {
-        "bootstrap": "4.0.0-beta.2",
+        "babel-core": "6.26",
+        "babel-loader": "7.1",
+        "babel-plugin-transform-object-rest-spread": "6.26",
+        "babel-preset-env": "1.6",
+        "bootstrap": "4.0.0-beta.3",
         "node-sass": "4.7",
-        "nodemon": "1.14"
+        "nodemon": "1.14",
+        "webpack": "3.10"
     }
 }
