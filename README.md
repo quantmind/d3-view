@@ -1,4 +1,6 @@
-<a href="https://github.com/quantmind/d3-view"><img src="./docs/d3view.svg" alt="d3-view" width=200></a>
+<a href="https://github.com/quantmind/d3-view">
+    <img src="https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg" alt="d3-view" width=200>
+</a>
 
 **d3-view** is a [d3 plugin](https://bost.ocks.org/mike/d3-plugin/) for building
 interactive web interfaces.
