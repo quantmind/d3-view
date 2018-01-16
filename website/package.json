@@ -1,0 +1,23 @@
+{
+    "scripts": {
+        "js": "webpack --config webpack.config.js",
+        "css": "node-sass src/index.scss static/site.css --include-path node_modules --output-style compressed",
+        "build": "npm run-script js && npm run-script css",
+        "serve": "nodemon ./node_modules/.bin/d3fluid --debug"
+    },
+    "dependencies": {
+        "d3-fluid": "0.2",
+        "d3-view": "1.1",
+        "d3-view-components": "0.1"
+    },
+    "devDependencies": {
+        "babel-core": "6.26",
+        "babel-loader": "7.1",
+        "babel-plugin-transform-object-rest-spread": "6.26",
+        "babel-preset-env": "1.6",
+        "bootstrap": "4.0.0-beta.3",
+        "node-sass": "4.7",
+        "nodemon": "1.14",
+        "webpack": "3.10"
+    }
+}

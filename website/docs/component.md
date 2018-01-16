@@ -214,8 +214,16 @@ vm.events.on('mount', function (vm, el, data) {
     vm.logInfo("Hi, I'm about to be mouned");
 });
 
+vm.events.on('children-mounted', function (vm) {
+    vm.logInfo("Hi, Children are fully mounted");
+});
+
 vm.events.on('mounted', function (vm) {
     vm.logInfo("Hi, I'm fully mounted");
+});
+
+vm.events.on('destroy', function (vm) {
+    vm.logInfo("I'm gone, Bye");
 });
 ```
 Since both ``mount`` and ``mounted`` are one-time only operation, these events are fired once only for a given component.

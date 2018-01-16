@@ -33,22 +33,15 @@ To bind a view object into an HTML ``element`` one uses the **view.mount** metho
 The view only affect ``element`` and its children.
 This method should be called **once only** for a given view object:
 ```javascript
-vm.mount('#app', function () {
-    d3.viewWarn('View mounted');
+vm.mount('#app').then(() => () {
+    vm.logWarn('View mounted');
     vm.isMounted    //  true
 });
 ```
 
-The element can be a selector, an HTML element or a d3 selection. The optional *callback* function
-is invoked once the view is fully mounted in the DOM, including all the view components.
-
-The mount method always return a ``Promise`` resolved once the view is fully mounted. Therefore one could write the above statement as:
-```javascript
-vm.mount('#app').then(function () {
-    d3.viewWarn('View mounted');
-    vm.isMounted    //  true
-});
-```
+The element can be a [W3c selector string](https://www.w3.org/TR/selectors-api/),
+an HTML element or a [d3 selection](https://github.com/d3/d3-selection).
+The mount method always return a ``Promise`` resolved once the view is fully mounted.
 
 ## Plugins
 

@@ -52,7 +52,7 @@ export default [
         ]
     },
     {
-        input: 'bin/src/index.js',
+        input: 'src/bin/index.js',
         output: {
             file: 'bin/view-require',
             format: 'cjs',

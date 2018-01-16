@@ -1,4 +1,4 @@
-import {viewProviders, viewReady, viewDebounce, viewMount, viewSlugify} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewSlugify, viewSelect} from '../index';
 import maybeJson from '../src/utils/maybeJson';
 import view, {test} from './utils';
 
@@ -42,7 +42,7 @@ describe('Utils -', () => {
         });
         var el = vm.viewElement('<div></div>');
         await vm.mount(el);
-        await viewMount(vm.el, '<msg></msg>', {message: 'test message'});
+        await vm.sel.append('msg').mount({message: 'test message'});
         expect(vm.sel.select('p').html()).toBe('test message');
 
         var cm = vm.sel.select('p').view();
@@ -77,5 +77,11 @@ describe('Utils -', () => {
         expect(debounced.promise()).toBe(debounced(7, 8));
         var result = await debounced(10, 20);
         expect(result).toBe(30);
+    });
+
+    test('viewSelect', () => {
+        const vm = view();
+        var el = vm.createElement('div');
+        expect(viewSelect(el)).toBe(el);
     });
 });
