@@ -1,4 +1,4 @@
-import {viewProviders, viewReady, viewDebounce, viewSlugify} from '../index';
+import {viewProviders, viewReady, viewDebounce, viewSlugify, viewSelect} from '../index';
 import maybeJson from '../src/utils/maybeJson';
 import view, {test} from './utils';
 
@@ -77,5 +77,11 @@ describe('Utils -', () => {
         expect(debounced.promise()).toBe(debounced(7, 8));
         var result = await debounced(10, 20);
         expect(result).toBe(30);
+    });
+
+    test('viewSelect', () => {
+        const vm = view();
+        var el = vm.createElement('div');
+        expect(viewSelect(el)).toBe(el);
     });
 });

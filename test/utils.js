@@ -70,7 +70,15 @@ export default view;
 
 function testAsync (runAsync) {
     return (done) => {
-        runAsync().then(done, done.fail);
+        let t;
+        try {
+            t = runAsync();
+        } catch (e) {
+            done.fail(e);
+            return;
+        }
+        if (t && t.then) t.then(done, done.fail);
+        else done();
     };
 }
 
