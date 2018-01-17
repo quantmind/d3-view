@@ -2,10 +2,10 @@ import {select} from 'd3-selection';
 import {inBrowser} from 'd3-let';
 
 
-if (inBrowser) {
+if (inBrowser && window.MutationObserver) {
     // DOM observer
     // Check for changes in the DOM that leads to visual actions
-    const observer = new MutationObserver(visualManager);
+    const observer = new window.MutationObserver(visualManager);
     observer.observe(document.documentElement, {
         childList: true,
         subtree: true
