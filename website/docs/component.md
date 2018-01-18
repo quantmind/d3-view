@@ -51,14 +51,14 @@ A component is either an object:
 ```javascript
 var component1 = {
     render: function () {
-        return this.htmlElement('<p>Very simple component</p>');
+        return this.viewElement('<p>Very simple component</p>');
     }
 };
 ```
 or a function, the component **render** method:
 ```javascript
 function component1 () {
-    return this.htmlElement('<p>Another very simple component</p>');
+    return this.viewElement('<p>Another very simple component</p>');
 }
 ```
 
@@ -71,7 +71,7 @@ methods that can be used to customize construction and lifecycle of a component.
 var component = {
     props: {...},
     model: {...},
-    render (props, htmlAttr, htmlElement) {},
+    render (props, htmlAttr, HTMLElement) {},
     childrenMounted () {}
     mounted () {},
     destroy () {}
@@ -80,11 +80,12 @@ var component = {
 
 ### props
 
-Optional array or object to specify a set of HTML attributes which contribute to the component properties.
-Component properties are non-reactive attributes and are passed as an object to the component [render][] method.
+Optional array or object which specifies a set of HTML attributes which contribute to the component properties.
+Component ``prop`` are **non-reactive** attributes and are passed as an object to the component [render][] method.
 The HTML properties can contain
 
-* JSON strings
+* A simple numeric or string value
+* JSON string
 * Model attribute name
 
 For example:
@@ -106,7 +107,10 @@ will render as
 ```html
 <p id="ciao">Hi</p>
 ```
-
+``props`` can also be prefixed by ``data-``, for example an array property can be assigned with
+```javascript
+<mycomponent data-jsonprop='[1,2,"test"]' />
+```
 ### model
 
 An object or a function returning an object.
@@ -139,15 +143,15 @@ hi.model.$isReactive('message') //  true
 
 ### render (props, HTMLAttrs, HTMLElement)
 
-This is **the only required method**. It is called once only while the component is being mounted into the DOM and must return a single HTMLElement or a d3 selector with one node only.
+This is **the only required method**. It is called once only while the component is being mounted into the DOM and must return a single [HTMLElement][] or a d3 selector with one node only.
 The returned element replaces the component element in the DOM.
-Importantly, this function can also return a [Promise][] which resolve in an HTMLElement or selector.
+Importantly, this function can also return a [Promise][] which resolve in an [HTMLElement][] or selector.
 
 The input parameters are:
 
-* ``props`` an object with keys given by the [props][] array and value given by the corresponding values found in the original ``HTMLElement`` of the component
-* ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement``
-* ``HTMLElement`` the original HTML element of the component
+* ``props`` an object with keys given by the [props][] array and value given by the corresponding values found in the original [HTMLElement][] of the component
+* ``HTMLAttrs`` is an object containing the key-value of attributes in the [HTMLElement][]
+* [HTMLElement][] the original HTML element of the component
 
 ### childrenMounted ()
 
@@ -306,3 +310,4 @@ and the result
 [d3-dispatch]: https://github.com/d3/d3-dispatch
 [handlebars]: http://handlebarsjs.com/
 [Promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[HTMLElement]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
