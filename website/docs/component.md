@@ -50,7 +50,7 @@ d3.view({
 A component is either an object:
 ```javascript
 var component1 = {
-    render: function () {
+    render () {
         return this.viewElement('<p>Very simple component</p>');
     }
 };
@@ -214,19 +214,19 @@ A [d3-dispatch][] object for registering events triggered by this component/view
 While [viewEvents](./tools.md#viewevents) are global, this object is different for each
 component and can be used to register callbacks for a specific component only.
 ```javascript
-vm.events.on('mount', function (vm, el, data) {
+vm.events.on('mount', (vm, el, data) => {
     vm.logInfo("Hi, I'm about to be mouned");
 });
 
-vm.events.on('children-mounted', function (vm) {
+vm.events.on('children-mounted', vm => {
     vm.logInfo("Hi, Children are fully mounted");
 });
 
-vm.events.on('mounted', function (vm) {
+vm.events.on('mounted', vm => {
     vm.logInfo("Hi, I'm fully mounted");
 });
 
-vm.events.on('destroy', function (vm) {
+vm.events.on('destroy', vm => {
     vm.logInfo("I'm gone, Bye");
 });
 ```

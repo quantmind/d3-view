@@ -258,6 +258,7 @@ function vmMounted(vm, onMounted) {
 // Compile a component model
 // This function is called once a component has rendered the component element
 function compile (cm, el, element, onMounted) {
+    if (isString(element)) element = cm.viewElement(element);
     if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
     if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');

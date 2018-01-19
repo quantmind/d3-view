@@ -15,8 +15,10 @@ describe('Components -', () => {
         model: {
             text: 'Hi!'
         },
-        render: function () {
-            return this.createElement('p').attr('d3-html', 'text');
+        render () {
+            return (`
+                <p d3-html='text'/>
+            `);
         }
     };
 
