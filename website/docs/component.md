@@ -51,14 +51,14 @@ A component is either an object:
 ```javascript
 var component1 = {
     render () {
-        return this.viewElement('<p>Very simple component</p>');
+        return (`<p>Very simple component</p>`);
     }
 };
 ```
 or a function, the component **render** method:
 ```javascript
 function component1 () {
-    return this.viewElement('<p>Another very simple component</p>');
+    return (`<p>Another very simple component</p>`);
 }
 ```
 
@@ -124,7 +124,7 @@ vm = view({
                 message: 'Hi!'
             },
             render() {
-                return `<p id="test" d3-html="message"></p>`;
+                return `<p id="test" d3-html="message"/>`;
             }
         }
     }

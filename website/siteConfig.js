@@ -3,6 +3,9 @@
 module.exports = {
     title: "d3-view - d3 plugin for building interactive data-driven web interfaces",
     github: "quantmind/d3-view",
+    google: {
+
+    },
     algolia: {
         apiKey: process.env.ALGOLIA_API_KEY
     },
