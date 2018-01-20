@@ -29,6 +29,10 @@ module.exports = {
                 }
             },
             {
+                test: /\.html$/,
+                use: 'raw-loader'
+            },
+            {
                 test: /\.scss$/,
                 include: /node_modules/,
                 use: ['style-loader', 'sass-loader']

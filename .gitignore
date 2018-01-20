@@ -4,6 +4,7 @@ node_modules
 build
 coverage
 website/static/*.js
+website/static/*.map
 website/static/*.css
 
 # ide
