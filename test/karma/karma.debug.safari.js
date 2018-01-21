@@ -8,5 +8,7 @@ module.exports = function (config) {
         browsers: ['Safari']
     });
 
+    options.exclude = ['./test/test-renderer.js'];
+
     config.set(options);
 };

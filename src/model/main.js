@@ -43,12 +43,12 @@ model.prototype = Model.prototype = {
 
 Object.defineProperties(Model.prototype, {
     root: {
-        get: function () {
+        get () {
             return this.parent ? this.parent.root : this;
         }
     },
     isolatedRoot: {
-        get: function () {
+        get () {
             return !this.isolated && this.parent ? this.parent.isolatedRoot : this;
         }
     }
