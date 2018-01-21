@@ -257,17 +257,17 @@ function vmMounted(vm, onMounted) {
 
 // Compile a component model
 // This function is called once a component has rendered the component element
-function compile (cm, el, element, onMounted) {
-    if (isString(element)) element = cm.viewElement(element);
+function compile (cm, origEl, element, onMounted) {
+    if (isString(element)) element = cm.viewElement(element, null, origEl.ownerDocument);
     if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
     if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');
     element = element.node();
     //
     // Insert before the component element
-    el.parentNode.insertBefore(element, el);
+    origEl.parentNode.insertBefore(element, origEl);
     // remove the component element
-    cm.select(el).remove();
+    cm.select(origEl).remove();
     //
     return asView(cm, element, onMounted);
 }
