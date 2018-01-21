@@ -15,7 +15,10 @@ export default {
     providers: providers,
     //
     // Create a view element, same as createElement but compile it
-    viewElement: htmlElement,
+    viewElement (source, context, ownerDocument) {
+        if (!ownerDocument) ownerDocument = this.el ? this.el.ownerDocument : null;
+        return htmlElement(source, context, ownerDocument);
+    },
     //
     select (el) {
         return select(el);

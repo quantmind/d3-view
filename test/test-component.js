@@ -79,6 +79,7 @@ describe('Components -', () => {
         var model = p.model();
         expect(model).toBeTruthy();
         expect(model.parent).toBe(vm.model);
+        expect(model.root).toBe(vm.model);
     });
 
     test('component function', async () => {

@@ -19,8 +19,9 @@ export function template (source, context) {
 }
 
 
-export function htmlElement (source, context) {
-    var el = select(document.createElement('div'));
+export function htmlElement (source, context, ownerDocument) {
+    ownerDocument = ownerDocument || document;
+    var el = select(ownerDocument.createElement('div'));
     el.html(template(source, context));
     var children = el.node().children;
     if (children.length !== 1) warn(`HtmlElement function should return one root element only, got ${children.length}`);

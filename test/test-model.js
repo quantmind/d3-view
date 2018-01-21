@@ -254,4 +254,23 @@ describe('model -', function() {
         viewProviders.setDebug(false);
         expect(logger.debug).toBe(null);
     });
+
+    test('change', () => {
+        const logger = viewProviders.logger;
+        logger.pop();
+        const model = viewModel();
+        model.$change('www');
+        let msg = logger.pop();
+        expect(msg.length).toBe(1);
+        expect(msg[0]).toBe("[d3-view] attribute 'www' is not a reactive property this model");
+        model.$set('www', 'web');
+        const child = model.$child();
+        child.$change('www');
+        expect(logger.pop().length).toBe(0);
+        const isolated = model.$new();
+        isolated.$change('www');
+        msg = logger.pop();
+        expect(msg.length).toBe(1);
+        expect(msg[0]).toBe("[d3-view] attribute 'www' is not a reactive property this model");
+    });
 });
