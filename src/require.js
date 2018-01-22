@@ -3,7 +3,9 @@ import {requireFrom} from 'd3-require';
 
 var isAbsolute = new RegExp('^([a-z]+://|//)'),
     isRelative = new RegExp('^[.]{0,2}/'),
-    libs = new Map;
+    libs = new Map,
+    nodeModules = new Map,
+    inBrowser = typeof window !== 'undefined' && window.document;
 
 
 export const viewRequire = requireWithLibs();
@@ -51,7 +53,9 @@ export function viewResolve (name, options) {
 
 
 function requireWithLibs () {
-    var r = requireFrom(viewResolve);
+    let r;
+    if (inBrowser) r = requireFrom(viewResolve);
+    else r = nodeRequire;
     r.libs = libs;
     return r;
 }
@@ -66,4 +70,37 @@ function removeFrontSlash (path) {
 function removeBackSlash (path) {
     if (typeof path === 'string' && path.substring(path.length-1) === '/') path = path.substring(0, path.substring);
     return path;
+}
+
+
+function nodeRequire () {
+    let module;
+    var all = [];
+    for (let i=0; i<arguments.length; ++i) {
+        module = nodeModules.get[arguments[i]];
+        if (!module) {
+            module = require(arguments[i]);
+            nodeModules.set(arguments[i], module);
+        }
+        all.push(module);
+    }
+    return Promise.resolve(all.length > 1 ? merge(all) : all[0]);
+}
+
+
+function merge(modules) {
+    var o = {}, i = -1, n = modules.length, m, k;
+    while (++i < n) {
+        for (k in (m = modules[i])) {
+            if (hasOwnProperty.call(m, k)) {
+                if (m[k] == null) Object.defineProperty(o, k, {get: getter(m, k)});
+                else o[k] = m[k];
+            }
+        }
+    }
+    return o;
+}
+
+function getter(object, name) {
+    return () => object[name];
 }
