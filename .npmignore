@@ -1,8 +1,13 @@
 .idea
 circle.yml
 *.log
-examples
-test
+*.sublime-project
+website
+test/test-*.js
+test/fixtures
+test/karma
+test/.eslintrc
+test/*.html
 coverage
 contributing.md
 rollup.config.js
