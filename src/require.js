@@ -73,6 +73,7 @@ function removeBackSlash (path) {
 }
 
 
+/* istanbul ignore next */
 function nodeRequire () {
     let module;
     var all = [];
@@ -88,6 +89,7 @@ function nodeRequire () {
 }
 
 
+/* istanbul ignore next */
 function merge(modules) {
     var o = {}, i = -1, n = modules.length, m, k;
     while (++i < n) {
@@ -101,6 +103,7 @@ function merge(modules) {
     return o;
 }
 
+/* istanbul ignore next */
 function getter(object, name) {
     return () => object[name];
 }

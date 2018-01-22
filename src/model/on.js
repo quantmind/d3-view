@@ -6,7 +6,7 @@ import warn from '../utils/warn';
 // Add change callback to a model reactive attribute
 export default function (name, callback) {
 
-    // When no name is provided, whait for changes on this model - no its parents
+    // When no name is provided, wait for changes on this model - no its parents
     if (arguments.length === 1 && isFunction(name)) {
         callback = name;
         name = '';
