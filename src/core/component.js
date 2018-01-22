@@ -79,6 +79,7 @@ const protoComponent = {
         }
         //
         // create the new element from the render function
+        this.props = data;
         var newEl = this.render(data, dattrs, el);
         if (!newEl.then) newEl = Promise.resolve(newEl);
         return newEl.then(element => compile(this, el, element, onMounted));
@@ -99,8 +100,7 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
     var obj = assign({}, o),
         classComponents = extendComponents(map(), pop(obj, 'components')),
         classDirectives = extendDirectives(map(), pop(obj, 'directives')),
-        model = pop(obj, 'model'),
-        props = pop(obj, 'props');
+        model = pop(obj, 'model');
 
     function Component (options) {
         var parent = pop(options, 'parent'),
@@ -147,11 +147,6 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
             cache: {
                 get: function () {
                     return parent ? parent.cache : cache;
-                }
-            },
-            props: {
-                get: function () {
-                    return props;
                 }
             },
             uid: {
@@ -258,7 +253,10 @@ function vmMounted(vm, onMounted) {
 // Compile a component model
 // This function is called once a component has rendered the component element
 function compile (cm, origEl, element, onMounted) {
-    if (isString(element)) element = cm.viewElement(element, null, origEl.ownerDocument);
+    if (isString(element)) {
+        const props = Object.keys(cm.props).length ? cm.props : null;
+        element = cm.viewElement(element, props, origEl.ownerDocument);
+    }
     if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
     element = asSelect(element);
     if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');

@@ -1,4 +1,4 @@
-import {test} from './utils';
+import {test, nextTick} from './utils';
 
 import {timeout} from 'd3-timer';
 import {isFunction, isArray} from 'd3-let';
@@ -7,8 +7,7 @@ import {viewModel, viewDebounce, viewProviders} from '../index';
 
 describe('model -', function() {
 
-    const nextTick = viewDebounce(),
-          delayAdd = viewDebounce((a, b) => a + b),
+    const delayAdd = viewDebounce((a, b) => a + b),
           delayError = viewDebounce((text) => {
               throw new Error(text);
           });
@@ -272,5 +271,29 @@ describe('model -', function() {
         msg = logger.pop();
         expect(msg.length).toBe(1);
         expect(msg[0]).toBe("[d3-view] attribute 'www' is not a reactive property this model");
+    });
+
+    test('on model', async () => {
+        const model = viewModel();
+        const child = model.$child();
+        let updates = 0;
+        child.$on(() => {
+            updates += 1;
+        });
+        await nextTick();
+        expect(updates).toBe(0);
+        model.$set('a', 3);
+        await nextTick();
+        expect(updates).toBe(0);
+        model.a = 4;
+        await nextTick();
+        expect(updates).toBe(0);
+        //
+        child.$set('b', 3);
+        await nextTick();
+        expect(updates).toBe(0);
+        child.b = 4;
+        await nextTick();
+        expect(updates).toBe(1);
     });
 });

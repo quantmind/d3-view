@@ -227,4 +227,20 @@ describe('Components -', () => {
         expect(model.foo).toBe(undefined);
         expect(model.isolatedRoot).toBe(model);
     });
+
+    test ('multiple element', async () => {
+        var vm = view({
+                components: {
+                    multi () {
+                        return `<div class="a"></div><div class="b"></div>`;
+                    }
+                }
+            }),
+            logger = vm.providers.logger;
+        logger.pop();
+        await vm.mount(vm.viewElement('<div><multi /></div>'));
+        var logs = logger.pop();
+        expect(logs.length).toBe(1);
+        expect(logs[0]).toBe('[d3-view] viewElement function should return one root element only, got 2');
+    });
 });

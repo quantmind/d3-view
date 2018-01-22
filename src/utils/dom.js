@@ -6,6 +6,7 @@ import providers from './providers';
 // Add callback to execute when the DOM is ready
 export default function (callback) {
     providers.readyCallbacks.push(callback);
+    /* istanbul ignore next */
     if (document.readyState !== 'complete') {
         document.addEventListener('DOMContentLoaded', _completed);
         // A fallback to window.onload, that will always work
@@ -16,6 +17,7 @@ export default function (callback) {
 }
 
 
+/* istanbul ignore next */
 function _completed () {
     document.removeEventListener('DOMContentLoaded', _completed);
 	window.removeEventListener('load', _completed);

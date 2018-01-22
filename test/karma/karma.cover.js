@@ -37,6 +37,8 @@ module.exports = function (config) {
         },
     });
 
+    options.preprocessors['!src/require.js'] = ['coverage'];
+
     if(process.env.TRAVIS || process.env.CIRCLECI) {
         options.browsers = ['ChromeNoSandbox'];
     }

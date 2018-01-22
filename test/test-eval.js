@@ -189,4 +189,15 @@ describe('viewExpression -', function() {
         expect(() => viewExpression('a**p')).toThrow(
             new Error('Expected expression after * at character 2'));
     });
+
+    it ('add unary op', () => {
+        jsep.addUnaryOp('>>');
+        let ex = viewExpression('>>2');
+        expect(ex.parsed.type).toBe('UnaryExpression');
+        expect(ex.parsed.operator).toBe('>>');
+        jsep.removeUnaryOp('>>');
+        ex = viewExpression('>>2');
+        expect(ex.parsed.type).toBe('BinaryExpression');
+    });
+
 });

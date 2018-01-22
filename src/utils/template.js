@@ -24,7 +24,7 @@ export function htmlElement (source, context, ownerDocument) {
     var el = select(ownerDocument.createElement('div'));
     el.html(template(source, context));
     var children = el.node().children;
-    if (children.length !== 1) warn(`HtmlElement function should return one root element only, got ${children.length}`);
+    if (children.length !== 1) warn(`viewElement function should return one root element only, got ${children.length}`);
     return children[0];
 }
 
