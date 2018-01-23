@@ -1,5 +1,5 @@
 {
-    "version": "0.1.0",
+    "version": "0.1.1",
     "name": "d3-view-test",
     "description": "Testing utilities for d3-view",
     "author": {
@@ -32,6 +32,7 @@
         "publish": "0.6"
     },
     "scripts": {
-        "test": "jest --coverage"
+        "test": "jest --coverage",
+        "release": "publish"
     }
 }
