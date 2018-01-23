@@ -33,6 +33,7 @@ export default {
         if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
         el = asSelect(el).node();
         if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
+        this.ownerDocument = el.ownerDocument;
         viewEvents.call('component-mount', undefined, this, el);
         this.model = this.createModel(this.model);
         return asView(this, el, callback);

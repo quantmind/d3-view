@@ -9,6 +9,8 @@ import asSelect from '../utils/select';
 //  =====================
 //
 export default {
+    // available once mounted
+    ownerDocument: null,
     // d3-view object
     isd3: true,
     //
@@ -16,8 +18,7 @@ export default {
     //
     // Create a view element, same as createElement but compile it
     viewElement (source, context, ownerDocument) {
-        if (!ownerDocument) ownerDocument = this.el ? this.el.ownerDocument : null;
-        return htmlElement(source, context, ownerDocument);
+        return htmlElement(source, context, ownerDocument || this.ownerDocument);
     },
     //
     select (el) {
@@ -29,7 +30,8 @@ export default {
     },
     //
     createElement (tag) {
-        return select(document.createElement(tag));
+        const doc = this.ownerDocument || document;
+        return select(doc.createElement(tag));
     },
     // Shortcut for fetch function in providers
     fetch (url, options) {

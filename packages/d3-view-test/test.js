@@ -30,4 +30,27 @@ describe('Render -', () => {
         expect(cm.sel.html()).toBe('Hi');
     });
 
+
+    test('nested message', async () => {
+        var d = await render('<nested />', {
+            nested () {
+                return '<message />';
+            },
+            message: {
+                model: {
+                    message: "Hi"
+                },
+                render () {
+                    return '<p d3-html="message"/>';
+                }
+            }
+        });
+        expect(d.view).toBeTruthy();
+        var tree = d.tree();
+        expect(tree.children.length).toBe(1);
+        var cm = d.component;
+        expect(cm.name).toBe('message');
+        expect(cm.sel.html()).toBe('Hi');
+    });
+
 });

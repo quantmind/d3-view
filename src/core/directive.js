@@ -167,6 +167,7 @@ export default function (obj) {
 
     function Directive (el, attr, arg) {
         this.el = el;
+        this.ownerDocument = el.ownerDocument;
         this.name = attr.name;
         this.arg = arg;
         this.passes = 0;
