@@ -75,7 +75,7 @@ jobs:
           command: .circleci/authenticate.sh
       - run:
           name: release
-          command: cd packages/d3-view-test && yarn release
+          command: cd packages/d3-view-test && npm run-script release
 
 
 workflows:
