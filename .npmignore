@@ -1,14 +1,12 @@
 .idea
 .circleci
 *.log
+*.lock
 *.sublime-project
 website
-test/test-*.js
-test/fixtures
-test/karma
-test/.eslintrc
-test/*.html
+test
 coverage
+packages
 contributing.md
 rollup.config.js
 .eslintrc

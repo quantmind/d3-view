@@ -3,13 +3,15 @@ const view = require('d3-view').view;
 
 //
 // render function
-module.exports = function (html, components) {
-    if (!components) components = {};
-    let vm = components;
-    if (!vm.isd3) vm = view({components});
-    var jsdom = new JSDOM(`<div id="root">${html}</div>`),
-        sel = vm.select(jsdom.window.document).select('#root');
-    return vm.mount(sel).then(() => new Render(vm, jsdom));
+module.exports = {
+    render: function (html, components) {
+        if (!components) components = {};
+        let vm = components;
+        if (!vm.isd3) vm = view({components});
+        var jsdom = new JSDOM(`<div id="root">${html}</div>`),
+            sel = vm.select(jsdom.window.document).select('#root');
+        return vm.mount(sel).then(() => new Render(vm, jsdom));
+    }
 };
 
 

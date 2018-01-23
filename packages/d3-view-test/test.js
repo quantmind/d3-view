@@ -1,5 +1,4 @@
-import render from './render';
-import {test} from './utils';
+import {render} from './index';
 
 
 describe('Render -', () => {
