@@ -1,17 +1,16 @@
-import {JSDOM} from 'jsdom';
-
-import {view} from '../index';
+const JSDOM = require('jsdom').JSDOM;
+const view = require('d3-view').view;
 
 //
 // render function
-export default function (html, components) {
+module.exports = function (html, components) {
     if (!components) components = {};
     let vm = components;
     if (!vm.isd3) vm = view({components});
     var jsdom = new JSDOM(`<div id="root">${html}</div>`),
         sel = vm.select(jsdom.window.document).select('#root');
     return vm.mount(sel).then(() => new Render(vm, jsdom));
-}
+};
 
 
 function Render (vm, jsdom) {
