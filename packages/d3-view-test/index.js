@@ -1,17 +1,22 @@
 const JSDOM = require('jsdom').JSDOM;
-const view = require('d3-view').view;
+const d3 = require('d3-view');
+const view = d3.view;
+
+const nextTick = d3.viewDebounce();
 
 //
 // render function
 module.exports = {
-    render: function (html, components) {
+    render (html, components) {
         if (!components) components = {};
         let vm = components;
         if (!vm.isd3) vm = view({components});
         var jsdom = new JSDOM(`<div id="root">${html}</div>`),
             sel = vm.select(jsdom.window.document).select('#root');
         return vm.mount(sel).then(() => new Render(vm, jsdom));
-    }
+    },
+
+    nextTick
 };
 
 
@@ -24,9 +29,32 @@ function Render (vm, jsdom) {
 
 Render.prototype = {
     constructor: Render,
+    nextTick,
 
     tree (shallow) {
         return tree(this.view, shallow);
+    },
+
+    select (selector) {
+        return this.view.sel.select(selector);
+    },
+
+    selectAll (selector) {
+        return this.view.sel.selectAll(selector);
+    },
+
+    trigger (target, event, process) {
+        var e = this.window.document.createEvent('HTMLEvents');
+        e.initEvent(event, true, true);
+        if (process) process(e);
+        return target.dispatchEvent(e);
+    },
+
+    click (selector, process) {
+        if (typeof selector === 'string') selector = this.view.sel.select(selector);
+        var node = selector.node();
+        if (!node) throw new Error('Cannot click on an empty element');
+        return this.trigger(node, 'click', process);
     }
 };
 

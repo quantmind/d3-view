@@ -1,3 +1,5 @@
+import {view} from 'd3-view';
+
 import {render} from './index';
 
 
@@ -53,4 +55,33 @@ describe('Render -', () => {
         expect(cm.sel.html()).toBe('Hi');
     });
 
+    test('select', async () => {
+        var d = await render('<p/><p/>');
+        expect(d.select('p').size()).toBe(1);
+        expect(d.selectAll('p').size()).toBe(2);
+    });
+
+    test('click', async () => {
+        let clicked = 0;
+        let event = null;
+        var vm = view({
+            model: {
+                $cliked() {
+                    clicked += 1;
+                }
+            }
+        });
+        var d = await render('<button d3-on=$cliked()>Click me<button/>', vm);
+        expect(d.select('button').size()).toBe(1);
+        d.click('button');
+        expect(clicked).toBe(1);
+        d.click('button', (e) => {event = e;});
+        expect(clicked).toBe(2);
+        expect(event).toBeTruthy();
+    });
+
+    test('click error', async () => {
+         var d = await render('<p/>');
+         expect(() => {d.click('button');}).toThrow(new Error('Cannot click on an empty element'));
+     });
 });
