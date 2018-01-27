@@ -66,12 +66,12 @@ describe('Render -', () => {
         let event = null;
         var vm = view({
             model: {
-                $cliked() {
+                $clicked() {
                     clicked += 1;
                 }
             }
         });
-        var d = await render('<button d3-on=$cliked()>Click me<button/>', vm);
+        var d = await render('<button d3-on=$clicked()>Click me<button/>', vm);
         expect(d.select('button').size()).toBe(1);
         d.click('button');
         expect(clicked).toBe(1);
@@ -84,4 +84,35 @@ describe('Render -', () => {
          var d = await render('<p/>');
          expect(() => {d.click('button');}).toThrow(new Error('Cannot click on an empty element'));
      });
+
+    test('click d3-for', async () => {
+        var items = [],
+            vm = view({
+                model: {
+                    data: [
+                        {
+                            text: "bla"
+                        },
+                        {
+                            text: "foo"
+                        }
+                    ],
+                    $clicked(item) {
+                        items.push(item);
+                    }
+                }
+            });
+        var d = await render(`
+            <div d3-for='item in data'>
+                <button d3-attr-id='"btn-" + index' d3-on="$clicked(item)">Click me<button/>
+            </div>`, vm);
+        expect(d.selectAll('div').size()).toBe(2);
+        expect(d.select('#btn-0').size()).toBe(1);
+        d.click('#btn-0');
+        expect(items.length).toBe(1);
+        expect(items[0].text).toBe('bla');
+        d.click('#btn-1');
+        expect(items.length).toBe(2);
+        expect(items[1].text).toBe('foo');
+    });
 });

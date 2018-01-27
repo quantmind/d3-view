@@ -127,4 +127,42 @@ describe('d3-for -', () => {
             expect(vm.select(this).classed('active')).toBe(bla[i].active || false);
         });
     });
+
+    test('nested', async () => {
+        var data = [
+                {
+                    text: "blaaaaaa",
+                    items: ['a', 'b', 'c', 'd']
+                },
+                {
+                    text: "foooooooo",
+                    items: ['e', 'f']
+                },
+                {
+                    text: "foooooooo",
+                    items: ['g']
+                }
+            ],
+            vm = view({model: {data}});
+        await vm.mount(
+            vm.viewElement(
+                `<ul id="nested-first">
+                    <li d3-for="d in data">
+                        <a href="#" d3-html="d.text"></a>
+                        <ul class="nested-second">
+                            <li d3-for="item in d.items">
+                                <a href="#" d3-html="item"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            `)
+        );
+        // vm.select('body').append(() => vm.el);
+        expect(vm.el.children.length).toBe(3);
+        for (let i=0; i<vm.el.children.length; ++i) {
+            var ul = vm.select(vm.el.children[i]).select('ul');
+            expect(ul.node().children.length).toBe(data[i].items.length);
+        }
+    });
 });
