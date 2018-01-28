@@ -71,7 +71,7 @@ describe('Render -', () => {
                 }
             }
         });
-        var d = await render('<button d3-on=$clicked()>Click me<button/>', vm);
+        var d = await render('<button d3-on=$clicked()>Click me</button>', vm);
         expect(d.select('button').size()).toBe(1);
         d.click('button');
         expect(clicked).toBe(1);
@@ -104,7 +104,7 @@ describe('Render -', () => {
             });
         var d = await render(`
             <div d3-for='item in data'>
-                <button d3-attr-id='"btn-" + index' d3-on="$clicked(item)">Click me<button/>
+                <button d3-attr-id='"btn-" + index' d3-on="$clicked(item)">Click me</button>
             </div>`, vm);
         expect(d.selectAll('div').size()).toBe(2);
         expect(d.select('#btn-0').size()).toBe(1);
