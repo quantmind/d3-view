@@ -1,6 +1,6 @@
 import {view} from 'd3-view';
 
-import {render} from './index';
+import {render, fakeFetch, httpJson, httpError, httpText} from './index';
 
 
 describe('Render -', () => {
@@ -114,5 +114,35 @@ describe('Render -', () => {
         d.click('#btn-1');
         expect(items.length).toBe(2);
         expect(items[1].text).toBe('foo');
+        vm.model.$push('data', {text:'pippo'});
+        await d.nextTick();
+        d.click('#btn-2');
+        expect(items.length).toBe(3);
+        expect(items[2].text).toBe('pippo');
+    });
+
+    test('fakeFetch', async () => {
+        const vm = view();
+        vm.providers.fetch = fakeFetch({
+            '/bla': function () {
+                return httpJson({});
+            },
+            '/text': function () {
+                return httpText('hi');
+            },
+            '/error': function () {
+                return httpError(400);
+            }
+        });
+        let response = await vm.json('/bla');
+        expect(response.status).toBe(200);
+        expect(response.data).toEqual({});
+        response = await vm.fetch('/xyz');
+        expect(response.status).toBe(404);
+        response = await vm.fetch('/error');
+        expect(response.status).toBe(400);
+        response = await vm.fetchText('/text');
+        expect(response.status).toBe(200);
+        expect(response.data).toBe('hi');
     });
 });

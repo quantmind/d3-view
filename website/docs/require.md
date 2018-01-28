@@ -4,8 +4,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [view-require](#view-require)
-  - [config](#config)
+- [Overview](#overview)
 - [d3-require.js](#d3-requirejs)
   - [Version](#version)
   - [Main](#main)

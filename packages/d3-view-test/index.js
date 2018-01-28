@@ -6,7 +6,11 @@ const nextTick = d3.viewDebounce();
 
 //
 // render function
-module.exports = {
+const test = {
+    validateHTML,
+
+    nextTick,
+
     render (html, components) {
         if (!components) components = {};
         let vm = components;
@@ -16,8 +20,47 @@ module.exports = {
         return vm.mount(sel).then(() => new Render(vm, jsdom));
     },
 
-    nextTick
+    fakeFetch (fixtures) {
+        return new FakeFetch(fixtures);
+    },
+
+    httpError (status) {
+        return {
+            status: status,
+            headers: new Map
+        };
+    },
+
+    httpText (text) {
+        return {
+            status: 200,
+            headers: new Map([['content-type', 'text/plain']]),
+            text () {
+                return Promise.resolve(text);
+            }
+        };
+    },
+
+    httpJson (data) {
+        return {
+            status: 200,
+            headers: new Map([['content-type', 'application/json']]),
+            json () {
+                return Promise.resolve(data);
+            }
+        };
+    }
 };
+
+module.exports = test;
+
+
+function validateHTML (html, jsdom) {
+    if (!jsdom) jsdom = new JSDOM;
+    var d = jsdom.window.document.createElement('div');
+    d.innerHTML = html;
+    return d.innerHTML === html;
+}
 
 
 function Render (vm, jsdom) {
@@ -87,4 +130,21 @@ function tree(cm, shallow) {
         component: cm,
         children: getComponents(Array.prototype.slice.call(cm.el.children), null, shallow)
     };
+}
+
+
+function FakeFetch (fixtures) {
+    return fetch;
+
+    function fetch (url, ...o) {
+        if (d3.isAbsoluteUrl(url)) url = new URL(url).pathname;
+        var result = fixtures[url];
+        if (result) {
+            try {
+                return Promise.resolve(result(...o));
+            } catch (err) {
+                return Promise.reject(err);
+            }
+        } else return Promise.resolve(test.httpError(404));
+    }
 }
