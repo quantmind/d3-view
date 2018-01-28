@@ -5,7 +5,6 @@
 
 
 - [logger](#logger)
-  - [viewProviders.setDebug (active)](#viewproviderssetdebug-active)
 - [fetch](#fetch)
 - [compileTemplate (text)](#compiletemplate-text)
 - [require](#require)

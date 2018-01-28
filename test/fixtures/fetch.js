@@ -1,7 +1,6 @@
 import {isAbsoluteUrl} from '../../index';
 import jsonform from './jsonform';
 
-
 export default function (url, ...o) {
     if (isAbsoluteUrl(url)) url = new URL(url).pathname;
     var result = fixtures[url];

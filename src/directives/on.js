@@ -10,7 +10,7 @@ export default {
             expr = this.expression;
 
         // DOM event => model binding
-        this.on(this.sel, `${eventName}.${this.uid}`, event => {
+        this.on(this.sel, `${eventName}.${this.uid}`, (event) => {
             var md = model.$child();
             md.$event = event;
             expr.eval(md);

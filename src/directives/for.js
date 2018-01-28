@@ -76,7 +76,7 @@ export default {
                     forView({
                         model: x,
                         parent: vm
-                    }).mount(this).then(fv => {
+                    }).mount(this, (fv) => {
                         // replace the item with a property from the model
                         // This allow for reactivity when d is an object
                         items[index] = fv.model[itemName];

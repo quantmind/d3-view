@@ -1,81 +1,52 @@
 version: 2
 jobs:
-  tests:
-    working_directory: ~/tests
-    docker:
-      - image: circleci/node:latest-browsers
-    steps:
-      - checkout
-      - run:
-          name: install
-          command: yarn install
-      - run:
-          name: test
-          command: yarn test
-      - run:
-          name: remove dev dependencies
-          command: npm prune --production
-      - run:
-          name: run view-require
-          command: yarn test-require
-  d3-view-test:
-    working_directory: ~/tests
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - checkout
-      - run:
-          name: install
-          command: yarn install
-      - run:
-          name: install test
-          command: cd packages/d3-view-test && yarn install
-      - run:
-          name: test
-          command: cd packages/d3-view-test && yarn test
-  coverage:
-    working_directory: ~/tests
-    docker:
-      - image: circleci/node:latest-browsers
-    steps:
-      - checkout
-      - run:
-          name: install
-          command: yarn install
-      - run:
-          name: coverage
-          command: yarn cover
-      - run:
-          name: upload coverage
-          command: bash <(curl -s https://codecov.io/bash)
-  release:
-    docker:
-      - image: circleci/node:latest-browsers
-    steps:
-      - checkout
-      - run:
-          name: install
-          command: yarn install
-      - run:
-          name: authenticate
-          command: .circleci/authenticate.sh
-      - run:
-          name: release
-          command: npm run-script release
-  release-d3-view-test:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - checkout
-      - run:
-          name: install test
-          command: cd packages/d3-view-test && yarn install
-      - run:
-          name: authenticate
-          command: .circleci/authenticate.sh
-      - run:
-          name: release
-          command: cd packages/d3-view-test && npm run-script release
+    tests:
+        working_directory: ~/tests
+        docker:
+          - image: circleci/node:latest-browsers
+        steps:
+          - checkout
+          - run:
+              name: install
+              command: yarn install
+          - run:
+              name: test
+              command: yarn test
+          - run:
+              name: remove dev dependencies
+              command: npm prune --production
+          - run:
+              name: run view-require
+              command: yarn test-require
+    coverage:
+        working_directory: ~/tests
+        docker:
+          - image: circleci/node:latest-browsers
+        steps:
+          - checkout
+          - run:
+              name: install
+              command: yarn install
+          - run:
+              name: coverage
+              command: yarn cover
+          - run:
+              name: upload coverage
+              command: bash <(curl -s https://codecov.io/bash)
+    release:
+        docker:
+          - image: circleci/node:latest-browsers
+        steps:
+          - checkout
+          - run:
+              name: install
+              command: yarn install
+          - run:
+              name: authenticate
+              command: .circleci/authenticate.sh
+          - run:
+              name: release
+              command: npm run-script release
 
 
 workflows:
@@ -84,17 +55,10 @@ workflows:
     jobs:
       - tests
       - coverage
-      - d3-view-test
       - release:
           requires:
             - tests
             - coverage
-          filters:
-            branches:
-              only: master
-      - release-d3-view-test:
-          requires:
-            - d3-view-test
           filters:
             branches:
               only: master

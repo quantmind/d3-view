@@ -8,7 +8,6 @@
 - [Properties](#properties)
   - [.name](#name)
   - [.el](#el)
-  - [.ownerDocument](#ownerdocument)
   - [.providers](#providers)
   - [.sel](#sel)
   - [.uid](#uid)
@@ -23,7 +22,6 @@
   - [.logInfo (msg)](#loginfo-msg)
   - [.logWarn (msg)](#logwarn-msg)
   - [.logError (err)](#logerror-err)
-  - [.on (el, typenames, listener)](#on-el-typenames-listener)
   - [.renderFromUrl (url, [context], [asElement])](#renderfromurl-url-context-aselement)
   - [.renderFromDist (name, path, [context], [asElement])](#renderfromdist-name-path-context-aselement)
   - [.select(HTMLElement)](#selecthtmlelement)
@@ -58,12 +56,6 @@ the component has been registered with. For directives, this is always prefixed 
 ### .el
 
 The HTMLElement of the component.
-
-### .ownerDocument
-
-The document where the component/directive is mounted. Available when mounting.
-Usually, this attribute is the ``window.document``.
-On the other hand it can be a [JSDOM](https://github.com/tmpvar/jsdom) document if mounting on this javascript implementation of the DOM.
 
 ### .providers
 
