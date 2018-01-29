@@ -1,12 +1,10 @@
-import {map} from 'd3-collection';
-
 import uid from '../utils/uid';
 import ddispatch from './dispatch';
 
 //
 // Initialise a model
 export default function asModel (model, initials, parent, isolated) {
-    var events = map(),
+    var events = new Map,
         Child = null;
 
     // event handler for any change in the model

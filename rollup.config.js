@@ -3,6 +3,7 @@ import babel from 'rollup-plugin-babel';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import uglify from 'rollup-plugin-uglify';
 
 
 const pkg = require('./package.json');
@@ -14,7 +15,7 @@ export default [
         input: 'index.js',
         external: external,
         output: {
-            file: 'build/d3-view.js',
+            file: 'build/d3-view-legacy.js',
             format: 'umd',
             extend: true,
             sourcemap: true,
@@ -31,6 +32,24 @@ export default [
             }),
             sourcemaps(),
             resolve()
+        ]
+    },
+    {
+        input: 'index.js',
+        external: external,
+        output: {
+            file: 'build/d3-view.js',
+            format: 'es',
+            extend: true,
+            sourcemap: true,
+            name: 'd3',
+            globals: external.reduce((g, name) => {g[name] = 'd3'; return g;}, {})
+        },
+        plugins: [
+            json(),
+            sourcemaps(),
+            resolve(),
+            uglify()
         ]
     },
     {

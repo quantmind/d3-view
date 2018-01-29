@@ -1,7 +1,7 @@
 // remove event handlers
 export default function (attr) {
     if (attr === undefined)
-        this.$events.each((event) => removeEvent(event));
+        this.$events.forEach(event => removeEvent(event));
     else {
         var bits = attr.split('.'),
             type = bits.splice(0, 1)[0],

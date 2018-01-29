@@ -1,7 +1,7 @@
 export default function () {
     var model = this,
         data = {},
-        keys = this.$events.keys().concat(Object.keys(this)),
+        keys = Array.from(this.$events.keys()).concat(Object.keys(this)),
         value;
 
     keys.forEach(key => {

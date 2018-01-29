@@ -1,5 +1,3 @@
-import {map} from 'd3-collection';
-
 import components from './components/index';
 import directives from './directives/index';
 import protoView from './core/view';
@@ -7,8 +5,8 @@ import {createComponent, extendDirectives, extendComponents} from './core/compon
 import './core/clean';
 
 // Core Directives
-const coreDirectives = extendDirectives(map(), directives);
-const coreComponents = extendComponents(map(), components);
+const coreDirectives = extendDirectives(new Map, directives);
+const coreComponents = extendComponents(new Map, components);
 
 // the root view constructor
 export default function (config) {

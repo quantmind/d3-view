@@ -1,13 +1,7 @@
 import {isString, isObject, assign} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
-import {map} from 'd3-collection';
 
-
-const properties = map({
-    disabled: 'disabled',
-    readonly: 'readOnly',
-    required: 'required'
-});
+import properties from '../utils/htmlprops';
 
 //
 // Mixin for all form elements
@@ -21,7 +15,7 @@ export const formElement = {
         el.attr('id', data.id);
         if (data.classes) el.classed(data.classes, true);
         addAttributes(el, model, data.attributes);
-        properties.each((prop, key) => {
+        properties.forEach((prop, key) => {
             var value = data[key];
             if (value) {
                 if (isString(value))

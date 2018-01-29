@@ -1,5 +1,3 @@
-import {set} from 'd3-collection';
-
 import {code} from './jsep';
 
 
@@ -19,7 +17,7 @@ export function evaluate (self, expr, nested) {
 
 // extract identifiers
 export function identifiers (expr, all) {
-    if (arguments.length === 1) all = set();
+    if (arguments.length === 1) all = new Set;
     switch(expr.type) {
         case code.IDENTIFIER:
             all.add(expr.name); break;
