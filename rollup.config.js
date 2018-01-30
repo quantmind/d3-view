@@ -39,7 +39,7 @@ export default [
         external: external,
         output: {
             file: 'build/d3-view.js',
-            format: 'es',
+            format: 'umd',
             extend: true,
             sourcemap: true,
             name: 'd3',
@@ -48,6 +48,21 @@ export default [
         plugins: [
             json(),
             sourcemaps(),
+            resolve()
+        ]
+    },
+    {
+        input: 'index.js',
+        external: external,
+        output: {
+            file: 'build/d3-view.min.js',
+            format: 'umd',
+            extend: true,
+            name: 'd3',
+            globals: external.reduce((g, name) => {g[name] = 'd3'; return g;}, {})
+        },
+        plugins: [
+            json(),
             resolve(),
             uglify()
         ]

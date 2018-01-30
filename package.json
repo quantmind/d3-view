@@ -72,7 +72,7 @@
         "whatwg-fetch": "2.0"
     },
     "scripts": {
-        "lint": "eslint *.js test src packages/d3-view-test/*.js",
+        "lint": "eslint *.js test src packages website",
         "test": "npm run-script lint && npm run-script unit",
         "test-require": "./bin/view-require -h",
         "rollup": "rollup -c --banner \"$(preamble)\" && chmod +x bin/view-require",

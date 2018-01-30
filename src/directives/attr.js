@@ -30,12 +30,12 @@ export default {
         if (!isArray(value)) value = [value];
 
         if (this.oldValue)
-            this.oldValue.forEach((entry) => {
+            this.oldValue.forEach(entry => {
                 if (entry)
                     sel.classed(entry, false);
             });
 
-        this.oldValue = value.map((entry) => {
+        this.oldValue = value.map(entry => {
             var exist = true;
             if (isArray(entry)) {
                 exist = entry[1];
