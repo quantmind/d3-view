@@ -22,6 +22,7 @@
   - [.logInfo (msg)](#loginfo-msg)
   - [.logWarn (msg)](#logwarn-msg)
   - [.logError (err)](#logerror-err)
+  - [.on (el, typenames, listener)](#on-el-typenames-listener)
   - [.renderFromUrl (url, [context], [asElement])](#renderfromurl-url-context-aselement)
   - [.renderFromDist (name, path, [context], [asElement])](#renderfromdist-name-path-context-aselement)
   - [.select(HTMLElement)](#selecthtmlelement)
