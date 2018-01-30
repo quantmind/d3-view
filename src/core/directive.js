@@ -1,5 +1,4 @@
 import {isFunction, isObject, assign} from 'd3-let';
-import {map, set} from 'd3-collection';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
@@ -88,7 +87,7 @@ const prototype = {
                 attr: ''
             });
         } else {
-            var modelEvents = map();
+            var modelEvents = new Map;
             this.expression.identifiers().forEach(identifier => {
                 bits = identifier.split('.');
                 target = model;
@@ -115,7 +114,7 @@ const prototype = {
             });
 
             // register with model reactive properties
-            modelEvents.each(target => {
+            modelEvents.forEach(target => {
                 // if we are listening to all event simply bind to the model changes
                 if (target.events.has(''))
                     dir.identifiers.push({
@@ -123,7 +122,7 @@ const prototype = {
                         attr: ''
                     });
                 else
-                    target.events.each(attr => {
+                    target.events.forEach(attr => {
                         dir.identifiers.push({
                             model: target.model,
                             attr: attr
@@ -222,7 +221,7 @@ function getTarget(modelEvents, model) {
     if (!target) {
         target = {
             model: model,
-            events: set()
+            events: new Set
         };
         modelEvents.set(model.uid, target);
     }

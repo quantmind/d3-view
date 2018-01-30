@@ -1,13 +1,7 @@
 import {isArray} from 'd3-let';
-import {map} from 'd3-collection';
 
-import warn from '../utils/warn';
+import properties from '../utils/htmlprops';
 
-const properties = map({
-    disabled: 'disabled',
-    readonly: 'readOnly',
-    required: 'required'
-});
 
 //
 //  d3-attr-<attr> directive
@@ -18,13 +12,13 @@ const properties = map({
 export default {
 
     create (expression) {
-        if (!this.arg) return warn('Cannot bind to empty attribute. Specify :<attr-name>');
+        if (!this.arg) return this.logWarn('Cannot bind to empty attribute. Specify :<attr-name>');
         return expression;
     },
 
     refresh (model, value) {
         if (this.arg === 'class') return this.refreshClass(value);
-        if (isArray(value)) return warn(`Cannot apply array to attribute ${this.arg}`);
+        if (isArray(value)) return this.logWarn(`Cannot apply array to attribute ${this.arg}`);
         var prop = properties.get(this.arg);
         if (prop) this.sel.property(prop, value || false);
         else this.sel.attr(this.arg, value || null);
@@ -36,12 +30,12 @@ export default {
         if (!isArray(value)) value = [value];
 
         if (this.oldValue)
-            this.oldValue.forEach((entry) => {
+            this.oldValue.forEach(entry => {
                 if (entry)
                     sel.classed(entry, false);
             });
 
-        this.oldValue = value.map((entry) => {
+        this.oldValue = value.map(entry => {
             var exist = true;
             if (isArray(entry)) {
                 exist = entry[1];

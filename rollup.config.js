@@ -3,10 +3,12 @@ import babel from 'rollup-plugin-babel';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import uglify from 'rollup-plugin-uglify';
 
 
 const pkg = require('./package.json');
-const external = Object.keys(pkg.dependencies);
+const external = Object.keys(pkg.dependencies).filter(d => d !== 'd3-require');
+const globals = external.reduce((g, name) => {g[name] = 'd3'; return g;}, {});
 
 
 export default [
@@ -14,12 +16,12 @@ export default [
         input: 'index.js',
         external: external,
         output: {
-            file: 'build/d3-view.js',
+            file: 'build/d3-view-legacy.js',
             format: 'umd',
             extend: true,
             sourcemap: true,
             name: 'd3',
-            globals: external.reduce((g, name) => {g[name] = 'd3'; return g;}, {})
+            globals: globals
         },
         plugins: [
             json(),
@@ -31,6 +33,39 @@ export default [
             }),
             sourcemaps(),
             resolve()
+        ]
+    },
+    {
+        input: 'index.js',
+        external: external,
+        output: {
+            file: 'build/d3-view.js',
+            format: 'umd',
+            extend: true,
+            sourcemap: true,
+            name: 'd3',
+            globals: globals
+        },
+        plugins: [
+            json(),
+            sourcemaps(),
+            resolve()
+        ]
+    },
+    {
+        input: 'index.js',
+        external: external,
+        output: {
+            file: 'build/d3-view.min.js',
+            format: 'umd',
+            extend: true,
+            name: 'd3',
+            globals: globals
+        },
+        plugins: [
+            json(),
+            resolve(),
+            uglify()
         ]
     },
     {

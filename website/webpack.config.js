@@ -20,13 +20,11 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['es2015']
-                    }
-                }
+                exclude: /node_modules/
+            },
+            {
+                test: /\.html$/,
+                use: 'raw-loader'
             },
             {
                 test: /\.scss$/,

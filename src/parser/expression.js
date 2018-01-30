@@ -6,11 +6,11 @@ import warn from '../utils/warn';
 
 const proto = {
 
-    eval: function (model) {
+    eval (model) {
         return evaluate(model, this.parsed);
     },
 
-    safeEval: function (model) {
+    safeEval (model) {
         try {
             return evaluate(model, this.parsed);
         } catch (msg) {
@@ -19,8 +19,8 @@ const proto = {
     },
 
     // evaluate identifiers from a model
-    identifiers: function () {
-        return identifiers(this.parsed).values();
+    identifiers () {
+        return identifiers(this.parsed);
     }
 };
 

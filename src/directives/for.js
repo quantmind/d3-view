@@ -3,7 +3,6 @@ import {isArray} from 'd3-let';
 
 import {createComponent} from '../core/component';
 import protoView from '../core/view';
-import warn from '../utils/warn';
 
 //
 //  d3-for directive
@@ -19,7 +18,7 @@ export default {
             v ? bits.push(v) : null;
         });
         if (bits.length !== 3 || bits[1] != 'in')
-            return warn(`d3-for directive requires "item in expression" template, got "${expression}"`);
+            return this.logWarn(`directive requires "item in expression" template, got "${expression}"`);
         this.itemName = bits[0];
         this.itemClass = `for${this.uid}`;
         return bits[2];

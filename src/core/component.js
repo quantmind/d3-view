@@ -1,5 +1,4 @@
 import {isFunction, isArray, isObject, isString, pop, assign} from 'd3-let';
-import {map} from 'd3-collection';
 import {dispatch} from 'd3-dispatch';
 
 import base from './transition';
@@ -7,6 +6,7 @@ import createDirective from './directive';
 import asSelect from '../utils/select';
 import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
+import map from '../utils/map';
 import dataAttributes from '../utils/data';
 import viewEvents from './events';
 import viewModel from '../model/main';
@@ -99,8 +99,8 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
-        classComponents = extendComponents(map(), pop(obj, 'components')),
-        classDirectives = extendDirectives(map(), pop(obj, 'directives')),
+        classComponents = extendComponents(new Map, pop(obj, 'components')),
+        classDirectives = extendDirectives(new Map, pop(obj, 'directives')),
         model = pop(obj, 'model');
 
     function Component (options) {
@@ -110,10 +110,10 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
             events = dispatch('message', 'mount', 'mounted'),
             cache = parent ? null : new Cache;
 
-        classComponents.each((comp, key) => {
+        classComponents.forEach((comp, key) => {
             components.set(key, comp);
         });
-        classDirectives.each((comp, key) => {
+        classDirectives.forEach((comp, key) => {
             directives.set(key, comp);
         });
         extendComponents(components, pop(options, 'components'));
@@ -180,14 +180,14 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
 // Used by both Component and view
 
 export function extendComponents (container, components) {
-    map(components).each((obj, key) => {
+    map(components).forEach((obj, key) => {
         container.set(key, createComponent(key, obj, protoComponent));
     });
     return container;
 }
 
 export function extendDirectives (container, directives) {
-    map(directives).each((obj, key) => {
+    map(directives).forEach((obj, key) => {
         container.set(key, createDirective(obj));
     });
     return container;

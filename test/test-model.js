@@ -86,8 +86,8 @@ describe('model -', function() {
         var child = model.$child(),
             foov = null;
         expect(child.parent).toBe(model);
-        expect(model.$events.size()).toBe(3);
-        expect(child.$events.size()).toBe(1);
+        expect(model.$events.size).toBe(3);
+        expect(child.$events.size).toBe(1);
 
         model.$on('foo', function (oldValue) {
             foov = oldValue;
@@ -103,8 +103,8 @@ describe('model -', function() {
 
                 timeout(() => {
                     expect(foov).toBe(5);
-                    expect(model.$events.size()).toBe(3);
-                    expect(child.$events.size()).toBe(1);
+                    expect(model.$events.size).toBe(3);
+                    expect(child.$events.size).toBe(1);
                     done();
                 });
             });
@@ -182,7 +182,7 @@ describe('model -', function() {
         await nextTick();
         expect(called).toBe(1);
         expect(isArray(model.bla.b)).toBe(true);
-        b.$events.each(event => {
+        b.$events.forEach(event => {
             expect(event.on('change')).toBe(undefined);
         });
     });

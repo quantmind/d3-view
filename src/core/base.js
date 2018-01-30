@@ -59,7 +59,7 @@ export default {
     },
     //
     // render from a distribution name. Use d3-require resolve method to find the url
-    renderFromDist(dist, path, context, asElement=true) {
+    renderFromDist (dist, path, context, asElement=true) {
         var resolve = providers.resolve;
         return this.renderFromUrl(resolve(dist, {path: path}), context, asElement);
     },

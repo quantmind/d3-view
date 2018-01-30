@@ -61,7 +61,7 @@ describe('Component data -', () => {
 
     test ('properties', async () => {
         // API pre-mount
-        expect(vm.components.size()).toBe(numDefComponents + 1);
+        expect(vm.components.size).toBe(numDefComponents + 1);
         expect(vm.components.get('sidebar')).toBeTruthy();
         //
         await vm.mount(vm.viewElement(

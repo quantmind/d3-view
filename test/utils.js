@@ -6,7 +6,7 @@ import 'd3-transition';
 viewProviders.compileTemplate = require('handlebars').compile;
 viewProviders.location = {};
 
-export const numDefComponents = view().components.size();
+export const numDefComponents = view().components.size;
 
 
 export const logger = {

@@ -117,17 +117,17 @@ describe('viewExpression -', function() {
     });
 
     it('identifiers', () => {
-        expect(viewExpression('"ciao"').identifiers()).toEqual([]);
-        expect(viewExpression('foo').identifiers()).toEqual(['foo']);
-        expect(viewExpression('random()').identifiers()).toEqual(['random']);
-        expect(viewExpression('pippo.bla').identifiers()).toEqual(['pippo.bla']);
-        expect(viewExpression('pippo.more.name').identifiers()).toEqual(['pippo.more.name']);
-        expect(viewExpression('[pippo.bla]').identifiers()).toEqual(['pippo.bla']);
-        expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(['pippo.bla', 'foo']);
+        expect(viewExpression('"ciao"').identifiers()).toEqual(new Set);
+        expect(viewExpression('foo').identifiers()).toEqual(new Set(['foo']));
+        expect(viewExpression('random()').identifiers()).toEqual(new Set(['random']));
+        expect(viewExpression('pippo.bla').identifiers()).toEqual(new Set(['pippo.bla']));
+        expect(viewExpression('pippo.more.name').identifiers()).toEqual(new Set(['pippo.more.name']));
+        expect(viewExpression('[pippo.bla]').identifiers()).toEqual(new Set(['pippo.bla']));
+        expect(viewExpression('[pippo.bla, foo]').identifiers()).toEqual(new Set(['pippo.bla', 'foo']));
         expect(viewExpression('[pippo.bla.test(), foo.go(bla)]').identifiers()).toEqual(
-            ['pippo.bla.test', 'foo.go', 'bla']);
+            new Set(['pippo.bla.test', 'foo.go', 'bla']));
         expect(viewExpression('item.label || item.name').identifiers()).toEqual(
-            ['item.label', 'item.name']);
+            new Set(['item.label', 'item.name']));
     });
 
     it('binary precedence', () => {
@@ -179,7 +179,7 @@ describe('viewExpression -', function() {
     it('identifiers issue #21', () => {
         var expr = viewExpression('$active(tab.show, rootShow)'),
             identifiers = expr.identifiers();
-        expect(identifiers.length).toBe(3);
+        expect(identifiers.size).toBe(3);
     });
 
     it ('add binary op', () => {
