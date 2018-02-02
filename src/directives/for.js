@@ -55,7 +55,7 @@ export default {
             }),
             vm = sel.view();
 
-        let forComponent = vm.creator.get(element.tagName.toLowerCase());
+        let forComponent = vm.components.get(creator.tagName.toLowerCase());
         if (!forComponent) forComponent = createComponent('forView', protoView);
 
         let x, el, fel, tr;
@@ -77,7 +77,7 @@ export default {
                     forComponent({
                         model: x,
                         parent: vm
-                    }).mount(this, (fv) => {
+                    }).mount(this).then(fv => {
                         // replace the item with a property from the model
                         // This allow for reactivity when d is an object
                         items[index] = fv.model[itemName];

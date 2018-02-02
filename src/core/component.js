@@ -81,9 +81,18 @@ const protoComponent = {
         //
         // create the new element from the render function
         this.props = data;
-        var newEl = this.render(data, dattrs, el);
+
+        let newEl;
+        try {
+            newEl = this.render(data, dattrs, el);
+        } catch (error) {
+            newEl = Promise.reject(error);
+        }
         if (!newEl.then) newEl = Promise.resolve(newEl);
-        return newEl.then(element => compile(this, el, element, onMounted));
+        return newEl.then(
+            element => compile(this, el, element, onMounted),
+            exc => error(this, el, exc)
+        );
     },
 
     createModel (data) {
@@ -269,6 +278,14 @@ function compile (cm, origEl, element, onMounted) {
     cm.select(origEl).remove();
     //
     return asView(cm, element, onMounted);
+}
+
+
+// Invoked when a component cm has failed to rander
+function error (cm, origEl, exc) {
+    cm.logError(`could not render: ${exc}`);
+    viewEvents.call('component-error', undefined, cm, origEl, exc);
+    return cm;
 }
 
 
