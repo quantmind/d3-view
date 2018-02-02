@@ -1,13 +1,16 @@
 {
+    "private": true,
+    "license": "BSD-3-Clause",
     "scripts": {
         "js": "webpack --config webpack.config.js",
+        "js:watch": "webpack --config webpack.config.js -w",
         "css": "node-sass src/index.scss static/site.css --include-path node_modules --output-style compressed",
         "prepare": "npm run-script js && npm run-script css",
-        "serve": "nodemon ./node_modules/.bin/d3fluid --debug"
+        "serve": "d3fluid --debug"
     },
     "dependencies": {
         "d3-fluid": "0.2",
-        "d3-view": "1.2",
+        "d3-view": "1.3",
         "d3-view-components": "0.2"
     },
     "devDependencies": {

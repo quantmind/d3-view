@@ -14,3 +14,4 @@ website/static/*.css
 # files
 *.log
 .DS_Store
+nav.json

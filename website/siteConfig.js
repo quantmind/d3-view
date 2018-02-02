@@ -10,15 +10,88 @@ module.exports = {
         paths: [
             {
                 slug: "docs",
-                path: "docs/",
+                path: "docs",
                 template: "sidenav",
-                context: {
-
-                }
+                title: "Documentation",
+                highlightTheme: "androidstudio",
+                navigation: [
+                    {
+                        section: "Overview",
+                        items: [
+                            {
+                                name: "Getting started",
+                                href: "getting-started"
+                            },
+                            {
+                                name: "Examples",
+                                href: "examples"
+                            },
+                            {
+                                name: "Development",
+                                href: "develop"
+                            }
+                        ]
+                    },
+                    {
+                        section: "API",
+                        items: [
+                            {
+                                name: "Reactive model",
+                                href: "model"
+                            },
+                            {
+                                name: "Base prototype",
+                                href: "base"
+                            },
+                            {
+                                name: "Components",
+                                href: "component"
+                            },
+                            {
+                                name: "Directives",
+                                href: "directives"
+                            },
+                            {
+                                name: "Expressions",
+                                href: "expressions"
+                            },
+                            {
+                                name: "Tools",
+                                href: "tools"
+                            }
+                        ]
+                    },
+                    {
+                        section: "Extending",
+                        items: [
+                            {
+                                name: "Getting started",
+                                href: "plugins"
+                            },
+                            {
+                                name: "Examples",
+                                href: "providers"
+                            },
+                            {
+                                name: "Development",
+                                href: "forms"
+                            }
+                        ]
+                    },
+                    {
+                        section: "Addons",
+                        items: [
+                            {
+                                name: "View require",
+                                href: "require"
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 slug: "",
-                path: "/",
+                path: "site",
                 template: "topnav"
             }
         ],

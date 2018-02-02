@@ -53,8 +53,10 @@ export default {
                 d = this.__d3_view__.model[itemName];
                 return items.indexOf(d) === -1;
             }),
-            forView = createComponent('forView', protoView),
             vm = sel.view();
+
+        let forComponent = vm.creator.get(element.tagName.toLowerCase());
+        if (!forComponent) forComponent = createComponent('forView', protoView);
 
         let x, el, fel, tr;
 
@@ -72,7 +74,7 @@ export default {
                 .each(function (d, index) {
                     x = {index: index};
                     x[itemName] = d;
-                    forView({
+                    forComponent({
                         model: x,
                         parent: vm
                     }).mount(this, (fv) => {
