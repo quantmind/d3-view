@@ -3,7 +3,7 @@ import {pop} from 'd3-let';
 const DATAPREFIX = 'data-';
 
 
-export default function (attrs) {
+export default attrs => {
     var keys = Object.keys(attrs);
     let p;
     return keys.reduce((o, key) => {
@@ -16,4 +16,4 @@ export default function (attrs) {
         }
         return o;
     }, {});
-}
+};
