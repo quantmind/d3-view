@@ -16,24 +16,26 @@ module.exports = {
                 highlightTheme: "androidstudio",
                 navigation: [
                     {
-                        section: "Overview",
+                        name: "Overview",
+                        icon: "file-text",
                         items: [
                             {
                                 name: "Getting started",
-                                href: "getting-started"
+                                href: "/docs/getting-started"
                             },
                             {
                                 name: "Examples",
-                                href: "examples"
+                                href: "/docs/examples"
                             },
                             {
                                 name: "Development",
-                                href: "develop"
+                                href: "/docs/develop"
                             }
                         ]
                     },
                     {
-                        section: "API",
+                        name: "API",
+                        icon: "package",
                         items: [
                             {
                                 name: "Reactive model",
@@ -62,7 +64,7 @@ module.exports = {
                         ]
                     },
                     {
-                        section: "Extending",
+                        name: "Extending",
                         items: [
                             {
                                 name: "Getting started",
@@ -79,7 +81,7 @@ module.exports = {
                         ]
                     },
                     {
-                        section: "Addons",
+                        name: "Addons",
                         items: [
                             {
                                 name: "View require",

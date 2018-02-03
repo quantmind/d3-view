@@ -78,6 +78,8 @@ const protoComponent = {
                 }
             });
         }
+        // Add once only directive values
+        if (directives) directives.once(model, data);
         //
         // create the new element from the render function
         this.props = data;
