@@ -9,6 +9,7 @@ export default {
     mount (model) {
         var sel = this.sel;
         this.display = sel.style('display');
+        this.opacity = +sel.style('opacity') || 1;
         if (!this.display || this.display === 'none') this.display = 'block';
         return model;
     },
@@ -27,6 +28,7 @@ export default {
                 transition
                     .style('opacity', 0)
                     .on('end', () => sel.style('display', 'none'));
-        }
+        } else
+            sel.style('opacity', value ? this.opacity : 0);
     }
 };

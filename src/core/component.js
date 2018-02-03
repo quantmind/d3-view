@@ -88,11 +88,10 @@ const protoComponent = {
         } catch (error) {
             newEl = Promise.reject(error);
         }
-        if (!newEl.then) newEl = Promise.resolve(newEl);
-        return newEl.then(
-            element => compile(this, el, element, onMounted),
-            exc => error(this, el, exc)
-        );
+        if (!newEl || !newEl.then) newEl = Promise.resolve(newEl);
+        return newEl
+            .then(element => compile(this, el, element, onMounted))
+            .catch (exc => error(this, el, exc));
     },
 
     createModel (data) {
@@ -267,9 +266,9 @@ function compile (cm, origEl, element, onMounted) {
         const props = Object.keys(cm.props).length ? cm.props : null;
         element = cm.viewElement(element, props, origEl.ownerDocument);
     }
-    if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
+    if (!element) throw new Error('render() must return a single HTML node. It returned nothing!');
     element = asSelect(element);
-    if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');
+    if (element.size() !== 1) cm.logWarn('render() must return a single HTML node');
     element = element.node();
     //
     // Insert before the component element

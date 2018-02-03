@@ -11,7 +11,7 @@ describe('d3-on -', function() {
                     $test: test
                 }
             });
-        await vm.mount(vm.viewElement('<div><p d3-on="$test($event)">Bla</p></div>'));
+        await vm.mount(vm.select('body').append('div').html('<p d3-on="$test($event)">Bla</p>'));
 
         var sel = vm.sel.select('p');
 
@@ -31,7 +31,7 @@ describe('d3-on -', function() {
             waiter.resolve(null);
         }
 
-        vm.destroy();
+        vm.sel.select('p').remove();
     });
 
     test('model function', async () => {

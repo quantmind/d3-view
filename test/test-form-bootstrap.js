@@ -65,4 +65,10 @@ describe('Bootstrap plugin -', () => {
         expect(inputs.size()).toBe(3);
     });
 
+    test ('warning', () => {
+        var vm = view();
+        vm.providers.logger.pop();
+        vm.use(viewBootstrapForms);
+        expect(vm.providers.logger.pop().length).toBe(1);
+    });
 });
