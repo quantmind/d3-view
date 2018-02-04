@@ -1,4 +1,4 @@
-export default function (str) {
+export default str => {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
@@ -14,4 +14,4 @@ export default function (str) {
         .replace(/-+/g, '-'); // collapse dashes
 
     return str;
-}
+};

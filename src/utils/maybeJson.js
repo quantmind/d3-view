@@ -1,6 +1,6 @@
 import {isString} from 'd3-let';
 
-export default function (value) {
+export default value => {
     if (isString(value)) {
         try {
             return JSON.parse(value);
@@ -9,4 +9,4 @@ export default function (value) {
         }
     }
     return value;
-}
+};

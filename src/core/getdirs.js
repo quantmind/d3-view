@@ -79,5 +79,16 @@ Directives.prototype = {
     execute (model) {
         if (!this.size()) return;
         return Promise.all(this.all.map(d => d.execute(model)));
+    },
+
+    once (model, data) {
+        let dir;
+        const all = [];
+        for (let i=0; i<this.all.length; ++i) {
+            dir = this.all[i];
+            if (dir.once) dir.once(model, data);
+            else all.push(dir);
+        }
+        this.all = all;
     }
 };

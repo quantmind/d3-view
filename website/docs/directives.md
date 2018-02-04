@@ -12,6 +12,7 @@
   - [d3-html](#d3-html)
   - [d3-if](#d3-if)
   - [d3-on](#d3-on)
+  - [d3-prop](#d3-prop)
   - [d3-value](#d3-value)
 - [Custom Directive](#custom-directive)
   - [directive.create (expression)](#directivecreate-expression)
@@ -121,6 +122,27 @@ The [d3.event]() object is available in the model context as ``$event``
 and can be passed to the callback function. For example
 ```html
 <button d3-on-click="submit($event)">Submit</button>
+```
+
+### d3-prop
+
+The [d3-prop][] directive creates a **one only binding** between an expression and a ``prop`` for a component.
+Lets say we have a component which requires a ``msg`` property do display a its inner html:
+```javascript
+const cm = view({
+    model: {
+        message: "this is a test"
+    },
+    components: {
+        hi (props) {
+            return `<p>${p.msg}</p>`;
+        }
+    }
+});
+```
+One can pass the ``msg`` from the model with the ``d3-prop`` directive
+```html
+<hi d3-prop-msg="message"></hi>
 ```
 
 ### d3-value
@@ -251,6 +273,7 @@ Number of times the directive has been refreshed by a change in the reactive mod
 [d3-html]: https://github.com/quantmind/d3-view/blob/master/src/directives/html.js
 [d3-if]: https://github.com/quantmind/d3-view/blob/master/src/directives/if.js
 [d3-on]: https://github.com/quantmind/d3-view/blob/master/src/directives/on.js
+[d3-prop]: https://github.com/quantmind/d3-view/blob/master/src/directives/prop.js
 [d3-value]: https://github.com/quantmind/d3-view/blob/master/src/directives/value.js
 [create]: #directivecreate-expression
 [plugins]: ./plugins.md

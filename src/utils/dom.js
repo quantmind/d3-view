@@ -4,7 +4,7 @@ import providers from './providers';
 
 
 // Add callback to execute when the DOM is ready
-export default function (callback) {
+export default callback => {
     providers.readyCallbacks.push(callback);
     /* istanbul ignore next */
     if (document.readyState !== 'complete') {
@@ -14,7 +14,7 @@ export default function (callback) {
     }
     else
         domReady();
-}
+};
 
 
 /* istanbul ignore next */

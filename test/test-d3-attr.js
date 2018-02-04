@@ -1,10 +1,7 @@
-import view, {test} from './utils';
-import {viewDebounce} from '../index';
+import view, {test, nextTick} from './utils';
 
 
 describe('d3-attr -', function() {
-
-    const nextTick = viewDebounce();
 
     test ('simple', async () => {
 
@@ -24,7 +21,7 @@ describe('d3-attr -', function() {
     });
 
 
-    it('class', async () => {
+    test ('class', async () => {
         var vm = view({
             model: {
                 test: 'bright'
@@ -42,5 +39,45 @@ describe('d3-attr -', function() {
         expect(vm.sel.classed('bright')).toBe(false);
         expect(vm.sel.classed('dark')).toBe(true);
         expect(vm.sel.classed('foo')).toBe(true);
+    });
+
+    test ('class complex', async () => {
+        var vm = view({
+            model: {
+                test: true,
+                test2: false
+            }
+        });
+        await vm.mount(vm.viewElement(`<div d3-class="[['bright', test],['kappa', test2]]">Bla</div>`));
+
+        expect(vm.sel.classed('bright')).toBe(true);
+        expect(vm.sel.classed('kappa')).toBe(false);
+        vm.model.test2 = true;
+        await nextTick();
+        expect(vm.sel.classed('bright')).toBe(true);
+        expect(vm.sel.classed('kappa')).toBe(true);
+        vm.model.test = false;
+        await nextTick();
+        expect(vm.sel.classed('bright')).toBe(false);
+        expect(vm.sel.classed('kappa')).toBe(true);
+    });
+
+    test ('errors', async () => {
+        let vm = view({
+            model: {
+                test: 'bright'
+            }
+        });
+        vm.providers.logger.pop();
+        await vm.mount(vm.viewElement('<div d3-attr="test">Bla</div>'));
+        expect(vm.providers.logger.pop().length).toBe(1);
+        vm = view({
+            model: {
+                test: ['bright', 'foo']
+            }
+        });
+        vm.providers.logger.pop();
+        await vm.mount(vm.viewElement('<div d3-attr-placeholder="test">Bla</div>'));
+        expect(vm.providers.logger.pop().length).toBe(1);
     });
 });

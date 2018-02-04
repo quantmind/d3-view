@@ -1,22 +1,13 @@
-import {requireFrom} from 'd3-require';
-
-
-var isAbsolute = new RegExp('^([a-z]+://|//)'),
+const isAbsolute = new RegExp('^([a-z]+://|//)'),
     isRelative = new RegExp('^[.]{0,2}/'),
-    libs = new Map,
-    nodeModules = new Map,
-    inBrowser = typeof window !== 'undefined' && window.document;
+    hasOwnProperty = Array.prototype.hasOwnProperty;
+
+export const viewLibs = new Map;
+export const isAbsoluteUrl = url => isAbsolute.test(url);
 
 
-export const viewRequire = requireWithLibs();
-
-
-export function isAbsoluteUrl (url) {
-    return isAbsolute.test(url);
-}
-
-export function viewResolve (name, options) {
-    var dist = libs.get(name),
+export const viewResolve = (name, options) => {
+    var dist = viewLibs.get(name),
         main = name,
         path = null,
         base = location;
@@ -49,48 +40,84 @@ export function viewResolve (name, options) {
         if (!main.length || /^[\s._]/.test(main) || /\s$/.test(main)) throw new Error("illegal name");
         return "https://unpkg.com/" + main;
     }
-}
+};
 
 
-function requireWithLibs () {
-    let r;
-    if (inBrowser) r = requireFrom(viewResolve);
-    else r = nodeRequire;
-    r.libs = libs;
-    return r;
-}
+export const viewRequireFrom = (resolver, root) => {
+    const modules = new Map,
+        queue = [],
+        map = queue.map,
+        some = queue.some,
+        requireRelative = base => {
+            return name => {
+                var url = resolver(name + "", base), module = modules.get(url);
+                if (!module) modules.set(url, module = new Promise((resolve, reject) => {
+                    root = root || window;
+                    const script = root.document.createElement("script");
+                    script.onload = function() {
+                        try { resolve(queue.pop()(requireRelative(url))); }
+                        catch (error) { reject(new Error("invalid module")); }
+                        script.remove();
+                    };
+                    script.onerror = function() {
+                        reject(new Error("unable to load module"));
+                        script.remove();
+                    };
+                    script.async = true;
+                    script.src = url;
+                    root.define = define;
+                    root.document.head.appendChild(script);
+                }));
+                return module;
+            };
+        },
+        require = requireRelative(null);
+
+    define.amd = {};
+
+    return function(name) {
+        return arguments.length > 1 ? Promise.all(map.call(arguments, require)).then(merge) : require(name);
+    };
+
+    function define (name, dependencies, factory) {
+        if (arguments.length < 3) factory = dependencies, dependencies = name;
+        if (arguments.length < 2) factory = dependencies, dependencies = [];
+        queue.push(some.call(dependencies, isexports) ? function(require) {
+            var exports = {};
+            return Promise.all(map.call(dependencies, function(name) {
+                return isexports(name += "") ? exports : require(name);
+            })).then(function(dependencies) {
+                factory.apply(null, dependencies);
+                return exports;
+            });
+        } : function(require) {
+            return Promise.all(map.call(dependencies, require)).then(function(dependencies) {
+                return typeof factory === "function" ? factory.apply(null, dependencies) : factory;
+            });
+        });
+    }
+};
+
+export const viewRequire = viewRequireFrom(viewResolve);
+
+// INTERNALS
+
+const isexports = name => (name + "") === "exports";
 
 
-function removeFrontSlash (path) {
+const removeFrontSlash = path => {
     if (typeof path === 'string' && path.substring(0, 1) === '/') path = path.substring(1);
     return path;
-}
+};
 
 
-function removeBackSlash (path) {
+const removeBackSlash = path => {
     if (typeof path === 'string' && path.substring(path.length-1) === '/') path = path.substring(0, path.substring);
     return path;
-}
+};
 
 
-/* istanbul ignore next */
-function nodeRequire () {
-    let module;
-    var all = [];
-    for (let i=0; i<arguments.length; ++i) {
-        module = nodeModules.get[arguments[i]];
-        if (!module) {
-            module = require(arguments[i]);
-            nodeModules.set(arguments[i], module);
-        }
-        all.push(module);
-    }
-    return Promise.resolve(all.length > 1 ? merge(all) : all[0]);
-}
-
-
-/* istanbul ignore next */
-function merge(modules) {
+const merge = modules => {
     var o = {}, i = -1, n = modules.length, m, k;
     while (++i < n) {
         for (k in (m = modules[i])) {
@@ -101,9 +128,9 @@ function merge(modules) {
         }
     }
     return o;
-}
+};
 
-/* istanbul ignore next */
-function getter(object, name) {
+
+const getter = (object, name) => {
     return () => object[name];
-}
+};

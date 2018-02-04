@@ -6,5 +6,6 @@ export default dispatch(
     'component-created',
     'component-mount',
     'component-mounted',
+    'component-error',
     'directive-refresh'
 );

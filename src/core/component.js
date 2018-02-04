@@ -78,12 +78,22 @@ const protoComponent = {
                 }
             });
         }
+        // Add once only directive values
+        if (directives) directives.once(model, data);
         //
         // create the new element from the render function
         this.props = data;
-        var newEl = this.render(data, dattrs, el);
-        if (!newEl.then) newEl = Promise.resolve(newEl);
-        return newEl.then(element => compile(this, el, element, onMounted));
+
+        let newEl;
+        try {
+            newEl = this.render(data, dattrs, el);
+        } catch (error) {
+            newEl = Promise.reject(error);
+        }
+        if (!newEl || !newEl.then) newEl = Promise.resolve(newEl);
+        return newEl
+            .then(element => compile(this, el, element, onMounted))
+            .catch (exc => error(this, el, exc));
     },
 
     createModel (data) {
@@ -258,9 +268,9 @@ function compile (cm, origEl, element, onMounted) {
         const props = Object.keys(cm.props).length ? cm.props : null;
         element = cm.viewElement(element, props, origEl.ownerDocument);
     }
-    if (!element) return cm.logWarn('render function must return a single HTML node. It returned nothing!');
+    if (!element) throw new Error('render() must return a single HTML node. It returned nothing!');
     element = asSelect(element);
-    if (element.size() !== 1) cm.logWarn('render function must return a single HTML node');
+    if (element.size() !== 1) cm.logWarn('render() must return a single HTML node');
     element = element.node();
     //
     // Insert before the component element
@@ -272,18 +282,26 @@ function compile (cm, origEl, element, onMounted) {
 }
 
 
-function attributes (element) {
-    var attrs = {};
+// Invoked when a component cm has failed to rander
+function error (cm, origEl, exc) {
+    cm.logError(`could not render: ${exc}`);
+    viewEvents.call('component-error', undefined, cm, origEl, exc);
+    return cm;
+}
+
+
+const attributes = element => {
+    const attrs = {};
     let attr;
     for (let i = 0; i < element.attributes.length; ++i) {
         attr = element.attributes[i];
         attrs[attr.name] = attr.value;
     }
     return attrs;
-}
+};
 
 
-function reactiveParentProperty (key, value) {
+const reactiveParentProperty = (key, value) => {
     return {
         reactOn: [value],
         get () {
@@ -293,4 +311,4 @@ function reactiveParentProperty (key, value) {
             this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
-}
+};

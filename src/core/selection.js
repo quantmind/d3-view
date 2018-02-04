@@ -44,7 +44,7 @@ function view (value) {
 //
 // mount function on a d3 selection
 // Use this function to mount the selection
-// THis method returns nothing or a promise
+// This method returns nothing or a promise
 function mount (data, onMounted) {
     var promises = [];
     this.each(function () {
@@ -67,14 +67,12 @@ function mountElement (element, vm, data, onMounted) {
     if (preMount)
         return preMount.execute(vm.model);
     else {
-        let promises;
+        let promise;
         if (component)
-            promises = [component({parent: vm}).mount(element, data, onMounted)];
+            promise = component({parent: vm}).mount(element, data, onMounted);
         else
-            promises = slice(element.children).map(c => mountElement(c, vm, data, onMounted));
+            promise = Promise.all(slice(element.children).map(c => mountElement(c, vm, data, onMounted)));
 
-        return Promise.all(promises).then(() => {
-            return directives.execute(vm.model);
-        });
+        return promise.then(() => directives.execute(vm.model));
     }
 }

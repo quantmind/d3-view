@@ -4,6 +4,13 @@ const view = d3.view;
 
 const nextTick = d3.viewDebounce();
 
+const validateHTML = (html, jsdom) => {
+    if (!jsdom) jsdom = new JSDOM;
+    var d = jsdom.window.document.createElement('div');
+    d.innerHTML = html;
+    return d.innerHTML === html;
+};
+
 //
 // render function
 const test = {
@@ -53,14 +60,6 @@ const test = {
 };
 
 module.exports = test;
-
-
-function validateHTML (html, jsdom) {
-    if (!jsdom) jsdom = new JSDOM;
-    var d = jsdom.window.document.createElement('div');
-    d.innerHTML = html;
-    return d.innerHTML === html;
-}
 
 
 function Render (vm, jsdom) {
@@ -134,9 +133,8 @@ function tree(cm, shallow) {
 
 
 function FakeFetch (fixtures) {
-    return fetch;
 
-    function fetch (url, ...o) {
+    return (url, ...o) => {
         if (d3.isAbsoluteUrl(url)) url = new URL(url).pathname;
         var result = fixtures[url];
         if (result) {
@@ -146,5 +144,5 @@ function FakeFetch (fixtures) {
                 return Promise.reject(err);
             }
         } else return Promise.resolve(test.httpError(404));
-    }
+    };
 }

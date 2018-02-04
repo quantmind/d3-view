@@ -1,6 +1,6 @@
 import {view} from 'd3-view';
 
-import {render, fakeFetch, httpJson, httpError, httpText} from './index';
+import {render, fakeFetch, httpJson, httpError, httpText, validateHTML} from './index';
 
 
 describe('Render -', () => {
@@ -124,15 +124,11 @@ describe('Render -', () => {
     test('fakeFetch', async () => {
         const vm = view();
         vm.providers.fetch = fakeFetch({
-            '/bla': function () {
-                return httpJson({});
-            },
-            '/text': function () {
-                return httpText('hi');
-            },
-            '/error': function () {
-                return httpError(400);
-            }
+            '/bla': () => httpJson({}),
+            '/text': () => httpText('hi'),
+            '/error': () => httpError(400),
+            '/failure': () => {throw new Error('kaputt');},
+            'http://bla.com/bla': () => httpJson({})
         });
         let response = await vm.json('/bla');
         expect(response.status).toBe(200);
@@ -144,5 +140,22 @@ describe('Render -', () => {
         response = await vm.fetchText('/text');
         expect(response.status).toBe(200);
         expect(response.data).toBe('hi');
+        response = await vm.json('http://bla.com/bla');
+        expect(response.status).toBe(200);
+        expect(response.data).toEqual({});
+        await vm.json('/failure').catch(e => {
+            expect(''+e).toBe(`Error: kaputt`);
+        });
+    });
+
+    test('validateHTML', async () => {
+        expect(validateHTML('<div/>')).toBe(false);
+        expect(validateHTML('<div></div>')).toBe(true);
+    });
+
+    test('require', async () => {
+        const vm = view();
+        const d3 = await vm.providers.require('d3-selection');
+        expect(d3).toBeTruthy();
     });
 });
