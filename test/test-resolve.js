@@ -1,4 +1,5 @@
-import {viewResolve, viewRequire} from '../index';
+import {test} from './utils';
+import {viewResolve, viewRequire, viewLibs} from '../index';
 
 
 describe('d3.resolve -', () => {
@@ -14,20 +15,20 @@ describe('d3.resolve -', () => {
     });
 
     it ('dist', () => {
-        viewRequire.libs.set('d3-selection', {
+        viewLibs.set('d3-selection', {
             'version': 1.1
         });
         expect(viewResolve('d3-selection')).toBe('https://unpkg.com/d3-selection@1.1');
     });
 
     it ('dist main', () => {
-        viewRequire.libs.set('pippo', {
+        viewLibs.set('pippo', {
             'main': 'lib/pippo.js',
             'version': 1.4
         });
         expect(viewResolve('pippo')).toBe('https://unpkg.com/pippo@1.4/lib/pippo.js');
         expect(viewResolve('pippo', {path: 'lib/pippo.html'})).toBe('https://unpkg.com/pippo@1.4/lib/pippo.html');
-        viewRequire.libs.set('pippo', {
+        viewLibs.set('pippo', {
             'main': 'lib/pippo.js'
         });
         expect(viewResolve('pippo')).toBe('https://unpkg.com/pippo/lib/pippo.js');
@@ -35,11 +36,22 @@ describe('d3.resolve -', () => {
     });
 
     it ('dist local', () => {
-        viewRequire.libs.set('pluto', {
+        viewLibs.set('pluto', {
             'main': 'lib/pluto.js',
             'origin': '/'
         });
         expect(viewResolve('pluto')).toBe(`${origin}/lib/pluto.js`);
         expect(viewResolve('pluto', {path: 'lib/pluto.html'})).toBe(`${origin}/lib/pluto.html`);
+    });
+
+    test ('viewRequire', async () => {
+        const o = await viewRequire('d3-selection');
+        expect(o.select).toBeTruthy();
+    });
+
+    test ('viewRequire merge', async () => {
+        const o = await viewRequire('d3-selection', 'd3-transition');
+        expect(o.select).toBeTruthy();
+        expect(o.transition).toBeTruthy();
     });
 });

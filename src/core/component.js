@@ -290,18 +290,18 @@ function error (cm, origEl, exc) {
 }
 
 
-function attributes (element) {
-    var attrs = {};
+const attributes = element => {
+    const attrs = {};
     let attr;
     for (let i = 0; i < element.attributes.length; ++i) {
         attr = element.attributes[i];
         attrs[attr.name] = attr.value;
     }
     return attrs;
-}
+};
 
 
-function reactiveParentProperty (key, value) {
+const reactiveParentProperty = (key, value) => {
     return {
         reactOn: [value],
         get () {
@@ -311,4 +311,4 @@ function reactiveParentProperty (key, value) {
             this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
-}
+};

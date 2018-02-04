@@ -21,5 +21,5 @@ export {
     template as viewTemplate
 } from './src/utils/template';
 
-export {isAbsoluteUrl, viewRequire, viewResolve} from './src/require';
+export {isAbsoluteUrl, viewRequireFrom, viewRequire, viewResolve, viewLibs} from './src/require';
 export {jsonResponse, HttpResponse, HttpError} from './src/utils/http';
