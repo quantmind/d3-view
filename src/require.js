@@ -5,7 +5,7 @@ var isAbsolute = new RegExp('^([a-z]+://|//)'),
     isRelative = new RegExp('^[.]{0,2}/'),
     libs = new Map,
     nodeModules = new Map,
-    inBrowser = typeof window !== 'undefined' && window.document;
+    inNode = Boolean(typeof module !== 'undefined' && module.exports);
 
 
 export const viewRequire = requireWithLibs();
@@ -53,9 +53,7 @@ export function viewResolve (name, options) {
 
 
 function requireWithLibs () {
-    let r;
-    if (inBrowser) r = requireFrom(viewResolve);
-    else r = nodeRequire;
+    let r = inNode ? nodeRequire : requireFrom(viewResolve);
     r.libs = libs;
     return r;
 }

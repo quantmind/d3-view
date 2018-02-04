@@ -4,6 +4,13 @@ const view = d3.view;
 
 const nextTick = d3.viewDebounce();
 
+const validateHTML = (html, jsdom) => {
+    if (!jsdom) jsdom = new JSDOM;
+    var d = jsdom.window.document.createElement('div');
+    d.innerHTML = html;
+    return d.innerHTML === html;
+};
+
 //
 // render function
 const test = {
@@ -53,14 +60,6 @@ const test = {
 };
 
 module.exports = test;
-
-
-function validateHTML (html, jsdom) {
-    if (!jsdom) jsdom = new JSDOM;
-    var d = jsdom.window.document.createElement('div');
-    d.innerHTML = html;
-    return d.innerHTML === html;
-}
 
 
 function Render (vm, jsdom) {
