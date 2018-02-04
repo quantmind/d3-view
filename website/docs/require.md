@@ -48,19 +48,19 @@ module.exports = {
 
 ## d3-require.js
 
-The d3-require.js javascript file contains a variation of [d3-require](https://github.com/d3/d3-require)
-with the following additional features:
+The [d3-require.js][] javascript file is a minimal, promise-based implementation
+to require [asynchronous module definitions](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) (AMD)
 ```javascript
-d3.require.libs
+d3.require('d3-view').then(d3 => {
+    ...
+});
 ```
-a Map matching library names with url or partial url. The ``d3.resolve`` method
-first check if the ``name`` is contained in the ``libs`` map.
 
 ### Version
 
-THe ``libs`` map is useful for setting vesions:
+The ``d3.libs`` map is useful for setting versions:
 ```javascript
-d3.require.libs.set('d3-selection', {
+d3.libs.set('d3-selection', {
     version: '1.1'
 });
 ```
@@ -73,7 +73,7 @@ https://unpkg.com/d3-selection@1.1
 
 THe ``libs`` map is useful for setting the main file of a distribution:
 ```javascript
-d3.require.libs.set('d3-selection', {
+d3.libs.set('d3-selection', {
     version: '1.1',
     main: 'build/d3-selection.min.js'
 });
@@ -87,7 +87,7 @@ https://unpkg.com/d3-selection@1.1/build/d3-selection.min.js
 
 This example will set the ``mylib`` requirement to a local module
 ```javascript
-d3.require.libs.set('mylib', {
+d3.libs.set('mylib', {
     origin: '/',
     main: 'the/main/module.js'
 });

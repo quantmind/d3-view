@@ -43,7 +43,7 @@
         "browserify-istanbul": "3.0",
         "commander": "2.13",
         "d3-transition": "1.1",
-        "eslint": "4.16",
+        "eslint": "4.17",
         "handlebars": "4",
         "jasmine-core": "2.9",
         "jsdom": "11.6",
