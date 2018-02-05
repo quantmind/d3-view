@@ -3,6 +3,7 @@ var base = require('./karma.base.js');
 
 
 module.exports = function (config) {
+    base.browserify.transform[0][1].plugins.push("istanbul");
 
     var options = assign(base, {
         singleRun: true,
@@ -27,14 +28,7 @@ module.exports = function (config) {
                     subdir: '.'
                 }
             ]
-        },
-
-        browserify: {
-            debug: true,
-            transform: [
-                ['babelify', {plugins: 'istanbul'}]
-            ]
-        },
+        }
     });
 
     options.preprocessors['!src/require.js'] = ['coverage'];

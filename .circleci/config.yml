@@ -16,7 +16,7 @@ jobs:
               command: npm prune --production
           - run:
               name: run view-require
-              command: yarn test-require
+              command: yarn test:require
           - run:
               name: test d3-view-test
               command: rm -rf node_modules && cd packages/d3-view-test && yarn install && yarn test
@@ -30,7 +30,7 @@ jobs:
               command: yarn install
           - run:
               name: coverage
-              command: yarn cover
+              command: yarn test:cover
           - run:
               name: upload coverage
               command: bash <(curl -s https://codecov.io/bash)
