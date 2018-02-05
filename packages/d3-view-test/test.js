@@ -1,6 +1,6 @@
-import {view} from 'd3-view';
+const view = require('d3-view').view;
 
-import {render, fakeFetch, httpJson, httpError, httpText, validateHTML} from './index';
+const {render, fakeFetch, httpJson, httpError, httpText, validateHTML} = require('./index');
 
 
 describe('Render -', () => {
@@ -151,11 +151,5 @@ describe('Render -', () => {
     test('validateHTML', async () => {
         expect(validateHTML('<div/>')).toBe(false);
         expect(validateHTML('<div></div>')).toBe(true);
-    });
-
-    test('require', async () => {
-        const vm = view();
-        const d3 = await vm.providers.require('d3-selection');
-        expect(d3).toBeTruthy();
     });
 });
