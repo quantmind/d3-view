@@ -19,7 +19,7 @@ jobs:
               command: yarn test-require
           - run:
               name: test d3-view-test
-              command: cd packages/d3-view-test && yarn install && yarn test
+              command: rm -rf node_modules && cd packages/d3-view-test && yarn install && yarn test
     coverage:
         docker:
           - image: circleci/node:latest-browsers

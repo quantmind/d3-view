@@ -26,7 +26,6 @@ export default [
         plugins: [
             json(),
             babel({
-                babelrc: false,
                 plugins: ['external-helpers'],
                 presets: ['es2015-rollup'],
                 externalHelpers: true
@@ -80,7 +79,6 @@ export default [
         plugins: [
             resolve(),
             babel({
-                babelrc: false,
                 plugins: ['external-helpers'],
                 presets: ['es2015-rollup']
             })

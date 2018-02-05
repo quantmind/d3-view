@@ -16,7 +16,14 @@ module.exports = {
 
     browserify: {
         debug: true,
-        transform: ['babelify']
+        transform: [
+            [
+                'babelify', {
+                    presets: ["env"],
+                    plugins: ["transform-async-to-generator"]
+                }
+            ]
+        ]
     },
 
     customLaunchers: {
