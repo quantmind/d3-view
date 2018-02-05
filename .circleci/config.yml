@@ -1,7 +1,6 @@
 version: 2
 jobs:
     tests:
-        working_directory: ~/tests
         docker:
           - image: circleci/node:latest-browsers
         steps:
@@ -22,7 +21,6 @@ jobs:
               name: test d3-view-test
               command: cd packages/d3-view-test && yarn install && yarn test
     coverage:
-        working_directory: ~/tests
         docker:
           - image: circleci/node:latest-browsers
         steps:
