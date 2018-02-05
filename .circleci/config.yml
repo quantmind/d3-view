@@ -18,6 +18,9 @@ jobs:
           - run:
               name: run view-require
               command: yarn test-require
+          - run:
+              name: test d3-view-test
+              command: cd packages/d3-view-test && yarn install && yarn test
     coverage:
         working_directory: ~/tests
         docker:
@@ -40,13 +43,17 @@ jobs:
           - checkout
           - run:
               name: install
-              command: yarn install
+              command: yarn install && cd packages/d3-view-test && yarn install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh
           - run:
-              name: release
+              name: release d3-view
               command: npm run-script release
+          - run:
+              name: release d3-view-test
+              command: cd packages/d3-view-test && npm run-script release
+
 
 
 workflows:
