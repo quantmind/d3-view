@@ -4,12 +4,12 @@ import logger from 'console';
 import {handleError, info} from './error';
 
 
-var START = '(function (require) {\n',
+var START = '(function (d3) {\n',
     END = [
         "Object.keys(dependencies).forEach(function (name) {",
-        "    require.libs.set(name, dependencies[name]);",
+        "    d3.libs.set(name, dependencies[name]);",
         "})",
-        "}(this.d3.require));",
+        "}(this.d3));",
         ""].join('\n');
 
 
