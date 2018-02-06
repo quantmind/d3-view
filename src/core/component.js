@@ -26,6 +26,8 @@ const protoComponent = {
     // If this component is already mounted, or it is mounting, it does nothing
     mount (el, data, onMounted) {
         if (mounted(this)) return;
+        // mark the element as a component
+        el.__d3_component__ = true;
         this.ownerDocument = el.ownerDocument;
         // fire mount events
         this.events.call('mount', undefined, this, el, data);

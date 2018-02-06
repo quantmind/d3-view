@@ -1,4 +1,4 @@
-import 'd3-transition';
-import {start} from 'd3-fluid';
+import {viewProviders} from 'd3-view';
+export {start} from 'd3-fluid';
 
-start();
+viewProviders.setDebug();

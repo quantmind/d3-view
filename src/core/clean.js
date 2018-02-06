@@ -24,7 +24,7 @@ function visualManager (records) {
 
         for (let i=0; i<nodes.length; ++i) {
             node = nodes[i];
-            if (!node.querySelectorAll) continue;
+            if (!node.querySelectorAll || node.__d3_component__) continue;
             sel = select(node);
             if (vm || sel.view()) {
                 sel.selectAll('*').each(destroy);

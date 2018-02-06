@@ -63,8 +63,6 @@ export default {
 
         (this.transition(exits) || exits).style('opacity', 0).remove();
 
-        const mounted = [];
-
         // Add all missing entries
         entries
             .enter()
@@ -77,29 +75,23 @@ export default {
                 .each(function (d, index) {
                     x = {index: index};
                     x[itemName] = d;
-                    mounted.push(
-                        forComponent({
-                            model: x,
-                            parent: vm
-                        }).mount(this).then(fv => {
-                            fv.sel.classed(itemClass, true);
-                            // replace the item with a property from the model
-                            // This allow for reactivity when d is an object
-                            items[index] = fv.model[itemName];
-                            tr = fv.transition();
-                            if (tr) tr.style('opacity', 1);
-                        })
-                    );
+                    forComponent({
+                        model: x,
+                        parent: vm
+                    }).mount(this).then(fv => {
+                        fv.sel.classed(itemClass, true);
+                        // replace the item with a property from the model
+                        // This allow for reactivity when d is an object
+                        items[index] = fv.model[itemName];
+                        tr = fv.transition();
+                        if (tr) tr.style('opacity', 1);
+                    });
                 });
 
-
-        // Do the update once all new entries are done
-        Promise.all(mounted).then(() => {
-            sel.selectAll(selector)
-                .each(function (d) {
-                    // update model itemName property
-                    this.__d3_view__.model[itemName] = d;
-                });
-        });
+        sel.selectAll(selector)
+            .each(function (d) {
+                // update model itemName property
+                this.__d3_view__.model[itemName] = d;
+            });
     }
 };
