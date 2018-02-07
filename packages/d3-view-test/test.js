@@ -152,4 +152,15 @@ describe('Render -', () => {
         expect(validateHTML('<div/>')).toBe(false);
         expect(validateHTML('<div></div>')).toBe(true);
     });
+
+    test('require', async () => {
+        var d = await render('<p>Hi</p>');
+        const o = await d.view.require('d3-let');
+        expect(o).toBeTruthy();
+        const o2 = await d.view.require('d3-let');
+        expect(o2).toBe(o);
+        const o3 = await d.view.require('d3-let', 'd3-array');
+        expect(o3).toBeTruthy();
+        expect(o3.range(10).length).toBe(10);
+    });
 });

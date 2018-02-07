@@ -4,6 +4,8 @@ import providers from '../utils/providers';
 import {htmlElement, template} from '../utils/template';
 import {jsonResponse, textResponse} from '../utils/http';
 import asSelect from '../utils/select';
+import {viewResolve, viewRequireFrom} from '../require';
+
 //
 //  Base d3-view Object
 //  =====================
@@ -99,6 +101,18 @@ export default {
         if (providers.logger.debug)
             providers.logger.debug(`[${this.name}] ${msg}`);
         return this;
+    },
+
+    require () {
+        const root = this.ownerDocument.defaultView;
+        if (!root.d3) root.d3 = {};
+        let require = root.d3.require;
+        if (!require) {
+            if (this.providers.require.root() === root) require = this.providers.require;
+            else require = viewRequireFrom(viewResolve, root);
+            root.d3.require = require;
+        }
+        return require.apply(undefined, arguments);
     }
 };
 

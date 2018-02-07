@@ -165,8 +165,22 @@ describe('view -', () => {
         expect(logger.debug).toBe(null);
     });
 
-    it ('domEvent', () => {
+    test ('domEvent', () => {
         var vm = view();
         expect(vm.domEvent()).toBe(null);
+    });
+
+    test ('empty', async () => {
+        const vm = view(),
+            sel = vm.select('body').select('p.dgskjhgfjkagfksjhgfk');
+        vm.providers.logger.pop();
+        await vm.mount(sel);
+        expect(vm.providers.logger.pop().length).toBe(1);
+    });
+
+    test ('plugin function', () => {
+        const vm = view();
+        expect(vm.use((d) => {d.okidoki = true;})).toBe(vm);
+        expect(vm.okidoki).toBe(true);
     });
 });

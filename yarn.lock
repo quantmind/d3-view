@@ -1501,7 +1501,11 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2.13, commander@^2.9.0, commander@~2.13.0:
+commander@2.14:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.14.0.tgz#7b25325963e6aace20d3a9285b09379b0c2208b5"
+
+commander@^2.9.0, commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
 
@@ -2051,7 +2055,7 @@ eslint-visitor-keys@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
 
-eslint@4.17:
+eslint@4.17, eslint@^4.1.1:
   version "4.17.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.17.0.tgz#dc24bb51ede48df629be7031c71d9dc0ee4f3ddf"
   dependencies:
@@ -3153,9 +3157,9 @@ istanbul@^0.4.0:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
-jasmine-core@2.9:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.9.1.tgz#b6bbc1d8e65250d56f5888461705ebeeeb88f22f"
+jasmine-core@3.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.0.0.tgz#8cdb20cf336b1b86830edc58b1a8aac47455e94c"
 
 js-string-escape@^1.0.0:
   version "1.0.1"
@@ -4931,6 +4935,13 @@ rollup-plugin-commonjs@8.3:
     estree-walker "^0.5.0"
     magic-string "^0.22.4"
     resolve "^1.4.0"
+    rollup-pluginutils "^2.0.1"
+
+rollup-plugin-eslint@4.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-eslint/-/rollup-plugin-eslint-4.0.0.tgz#9fb97c0ef5bc0d7a54eef1f28170f1974dc938ec"
+  dependencies:
+    eslint "^4.1.1"
     rollup-pluginutils "^2.0.1"
 
 rollup-plugin-json@2.3:
