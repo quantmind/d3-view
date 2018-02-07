@@ -12,7 +12,9 @@ import {viewResolve, viewRequireFrom} from '../require';
 //
 export default {
     // available once mounted
+    // this is the browser window.document unless we are mounting on jsdom
     ownerDocument: null,
+    //
     // d3-view object
     isd3: true,
     //
@@ -23,12 +25,16 @@ export default {
         return htmlElement(source, context, ownerDocument || this.ownerDocument);
     },
     //
-    select (el) {
-        return select(el);
+    select (selector) {
+        if (typeof selector === "string")
+            return select(this.ownerDocument || document).select(selector);
+        return select(selector);
     },
     //
-    selectAll (el) {
-        return selectAll(el);
+    selectAll (selector) {
+        if (typeof selector === "string")
+            return select(this.ownerDocument || document).selectAll(selector);
+        return selectAll(selector);
     },
     //
     createElement (tag) {

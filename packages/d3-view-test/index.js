@@ -59,7 +59,16 @@ const test = {
                 return Promise.resolve(data);
             }
         };
+    },
+
+    getWaiter () {
+        const waiter = {};
+        waiter.promise = new Promise(function (resolve) {
+            waiter.resolve = resolve;
+        });
+        return waiter;
     }
+
 };
 
 module.exports = test;
