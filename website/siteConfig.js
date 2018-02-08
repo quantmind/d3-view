@@ -32,6 +32,62 @@ module.exports = {
                                 href: "/docs/develop"
                             }
                         ]
+                    },
+                    {
+                        name: "API",
+                        icon: "package",
+                        items: [
+                            {
+                                name: "Reactive model",
+                                href: "model"
+                            },
+                            {
+                                name: "Base prototype",
+                                href: "base"
+                            },
+                            {
+                                name: "Components",
+                                href: "component"
+                            },
+                            {
+                                name: "Directives",
+                                href: "directives"
+                            },
+                            {
+                                name: "Expressions",
+                                href: "expressions"
+                            },
+                            {
+                                name: "Tools",
+                                href: "tools"
+                            }
+                        ]
+                    },
+                    {
+                        name: "Extending",
+                        items: [
+                            {
+                                name: "Getting started",
+                                href: "plugins"
+                            },
+                            {
+                                name: "Examples",
+                                href: "providers"
+                            },
+                            {
+                                name: "Development",
+                                href: "forms"
+                            }
+                        ]
+                    },
+                    {
+                        name: "Addons",
+                        items: [
+                            {
+                                name: "View require",
+                                href: "require"
+                            }
+                        ]
                     }
                 ]
             },

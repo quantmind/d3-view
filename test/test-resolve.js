@@ -1,5 +1,5 @@
 import {test} from './utils';
-import {viewResolve, viewRequire, viewLibs} from '../index';
+import {viewResolve, viewRequire, viewLibs, view} from '../index';
 
 
 describe('d3.resolve -', () => {
@@ -50,7 +50,9 @@ describe('d3.resolve -', () => {
     });
 
     test ('viewRequire merge', async () => {
-        const o = await viewRequire('d3-selection', 'd3-transition');
+        var vm = view();
+        await vm.mount(vm.select('body').append('div'));
+        const o = await vm.require('d3-selection', 'd3-transition');
         expect(o.select).toBeTruthy();
         expect(o.transition).toBeTruthy();
     });

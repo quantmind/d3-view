@@ -84,4 +84,9 @@ describe('Utils -', () => {
         var el = vm.createElement('div');
         expect(viewSelect(el)).toBe(el);
     });
+
+    test ('selectAll', () => {
+        const vm = view();
+        expect(vm.selectAll('div')).toBeTruthy();
+    });
 });

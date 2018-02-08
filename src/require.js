@@ -10,7 +10,7 @@ export const viewResolve = (name, options) => {
     var dist = viewLibs.get(name),
         main = name,
         path = null,
-        base = location;
+        base = typeof location !== 'undefined' ? location : '';
 
     if (options) {
         if (typeof options.base === 'string') base = options.base;
@@ -48,11 +48,14 @@ export const viewRequireFrom = (resolver, root) => {
         queue = [],
         map = queue.map,
         some = queue.some,
+        getRoot = () => {
+            return (!root && typeof window !== 'undefined') ? window : root;
+        },
         requireRelative = base => {
             return name => {
                 var url = resolver(name + "", base), module = modules.get(url);
                 if (!module) modules.set(url, module = new Promise((resolve, reject) => {
-                    root = root || window;
+                    root = getRoot();
                     const script = root.document.createElement("script");
                     script.onload = function() {
                         try { resolve(queue.pop()(requireRelative(url))); }
@@ -71,13 +74,17 @@ export const viewRequireFrom = (resolver, root) => {
                 return module;
             };
         },
-        require = requireRelative(null);
+        requireOne = requireRelative(null);
+
+    function require (name) {
+        return arguments.length > 1 ? Promise.all(map.call(arguments, requireOne)).then(merge) : requireOne(name);
+    }
+
+    require.root = getRoot;
 
     define.amd = {};
 
-    return function(name) {
-        return arguments.length > 1 ? Promise.all(map.call(arguments, require)).then(merge) : require(name);
-    };
+    return require;
 
     function define (name, dependencies, factory) {
         if (arguments.length < 3) factory = dependencies, dependencies = name;

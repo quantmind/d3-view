@@ -1,6 +1,5 @@
-const JSDOM = require('jsdom').JSDOM;
+const {JSDOM} = require('jsdom');
 const d3 = require('d3-view');
-const view = d3.view;
 
 const nextTick = d3.viewDebounce();
 
@@ -21,9 +20,13 @@ const test = {
     render (html, components) {
         if (!components) components = {};
         let vm = components;
-        if (!vm.isd3) vm = view({components});
-        var jsdom = new JSDOM(`<div id="root">${html}</div>`),
-            sel = vm.select(jsdom.window.document).select('#root');
+        if (!vm.isd3) vm = d3.view({components});
+        const options = {
+            runScripts: 'dangerously',
+            resources: 'usable'
+        };
+        const jsdom = new JSDOM(`<div id="root">${html}</div>`, options);
+        const sel = vm.select(jsdom.window.document).select('#root');
         return vm.mount(sel).then(() => new Render(vm, jsdom));
     },
 
@@ -56,7 +59,16 @@ const test = {
                 return Promise.resolve(data);
             }
         };
+    },
+
+    getWaiter () {
+        const waiter = {};
+        waiter.promise = new Promise(function (resolve) {
+            waiter.resolve = resolve;
+        });
+        return waiter;
     }
+
 };
 
 module.exports = test;

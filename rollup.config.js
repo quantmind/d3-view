@@ -1,5 +1,6 @@
 import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
+import eslint from 'rollup-plugin-eslint';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
@@ -48,7 +49,12 @@ export default [
         plugins: [
             json(),
             sourcemaps(),
-            resolve()
+            eslint({
+                exclude: ['*.json', 'node_modules/**']
+            }),
+            resolve({
+                browser: true
+            })
         ]
     },
     {
@@ -63,7 +69,9 @@ export default [
         },
         plugins: [
             json(),
-            resolve(),
+            resolve({
+                browser: true
+            }),
             uglify()
         ]
     },
@@ -77,7 +85,9 @@ export default [
             name: 'd3'
         },
         plugins: [
-            resolve(),
+            resolve({
+                browser: true
+            }),
             babel({
                 plugins: ['external-helpers'],
                 presets: ['es2015-rollup']
@@ -95,12 +105,12 @@ export default [
             json(),
             commonjs({
                 include: 'node_modules/**'
-            }),
-            resolve()
+            })
         ],
         external: [
             'fs',
             'child_process',
+            'commander',
             'console',
             'path',
             'module',

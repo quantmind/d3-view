@@ -4,13 +4,17 @@ import providers from '../utils/providers';
 import {htmlElement, template} from '../utils/template';
 import {jsonResponse, textResponse} from '../utils/http';
 import asSelect from '../utils/select';
+import {viewResolve, viewRequireFrom} from '../require';
+
 //
 //  Base d3-view Object
 //  =====================
 //
 export default {
     // available once mounted
+    // this is the browser window.document unless we are mounting on jsdom
     ownerDocument: null,
+    //
     // d3-view object
     isd3: true,
     //
@@ -21,12 +25,16 @@ export default {
         return htmlElement(source, context, ownerDocument || this.ownerDocument);
     },
     //
-    select (el) {
-        return select(el);
+    select (selector) {
+        if (typeof selector === "string")
+            return select(this.ownerDocument || document).select(selector);
+        return select(selector);
     },
     //
-    selectAll (el) {
-        return selectAll(el);
+    selectAll (selector) {
+        if (typeof selector === "string")
+            return select(this.ownerDocument || document).selectAll(selector);
+        return selectAll(selector);
     },
     //
     createElement (tag) {
@@ -99,6 +107,18 @@ export default {
         if (providers.logger.debug)
             providers.logger.debug(`[${this.name}] ${msg}`);
         return this;
+    },
+
+    require () {
+        const root = this.ownerDocument.defaultView;
+        if (!root.d3) root.d3 = {};
+        let require = root.d3.require;
+        if (!require) {
+            if (this.providers.require.root() === root) require = this.providers.require;
+            else require = viewRequireFrom(viewResolve, root);
+            root.d3.require = require;
+        }
+        return require.apply(undefined, arguments);
     }
 };
 
