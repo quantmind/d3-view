@@ -36,21 +36,18 @@ jobs:
               command: cd packages/d3-view-test && yarn test
     release:
         docker:
-          - image: circleci/node:latest-browsers
+          - image: circleci/node:latest
         steps:
           - checkout
           - run:
               name: install
-              command: yarn install && cd packages/d3-view-test && yarn install
+              command: yarn install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh
           - run:
               name: release d3-view
               command: npm run-script release
-          - run:
-              name: release d3-view-test
-              command: cd packages/d3-view-test && npm run-script release
     release-d3-view-test:
         docker:
           - image: circleci/node:latest
