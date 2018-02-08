@@ -1,5 +1,5 @@
 {
-    "version": "0.2.0",
+    "version": "0.3.0",
     "name": "d3-view-test",
     "description": "Testing utilities for d3-view",
     "author": {
@@ -24,7 +24,7 @@
     "module": "index",
     "jsnext:main": "index",
     "dependencies": {
-        "d3-view": "1.3",
+        "d3-view": "^1.3.3",
         "jsdom": "11.6"
     },
     "devDependencies": {

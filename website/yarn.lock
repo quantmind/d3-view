@@ -769,9 +769,13 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2.13, commander@^2.9.0, commander@~2.13.0:
+commander@2.13, commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
+
+commander@^2.9.0:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
 
 component-emitter@^1.2.1:
   version "1.2.1"
@@ -1082,10 +1086,6 @@ d3-let@0.4:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/d3-let/-/d3-let-0.4.0.tgz#e2f898ffa4511ecd7f11ed296b9fb366d7970b3c"
 
-d3-require@0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/d3-require/-/d3-require-0.6.3.tgz#8a30d41007f8dc79bc14ee90444a192e03baeff7"
-
 d3-selection@1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.2.0.tgz#1b8ec1c7cedadfb691f2ba20a4a3cfbeb71bbc88"
@@ -1133,12 +1133,11 @@ d3-view@1.2:
     d3-timer "1.0"
 
 d3-view@1.3:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/d3-view/-/d3-view-1.3.0.tgz#c5daf5eda1da1e8c8183a1fe894f94957ed36bf9"
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/d3-view/-/d3-view-1.3.3.tgz#90704e7d0178536ba0956c7d595c462601c856bd"
   dependencies:
     d3-dispatch "1.0"
     d3-let "0.4"
-    d3-require "0.6.3"
     d3-selection "1.3"
     d3-timer "1.0"
 
@@ -2896,8 +2895,8 @@ minimist@~0.0.1:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
 
 mixin-deep@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.0.tgz#47a8732ba97799457c8c1eca28f95132d7e8150a"
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.1.tgz#a49e7268dce1a0d9698e45326c5626df3543d0fe"
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"

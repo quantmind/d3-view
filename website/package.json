@@ -12,11 +12,11 @@
         "handlebars": "4.0"
     },
     "devDependencies": {
+        "bootstrap": "4.0",
+        "cssnano": "3.10",
         "d3-fluid": "0.2",
         "d3-view": "1.3",
         "d3-view-components": "0.2",
-        "bootstrap": "4.0",
-        "cssnano": "3.10",
         "livereload": "0.6",
         "node-sass": "4.7",
         "nodemon": "1.14",
