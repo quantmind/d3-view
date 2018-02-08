@@ -1,6 +1,15 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'd3-fluid/scss/d3-fluid';
 
-markdown {
-    visibility: hidden;
+.docs {
+    .markdown {
+        h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+        }
+
+        h2 {
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+    }
 }

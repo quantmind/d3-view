@@ -2,11 +2,9 @@
     "private": true,
     "license": "BSD-3-Clause",
     "scripts": {
-        "js": "webpack --config webpack.config.js",
-        "js:watch": "export NODE_ENV=dev && rollup -c -w",
-        "css": "node-sass src/index.scss static/site.css --include-path node_modules --output-style compressed",
+        "watch": "export NODE_ENV=dev && rollup -c -w",
         "prepare": "view-require -c require.config.js && rollup -c rollup.config.js",
-        "serve": "d3fluid --debug"
+        "serve": "nodemon -w siteConfig.js ./node_modules/.bin/d3fluid -- --debug"
     },
     "dependencies": {
         "handlebars": "4.0"
