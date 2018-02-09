@@ -191,25 +191,25 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
 
 // Used by both Component and view
 
-export function extendComponents (container, components) {
+export const extendComponents = (container, components) => {
     map(components).forEach((obj, key) => {
         container.set(key, createComponent(key, obj, protoComponent));
     });
     return container;
-}
+};
 
-export function extendDirectives (container, directives) {
+export const extendDirectives = (container, directives) => {
     map(directives).forEach((obj, key) => {
         container.set(key, createDirective(obj));
     });
     return container;
-}
+};
 
 //
 //  Finalise the binding between the view and the model
 //  inject the model into the view element
 //  call the mounted hook and can return a Promise
-export function asView(vm, element, onMounted) {
+export const asView = (vm, element, onMounted) => {
 
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
@@ -218,9 +218,9 @@ export function asView(vm, element, onMounted) {
     });
     // Apply model to element and mount
     return vm.select(element).view(vm).mount(null, onMounted).then(() => vmMounted(vm, onMounted));
-}
+};
 
-export function mounted (vm, onMounted) {
+export const mounted = (vm, onMounted) => {
     if (vm.isMounted === undefined) {
         vm.isMounted = false;
         return false;
@@ -242,7 +242,7 @@ export function mounted (vm, onMounted) {
         viewEvents.call('component-mounted', undefined, vm);
     }
     return true;
-}
+};
 
 // Internals
 
@@ -251,7 +251,7 @@ export function mounted (vm, onMounted) {
 //  =========================
 //
 //  This function is called when a component/view has all its children added
-function vmMounted(vm, onMounted) {
+const vmMounted = (vm, onMounted) => {
     var parent = vm.parent;
     vm.childrenMounted();
     if (parent && !parent.isMounted)
@@ -261,11 +261,11 @@ function vmMounted(vm, onMounted) {
     else
         mounted(vm, onMounted);
     return vm;
-}
+};
 
 // Compile a component model
 // This function is called once a component has rendered the component element
-function compile (cm, origEl, element, onMounted) {
+const compile = (cm, origEl, element, onMounted) => {
     if (isString(element)) {
         const props = Object.keys(cm.props).length ? cm.props : null;
         element = cm.viewElement(element, props, origEl.ownerDocument);
@@ -281,15 +281,15 @@ function compile (cm, origEl, element, onMounted) {
     cm.select(origEl).remove();
     //
     return asView(cm, element, onMounted);
-}
+};
 
 
 // Invoked when a component cm has failed to rander
-function error (cm, origEl, exc) {
+const error = (cm, origEl, exc) => {
     cm.logError(`could not render: ${exc}`);
     viewEvents.call('component-error', undefined, cm, origEl, exc);
     return cm;
-}
+};
 
 
 const attributes = element => {
