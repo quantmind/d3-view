@@ -14,7 +14,9 @@ module.exports = {
                 template: "sidenav",
                 title: "Documentation",
                 highlightTheme: "androidstudio",
-                sidebarToggle: "https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg",
+                sidebar: {
+                    sidebarToggle: "https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg"
+                },
                 navigation: [
                     {
                         name: "Overview",
@@ -68,15 +70,15 @@ module.exports = {
                         name: "Extending",
                         items: [
                             {
-                                name: "Getting started",
+                                name: "Plugins",
                                 href: "/docs/plugins"
                             },
                             {
-                                name: "Examples",
+                                name: "Providers",
                                 href: "/docs/providers"
                             },
                             {
-                                name: "Development",
+                                name: "Forms",
                                 href: "/docs/forms"
                             }
                         ]
