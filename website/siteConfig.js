@@ -14,6 +14,9 @@ module.exports = {
                 template: "sidenav",
                 title: "Documentation",
                 highlightTheme: "androidstudio",
+                sidebar: {
+                    sidebarToggle: "https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg"
+                },
                 navigation: [
                     {
                         name: "Overview",
@@ -39,27 +42,27 @@ module.exports = {
                         items: [
                             {
                                 name: "Reactive model",
-                                href: "model"
+                                href: "/docs/model"
                             },
                             {
                                 name: "Base prototype",
-                                href: "base"
+                                href: "/docs/base"
                             },
                             {
                                 name: "Components",
-                                href: "component"
+                                href: "/docs/component"
                             },
                             {
                                 name: "Directives",
-                                href: "directives"
+                                href: "/docs/directives"
                             },
                             {
                                 name: "Expressions",
-                                href: "expressions"
+                                href: "/docs/expressions"
                             },
                             {
                                 name: "Tools",
-                                href: "tools"
+                                href: "/docs/tools"
                             }
                         ]
                     },
@@ -67,16 +70,16 @@ module.exports = {
                         name: "Extending",
                         items: [
                             {
-                                name: "Getting started",
-                                href: "plugins"
+                                name: "Plugins",
+                                href: "/docs/plugins"
                             },
                             {
-                                name: "Examples",
-                                href: "providers"
+                                name: "Providers",
+                                href: "/docs/providers"
                             },
                             {
-                                name: "Development",
-                                href: "forms"
+                                name: "Forms",
+                                href: "/docs/forms"
                             }
                         ]
                     },
@@ -85,7 +88,7 @@ module.exports = {
                         items: [
                             {
                                 name: "View require",
-                                href: "require"
+                                href: "/docs/require"
                             }
                         ]
                     }
@@ -94,7 +97,13 @@ module.exports = {
             {
                 slug: "",
                 path: "site",
-                template: "topnav"
+                template: "topnav",
+                navigationRight: [
+                    {
+                        href: "/docs",
+                        name: "docs"
+                    }
+                ]
             }
         ],
         plugins: {

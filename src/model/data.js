@@ -1,3 +1,6 @@
+const serialTypes = new Set([Boolean, String, Number]);
+
+
 export default function () {
     var model = this,
         data = {},
@@ -5,7 +8,7 @@ export default function () {
         value;
 
     keys.forEach(key => {
-        if (key) {
+        if (key && key.substring(0, 1) !== '$') {
             value = getValue(model[key]);
             if (value !== undefined) data[key] = value;
         }
@@ -15,7 +18,8 @@ export default function () {
 
 
 function getValue (value) {
-    if (typeof value === 'function') return;
-    if (value && typeof value.$data === 'function') return value.$data();
-    return value;
+    if (!value) return value;
+    else if (value.constructor === Array) return value.map(getValue);
+    else if (typeof value.$data === 'function') return value.$data();
+    else if (serialTypes.has(value.constructor)) return value;
 }
