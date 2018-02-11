@@ -1,4 +1,4 @@
-import {isFunction, isArray, isObject, isString, pop, assign} from 'd3-let';
+import {isFunction, isArray, isString, pop, assign} from 'd3-let';
 import {dispatch} from 'd3-dispatch';
 
 import base from './transition';
@@ -63,23 +63,17 @@ const protoComponent = {
 
         // Create model
         this.model = model = this.createModel(model);
-        if (isArray(props)) props = props.reduce((o, key) => {
-            o[key] = undefined;
-            return o;
-        }, {});
 
-        if (isObject(props)) {
-            Object.keys(props).forEach(key => {
-                value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
-                if (value !== undefined) {
-                    // data point to a model attribute
-                    if (isString(value) && model[value]) value = model[value];
-                    data[key] = value;
-                } else if (props[key] !== undefined) {
-                    data[key] = props[key];
-                }
-            });
-        }
+        Object.keys(props).forEach(key => {
+            value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
+            if (value !== undefined) {
+                // data point to a model attribute
+                if (isString(value) && model[value]) value = model[value];
+                data[key] = value;
+            } else if (props[key] !== undefined) {
+                data[key] = props[key];
+            }
+        });
         // Add once only directive values
         if (directives) directives.once(model, data);
         //
@@ -113,7 +107,8 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
     var obj = assign({}, o),
         classComponents = extendComponents(new Map, pop(obj, 'components')),
         classDirectives = extendDirectives(new Map, pop(obj, 'directives')),
-        model = pop(obj, 'model');
+        model = pop(obj, 'model'),
+        props = pop(obj, 'props');
 
     function Component (options) {
         var parent = pop(options, 'parent'),
@@ -138,42 +133,43 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
                 }
             },
             components: {
-                get: function () {
+                get () {
                     return components;
                 }
             },
             directives: {
-                get: function () {
+                get () {
                     return directives;
                 }
             },
             parent: {
-                get: function () {
+                get () {
                     return parent;
                 }
             },
             root: {
-                get: function () {
+                get () {
                     return parent ? parent.root : this;
                 }
             },
             cache: {
-                get: function () {
+                get () {
                     return parent ? parent.cache : cache;
                 }
             },
             uid: {
-                get: function () {
+                get () {
                     return this.model.uid;
                 }
             },
             events: {
-                get: function () {
+                get () {
                     return events;
                 }
             }
         });
-        this.model = assign({}, isFunction(model) ? model() : model, pop(options, 'model'));
+        this.props = asObject(props, pop(options, 'props'));
+        this.model = asObject(model, pop(options, 'model'));
         viewEvents.call('component-created', undefined, this);
     }
 
@@ -286,7 +282,8 @@ const compile = (cm, origEl, element, onMounted) => {
 
 // Invoked when a component cm has failed to rander
 const error = (cm, origEl, exc) => {
-    cm.logError(`could not render: ${exc}`);
+    cm.logWarn(`failed to render due to the unhandled exception reported below`);
+    cm.logError(exc);
     viewEvents.call('component-error', undefined, cm, origEl, exc);
     return cm;
 };
@@ -313,4 +310,15 @@ const reactiveParentProperty = (key, value) => {
             this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
+};
+
+
+const asObject = (value, opts) => {
+    if (isFunction(value)) value = value();
+    if (isArray(value))
+        value = value.reduce((o, key) => {
+            o[key] = undefined;
+            return o;
+        }, {});
+    return assign({}, value, opts);
 };
