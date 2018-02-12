@@ -2,7 +2,6 @@ import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
 import {createComponent} from '../core/component';
-import protoView from '../core/view';
 
 //
 //  d3-for directive
@@ -57,7 +56,7 @@ export default {
             vm = sel.view();
 
         let forComponent = vm.components.get(creator.tagName.toLowerCase());
-        if (!forComponent) forComponent = createComponent('forView', protoView);
+        if (!forComponent) forComponent = createComponent('forView', {});
 
         let x, el, fel, tr;
 
