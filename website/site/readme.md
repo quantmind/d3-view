@@ -2,7 +2,7 @@
   <div class="container text-center">
     <h1 class="display-4">d3 view</h1>
     <p class="lead">d3 plugin for building interactive data-driven web interfaces</p>
-    <p><a class="btn btn-outline-info btn-lg" role="button" aria-pressed="true" href="https://github.com/{{ github }}">Github</a><p>
+    <p><a class="btn btn-outline-info btn-lg" role="button" aria-pressed="true" href="https://github.com/{{ meta.github }}">Github</a><p>
   </div>
 </div>
 <div class="container">
