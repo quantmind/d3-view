@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>d3 view app</title>
+  <meta charset='utf-8'>
+  <script src='https://unpkg.com/d3-view/build/d3-require.js'></script>
+</head>
+<body>
+  <div id='app'><p d3-html='countdown'></p></div>
+  <script>
+    d3.require('d3-view', 'd3-timer').then(async d3 => {
+      const vm = await d3.view({
+        model: {countdown: 5}
+      }).mount('#app');
+
+      const timer = d3.interval(() => {
+        vm.model.countdown -= 1;
+        if (!vm.model.countdown) {
+          vm.model.countdown = 'Welcome to d3-view!';
+          timer.stop();
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

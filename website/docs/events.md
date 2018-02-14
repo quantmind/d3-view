@@ -7,6 +7,7 @@ for registering events triggered by views, components and directives.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [component-created](#component-created)
 - [component-mount](#component-mount)
 - [component-children-mounted](#component-children-mounted)
 - [component-mounted](#component-mounted)
@@ -15,12 +16,22 @@ for registering events triggered by views, components and directives.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## component-created
+
+Fired when a component has been created. In this state the component is unmounted and the ``model``
+attribute is a vanilla object.
+```javascript
+viewEvent.on('component-created', vm => {
+    vm.logInfo("Hi, I've been created");
+});
+```
+
 ## component-mount
 
-Fired when a component is about to be mounted. In this state the component unmounted and has the same properties as in the ``comonent-created`` event. The onlyt difference is in the availability of the ``ownerDocument`` attribute.
+Fired when a component is about to be mounted. In this state the component is unmounted and has the same properties as in the ``component-created`` event. The only difference is the availability of the ``ownerDocument`` attribute.
 ```javascript
-viewEvent.on('component-mount', (vm, origEl, data) => {
-    vm.logInfo("Hi, I'm about to be mouned");
+viewEvent.on('component-mount.test', (vm, origEl, data) => {
+    vm.logInfo("Hi, I'm about to be mounted");
 });
 ```
 
@@ -28,16 +39,16 @@ viewEvent.on('component-mount', (vm, origEl, data) => {
 
 Fired when all children components have been mounted
 ```javascript
-viewEvent.on('component-children-mounted', vm => {
+viewEvent.on('component-children-mounted.test', vm => {
     vm.logInfo("Hi, Children are fully mounted");
 });
 ```
 
 ## component-mounted
 
-Fired when a componened has been fully mounted
+Fired when a component has been fully mounted
 ```javascript
-viewEvent.on('component-mounted', vm => {
+viewEvent.on('component-mounted.test', vm => {
     vm.logInfo("Hi, I'm fully mounted");
 });
 ```
@@ -46,14 +57,14 @@ viewEvent.on('component-mounted', vm => {
 
 Fired when the component failed to mount
 ```javascript
-viewEvent.on('component-error', (vm, origEl, exc) {
+viewEvent.on('component-error.test', (vm, origEl, exc) {
     // an error has occurred and it has been logged already
 });
 ```
 
 ## directive-refresh
 ```javascript
-viewEvent.on('directive-refresh', (dir, model, value) => {
+viewEvent.on('directive-refresh.test', (dir, model, value) => {
     dir.logInfo("Hi, I've just refreshed");
 });
 ```

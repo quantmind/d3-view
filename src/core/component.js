@@ -1,6 +1,7 @@
 import {isFunction, isArray, isObject, isString, pop, assign} from 'd3-let';
 import {dispatch} from 'd3-dispatch';
 
+import './selection';
 import base from './transition';
 import createDirective from './directive';
 import asSelect from '../utils/select';
@@ -24,8 +25,11 @@ const protoComponent = {
     //
     // Mount the component into an element
     // If this component is already mounted, or it is mounting, it does nothing
-    mount (el, data, onMounted) {
+    mount (el, data) {
         if (mounted(this)) return;
+        if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
+        el = asSelect(el).node();
+        if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
         // mark the element as a component
         el.__d3_component__ = true;
         this.ownerDocument = el.ownerDocument;
@@ -35,10 +39,11 @@ const protoComponent = {
         this.events.on('mount', null);
         // fire global mount event
         viewEvents.call('component-mount', undefined, this, el, data);
+        //
         var sel = this.select(el),
             directives = sel.directives(),
             dattrs = directives ? directives.attrs : attributes(el),
-            parentModel = this.parent.model,
+            parentModel = this.parent ? this.parent.model : null,
             datum = sel.datum();
 
         let props = this.props,
@@ -52,7 +57,7 @@ const protoComponent = {
         for (key in model) {
             value = pop(modelData, key);
             if (value !== undefined) {
-                if (isString(value)) {
+                if (isString(value) && parentModel) {
                     if (parentModel.$isReactive(value)) {
                         if (value !== key) model[key] = reactiveParentProperty(key, value);
                         else delete model[key];
@@ -63,28 +68,23 @@ const protoComponent = {
 
         // Create model
         this.model = model = this.createModel(model);
-        if (isArray(props)) props = props.reduce((o, key) => {
-            o[key] = undefined;
-            return o;
-        }, {});
 
-        if (isObject(props)) {
-            Object.keys(props).forEach(key => {
-                value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
-                if (value !== undefined) {
-                    // data point to a model attribute
-                    if (isString(value) && model[value]) value = model[value];
-                    data[key] = value;
-                } else if (props[key] !== undefined) {
-                    data[key] = props[key];
-                }
-            });
-        }
+        Object.keys(props).forEach(key => {
+            value = maybeJson(modelData[key] === undefined ? (data[key] === undefined ? dattrs[key] : data[key]) : modelData[key]);
+            if (value !== undefined) {
+                // data point to a model attribute
+                if (isString(value) && model[value]) value = model[value];
+                data[key] = value;
+            } else if (props[key] !== undefined) {
+                data[key] = props[key];
+            }
+        });
         // Add once only directive values
         if (directives) directives.once(model, data);
         //
         // create the new element from the render function
         this.props = data;
+        if (!parentModel) return asView(this, el);
 
         let newEl;
         try {
@@ -94,7 +94,7 @@ const protoComponent = {
         }
         if (!newEl || !newEl.then) newEl = Promise.resolve(newEl);
         return newEl
-            .then(element => compile(this, el, element, onMounted))
+            .then(element => compile(this, el, element))
             .catch (exc => error(this, el, exc));
     },
 
@@ -103,6 +103,24 @@ const protoComponent = {
         model.$$view = this;
         model.$$name = this.name;
         return model;
+    },
+
+    use (plugin) {
+        if (isObject(plugin)) plugin.install(this);
+        else plugin(this);
+        return this;
+    },
+
+    addComponent (name, obj) {
+        var component = createComponent(name, obj);
+        this.components.set(name, component);
+        return component;
+    },
+
+    addDirective (name, obj) {
+        var directive = createDirective(obj);
+        this.directives.set(name, directive);
+        return directive;
     }
 };
 
@@ -113,7 +131,8 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
     var obj = assign({}, o),
         classComponents = extendComponents(new Map, pop(obj, 'components')),
         classDirectives = extendDirectives(new Map, pop(obj, 'directives')),
-        model = pop(obj, 'model');
+        model = pop(obj, 'model'),
+        props = pop(obj, 'props');
 
     function Component (options) {
         var parent = pop(options, 'parent'),
@@ -138,42 +157,43 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
                 }
             },
             components: {
-                get: function () {
+                get () {
                     return components;
                 }
             },
             directives: {
-                get: function () {
+                get () {
                     return directives;
                 }
             },
             parent: {
-                get: function () {
+                get () {
                     return parent;
                 }
             },
             root: {
-                get: function () {
+                get () {
                     return parent ? parent.root : this;
                 }
             },
             cache: {
-                get: function () {
+                get () {
                     return parent ? parent.cache : cache;
                 }
             },
             uid: {
-                get: function () {
+                get () {
                     return this.model.uid;
                 }
             },
             events: {
-                get: function () {
+                get () {
                     return events;
                 }
             }
         });
-        this.model = assign({}, isFunction(model) ? model() : model, pop(options, 'model'));
+        this.props = asObject(props, pop(options, 'props'));
+        this.model = asObject(model, pop(options, 'model'));
         viewEvents.call('component-created', undefined, this);
     }
 
@@ -209,7 +229,7 @@ export const extendDirectives = (container, directives) => {
 //  Finalise the binding between the view and the model
 //  inject the model into the view element
 //  call the mounted hook and can return a Promise
-export const asView = (vm, element, onMounted) => {
+export const asView = (vm, element) => {
 
     Object.defineProperty(sel(vm), 'el', {
         get: function () {
@@ -217,10 +237,10 @@ export const asView = (vm, element, onMounted) => {
         }
     });
     // Apply model to element and mount
-    return vm.select(element).view(vm).mount(null, onMounted).then(() => vmMounted(vm, onMounted));
+    return vm.select(element).view(vm).mount().then(() => vmMounted(vm));
 };
 
-export const mounted = (vm, onMounted) => {
+export const mounted = (vm) => {
     if (vm.isMounted === undefined) {
         vm.isMounted = false;
         return false;
@@ -232,9 +252,7 @@ export const mounted = (vm, onMounted) => {
         vm.isMounted = true;
         // invoke mounted component hook
         vm.mounted();
-        // invoke onMounted callback if available
-        if (onMounted) onMounted(vm);
-        // last invoke the view mounted events
+        // invoke the view mounted events
         vm.events.call('mounted', undefined, vm);
         // remove mounted events
         vm.events.on('mounted', null);
@@ -251,21 +269,21 @@ export const mounted = (vm, onMounted) => {
 //  =========================
 //
 //  This function is called when a component/view has all its children added
-const vmMounted = (vm, onMounted) => {
+const vmMounted = (vm) => {
     var parent = vm.parent;
     vm.childrenMounted();
     if (parent && !parent.isMounted)
         parent.events.on(`mounted.${vm.uid}`, () => {
-            mounted(vm, onMounted);
+            mounted(vm);
         });
     else
-        mounted(vm, onMounted);
+        mounted(vm);
     return vm;
 };
 
 // Compile a component model
 // This function is called once a component has rendered the component element
-const compile = (cm, origEl, element, onMounted) => {
+const compile = (cm, origEl, element) => {
     if (isString(element)) {
         const props = Object.keys(cm.props).length ? cm.props : null;
         element = cm.viewElement(element, props, origEl.ownerDocument);
@@ -280,13 +298,14 @@ const compile = (cm, origEl, element, onMounted) => {
     // remove the component element
     cm.select(origEl).remove();
     //
-    return asView(cm, element, onMounted);
+    return asView(cm, element);
 };
 
 
-// Invoked when a component cm has failed to rander
+// Invoked when a component cm has failed to render
 const error = (cm, origEl, exc) => {
-    cm.logError(`could not render: ${exc}`);
+    cm.logWarn(`failed to render due to the unhandled exception reported below`);
+    cm.logError(exc);
     viewEvents.call('component-error', undefined, cm, origEl, exc);
     return cm;
 };
@@ -313,4 +332,15 @@ const reactiveParentProperty = (key, value) => {
             this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
         }
     };
+};
+
+
+const asObject = (value, opts) => {
+    if (isFunction(value)) value = value();
+    if (isArray(value))
+        value = value.reduce((o, key) => {
+            o[key] = undefined;
+            return o;
+        }, {});
+    return assign({}, value, opts);
 };

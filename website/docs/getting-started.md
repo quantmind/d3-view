@@ -14,25 +14,46 @@
 
 If you use [NPM](https://www.npmjs.com/package/d3-view), ``npm install d3-view``.
 Otherwise, download the [latest release](https://github.com/quantmind/d3-view/releases).
-You can also load directly from [giottojs.org](https://giottojs.org),
-as a [standalone library](https://giottojs.org/latest/d3-view.js) or
-[unpkg](https://unpkg.com/d3-view/).
+You can also load directly from [unpkg](https://unpkg.com/d3-view/).
 AMD, CommonJS, and vanilla environments are supported. In vanilla, a d3 global is exported.
 Try [d3-view](https://runkit.com/npm/d3-view) in your browser.
-```javascript
-<script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
-<script src="https://unpkg.com/d3-let/build/d3-let.min.js"></script>
-<script src="https://d3js.org/d3-selection.v1.min.js"></script>
-<script src="https://d3js.org/d3-timer.v1.min.js"></script>
-<script src="https://unpkg.com/d3-view/build/d3-view.js"></script>
-<script>
 
-var vm = d3.view();
-...
-vm.mount("#my-element");
+## A simple App
 
-</script>
+To best understand d3-view is to code a simple application:
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>d3 view app</title>
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/d3-view/build/d3-require.js"></script>
+</head>
+<body>
+  <div id="app"><p d3-html="countdown"></p></div>
+  <script>
+    d3.require('d3-view', 'd3-timer').then(async d3 => {
+      const vm = d3.view({model: {countdown: 5}});
+      await vm.mount("#app");
+
+      const timer = d3.interval(() => {
+        vm.model.countdown -= 1;
+        if (!vm.model.countdown) {
+          vm.model.countdown = 'Welcome to d3-view!';
+          timer.stop();
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
 ```
+
+In this small example we have performed the following steps:
+* Created a ``view`` object with a [model](./model.md) containing the ``countdown`` attribute
+* Mounted the view into the DOM via the ``#app`` selector and waited to be ready (mounting is asynchronous)
+* The app displays the ``countdown`` value
+* Modified the countdown model attribute and see the value changing
 
 ## Dependencies
 

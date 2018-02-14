@@ -1,6 +1,9 @@
+import warn from '../utils/warn';
+
 import asModel from './as';
 import toString from './string';
 import $set from './set';
+import $connect from './connect';
 import $on from './on';
 import $update from './update';
 import $off from './off';
@@ -29,6 +32,7 @@ model.prototype = Model.prototype = {
     toString,
     $on,
     $change,
+    $connect,
     $emit,
     $update,
     $set,
@@ -38,7 +42,11 @@ model.prototype = Model.prototype = {
     $owner,
     $data,
     $push,
-    $splice
+    $splice,
+    $logWarn (msg) {
+        if (this.$$view) this.$$view.logWarn(msg);
+        else warn(msg);
+    }
 };
 
 Object.defineProperties(Model.prototype, {
