@@ -14,6 +14,13 @@ import viewModel from '../model/main';
 import Cache from './cache';
 
 
+export const protoView = {
+    doMount (el) {
+        return asView(this, el);
+    }
+};
+
+
 // prototype for both views and components
 const protoComponent = {
     //
@@ -27,9 +34,11 @@ const protoComponent = {
     // If this component is already mounted, or it is mounting, it does nothing
     mount (el, data) {
         if (mounted(this)) return;
-        if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
         el = asSelect(el).node();
-        if (!el) return this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
+        if (!el) {
+            this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
+            return Promise.resolve(this);
+        }
         // mark the element as a component
         el.__d3_component__ = true;
         this.ownerDocument = el.ownerDocument;
@@ -84,11 +93,13 @@ const protoComponent = {
         //
         // create the new element from the render function
         this.props = data;
-        if (!parentModel) return asView(this, el);
+        return this.doMount(el, dattrs);
+    },
 
+    doMount (el, dattrs) {
         let newEl;
         try {
-            newEl = this.render(data, dattrs, el);
+            newEl = this.render(this.props, dattrs, el);
         } catch (error) {
             newEl = Promise.reject(error);
         }
