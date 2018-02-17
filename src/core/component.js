@@ -39,8 +39,7 @@ const protoComponent = {
             this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
             return Promise.resolve(this);
         }
-        // mark the element as a component
-        el.__d3_component__ = true;
+        // set the owner document
         this.ownerDocument = el.ownerDocument;
         // fire mount events
         this.events.call('mount', undefined, this, el, data);
@@ -299,11 +298,14 @@ const compile = (cm, origEl, element) => {
         const props = Object.keys(cm.props).length ? cm.props : null;
         element = cm.viewElement(element, props, origEl.ownerDocument);
     }
-    if (!element) throw new Error('render() must return a single HTML node. It returned nothing!');
     element = asSelect(element);
-    if (element.size() !== 1) cm.logWarn('render() must return a single HTML node');
+    const size = element.size();
+    if (!size) throw new Error('render() must return a single HTML node. It returned nothing!');
+    else if (size !== 1) cm.logWarn('render() must return a single HTML node');
     element = element.node();
     //
+    // mark the original element as component
+    origEl.__d3_component__ = true;
     // Insert before the component element
     origEl.parentNode.insertBefore(element, origEl);
     // remove the component element
