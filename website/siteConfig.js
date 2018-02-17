@@ -17,7 +17,7 @@ module.exports = {
                     highlightTheme: "androidstudio"
                 },
                 sidenav: {
-                    sidebarToggle: "https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg",
+                    sidebarToggle: "<icon data-src='https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg'></icon>",
                     primaryItems: [
                         {
                             name: "Overview",
