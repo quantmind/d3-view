@@ -10,7 +10,7 @@ module.exports = function (config) {
 
         browsers: ['Chrome'],
 
-        reporters: ['progress', 'coverage'],
+        reporters: ['progress', 'spec', 'coverage'],
 
         coverageReporter: {
             dir : 'build/coverage/',
