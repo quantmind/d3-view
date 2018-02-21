@@ -1,5 +1,5 @@
 //
-//  Connect a model attribute with a parent attribute
+//  Connect a model attribute with another model attribute
 //  The attribute is read-only on the model an it reacts on parent changes
 export default function (attr, parentAttr, owner) {
     parentAttr = parentAttr || attr;
@@ -8,6 +8,8 @@ export default function (attr, parentAttr, owner) {
         owner = this.parent.owner(parentAttr);
         if (!owner) return this.$logWarn(`cannot find ancestor model with attribute ${parentAttr}`);
     }
+    if (owner === this) return this.$logWarn(`cannot connect to self`);
+    //
     Object.defineProperty(this, attr, {
         get () {
             return owner[parentAttr];

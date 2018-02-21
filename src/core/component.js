@@ -72,12 +72,12 @@ const protoComponent = {
                         if (value !== key) modelData[key] = reactiveParentProperty(key, value);
                     } else modelData[key] = maybeJson(value);
                 } else modelData[key] = value;
-            } else if (!parentModel || parentModel[key] === undefined)
+            } else
                 modelData[key] = this.model[key];
         }
 
         // Create model
-        this.model = parentModel ? parentModel.$child(modelData) : viewModel(modelData);
+        this.model = parentModel ? this.createModel(parentModel, modelData) : viewModel(modelData);
         this.model.$$view = this;
         this.model.$$name = this.name;
 
@@ -105,6 +105,10 @@ const protoComponent = {
         // create the new element from the render function
         this.props = propsData;
         return this.doMount(el, dattrs);
+    },
+
+    createModel (parentModel, modelData) {
+        return parentModel.$child(modelData);
     },
 
     doMount (el, dattrs) {

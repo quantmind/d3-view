@@ -296,4 +296,13 @@ describe('model -', function() {
         await nextTick();
         expect(updates).toBe(1);
     });
+
+    test ('connect', async () => {
+        const model1 = viewModel({a: 2}),
+            model2 = viewModel();
+        model2.$connect('b', 'a', model1);
+        expect(model2.b).toBe(2);
+        model1.a = 3;
+        expect(model2.b).toBe(3);
+    });
 });

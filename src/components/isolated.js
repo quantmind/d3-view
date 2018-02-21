@@ -15,10 +15,7 @@ export default {
                 .html(htmlEl.innerHTML);
     },
 
-    createModel (data) {
-        var model = this.parent.model.$new(data);
-        model.$$view = this;
-        model.$$name = this.name;
-        return model;
+    createModel (parentModel, modelData) {
+        return parentModel.$new(modelData);
     }
 };

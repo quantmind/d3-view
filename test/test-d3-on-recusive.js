@@ -1,12 +1,12 @@
 import view, {trigger, getWaiter, test, nextTick} from './utils';
 
 const dropdown = `
-<ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-<li class="nav-item dropdown">
-<a class="nav-item nav-link mr-md-2" href="#" aria-haspopup="true" d3-attr-aria-expanded="menuExpanded ? 'true' : 'false'" d3-on='$toggleMenu($event)'>
-<i class="fa fa-caret-down"></i>
-</a>
-</li>
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-item nav-link" href="#" aria-haspopup="true" d3-attr-aria-expanded="menuExpanded ? 'true' : 'false'" d3-on='$toggleMenu($event)'>
+            <i class="fa fa-caret-down"></i>
+        </a>
+    </li>
 </ul>
 `;
 
@@ -23,22 +23,24 @@ describe('d3-on recursive -', () => {
                 },
                 components: {
                     dropdown: {
-                        model: {
-                            menuExpanded: false,
-                            menuItems: [
-                                {
-                                    label: 'foo',
-                                    $callback() {}
-                                },
-                                {
-                                    label: 'pippo',
-                                    $callback() {}
-                                }
-                            ],
-                            $toggleMenu: toggleMenu
+                        model () {
+                            return {
+                                menuExpanded: false,
+                                menuItems: [
+                                    {
+                                        label: 'foo',
+                                        $callback() {}
+                                    },
+                                    {
+                                        label: 'pippo',
+                                        $callback() {}
+                                    }
+                                ],
+                                $toggleMenu: toggleMenu
+                            };
                         },
                         render () {
-                            return this.viewElement(dropdown);
+                            return dropdown;
                         }
                     }
                 }
@@ -66,7 +68,8 @@ describe('d3-on recursive -', () => {
         });
 
         trigger(sel.node(), 'click');
-        await waiter.promise;
+        const m = await waiter.promise;
+        expect(m.parent).toBe(model);
         expect(ev).toBeTruthy();
         expect(ev.type).toBe('click');
         expect(ev.defaultPrevented).toBe(false);
@@ -76,9 +79,8 @@ describe('d3-on recursive -', () => {
 
         function toggleMenu (event) {
             ev = event;
-            expect(this.parent).toBe(model);
-            this.menuExpanded = true;
-            waiter.resolve(null);
+            this.menuExpanded = !this.menuExpanded;
+            waiter.resolve(this);
         }
     });
 
