@@ -55,6 +55,7 @@ const protoComponent = {
 
         let propsData = assign(dataAttributes(dattrs), datum, data),
             modelData = {},
+            parentData = {},
             key, value, parentModel;
 
         // pick parent model
@@ -64,20 +65,24 @@ const protoComponent = {
         }
 
         // override model keys from object and element attributes
-        for (key in this.model) {
+        Object.keys(this.model).forEach(key => {
             value = pop(propsData, key);
             if (value !== undefined) {
                 if (isString(value) && parentModel) {
-                    if (parentModel.$isReactive(value)) {
-                        if (value !== key) modelData[key] = reactiveParentProperty(key, value);
-                    } else modelData[key] = maybeJson(value);
+                    if (parentModel.$isReactive(value)) parentData[key] = value;
+                    else modelData[key] = maybeJson(value);
                 } else modelData[key] = value;
             } else
                 modelData[key] = this.model[key];
-        }
+        });
 
         // Create model
-        this.model = parentModel ? this.createModel(parentModel, modelData) : viewModel(modelData);
+        if (parentModel) {
+            this.model = this.createModel(parentModel, modelData);
+            Object.keys(parentData).forEach(key => {
+                this.model.$connect(key, parentData[key], parentModel);
+            });
+        } else this.model = viewModel(modelData);
         this.model.$$view = this;
         this.model.$$name = this.name;
 
@@ -341,19 +346,6 @@ const attributes = element => {
         attrs[attr.name] = attr.value;
     }
     return attrs;
-};
-
-
-const reactiveParentProperty = (key, value) => {
-    return {
-        reactOn: [value],
-        get () {
-            return this[value];
-        },
-        set () {
-            this.$$view.logError(`Cannot set "${key}" value because it is owned by a parent model`);
-        }
-    };
 };
 
 

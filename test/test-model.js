@@ -230,12 +230,18 @@ describe('model -', function() {
     test ('$data', async () => {
         var model = viewModel({
             a: [3, 4],
-            b: 'hello'
+            b: 'hello',
+            c: {
+                f: 5,
+                g: null
+            }
         });
         var data = model.$data();
-        expect(Object.keys(data).length).toBe(2);
+        expect(Object.keys(data).length).toBe(3);
         expect(data.a).toEqual([3, 4]);
-        expect(data.b).toEqual('hello');
+        expect(data.b).toBe('hello');
+        expect(data.c.f).toBe(5);
+        expect(data.c.g).toBe(null);
     });
 
     test ('debug', async () => {
@@ -304,5 +310,21 @@ describe('model -', function() {
         expect(model2.b).toBe(2);
         model1.a = 3;
         expect(model2.b).toBe(3);
+        viewProviders.logger.pop();
+        //
+        model1.$connect('a');
+        let error = viewProviders.logger.pop();
+        expect(error.length).toBe(1);
+        expect(error[0]).toBe('[d3-view] cannot connect a attribute, it is already reactive');
+        //
+        model1.$connect('b');
+        error = viewProviders.logger.pop();
+        expect(error.length).toBe(1);
+        expect(error[0]).toBe('[d3-view] cannot find model with attribute b');
+        //
+        model1.$connect('b', 'a');
+        expect(model1.b).toBe(3);
+        model1.a = 4;
+        expect(model1.b).toBe(4);
     });
 });
