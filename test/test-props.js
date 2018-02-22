@@ -119,9 +119,11 @@ data-secondary-items="secondaryItems">
         expect(items.size()).toBe(1);
         //
         // we should not be able to set the property on the model
+        vm.providers.logger.pop();
         model.secondaryItems = [];
+        expect(vm.providers.logger.pop().length).toBe(1);
         await nextTick();
         items = vm.sel.selectAll('.list-group-item-secondary');
-        expect(items.size()).toBe(0);
+        expect(items.size()).toBe(1);
     });
 });

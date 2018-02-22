@@ -1,7 +1,7 @@
 import {isString, isFunction} from 'd3-let';
 
 import view, {test, getWaiter} from './utils';
-import {viewProviders, viewVersion, viewElement, viewBase} from '../index';
+import {viewProviders, viewVersion, viewBase} from '../index';
 
 
 var logger = viewProviders.logger;
@@ -60,10 +60,10 @@ describe('view -', () => {
     test('mounted hook', async () => {
         var mounted = false;
         var vm = view({});
-        await vm.mount(viewElement('<div id="test1"><year></year></div>'), () => {
-            mounted = true;
+        await vm.mount(vm.viewElement('<div id="test1"><year></year></div>')).then(cm => {
+            mounted = cm;
         });
-        expect(mounted).toBe(true);
+        expect(mounted).toBe(vm);
         expect(vm.sel.view()).toBe(vm);
     });
 

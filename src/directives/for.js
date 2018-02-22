@@ -1,8 +1,7 @@
 import {select} from 'd3-selection';
 import {isArray} from 'd3-let';
 
-import {createComponent} from '../core/component';
-import protoView from '../core/view';
+import {createComponent, protoView} from '../core/component';
 
 //
 //  d3-for directive

@@ -32,7 +32,7 @@ describe('Component Errors -', () => {
         expect(count).toBe(1);
         expect(vm.sel.html()).toBe('<testing></testing>');
         logs = viewProviders.logger.pop();
-        expect(logs.length).toBe(1);
+        expect(logs.length).toBe(2);
         vm.mount('#foo');
         logs = viewProviders.logger.pop();
         expect(logs.length).toBe(1);
@@ -48,7 +48,7 @@ describe('Component Errors -', () => {
         expect(count).toBe(1);
         expect(vm.sel.html()).toBe('<testing></testing>');
         logs = viewProviders.logger.pop();
-        expect(logs.length).toBe(1);
+        expect(logs.length).toBe(2);
     });
 
     test('multiple elements', async () => {

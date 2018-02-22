@@ -31,7 +31,8 @@
 ## Overview
 
 Components help you extend basic HTML elements to encapsulate reusable code.
-They are custom elements that [d3.view][] attach specified behavior to. They have the same API as the [d3.view][] with the exception they cannot be the root view, i.e. a component ``parent`` attribute is always available.
+They are custom elements that [d3.view][] renders into the DOM.
+They have the same API as the [d3.view][] with the exception they cannot be the root view, i.e. a component ``parent`` attribute is always available.
 
 
 ## Registration
@@ -47,18 +48,18 @@ d3.view({
     }
 });
 ```
-A component is either an object:
+A component is either an object with the ``render`` method:
 ```javascript
 var component1 = {
-    render: function () {
-        return this.htmlElement('<p>Very simple component</p>');
+    render () {
+        return '<p>Very simple component</p>';
     }
 };
 ```
 or a function, the component **render** method:
 ```javascript
 function component1 () {
-    return this.htmlElement('<p>Another very simple component</p>');
+    return '<p>Another very simple component</p>';
 }
 ```
 
