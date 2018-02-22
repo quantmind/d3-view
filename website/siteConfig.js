@@ -2,6 +2,7 @@
 
 module.exports = {
     title: "d3-view - d3 plugin for building interactive data-driven web interfaces",
+    baseUrl: "https://d3-view.giottojs.org",
     github: "quantmind/d3-view",
     algolia: {
         apiKey: process.env.ALGOLIA_API_KEY
@@ -17,7 +18,7 @@ module.exports = {
                     highlightTheme: "androidstudio"
                 },
                 sidenav: {
-                    sidebarToggle: "https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg",
+                    sidebarToggle: "<icon data-src='https://fluidily-public.s3.amazonaws.com/d3-view/images/d3view.svg'></icon>",
                     primaryItems: [
                         {
                             name: "Overview",

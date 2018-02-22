@@ -18,9 +18,7 @@ export default function (key, value) {
 }
 
 
-function isModel (value) {
-    return isObject(value) && value.toString() === '[object d3Model]';
-}
+const isModel = value => isObject(value) && value.toString() === '[object d3Model]';
 
 
 function reactive (model, key, value) {
