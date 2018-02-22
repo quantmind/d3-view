@@ -11,7 +11,7 @@ export default () => {
     function change () {
         events.apply('change', this, arguments);
         triggered +=1;
-    };
+    }
 
     return {
         change,

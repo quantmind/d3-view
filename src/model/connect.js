@@ -20,6 +20,7 @@ export default function (attr, parentAttr, owner) {
         }
     });
     owner.$events.get(parentAttr).on(`change.${this.uid}`, () => {
-        dd.change.apply(this, arguments)
+        dd.change.apply(this, arguments);
+        if (owner != this) this.$events.get('').change.apply(this);
     });
 }

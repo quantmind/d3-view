@@ -56,7 +56,7 @@ const protoComponent = {
         let propsData = assign(dataAttributes(dattrs), datum, data),
             modelData = {},
             parentData = {},
-            key, value, parentModel;
+            value, parentModel;
 
         // pick parent model
         if (this.parent) {

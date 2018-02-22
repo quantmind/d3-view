@@ -310,6 +310,12 @@ describe('model -', function() {
         expect(model2.b).toBe(2);
         model1.a = 3;
         expect(model2.b).toBe(3);
+        await nextTick();
+        expect(model1.$events.get('a').triggered()).toBe(1);
+        expect(model1.$events.get('').triggered()).toBe(1);
+        expect(model2.$events.get('b').triggered()).toBe(1);
+        expect(model1.$events.get('').triggered()).toBe(1);
+        //
         viewProviders.logger.pop();
         //
         model1.$connect('a');
@@ -326,5 +332,11 @@ describe('model -', function() {
         expect(model1.b).toBe(3);
         model1.a = 4;
         expect(model1.b).toBe(4);
+        //
+        await nextTick();
+        //
+        expect(model1.$events.get('a').triggered()).toBe(2);
+        expect(model1.$events.get('').triggered()).toBe(2);
+        expect(model1.$events.get('b').triggered()).toBe(1);
     });
 });
