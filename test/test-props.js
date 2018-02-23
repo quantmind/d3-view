@@ -28,9 +28,9 @@ describe('Component data -', () => {
                     secondaryItems: []
                 };
             },
-            render (props, attrs, el) {
+            render (attrs, el) {
                 this.model.sidebarContent = this.select(el).html();
-                return this.renderFromUrl('/sidebar', props);
+                return this.renderFromUrl('/sidebar', this.props);
             }
         };
 

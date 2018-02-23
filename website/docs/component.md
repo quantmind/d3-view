@@ -72,7 +72,7 @@ methods that can be used to customize construction and lifecycle of a component.
 var component = {
     props: {...},
     model: {...},
-    render (props, htmlAttr, htmlElement) {},
+    render (HTMLAttrs, HTMLElement) {},
     childrenMounted () {}
     mounted () {},
     destroy () {}
@@ -138,7 +138,7 @@ hi.model.message // 'Hi!'
 hi.model.$isReactive('message') //  true
 ```
 
-### render (props, HTMLAttrs, HTMLElement)
+### render (HTMLAttrs, HTMLElement)
 
 This is **the only required method**. It is called once only while the component is being mounted into the DOM and must return a single HTMLElement or a d3 selector with one node only.
 The returned element replaces the component element in the DOM.
@@ -146,8 +146,7 @@ Importantly, this function can also return a [Promise][] which resolve in an HTM
 
 The input parameters are:
 
-* ``props`` an object with keys given by the [props][] array and value given by the corresponding values found in the original ``HTMLElement`` of the component
-* ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement``
+* ``HTMLAttrs`` is an object containing the key-value of attributes in the ``HTMLElement`` excluding keys defined in ``props``
 * ``HTMLElement`` the original HTML element of the component
 
 ### childrenMounted ()

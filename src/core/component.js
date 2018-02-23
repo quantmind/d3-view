@@ -116,10 +116,10 @@ const protoComponent = {
         return parentModel.$child(modelData);
     },
 
-    doMount (el, dattrs) {
+    doMount (el, attrs) {
         let newEl;
         try {
-            newEl = this.render(this.props, dattrs, el);
+            newEl = this.render(attrs, el);
         } catch (error) {
             newEl = Promise.reject(error);
         }

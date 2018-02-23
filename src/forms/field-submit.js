@@ -7,12 +7,11 @@ import {formElement} from './field';
 // Submit element
 export default assign({}, formElement, {
 
-    render (data) {
-        var tag = data ? data.tag || 'button' : 'button',
-            el = this.createElement(tag);
-
-        data = this.inputData(el, data);
-        var model = this.model;
+    render () {
+        const tag = this.props.tag || 'button',
+            el = this.createElement(tag),
+            data = this.inputData(el, this.props),
+            model = this.model;
         //
         // model non-reactive attributes
         model.type = data.type || 'submit';

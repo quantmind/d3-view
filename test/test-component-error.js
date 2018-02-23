@@ -67,4 +67,8 @@ describe('Component Errors -', () => {
         expect(logs.length).toBe(1);
     });
 
+    test('Pass model', async () => {
+
+    });
+
 });

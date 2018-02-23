@@ -7,10 +7,10 @@ import {addChildren} from './utils';
 // Fieldset element
 export default assign({}, formElement, {
 
-    render (data) {
-        var tag = data ? data.tag || 'fieldset' : 'fieldset',
+    render () {
+        const tag = this.props.tag || 'fieldset',
             el = this.createElement(tag);
-        data = this.inputData(el, data);
+        this.inputData(el, this.props);
         return addChildren.call(this, el);
     }
 

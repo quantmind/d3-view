@@ -13,9 +13,9 @@ export default assign({}, field, {
         $optionValue: optionValue
     }, field.model),
 
-    render (data) {
-        var el = this.createElement('select');
-        data = this.inputData(el, data);
+    render () {
+        const el = this.createElement('select'),
+            data = this.inputData(el, this.props);
         el.attr('d3-value', 'value')
             .attr('placeholder', data.placeholder)
             .append('option')

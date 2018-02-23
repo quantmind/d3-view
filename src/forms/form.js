@@ -83,37 +83,21 @@ export default {
         }
     },
 
-    render (data) {
+    render (attrs) {
         var model = this.model,
-            form = this.createElement('form').attr('novalidate', ''),
-            self = this;
+            form = this.createElement('form').attr('novalidate', '').classed(attrs.class, true);
         //
+        // add form extensions from the root view
         model.$formExtensions = this.root.$formExtensions || [];
         model.inputs = {};
         model.actions = {};
-        model.form = model; // inject self for children models
+        model.form = model;
         //
-        var schema = data.schema;
-        if (data.values) schema.values = data.values;
+        var schema = this.props.schema;
+        if (this.props.values) schema.values = this.props.values;
         if (isString(schema))
-            return this.json(schema).then(response => build(response.data));
-        else return build(schema);
-
-        function build (schema) {
-            schema = formElement.inputData.call(self, form, schema);
-            //
-            // Form validations
-            model.validators = validators.get(schema.validators);
-            //
-            // Form actions
-            for (var key in actions) {
-                var action = schema[key];
-                if (isString(action)) action = self.model.$get(action);
-                model.actions[key] = action || actions[key];
-            }
-            addChildren.call(self, form);
-            return form;
-        }
+            return this.json(schema).then(response => this.build(form, response.data));
+        else return this.build(form, schema);
     },
 
     childrenMounted () {
@@ -124,5 +108,21 @@ export default {
             var inp = model.inputs[key];
             if (inp) inp.value = values[key];
         });
+    },
+
+    build (form, schema) {
+        schema = formElement.inputData.call(this, form, schema);
+        //
+        // Form validations
+        this.model.validators = validators.get(schema.validators);
+        //
+        // Form actions
+        for (var key in actions) {
+            var action = schema[key];
+            if (isString(action)) action = this.model.$get(action);
+            this.model.actions[key] = action || actions[key];
+        }
+        addChildren.call(this, form);
+        return form;
     }
 };
