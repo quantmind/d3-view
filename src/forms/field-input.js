@@ -10,9 +10,9 @@ const checks = ['checkbox', 'radio'];
 // Input element
 export default assign({}, field, {
 
-    render (data) {
-        var el = this.createElement('input');
-        data = this.inputData(el, data);
+    render () {
+        const el = this.createElement('input'),
+            data = this.inputData(el, this.props);
 
         el.attr('type', data.type || 'text')
             .attr('d3-value', 'value');

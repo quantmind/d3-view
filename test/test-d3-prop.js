@@ -10,8 +10,8 @@ describe('d3-prop -', function() {
                 test: 'This is a test'
             },
             components: {
-                simple (props) {
-                    return `<p>${props.msg}</p>`;
+                simple () {
+                    return `<p>${this.props.msg}</p>`;
                 }
             }
         });

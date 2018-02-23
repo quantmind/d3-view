@@ -5,7 +5,7 @@ import {viewElement, viewEvents} from '../index';
 describe('Components -', () => {
 
     var year = {
-        render: function () {
+        render () {
             var date = new Date();
             return this.createElement('span').attr('class', 'year').text(date.getFullYear());
         }
@@ -116,7 +116,7 @@ describe('Components -', () => {
         expect(el.tagName).toBe('P');
     });
 
-    test('Component inner html', async () => {
+    test('inner html', async () => {
         let count_created = 0,
             count_mount = 0,
             count_mounted = 0;
@@ -128,7 +128,7 @@ describe('Components -', () => {
         try {
             var vm = view({
                 components: {
-                    bla (props, attr, el) {
+                    bla (attr, el) {
                         return this.createElement('div').classed('bla', true).html(this.select(el).html());
                     },
                     year: year,
