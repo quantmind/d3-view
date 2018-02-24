@@ -1,6 +1,5 @@
 import {isFunction, isArray, isObject} from 'd3-let';
 
-import warn from '../utils/warn';
 import providers from '../utils/providers';
 import isVanillaObject from '../utils/object';
 import ddispatch from './dispatch';
@@ -13,7 +12,11 @@ import ddispatch from './dispatch';
 //
 export default function (key, value) {
     // property not reactive - make it as such
-    if (!this.$events.get(key)) reactive(this, key, value);
+    if (key.substring(0, 1) === '$') {
+        if (this.constructor.prototype[key]) this.$logWarn(`Cannot set attribute method ${key}, it is protected`);
+        else this[key] = value;
+    } else if (!this.$events.get(key))
+        reactive(this, key, value);
     else this[key] = value;
 }
 
@@ -21,7 +24,7 @@ export default function (key, value) {
 const isModel = value => isObject(value) && value.toString() === '[object d3Model]';
 
 
-function reactive (model, key, value) {
+const reactive = (model, key, value) => {
     var lazy;
 
     model.$events.set(key, ddispatch());
@@ -66,7 +69,7 @@ function reactive (model, key, value) {
                     model.$on(`${name}.${key}`, update);
                 });
             else
-                warn(`reactive lazy property ${key} does not specify 'reactOn' list or properties`);
+                model.$logWarn(`reactive lazy property ${key} does not specify 'reactOn' list or properties`);
 
             if (isFunction(lazy.set)) prop.set = lazy.set;
         } else
@@ -103,4 +106,4 @@ function reactive (model, key, value) {
             return typeValue(newValue);
         }
     }
-}
+};

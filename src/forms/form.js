@@ -83,18 +83,16 @@ export default assign({}, formElement, {
         }
     },
 
-    render (attrs) {
+    render () {
         var model = this.model,
-            form = this.createElement('form').attr('novalidate', '').classed(attrs.class || '', true);
+            form = this.createElement('form').attr('novalidate', '');
         //
         // add form extensions from the root view
         model.$formExtensions = this.root.$formExtensions || [];
         model.inputs = {};
         model.actions = {};
-        model.form = model;
         //
         var schema = this.props.schema;
-        if (this.props.values) schema.values = this.props.values;
         if (isString(schema))
             return this.json(schema).then(response => this.build(form, response.data));
         else return this.build(form, schema);
@@ -111,6 +109,7 @@ export default assign({}, formElement, {
     },
 
     build (form, schema) {
+        if (this.props.values) schema.values = this.props.values;
         schema = this.inputData(form, schema);
         //
         // Form validations

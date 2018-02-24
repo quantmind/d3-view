@@ -49,79 +49,60 @@ const protoComponent = {
         viewEvents.call('component-mount', undefined, this, el, data);
         //
         var sel = this.select(el),
-            directives = sel.directives(),
-            dattrs = directives ? directives.attrs : attributes(el),
-            datum = sel.datum();
+            directives = sel.directives(this);
 
-        let propsData = assign(dataAttributes(dattrs), datum, data),
-            modelData = {},
-            parentData = {},
+        let props = assign(dataAttributes(directives.attrs), sel.datum(), data),
             value, model, parentModel;
 
-        // pick parent model
+        // pick parent model & props
         if (this.parent) {
+            // get props object from parent if props is defined
+            if (props.props) props = assign({}, this.parent.props[pop(props, 'props')], props);
+            //
             parentModel = this.parent.model;
-            if (propsData.model) model = parentModel[pop(propsData, 'model')];
+            if (props.model) model = parentModel[pop(props, 'model')];
             if (!model) model = parentModel.$new();
             else model = model.$child();
-        }
-
-        // override model keys from object and element attributes
-        Object.keys(this.model).forEach(key => {
-            value = pop(propsData, key);
-            if (value !== undefined) {
-                if (isString(value) && parentModel) {
-                    if (parentModel.$isReactive(value)) parentData[key] = value;
-                    else modelData[key] = maybeJson(value);
-                } else modelData[key] = value;
-            } else if (!model || model[key] === undefined)
-                modelData[key] = this.model[key];
-        });
-
-        // update model with props data and view information
-        if (parentModel) {
-            model.$update(modelData);
-            Object.keys(parentData).forEach(key => {
-                model.$connect(key, parentData[key], parentModel);
+            //
+            Object.keys(this.props).forEach(key => {
+                value = this.parent.props[key];
+                if (value === undefined) {
+                    value = maybeJson(props[key]);
+                    if (value !== undefined)
+                        props[key] = value;
+                        // default value if available
+                    else if (this.props[key] !== undefined)
+                        props[key] = this.props[key];
+                } else
+                    props[key] = value;
             });
-        } else {
-            parentModel = {};
-            model = viewModel(modelData);
-        }
-        model.$$view = this;
-        model.$$name = this.name;
-        this.model = model;
+        } else model = viewModel();
 
-        // get props object from model if available
-        modelData = propsData.props ? parentModel[pop(propsData, 'props')] || {} : {};
-
-        Object.keys(this.props).forEach(key => {
-            value = modelData[key];
-            if (value === undefined) {
-                value = maybeJson(propsData[key] === undefined ? dattrs[key] : propsData[key]);
-                if (value !== undefined) {
-                    // data point to a model attribute
-                    if (isString(value) && parentModel[value]) value = parentModel[value];
-                    propsData[key] = value;
-                    // default value if available
-                } else if (this.props[key] !== undefined) {
-                    propsData[key] = this.props[key];
-                }
-            } else
-                propsData[key] = value;
+        // add reactive model properties
+        Object.keys(this.model).forEach(key => {
+            value = pop(props, key);
+            if (value !== undefined) {
+                if (isString(value) && parentModel && parentModel.$isReactive(value))
+                    model.$connect(key, value, parentModel);
+                else
+                    model.$set(key, maybeJson(value));
+            } else if (model[key] === undefined)
+                model.$set(key, this.model[key]);
         });
+        this.model = bindView(this, model);
+
         // Add once only directive values
-        if (directives) directives.once(this.model, propsData);
+        if (directives) directives.once(this.model, props);
         //
         // create the new element from the render function
-        this.props = propsData;
-        return this.doMount(el, dattrs);
+        this.props = props;
+        return this.doMount(el);
     },
 
-    doMount (el, attrs) {
+    doMount (el) {
         let newEl;
         try {
-            newEl = this.render(attrs, el);
+            newEl = this.render(el);
         } catch (error) {
             newEl = Promise.reject(error);
         }
@@ -340,17 +321,6 @@ const error = (cm, origEl, exc) => {
 };
 
 
-const attributes = element => {
-    const attrs = {};
-    let attr;
-    for (let i = 0; i < element.attributes.length; ++i) {
-        attr = element.attributes[i];
-        attrs[attr.name] = attr.value;
-    }
-    return attrs;
-};
-
-
 const asObject = (value, opts) => {
     if (isFunction(value)) value = value();
     if (isArray(value))
@@ -359,4 +329,26 @@ const asObject = (value, opts) => {
             return o;
         }, {});
     return assign({}, value, opts);
+};
+
+
+const bindView = (view, model) => {
+    Object.defineProperties(model, {
+        $$view: {
+            get () {
+                return view;
+            }
+        },
+        $$name: {
+            get () {
+                return view.name;
+            }
+        },
+        props: {
+            get () {
+                return view.props;
+            }
+        }
+    });
+    return model;
 };

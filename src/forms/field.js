@@ -20,7 +20,7 @@ export const formElement = {
                 .data(children)
                 .enter()
                 .append(formChild)
-                .attr('data-form', 'form')
+                .attr('form', 'form')
                 .classed('d3form', true);
         }
         return sel;

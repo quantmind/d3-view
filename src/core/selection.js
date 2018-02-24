@@ -12,10 +12,15 @@ selection.prototype.model = model;
 selection.prototype.directives = directives;
 
 
-function directives (value) {
-    return arguments.length
-      ? this.property("__d3_directives__", value)
-      : this.node().__d3_directives__;
+function directives (vm) {
+    const node = this.node();
+    let dirs = node.__d3_directives__;
+    if (dirs === undefined) {
+        dirs = getdirs(node, vm);
+        // no point in storing the directive object if there are no directives or the node is not a component
+        node.__d3_directives__ = dirs.size() || getComponent(node, vm) ? dirs : null;
+    }
+    return dirs ? dirs : getdirs(node);
 }
 
 
@@ -55,14 +60,15 @@ function mount (data) {
     return Promise.all(promises);
 }
 
+// INTERNALS
 
 // mount an element into a given model
-function mountElement (element, vm, data) {
+const mountElement = (element, vm, data) => {
     if (!element || !element.tagName) return;
 
-    var component = vm.components.get(element.tagName.toLowerCase()),
-        directives = getdirs(element, vm.directives),
-        preMount = directives.preMount();
+    var component = getComponent(element, vm),
+        directives = select(element).directives(vm),
+        preMount = directives ? directives.preMount() : null;
 
     if (preMount)
         return preMount.execute(vm.model);
@@ -72,7 +78,11 @@ function mountElement (element, vm, data) {
             promise = component({parent: vm}).mount(element, data);
         else
             promise = Promise.all(slice(element.children).map(c => mountElement(c, vm, data)));
-
-        return promise.then(() => directives.execute(vm.model));
+        return directives ? promise.then(() => directives.execute(vm.model)) : promise;
     }
-}
+};
+
+
+const getComponent = (element, vm) => {
+    return vm.components.get(element.tagName.toLowerCase());
+};

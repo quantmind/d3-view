@@ -85,8 +85,8 @@ describe('Components -', () => {
     test('component function', async () => {
         var vm = view({
             components: {
-                bla: function () {
-                    return viewElement('<p>bla bla</p>');
+                bla () {
+                    return '<p>bla bla</p>';
                 }
             }
         });
@@ -101,7 +101,7 @@ describe('Components -', () => {
     test('renderFromUrl', async () => {
         var vm = view({
             components: {
-                bla: function () {
+                bla () {
                     return this.renderFromUrl('/test');
                 }
             }
@@ -128,7 +128,7 @@ describe('Components -', () => {
         try {
             var vm = view({
                 components: {
-                    bla (attr, el) {
+                    bla (el) {
                         return this.createElement('div').classed('bla', true).html(this.select(el).html());
                     },
                     year: year,
@@ -195,7 +195,7 @@ describe('Components -', () => {
     test('renderFromDist', async () => {
         var vm = view({
             components: {
-                bla: function () {
+                bla () {
                     return this.renderFromDist('fake', '/test');
                 }
             }
