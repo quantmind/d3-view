@@ -1,11 +1,30 @@
-import {isString, isObject, assign} from 'd3-let';
+import {isString, isArray, assign} from 'd3-let';
 import {select, selectAll} from 'd3-selection';
 
+import {addAttributes, formChild} from './utils';
 import properties from '../utils/htmlprops';
 
 //
 // Mixin for all form elements
 export const formElement = {
+    props: ['form'],
+
+    addChildren (sel) {
+        var children = this.model.data.children;
+        if (children) {
+            if (!isArray(children)) {
+                this.logError(`children should be an array of fields, got ${typeof children}`);
+                return sel;
+            }
+            sel.selectAll('.d3form')
+                .data(children)
+                .enter()
+                .append(formChild)
+                .attr('data-form', 'form')
+                .classed('d3form', true);
+        }
+        return sel;
+    },
 
     inputData (el, data) {
         var model = this.model;
@@ -61,6 +80,7 @@ export const formElement = {
 export default assign({}, formElement, {
 
     model: {
+        form: null,
         value: null,
         error: '',
         isDirty: null,
@@ -112,16 +132,3 @@ export default assign({}, formElement, {
     }
 
 });
-
-
-function addAttributes(el, model, attributes) {
-    var expr, attr;
-
-    if (!isObject(attributes)) return;
-
-    for (attr in attributes) {
-        expr = attributes[attr];
-        if (isObject(expr)) expr = JSON.stringify(expr);
-        el.attr(attr, expr || '');
-    }
-}

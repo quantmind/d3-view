@@ -56,12 +56,14 @@ const protoComponent = {
         let propsData = assign(dataAttributes(dattrs), datum, data),
             modelData = {},
             parentData = {},
-            value, parentModel;
+            value, model, parentModel;
 
         // pick parent model
         if (this.parent) {
-            if (propsData.model) parentModel = this.parent.model[pop(propsData, 'model')];
-            if (!parentModel) parentModel = this.parent.model;
+            parentModel = this.parent.model;
+            if (propsData.model) model = parentModel[pop(propsData, 'model')];
+            if (!model) model = parentModel.$new();
+            else model = model.$child();
         }
 
         // override model keys from object and element attributes
@@ -72,22 +74,26 @@ const protoComponent = {
                     if (parentModel.$isReactive(value)) parentData[key] = value;
                     else modelData[key] = maybeJson(value);
                 } else modelData[key] = value;
-            } else
+            } else if (!model || model[key] === undefined)
                 modelData[key] = this.model[key];
         });
 
-        // Create model
+        // update model with props data and view information
         if (parentModel) {
-            this.model = this.createModel(parentModel, modelData);
+            model.$update(modelData);
             Object.keys(parentData).forEach(key => {
-                this.model.$connect(key, parentData[key], parentModel);
+                model.$connect(key, parentData[key], parentModel);
             });
-        } else this.model = viewModel(modelData);
-        this.model.$$view = this;
-        this.model.$$name = this.name;
+        } else {
+            parentModel = {};
+            model = viewModel(modelData);
+        }
+        model.$$view = this;
+        model.$$name = this.name;
+        this.model = model;
 
         // get props object from model if available
-        modelData = propsData.props ? this.model[pop(propsData, 'props')] || {} : {};
+        modelData = propsData.props ? parentModel[pop(propsData, 'props')] || {} : {};
 
         Object.keys(this.props).forEach(key => {
             value = modelData[key];
@@ -95,7 +101,7 @@ const protoComponent = {
                 value = maybeJson(propsData[key] === undefined ? dattrs[key] : propsData[key]);
                 if (value !== undefined) {
                     // data point to a model attribute
-                    if (isString(value) && this.model[value]) value = this.model[value];
+                    if (isString(value) && parentModel[value]) value = parentModel[value];
                     propsData[key] = value;
                     // default value if available
                 } else if (this.props[key] !== undefined) {
@@ -110,10 +116,6 @@ const protoComponent = {
         // create the new element from the render function
         this.props = propsData;
         return this.doMount(el, dattrs);
-    },
-
-    createModel (parentModel, modelData) {
-        return parentModel.$child(modelData);
     },
 
     doMount (el, attrs) {
@@ -149,7 +151,7 @@ const protoComponent = {
 };
 
 // factory of View and Component constructors
-export function createComponent (name, o, coreDirectives, coreComponents) {
+export const createComponent = (name, o, coreDirectives, coreComponents) => {
     if (isFunction(o)) o = {render: o};
 
     var obj = assign({}, o),
@@ -230,7 +232,7 @@ export function createComponent (name, o, coreDirectives, coreComponents) {
     component.prototype = Component.prototype;
 
     return component;
-}
+};
 
 
 // Used by both Component and view

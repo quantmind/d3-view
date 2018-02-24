@@ -210,24 +210,6 @@ describe('Components -', () => {
         expect(el.tagName).toBe('P');
     });
 
-    test ('isolated', async () => {
-        var vm = view({
-            model: {
-                foo: 5
-            }
-        });
-        expect(vm.components.size).toBe(numDefComponents);
-        await vm.mount(vm.viewElement('<div><isolated class="test" data-tag="p"><strong>ciao</strong></isolated></div>'));
-        var sel = vm.sel.select('p');
-        expect(sel.classed('test')).toBe(true);
-        expect(sel.html()).toBe('<strong>ciao</strong>');
-        var model = sel.model();
-        expect(model.parent).toBe(vm.model);
-        expect(model.isolated).toBe(true);
-        expect(model.foo).toBe(undefined);
-        expect(model.isolatedRoot).toBe(model);
-    });
-
     test ('multiple element', async () => {
         var vm = view({
                 components: {

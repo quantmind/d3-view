@@ -1,4 +1,4 @@
-import {isString} from 'd3-let';
+import {isString, assign} from 'd3-let';
 
 import {formElement} from './field';
 import fieldset from './field-set';
@@ -9,14 +9,13 @@ import submit from './field-submit';
 import responses from './responses';
 import actions from './actions';
 import validators from './validators';
-import {addChildren} from './utils';
 
 
 // Main form component
-export default {
+export default assign({}, formElement, {
 
     // Allow to specify form schema and initial values
-    props: ['schema', 'values'],
+    props: ['schema', 'values', 'form'],
 
     components: {
         'd3-form-fieldset': fieldset,
@@ -27,6 +26,7 @@ export default {
     },
 
     model: {
+        form: null,     //  parent form
         formSubmitted: false,
         formPending: false,
         $isValid (submitting) {
@@ -85,7 +85,7 @@ export default {
 
     render (attrs) {
         var model = this.model,
-            form = this.createElement('form').attr('novalidate', '').classed(attrs.class, true);
+            form = this.createElement('form').attr('novalidate', '').classed(attrs.class || '', true);
         //
         // add form extensions from the root view
         model.$formExtensions = this.root.$formExtensions || [];
@@ -111,7 +111,7 @@ export default {
     },
 
     build (form, schema) {
-        schema = formElement.inputData.call(this, form, schema);
+        schema = this.inputData(form, schema);
         //
         // Form validations
         this.model.validators = validators.get(schema.validators);
@@ -122,7 +122,6 @@ export default {
             if (isString(action)) action = this.model.$get(action);
             this.model.actions[key] = action || actions[key];
         }
-        addChildren.call(this, form);
-        return form;
+        return this.addChildren(form);
     }
-};
+});

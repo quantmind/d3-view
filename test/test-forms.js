@@ -6,7 +6,7 @@ import jsonform from './fixtures/jsonform';
 import jsonform3 from './fixtures/jsonform3';
 
 
-describe('view meta -', () => {
+describe('form meta', () => {
 
     it('viewForms', () => {
         expect(isObject(viewForms)).toBe(true);
