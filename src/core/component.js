@@ -34,38 +34,41 @@ const protoComponent = {
     // If this component is already mounted, or it is mounting, it does nothing
     mount (el, data) {
         if (mounted(this)) return;
-        el = asSelect(el).node();
+        const sel = asSelect(el);
+        el = sel.node();
         if (!el) {
             this.logWarn(`element not defined, pass an identifier or an HTMLElement object`);
             return Promise.resolve(this);
         }
         // set the owner document
         this.ownerDocument = el.ownerDocument;
+        //
+        const directives = sel.directives(this);
+
+        let props = assign(dataAttributes(directives.attrs), sel.datum(), data),
+            extra = maybeJson(pop(props, 'props')),
+            value, model, parentModel;
+
+        if (isObject(extra)) props = assign(extra, props);
+
         // fire mount events
-        this.events.call('mount', undefined, this, el, data);
+        this.events.call('mount', undefined, this, el, props);
         // remove mounted events
         this.events.on('mount', null);
         // fire global mount event
-        viewEvents.call('component-mount', undefined, this, el, data);
-        //
-        var sel = this.select(el),
-            directives = sel.directives(this);
-
-        let props = assign(dataAttributes(directives.attrs), sel.datum(), data),
-            value, model, parentModel;
+        viewEvents.call('component-mount', undefined, this, el, props);
 
         // pick parent model & props
         if (this.parent) {
-            // get props object from parent if props is defined
-            if (props.props) props = assign({}, this.parent.props[pop(props, 'props')], props);
             //
             parentModel = this.parent.model;
             if (props.model) model = parentModel[pop(props, 'model')];
             if (!model) model = parentModel.$new();
             else model = model.$child();
             //
+            // Get props from parent view
             Object.keys(this.props).forEach(key => {
-                value = this.parent.props[key];
+                value = this.parent.props[props[key]];
                 if (value === undefined) {
                     value = maybeJson(props[key]);
                     if (value !== undefined)
@@ -76,7 +79,13 @@ const protoComponent = {
                 } else
                     props[key] = value;
             });
-        } else model = viewModel();
+            //
+            // get props object from parent if props is defined
+            if (isString(extra)) props = assign({}, this.parent.props[extra], props);
+        } else {
+            props = assign(this.props, props);
+            model = viewModel();
+        }
 
         // add reactive model properties
         Object.keys(this.model).forEach(key => {
@@ -90,13 +99,21 @@ const protoComponent = {
                 model.$set(key, this.model[key]);
         });
         this.model = bindView(this, model);
-
-        // Add once only directive values
-        if (directives) directives.once(this.model, props);
         //
         // create the new element from the render function
+        if (!props.id) props.id = model.uid;
         this.props = props;
+        // Add once only directive values
+        directives.once(this.model, props);
+        //
         return this.doMount(el);
+    },
+
+    createElement (tag) {
+        const doc = this.ownerDocument || document;
+        const sel = this.select(doc.createElement(tag)).attr('id', this.props.id);
+        if (this.props.class) sel.classed(this.props.class, true);
+        return sel;
     },
 
     doMount (el) {

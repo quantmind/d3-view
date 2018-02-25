@@ -1,4 +1,6 @@
-import {isString, isObject} from 'd3-let';
+import {isString} from 'd3-let';
+
+import map from '../utils/map';
 
 
 const required = {
@@ -93,77 +95,20 @@ const maximum = {
     }
 };
 
-// validator singleton
-export default {
 
-    // get the list of validators
-    // custom is an optional list of custom validators
-    get (custom) {
-        var validators = this.all.slice(0);
-        if (isObject(custom))
-            for (var key in custom)
-                validators.push(customValidator(key, custom[key]));
-        return validators;
-    },
-
-    // add model validators to a form-field
-    set (vm, el) {
-        var model = vm.model;
-        model.validators.forEach((validator) => validator.set(el, model.data));
-        model.$on('value.validate', this.validate);
-        model.$validate = this.validate;
-    },
-
-    validate () {
-        var model = this,
-            vm = model.$$view,
-            validators = model.validators,
-            value = model.value,
-            el = vm.sel.attr('id') === model.data.id ? vm.sel : vm.sel.select(`#${model.data.id}`),
-            validator,
-            msg;
-
-        for (var i=0; i<validators.length; ++i) {
-            validator = validators[i];
-            msg = validator.validate(el, value);
-            if (msg) {
-                if (msg === true) msg = '';
-                break;
-            }
-        }
-
-        model.error = msg || '';
-    },
-
-    all: [
-        required,
-        minLength,
-        maxLength,
-        minimum,
-        maximum
-    ]
-};
+export default map({
+    required,
+    minLength,
+    maxLength,
+    minimum,
+    maximum
+});
 
 
-function range (el) {
+const range  = el => {
     var l0 = el.attr('min'),
         l1 = el.attr('max');
     l0 = l0 === null ? -Infinity : +l0;
     l1 = l1 === null ? Infinity : +l1;
     return [l0, l1];
-}
-
-
-function customValidator (key, method) {
-
-    return {
-        set (el, data) {
-            var value = data[key];
-            if (!value) return;
-        },
-
-        validate (el, value) {
-            return method(el, value);
-        }
-    };
-}
+};

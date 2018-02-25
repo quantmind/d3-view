@@ -19,7 +19,7 @@ export const formComponent = child => {
 };
 
 
-export const addAttributes = (el, model, attributes) => {
+export const addAttributes = (el, attributes) => {
     var expr, attr;
 
     if (!isObject(attributes)) return;

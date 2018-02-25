@@ -25,7 +25,7 @@ describe('form meta', () => {
 
     test('remote schema', async () => {
         var vm = view().use(viewForms);
-        await vm.mount(vm.viewElement('<div><d3form data-schema="/jsonform"></d3form></div>'));
+        await vm.mount(vm.viewElement('<div><d3form url="/jsonform"></d3form></div>'));
         var form = vm.sel.select('form').model();
         expect(Object.keys(form.inputs).length).toBe(4);
     });
@@ -38,7 +38,7 @@ describe('json form -', () => {
 
     beforeEach(() => {
         vm = view().use(viewForms);
-        el = vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
+        el = vm.viewElement(`<div><d3form props='${jsonform}'></d3form></div>`);
     });
 
     test ('form model', async () => {
@@ -128,7 +128,7 @@ describe('json form -', () => {
     test('invalid children', async () => {
         logger.pop();
         var schema = JSON.stringify({type: 'form', children: {}});
-        el = vm.viewElement(`<div><d3form schema='${schema}'></d3form></div>`);
+        el = vm.viewElement(`<div><d3form props='${schema}'></d3form></div>`);
         await vm.mount(el);
         var logs = logger.pop();
         expect(logs.length).toBe(1);
@@ -137,7 +137,7 @@ describe('json form -', () => {
     test('no field name', async () => {
         logger.pop();
         var schema = JSON.stringify({type: 'form', children: [{type: 'input'}]});
-        el = vm.viewElement(`<div><d3form schema='${schema}'></d3form></div>`);
+        el = vm.viewElement(`<div><d3form props='${schema}'></d3form></div>`);
         await vm.mount(el);
         var logs = logger.pop();
         expect(logs.length).toBe(1);
@@ -156,7 +156,7 @@ describe('json form 3 -', () => {
                 showId: true
             }
         }).use(viewForms);
-        el = vm.viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`);
+        el = vm.viewElement(`<div><d3form props='${jsonform3}'></d3form></div>`);
     });
 
     test('attributes', async () => {

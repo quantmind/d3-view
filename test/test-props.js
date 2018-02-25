@@ -16,7 +16,6 @@ describe('Component data -', () => {
         sidebar = {
             // static properties
             props: {
-                id: 'sidebar',
                 brand: 'sidebar',
                 brandUrl: '/'
             },
@@ -28,7 +27,7 @@ describe('Component data -', () => {
                     secondaryItems: []
                 };
             },
-            render (attrs, el) {
+            render (el) {
                 this.model.sidebarContent = this.select(el).html();
                 return this.renderFromUrl('/sidebar', this.props);
             }
@@ -64,9 +63,13 @@ describe('Component data -', () => {
         expect(vm.components.size).toBe(numDefComponents + 1);
         expect(vm.components.get('sidebar')).toBeTruthy();
         //
-        await vm.mount(vm.viewElement(
-            `<div><sidebar id="bang" data-brand="Big bang" data-brand-url='/big' data-primary-items="sidebarItems"><p id="innerBang">bla bla bla</p></sidebar></div>`
-        ));
+        await vm.mount(vm.viewElement(`
+            <div>
+                <sidebar id="bang" data-brand="Big bang" data-brand-url='/big' data-primary-items="sidebarItems">
+                    <p id="innerBang">bla bla bla</p>
+                </sidebar>
+            </div>
+        `));
         var bar = vm.sel.selectAll('#bang');
         expect(bar.size()).toBe(1);
         var model = bar.model();

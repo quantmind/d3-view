@@ -8,14 +8,13 @@ import select from './field-select';
 import submit from './field-submit';
 import responses from './responses';
 import actions from './actions';
-import validators from './validators';
 
 
 // Main form component
 export default assign({}, formElement, {
 
-    // Allow to specify form schema and initial values
-    props: ['schema', 'values', 'form'],
+    // Allow to specify and initial values
+    props: ['url', 'values', 'form'],
 
     components: {
         'd3-form-fieldset': fieldset,
@@ -84,18 +83,9 @@ export default assign({}, formElement, {
     },
 
     render () {
-        var model = this.model,
-            form = this.createElement('form').attr('novalidate', '');
-        //
-        // add form extensions from the root view
-        model.$formExtensions = this.root.$formExtensions || [];
-        model.inputs = {};
-        model.actions = {};
-        //
-        var schema = this.props.schema;
-        if (isString(schema))
-            return this.json(schema).then(response => this.build(form, response.data));
-        else return this.build(form, schema);
+        if (this.props.url)
+            return this.json(this.props.url).then(response => this.build(response.data));
+        else return this.build();
     },
 
     childrenMounted () {
@@ -108,19 +98,21 @@ export default assign({}, formElement, {
         });
     },
 
-    build (form, schema) {
-        if (this.props.values) schema.values = this.props.values;
-        schema = this.inputData(form, schema);
+    build (props) {
+        if (props) this.props = assign(this.props, props);
+        const form = this.init(this.createElement('form').attr('novalidate', '')),
+            model = this.model;
         //
-        // Form validations
-        this.model.validators = validators.get(schema.validators);
+        model.$formExtensions = this.root.$formExtensions || [];
+        model.inputs = {};
+        model.actions = {};
         //
         // Form actions
         for (var key in actions) {
-            var action = schema[key];
+            var action = this.props[key];
             if (isString(action)) action = this.model.$get(action);
-            this.model.actions[key] = action || actions[key];
+            model.actions[key] = action || actions[key];
         }
-        return this.addChildren(form);
+        return this.addChildren(form, model);
     }
 });

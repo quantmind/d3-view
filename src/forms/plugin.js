@@ -1,6 +1,7 @@
 import form from './form';
 import actions from './actions';
 import responses from './responses';
+import validators from './validators';
 
 
 // Forms plugin
@@ -11,5 +12,6 @@ export default {
         vm.$formExtensions = [];
     },
     actions,
-    responses
+    responses,
+    validators
 };

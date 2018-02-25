@@ -1,7 +1,7 @@
 import {isArray, assign} from 'd3-let';
 
 import field from './field';
-import validators from './validators';
+import validators from './validate';
 
 //
 // Select element
@@ -14,16 +14,15 @@ export default assign({}, field, {
     }, field.model),
 
     render () {
-        const el = this.createElement('select'),
-            data = this.inputData(el, this.props);
+        const el = this.init(this.createElement('select'));
         el.attr('d3-value', 'value')
-            .attr('placeholder', data.placeholder)
+            .attr('placeholder', this.props.placeholder)
             .append('option')
                 .attr('d3-for', 'option in options')
                 .attr('d3-html', '$optionLabel()')
                 .attr('d3-attr-value', '$optionValue()');
 
-        validators.set(this, el);
+        validators(this, el);
         return this.wrap(el);
     }
 });

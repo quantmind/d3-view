@@ -37,10 +37,6 @@ export default {
         return selectAll(selector);
     },
     //
-    createElement (tag) {
-        const doc = this.ownerDocument || document;
-        return select(doc.createElement(tag));
-    },
     // Shortcut for fetch function in providers
     fetch (url, options) {
         var fetch = providers.fetch;

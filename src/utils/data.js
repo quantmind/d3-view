@@ -1,4 +1,4 @@
-const DATAPREFIX = 'data-';
+const DATAPREFIX = 'data';
 
 
 export default attrs => {

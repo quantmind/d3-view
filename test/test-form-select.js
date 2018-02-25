@@ -24,11 +24,11 @@ describe('json form -', () => {
 
     test('select field', async () => {
         var vm = view({
-            model: {
+            props: {
                 $selectForm: form
             }
         }).use(viewForms);
-        await vm.mount(vm.viewElement(`<div><d3form schema='$selectForm'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form props='$selectForm'></d3form></div>`));
         var fv = vm.sel.select('form').view();
         var model = fv.model;
         expect(isObject(model.inputs)).toBe(true);
