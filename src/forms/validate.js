@@ -11,10 +11,9 @@ export default (vm, el) => {
 
 
 function validate () {
-    var model = this,
-        vm = model.$$view,
-        value = model.value,
-        el = vm.sel.attr('id') === model.data.id ? vm.sel : vm.sel.select(`#${model.data.id}`),
+    var vm = this.$$view,
+        value = this.value,
+        el = vm.sel.attr('id') === this.props.id ? vm.sel : vm.sel.select(`#${this.props.id}`),
         validator,
         msg;
 
@@ -27,5 +26,5 @@ function validate () {
         }
     }
 
-    model.error = msg || '';
+    this.error = msg || '';
 }

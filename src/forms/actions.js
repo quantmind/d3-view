@@ -20,8 +20,8 @@ const endpointDefauls = {
 // Submit action
 function submit (e) {
     var submit = this,
-        form = submit.form,
         view = submit.$$view,
+        form = view.props.form,
         endpoint = assign({}, endpointDefauls, submit.endpoint);
 
     if (e) {

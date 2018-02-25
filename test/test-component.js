@@ -1,5 +1,5 @@
 import view, {test, trigger, getWaiter, numDefComponents} from './utils';
-import {viewElement, viewEvents} from '../index';
+import {viewElement} from '../index';
 
 
 describe('Components -', () => {
@@ -121,40 +121,33 @@ describe('Components -', () => {
             count_mount = 0,
             count_mounted = 0;
 
-        viewEvents
-            .on('component-created.test', _created)
-            .on('component-mount.test', _mount)
-            .on('component-mounted.test', _mounted);
-        try {
-            var vm = view({
-                components: {
-                    bla (el) {
-                        return this.createElement('div').classed('bla', true).html(this.select(el).html());
-                    },
-                    year: year,
-                    remote () {
-                        return this.renderFromUrl('/test');
-                    }
+        var vm = view({
+            components: {
+                bla (el) {
+                    return this.createElement('div').classed('bla', true).html(this.select(el).html());
+                },
+                year: year,
+                remote () {
+                    return this.renderFromUrl('/test');
                 }
-            });
+            }
+        });
+        vm.events
+            .on('created.test', _created)
+            .on('mount.test', _mount)
+            .on('mounted.test', _mounted);
 
-            expect(vm.components.size).toBe(numDefComponents + 3);
-            await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
-            var b = vm.sel.select('div.bla').node();
-            expect(b).toBeTruthy();
-            expect(b.children.length).toBe(2);
-            expect(b.children[0].tagName).toBe('SPAN');
-            expect(b.children[1].tagName).toBe('P');
-            expect(vm.select(b.children[1]).html()).toBe('This is a test');
-            expect(count_created).toBe(4);
-            expect(count_mount).toBe(4);
-            expect(count_mounted).toBe(4);
-        } finally {
-            viewEvents
-                .on('component-created.test', null)
-                .on('component-mount.test', null)
-                .on('component-mounted.test', null);
-        }
+        expect(vm.components.size).toBe(numDefComponents + 3);
+        await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
+        var b = vm.sel.select('div.bla').node();
+        expect(b).toBeTruthy();
+        expect(b.children.length).toBe(2);
+        expect(b.children[0].tagName).toBe('SPAN');
+        expect(b.children[1].tagName).toBe('P');
+        expect(vm.select(b.children[1]).html()).toBe('This is a test');
+        expect(count_created).toBe(4);
+        expect(count_mount).toBe(4);
+        expect(count_mounted).toBe(4);
 
         function _created (arg) {
             count_created += 1;

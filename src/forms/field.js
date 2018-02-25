@@ -1,5 +1,4 @@
 import {isString, isArray, assign} from 'd3-let';
-import {select, selectAll} from 'd3-selection';
 
 import {addAttributes, formChild} from './utils';
 import properties from '../utils/htmlprops';
@@ -45,31 +44,29 @@ export const formElement = {
 
     // wrap the form element with extensions
     wrap (fieldEl) {
-        var field = this,
-            wrappedEl = fieldEl;
+        var wrappedEl = fieldEl;
 
-        field.model.$formExtensions.forEach(extension => {
-            wrappedEl = extension(field, wrappedEl, fieldEl) || wrappedEl;
+        this.root.$formExtensions.forEach(extension => {
+            wrappedEl = extension(this, wrappedEl, fieldEl) || wrappedEl;
         });
 
         return wrappedEl;
     },
 
     wrapTemplate (sel, template) {
-        var div = document.createElement('div'),
-            outer = select(div).html(template),
+        var outer = this.viewElement(template),
             slot = outer.select('slot');
 
         if (!slot.size()) {
             this.logWarn('template does not provide a slot element');
             return sel;
         }
-        var target = select(slot.node().parentNode);
+        var target = this.select(slot.node().parentNode);
         sel.nodes().forEach(function (node) {
             target.insert(() => {return node;}, 'slot');
         });
         slot.remove();
-        return selectAll(div.children);
+        return outer;
     },
 };
 

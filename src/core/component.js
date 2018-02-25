@@ -9,7 +9,6 @@ import maybeJson from '../utils/maybeJson';
 import sel from '../utils/sel';
 import map from '../utils/map';
 import dataAttributes from '../utils/data';
-import viewEvents from './events';
 import viewModel from '../model/main';
 import Cache from './cache';
 
@@ -51,12 +50,8 @@ const protoComponent = {
 
         if (isObject(extra)) props = assign(extra, props);
 
-        // fire mount events
+        // fire mount event
         this.events.call('mount', undefined, this, el, props);
-        // remove mounted events
-        this.events.on('mount', null);
-        // fire global mount event
-        viewEvents.call('component-mount', undefined, this, el, props);
 
         // pick parent model & props
         if (this.parent) {
@@ -162,8 +157,8 @@ export const createComponent = (name, o, coreDirectives, coreComponents) => {
         var parent = pop(options, 'parent'),
             components = map(parent ? parent.components : coreComponents),
             directives = map(parent ? parent.directives : coreDirectives),
-            events = dispatch('message', 'mount', 'mounted'),
-            cache = parent ? null : new Cache;
+            events = parent ? parent.events : dispatch('message', 'created', 'mount', 'mounted', 'error', 'directive-refresh'),
+            cache = parent ? parent.cache : new Cache;
 
         classComponents.forEach((comp, key) => {
             components.set(key, comp);
@@ -202,7 +197,7 @@ export const createComponent = (name, o, coreDirectives, coreComponents) => {
             },
             cache: {
                 get () {
-                    return parent ? parent.cache : cache;
+                    return cache;
                 }
             },
             uid: {
@@ -218,7 +213,7 @@ export const createComponent = (name, o, coreDirectives, coreComponents) => {
         });
         this.props = asObject(props, pop(options, 'props'));
         this.model = asObject(model, pop(options, 'model'));
-        viewEvents.call('component-created', undefined, this);
+        this.events.call('created', undefined, this);
     }
 
     Component.prototype = assign({}, base, protoComponent, obj);
@@ -278,10 +273,6 @@ export const mounted = (vm) => {
         vm.mounted();
         // invoke the view mounted events
         vm.events.call('mounted', undefined, vm);
-        // remove mounted events
-        vm.events.on('mounted', null);
-        // fire global event
-        viewEvents.call('component-mounted', undefined, vm);
     }
     return true;
 };
@@ -296,10 +287,13 @@ export const mounted = (vm) => {
 const vmMounted = (vm) => {
     var parent = vm.parent;
     vm.childrenMounted();
-    if (parent && !parent.isMounted)
-        parent.events.on(`mounted.${vm.uid}`, () => {
+    if (parent && !parent.isMounted) {
+        const event = `mounted.${vm.uid}`;
+        vm.events.on(event, () => {
+            vm.events.on(event, null);
             mounted(vm);
         });
+    }
     else
         mounted(vm);
     return vm;
@@ -333,7 +327,7 @@ const compile = (cm, origEl, element) => {
 const error = (cm, origEl, exc) => {
     cm.logWarn(`failed to render due to the unhandled exception reported below`);
     cm.logError(exc);
-    viewEvents.call('component-error', undefined, cm, origEl, exc);
+    cm.events.call('error', undefined, cm, origEl, exc);
     return cm;
 };
 

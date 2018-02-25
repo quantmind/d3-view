@@ -90,7 +90,7 @@ export default assign({}, formElement, {
 
     childrenMounted () {
         var model = this.model,
-            values = model.data.values;
+            values = this.props.values;
 
         if (values) Object.keys(values).forEach(key => {
             var inp = model.inputs[key];
