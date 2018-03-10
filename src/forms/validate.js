@@ -3,7 +3,7 @@ import validators from './validators';
 
 // validator singleton
 export default (vm, el) => {
-    validators.forEach(validator => validator.set(el, vm.props));
+    validators.forEach(validator => {if(validator.set) validator.set(el, vm.props);});
     vm.model.$on('value.validate', validate);
     vm.model.$validate = validate;
 };

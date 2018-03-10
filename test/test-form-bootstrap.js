@@ -60,10 +60,21 @@ describe('Bootstrap plugin -', () => {
         //
         await vm.sel.html('<d3form></d3form').mount(schema);
         var inputs = vm.sel.select('form').selectAll('.form-control-sm');
-        expect(inputs.size()).toBe(3);
+        expect(inputs.size()).toBe(4);
         inputs = vm.sel.select('form').selectAll('.form-control');
-        expect(inputs.size()).toBe(3);
+        expect(inputs.size()).toBe(4);
     });
+
+    test('help', async () => {
+        var vm = view().use(viewForms).use(viewBootstrapForms);
+        await vm.mount(el);
+        var nodes = vm.sel.select('form').selectAll('.form-control').nodes();
+        expect(nodes.length).toBe(4);
+        var txt = vm.select(nodes[3]);
+        var id = txt.attr('id');
+        expect(vm.sel.select(`#help-${id}`).size()).toBe(1);
+    });
+
 
     test ('warning', () => {
         var vm = view();

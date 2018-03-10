@@ -104,7 +104,7 @@ describe('directive -', () => {
                     },
                     render () {
                         return (
-                            `<ul><li d3-for='tab in tabs' d3-if='$active(tab.show, root.show)' d3-html='tab.label' style="display: inline;"></li></ul>`
+                            `<ul><li d3-for='tab in tabs' d3-if='parent.$active(tab.show, root.show)' d3-html='tab.label' style="display: inline;"></li></ul>`
                         );
                     }
                 }
@@ -125,7 +125,7 @@ describe('directive -', () => {
         vm.model.show = false;
         await nextTick();
         expect(tab.style('display')).toBe('none');
-        model.show = true;
+        vm.model.show = true;
         await nextTick();
         expect(tab.style('display')).toBe('inline');
     });

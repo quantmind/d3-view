@@ -30,7 +30,8 @@ export default JSON.stringify({
                 {
                     type: "textarea",
                     label: "Notes",
-                    name: "notes"
+                    name: "notes",
+                    help: "write anything you like"
                 }
             ]
         },

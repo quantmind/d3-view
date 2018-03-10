@@ -1,14 +1,14 @@
 export default function (field, wrappedEl, fieldEl) {
     var data = field.props;
-    fieldEl.classed('form-check-input', true);
-    return field.wrapTemplate(wrappedEl, groupTpl(data.label));
+    fieldEl.classed('custom-control-input', true);
+    return field.wrapTemplate(wrappedEl, groupTpl(data));
 }
 
-function groupTpl(label) {
-    return `<div class="form-check">
-<label class="form-check-label">
-<slot></slot>
-${label}
-</label>
-</div>`;
+function groupTpl(data) {
+    return (`
+        <div class="custom-control custom-checkbox">
+            <slot></slot>
+            <label class="custom-control-label" for="${data.id}">${data.label}</label>
+        </div>
+    `);
 }

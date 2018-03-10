@@ -3,7 +3,7 @@ import {isObject} from 'd3-let';
 
 const componentsFromType = {
     text: 'input',
-    email: "input",
+    email: 'input',
     password: 'input',
     checkbox: 'input',
     number: 'input',

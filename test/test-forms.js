@@ -46,7 +46,6 @@ describe('json form -', () => {
         var fv = vm.sel.select('form').view();
         var model = fv.model;
         expect(isObject(model.inputs)).toBe(true);
-        expect(isArray(model.validators)).toBe(true);
         expect(isObject(model.actions)).toBe(true);
         expect(model.formSubmitted).toBe(false);
         expect(model.formPending).toBe(false);

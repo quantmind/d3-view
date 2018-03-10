@@ -3,21 +3,23 @@ import formGroup from './form-group';
 import inputGroup from './input-group';
 import formCheck from './check';
 import submit from './submit';
+import help from './help';
 
 
 const bootstrap = {
 
-    input: ['inputGroup', 'label', 'formGroup'],
-    checkbox: ['formCheck'],
-    textarea: ['label', 'formGroup'],
-    select: ['label', 'formGroup'],
+    input: ['inputGroup', 'label', 'help', 'formGroup'],
+    checkbox: ['formCheck', 'help', 'formGroup'],
+    textarea: ['label', 'help', 'formGroup'],
+    select: ['label', 'help', 'formGroup'],
     submit: ['submit'],
     wrappers: {
         label,
         formGroup,
         inputGroup,
         formCheck,
-        submit
+        submit,
+        help
     }
 };
 

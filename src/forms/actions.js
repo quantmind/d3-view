@@ -11,7 +11,7 @@ const messages = {
 };
 
 
-const endpointDefauls = {
+const endpointDefaults = {
     contentType: 'application/json',
     method: 'POST'
 };
@@ -22,7 +22,7 @@ function submit (e) {
     var submit = this,
         view = submit.$$view,
         form = view.props.form,
-        endpoint = assign({}, endpointDefauls, submit.endpoint);
+        endpoint = assign({}, endpointDefaults, submit.props.endpoint);
 
     if (e) {
         e.preventDefault();

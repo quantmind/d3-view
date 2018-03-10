@@ -61,9 +61,9 @@ export default assign({}, formElement, {
         // response from a server submit
         $response (response) {
             if (response.data) {
-                if (this.data.resultHandler) {
-                    var handler = responses[this.data.resultHandler];
-                    if (!handler) this.$$view.logError(`Could not find ${this.data.resultHandler} result handler`);
+                if (this.props.resultHandler) {
+                    var handler = responses[this.props.resultHandler];
+                    if (!handler) this.$$view.logError(`Could not find ${this.props.resultHandler} result handler`);
                     else handler.call(this, response);
                 } else {
                     responses.default.call(this, response);

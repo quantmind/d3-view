@@ -73,8 +73,8 @@ describe('form submit -', () => {
         //
         // test the redirect
         var submit = button.model();
-        expect(submit.endpoint.method).toBe('PUT');
-        submit.endpoint.method = 'POST';
+        expect(submit.props.endpoint.method).toBe('PUT');
+        submit.props.endpoint.method = 'POST';
         trigger(button.node(), 'click');
         await nextTick();
         expect(messages.length).toBe(1);
@@ -117,7 +117,7 @@ describe('form submit -', () => {
         //
         // test the redirect
         var submit = button.model();
-        submit.endpoint.url = '/error';
+        submit.props.endpoint.url = '/error';
         trigger(button.node(), 'click');
         await nextTick();
         expect(messages.length).toBe(2);

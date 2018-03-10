@@ -19,7 +19,8 @@ module.exports = {
         transform: [
             [
                 'babelify', {
-                    presets: ["env"]
+                    presets: ["env"],
+                    plugins: []
                 }
             ]
         ]
