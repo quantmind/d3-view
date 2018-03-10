@@ -28,7 +28,7 @@ export default JSON.stringify({
             type: "submit",
             label: "Login",
             name: "login",
-            disabled: "!form.$isValid()",
+            disabled: "!props.form.$isValid()",
             endpoint: {
                 url: '/submitTest'
             }

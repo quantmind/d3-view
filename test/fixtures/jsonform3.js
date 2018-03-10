@@ -20,7 +20,7 @@ export default JSON.stringify({
                             react1: "ciao",
                             react2: "fooo"
                         },
-                        "d3-attr-disabled": "!showId",
+                        "d3-attr-disabled": "!root.showId",
                         "data-config": {
                             entry1: "ciao",
                             entry2: "fooo"

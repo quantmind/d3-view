@@ -1,9 +1,9 @@
-import {isArray} from 'd3-let';
+import {isObject} from 'd3-let';
 
 
 const componentsFromType = {
     text: 'input',
-    email: "input",
+    email: 'input',
     password: 'input',
     checkbox: 'input',
     number: 'input',
@@ -13,30 +13,26 @@ const componentsFromType = {
 };
 
 
-export function formComponent (child) {
+export const formComponent = child => {
     var type = child.type || 'text';
     return componentsFromType[type] || type;
-}
+};
 
 
-export function addChildren (sel) {
-    var children = this.model.data.children;
-    if (children) {
-        if (!isArray(children)) {
-            this.logError(`children should be an array of fields, got ${typeof children}`);
-            return sel;
-        }
-        sel.selectAll('.d3form')
-            .data(children)
-            .enter()
-            .append(formChild)
-            .classed('d3form', true);
+export const addAttributes = (el, attributes) => {
+    var expr, attr;
+
+    if (!isObject(attributes)) return;
+
+    for (attr in attributes) {
+        expr = attributes[attr];
+        if (isObject(expr)) expr = JSON.stringify(expr);
+        el.attr(attr, expr || '');
     }
-    return sel;
-}
+};
 
 
-function formChild (child) {
+export function formChild (child) {
     var component = formComponent(child);
     return document.createElement(`d3-form-${component}`);
 }

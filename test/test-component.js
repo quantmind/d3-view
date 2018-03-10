@@ -1,5 +1,5 @@
 import view, {test, trigger, getWaiter, numDefComponents} from './utils';
-import {viewElement, viewEvents} from '../index';
+import {viewElement} from '../index';
 
 
 describe('Components -', () => {
@@ -85,8 +85,8 @@ describe('Components -', () => {
     test('component function', async () => {
         var vm = view({
             components: {
-                bla: function () {
-                    return viewElement('<p>bla bla</p>');
+                bla () {
+                    return '<p>bla bla</p>';
                 }
             }
         });
@@ -101,7 +101,7 @@ describe('Components -', () => {
     test('renderFromUrl', async () => {
         var vm = view({
             components: {
-                bla: function () {
+                bla () {
                     return this.renderFromUrl('/test');
                 }
             }
@@ -121,40 +121,33 @@ describe('Components -', () => {
             count_mount = 0,
             count_mounted = 0;
 
-        viewEvents
-            .on('component-created.test', _created)
-            .on('component-mount.test', _mount)
-            .on('component-mounted.test', _mounted);
-        try {
-            var vm = view({
-                components: {
-                    bla (attr, el) {
-                        return this.createElement('div').classed('bla', true).html(this.select(el).html());
-                    },
-                    year: year,
-                    remote () {
-                        return this.renderFromUrl('/test');
-                    }
+        var vm = view({
+            components: {
+                bla (el) {
+                    return this.createElement('div').classed('bla', true).html(this.select(el).html());
+                },
+                year: year,
+                remote () {
+                    return this.renderFromUrl('/test');
                 }
-            });
+            }
+        });
+        vm.events
+            .on('created.test', _created)
+            .on('mount.test', _mount)
+            .on('mounted.test', _mounted);
 
-            expect(vm.components.size).toBe(numDefComponents + 3);
-            await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
-            var b = vm.sel.select('div.bla').node();
-            expect(b).toBeTruthy();
-            expect(b.children.length).toBe(2);
-            expect(b.children[0].tagName).toBe('SPAN');
-            expect(b.children[1].tagName).toBe('P');
-            expect(vm.select(b.children[1]).html()).toBe('This is a test');
-            expect(count_created).toBe(4);
-            expect(count_mount).toBe(4);
-            expect(count_mounted).toBe(4);
-        } finally {
-            viewEvents
-                .on('component-created.test', null)
-                .on('component-mount.test', null)
-                .on('component-mounted.test', null);
-        }
+        expect(vm.components.size).toBe(numDefComponents + 3);
+        await vm.mount(vm.viewElement('<div><bla><year></year><remote></remote></bla></div>'));
+        var b = vm.sel.select('div.bla').node();
+        expect(b).toBeTruthy();
+        expect(b.children.length).toBe(2);
+        expect(b.children[0].tagName).toBe('SPAN');
+        expect(b.children[1].tagName).toBe('P');
+        expect(vm.select(b.children[1]).html()).toBe('This is a test');
+        expect(count_created).toBe(3);
+        expect(count_mount).toBe(4);
+        expect(count_mounted).toBe(4);
 
         function _created (arg) {
             count_created += 1;
@@ -195,7 +188,7 @@ describe('Components -', () => {
     test('renderFromDist', async () => {
         var vm = view({
             components: {
-                bla: function () {
+                bla () {
                     return this.renderFromDist('fake', '/test');
                 }
             }
@@ -208,24 +201,6 @@ describe('Components -', () => {
         expect(vm.cache.has('https://unpkg.com/fake/test')).toBe(true);
         var el = await vm.renderFromUrl('/test');
         expect(el.tagName).toBe('P');
-    });
-
-    test ('isolated', async () => {
-        var vm = view({
-            model: {
-                foo: 5
-            }
-        });
-        expect(vm.components.size).toBe(numDefComponents);
-        await vm.mount(vm.viewElement('<div><isolated class="test" data-tag="p"><strong>ciao</strong></isolated></div>'));
-        var sel = vm.sel.select('p');
-        expect(sel.classed('test')).toBe(true);
-        expect(sel.html()).toBe('<strong>ciao</strong>');
-        var model = sel.model();
-        expect(model.parent).toBe(vm.model);
-        expect(model.isolated).toBe(true);
-        expect(model.foo).toBe(undefined);
-        expect(model.isolatedRoot).toBe(model);
     });
 
     test ('multiple element', async () => {

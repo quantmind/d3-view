@@ -87,7 +87,7 @@ describe('directive -', () => {
     test ('issue#21', async () => {
         var vm = view({
             model: {
-                rootShow: true
+                show: true
             },
             components: {
                 simple: {
@@ -103,8 +103,8 @@ describe('directive -', () => {
                         }
                     },
                     render () {
-                        return this.viewElement(
-                            `<ul><li d3-for='tab in tabs' d3-if='$active(tab.show, rootShow)' d3-html='tab.label' style="display: inline;"></li></ul>`
+                        return (
+                            `<ul><li d3-for='tab in tabs' d3-if='parent.$active(tab.show, root.show)' d3-html='tab.label' style="display: inline;"></li></ul>`
                         );
                     }
                 }
@@ -122,10 +122,10 @@ describe('directive -', () => {
         model.tab.show = true;
         await nextTick();
         expect(tab.style('display')).toBe('inline');
-        vm.model.rootShow = false;
+        vm.model.show = false;
         await nextTick();
         expect(tab.style('display')).toBe('none');
-        model.rootShow = true;
+        vm.model.show = true;
         await nextTick();
         expect(tab.style('display')).toBe('inline');
     });

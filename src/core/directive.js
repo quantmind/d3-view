@@ -2,7 +2,6 @@ import {isFunction, isObject, assign} from 'd3-let';
 
 import viewExpression from '../parser/expression';
 import viewModel from '../model/main';
-import viewEvents from './events';
 import uid from '../utils/uid';
 import sel from '../utils/sel';
 import base from './transition';
@@ -63,11 +62,12 @@ const prototype = {
     bindModel (model) {
         var dir = this,
             error = false,
+            events = model.$$view.events,
             refresh = function () {
                 let value = dir.expression ? dir.expression.eval(model) : dir.data;
                 dir.refresh(model, value);
                 dir.passes++;
-                viewEvents.call('directive-refresh', undefined, dir, model, value);
+                events.call('directive-refresh', undefined, dir, model, value);
             };
         //
         // get the cache instance

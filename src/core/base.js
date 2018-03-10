@@ -20,7 +20,7 @@ export default {
     //
     providers: providers,
     //
-    // Create a view element, same as createElement but compile it
+    // Create a view element from a template and optional context
     viewElement (source, context, ownerDocument) {
         return htmlElement(source, context, ownerDocument || this.ownerDocument);
     },
@@ -37,10 +37,6 @@ export default {
         return selectAll(selector);
     },
     //
-    createElement (tag) {
-        const doc = this.ownerDocument || document;
-        return select(doc.createElement(tag));
-    },
     // Shortcut for fetch function in providers
     fetch (url, options) {
         var fetch = providers.fetch;

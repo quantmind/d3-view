@@ -4,7 +4,7 @@ const groupTpl = `<div class="form-group">
 
 
 export default function (field, wrappedEl, fieldEl) {
-    var data = field.model.data,
+    var data = field.props,
         theme = data.theme || 'primary';
     fieldEl.classed('btn', true).classed(`btn-${theme}`, true);
     return field.wrapTemplate(wrappedEl, groupTpl);

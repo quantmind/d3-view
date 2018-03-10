@@ -77,6 +77,8 @@ The ``attr`` can be omitted for ``class``, ``name`` , ``disabled``,
 ```
 ``code`` and ``bright`` are reactive properties of the view-model.
 
+The ``d3-class`` directive can accept array values too.
+
 ### d3-for
 
 As the name suggest, the [d3-for][] directive can be used to repeat the

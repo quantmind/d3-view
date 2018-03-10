@@ -18,7 +18,7 @@ describe('form submit -', () => {
                 }
             }).use(viewForms);
 
-        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform2}'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form props='${jsonform2}'></d3form></div>`));
 
         var form = vm.sel.select('form').model();
         expect(form.$isValid()).toBe(false);
@@ -57,7 +57,7 @@ describe('form submit -', () => {
                 }
             }).use(viewForms);
 
-        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form props='${jsonform3}'></d3form></div>`));
         var form = vm.sel.select('form').model(),
             button = vm.sel.select('button');
 
@@ -73,8 +73,8 @@ describe('form submit -', () => {
         //
         // test the redirect
         var submit = button.model();
-        expect(submit.endpoint.method).toBe('PUT');
-        submit.endpoint.method = 'POST';
+        expect(submit.props.endpoint.method).toBe('PUT');
+        submit.props.endpoint.method = 'POST';
         trigger(button.node(), 'click');
         await nextTick();
         expect(messages.length).toBe(1);
@@ -84,7 +84,7 @@ describe('form submit -', () => {
     test ('no url', async () => {
         var vm = view().use(viewForms);
 
-        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form props='${jsonform}'></d3form></div>`));
         logger.pop();
         var button = vm.sel.select('button');
         trigger(button.node(), 'click');
@@ -101,7 +101,7 @@ describe('form submit -', () => {
                 }
             }).use(viewForms);
 
-        await vm.mount(vm.viewElement(`<div><d3form schema='${jsonform3}'></d3form></div>`));
+        await vm.mount(vm.viewElement(`<div><d3form props='${jsonform3}'></d3form></div>`));
         var form = vm.sel.select('form').model(),
             button = vm.sel.select('button');
 
@@ -117,7 +117,7 @@ describe('form submit -', () => {
         //
         // test the redirect
         var submit = button.model();
-        submit.endpoint.url = '/error';
+        submit.props.endpoint.url = '/error';
         trigger(button.node(), 'click');
         await nextTick();
         expect(messages.length).toBe(2);

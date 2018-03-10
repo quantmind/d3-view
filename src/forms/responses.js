@@ -11,7 +11,7 @@
 //  }
 export default {
     "default": defaultResponse,
-    redirect: redirect
+    redirect
 };
 
 

@@ -1,4 +1,4 @@
-import {isString} from 'd3-let';
+import {isString, assign} from 'd3-let';
 
 import {formElement} from './field';
 import fieldset from './field-set';
@@ -8,15 +8,13 @@ import select from './field-select';
 import submit from './field-submit';
 import responses from './responses';
 import actions from './actions';
-import validators from './validators';
-import {addChildren} from './utils';
 
 
 // Main form component
-export default {
+export default assign({}, formElement, {
 
-    // Allow to specify form schema and initial values
-    props: ['schema', 'values'],
+    // Allow to specify and initial values
+    props: ['url', 'values', 'form'],
 
     components: {
         'd3-form-fieldset': fieldset,
@@ -27,6 +25,7 @@ export default {
     },
 
     model: {
+        form: null,     //  parent form
         formSubmitted: false,
         formPending: false,
         $isValid (submitting) {
@@ -62,9 +61,9 @@ export default {
         // response from a server submit
         $response (response) {
             if (response.data) {
-                if (this.data.resultHandler) {
-                    var handler = responses[this.data.resultHandler];
-                    if (!handler) this.$$view.logError(`Could not find ${this.data.resultHandler} result handler`);
+                if (this.props.resultHandler) {
+                    var handler = responses[this.props.resultHandler];
+                    if (!handler) this.$$view.logError(`Could not find ${this.props.resultHandler} result handler`);
                     else handler.call(this, response);
                 } else {
                     responses.default.call(this, response);
@@ -83,26 +82,15 @@ export default {
         }
     },
 
-    render (attrs) {
-        var model = this.model,
-            form = this.createElement('form').attr('novalidate', '').classed(attrs.class, true);
-        //
-        // add form extensions from the root view
-        model.$formExtensions = this.root.$formExtensions || [];
-        model.inputs = {};
-        model.actions = {};
-        model.form = model;
-        //
-        var schema = this.props.schema;
-        if (this.props.values) schema.values = this.props.values;
-        if (isString(schema))
-            return this.json(schema).then(response => this.build(form, response.data));
-        else return this.build(form, schema);
+    render () {
+        if (this.props.url)
+            return this.json(this.props.url).then(response => this.build(response.data));
+        else return this.build();
     },
 
     childrenMounted () {
         var model = this.model,
-            values = model.data.values;
+            values = this.props.values;
 
         if (values) Object.keys(values).forEach(key => {
             var inp = model.inputs[key];
@@ -110,19 +98,21 @@ export default {
         });
     },
 
-    build (form, schema) {
-        schema = formElement.inputData.call(this, form, schema);
+    build (props) {
+        if (props) this.props = assign(this.props, props);
+        const form = this.init(this.createElement('form', true).attr('novalidate', '')),
+            model = this.model;
         //
-        // Form validations
-        this.model.validators = validators.get(schema.validators);
+        model.$formExtensions = this.root.$formExtensions || [];
+        model.inputs = {};
+        model.actions = {};
         //
         // Form actions
         for (var key in actions) {
-            var action = schema[key];
+            var action = this.props[key];
             if (isString(action)) action = this.model.$get(action);
-            this.model.actions[key] = action || actions[key];
+            model.actions[key] = action || actions[key];
         }
-        addChildren.call(this, form);
-        return form;
+        return this.addChildren(form, model);
     }
-};
+});

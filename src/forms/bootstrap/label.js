@@ -1,5 +1,5 @@
 export default function (field, wrappedEl) {
-    var data = field.model.data;
+    var data = field.props;
     return field.wrapTemplate(wrappedEl, labelTpl(data));
 }
 

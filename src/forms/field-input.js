@@ -1,7 +1,7 @@
 import {assign} from 'd3-let';
 
 import field from './field';
-import validators from './validators';
+import validators from './validate';
 
 
 const checks = ['checkbox', 'radio'];
@@ -11,16 +11,15 @@ const checks = ['checkbox', 'radio'];
 export default assign({}, field, {
 
     render () {
-        const el = this.createElement('input'),
-            data = this.inputData(el, this.props);
+        const el = this.init(this.createElement('input', true));
 
-        el.attr('type', data.type || 'text')
+        el.attr('type', this.props.type || 'text')
             .attr('d3-value', 'value');
 
-        if (checks.indexOf(el.attr('type')) === -1)
-            el.attr('placeholder', data.placeholder);
+        if (checks.indexOf(el.attr('type')) === -1 && this.props.placeholder)
+            el.attr('placeholder', this.props.placeholder);
 
-        validators.set(this, el);
+        validators(this, el);
         return this.wrap(el);
     }
 });

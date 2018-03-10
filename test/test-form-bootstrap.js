@@ -10,15 +10,15 @@ describe('Bootstrap plugin -', () => {
     let el;
 
     beforeEach(() => {
-        el = viewElement(`<div><d3form schema='${jsonform}'></d3form></div>`);
+        el = viewElement(`<div><d3form props='${jsonform}'></d3form></div>`);
     });
 
-    it('viewBootstrapForms', () => {
+    test ('viewBootstrapForms', () => {
         expect(isObject(viewBootstrapForms)).toBe(true);
         expect(isFunction(viewBootstrapForms.install)).toBe(true);
     });
 
-    it('install', () => {
+    test ('install', () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
         expect(isArray(vm.$formExtensions)).toBe(true);
         expect(vm.$formExtensions.length).toBe(1);
@@ -44,7 +44,7 @@ describe('Bootstrap plugin -', () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
         await vm.mount(vm.viewElement('<div>/<div>'));
         //
-        await vm.sel.html('<d3form></d3form').mount({schema: JSON.parse(jsonform)});
+        await vm.sel.html('<d3form></d3form').mount(JSON.parse(jsonform));
         var fv = vm.sel.select('form').view(),
             model = fv.model;
 
@@ -58,12 +58,23 @@ describe('Bootstrap plugin -', () => {
         schema.size = 'sm';
         await vm.mount(viewElement('<div>/<div>'));
         //
-        await vm.sel.html('<d3form></d3form').mount({schema: schema});
+        await vm.sel.html('<d3form></d3form').mount(schema);
         var inputs = vm.sel.select('form').selectAll('.form-control-sm');
-        expect(inputs.size()).toBe(3);
+        expect(inputs.size()).toBe(4);
         inputs = vm.sel.select('form').selectAll('.form-control');
-        expect(inputs.size()).toBe(3);
+        expect(inputs.size()).toBe(4);
     });
+
+    test('help', async () => {
+        var vm = view().use(viewForms).use(viewBootstrapForms);
+        await vm.mount(el);
+        var nodes = vm.sel.select('form').selectAll('.form-control').nodes();
+        expect(nodes.length).toBe(4);
+        var txt = vm.select(nodes[3]);
+        var id = txt.attr('id');
+        expect(vm.sel.select(`#help-${id}`).size()).toBe(1);
+    });
+
 
     test ('warning', () => {
         var vm = view();

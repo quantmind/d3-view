@@ -1,22 +1,37 @@
-import {isString, isObject, assign} from 'd3-let';
-import {select, selectAll} from 'd3-selection';
+import {isString, isArray, assign} from 'd3-let';
 
+import {addAttributes, formChild} from './utils';
 import properties from '../utils/htmlprops';
 
 //
 // Mixin for all form elements
 export const formElement = {
+    props: ['form'],
 
-    inputData (el, data) {
-        var model = this.model;
-        if (!data) data = {};
-        data.id = data.id || model.uid;
-        model.data = data;
-        el.attr('id', data.id);
-        if (data.classes) el.classed(data.classes, true);
-        addAttributes(el, model, data.attributes);
+    addChildren (sel, form) {
+        var children = this.props.children;
+        if (children) {
+            if (!isArray(children)) {
+                this.logError(`children should be an array of fields, got ${typeof children}`);
+                return sel;
+            }
+            if (form) children.forEach(c => {
+                c.form = form;
+            });
+            sel.selectAll('.d3form')
+                .data(children)
+                .enter()
+                .append(formChild)
+                .attr('form', 'form')
+                .classed('d3form', true);
+        }
+        return sel;
+    },
+
+    init (el) {
+        addAttributes(el, this.props.attributes);
         properties.forEach((prop, key) => {
-            var value = data[key];
+            var value = this.props[key];
             if (value) {
                 if (isString(value))
                     el.attr(`d3-attr-${key}`, value);
@@ -24,36 +39,34 @@ export const formElement = {
                     el.property(prop, true);
             }
         });
-        return data;
+        return el;
     },
 
     // wrap the form element with extensions
     wrap (fieldEl) {
-        var field = this,
-            wrappedEl = fieldEl;
+        var wrappedEl = fieldEl;
 
-        field.model.$formExtensions.forEach(extension => {
-            wrappedEl = extension(field, wrappedEl, fieldEl) || wrappedEl;
+        this.root.$formExtensions.forEach(extension => {
+            wrappedEl = extension(this, wrappedEl, fieldEl) || wrappedEl;
         });
 
         return wrappedEl;
     },
 
     wrapTemplate (sel, template) {
-        var div = document.createElement('div'),
-            outer = select(div).html(template),
+        var outer = this.createElement('div').html(template),
             slot = outer.select('slot');
 
         if (!slot.size()) {
             this.logWarn('template does not provide a slot element');
             return sel;
         }
-        var target = select(slot.node().parentNode);
+        var target = this.select(slot.node().parentNode);
         sel.nodes().forEach(function (node) {
             target.insert(() => {return node;}, 'slot');
         });
         slot.remove();
-        return selectAll(div.children);
+        return this.selectAll(outer.node().children);
     },
 };
 
@@ -78,21 +91,25 @@ export default assign({}, formElement, {
         $validate () {}
     },
 
-    inputData (el, data) {
+    init (el) {
         // call parent method
-        data = formElement.inputData.call(this, el, data);
-        if (!data.name)
-            return this.logError('Input field without a name');
+        formElement.init.call(this, el);
+        const props = this.props,
+            model = this.model;
 
-        el.attr('name', data.name);
-        data.placeholder = data.placeholder || data.label || data.name;
-        var model = this.model;
+        if (!props.name) {
+            this.logError('Input field without a name');
+            return el;
+        }
+
+        el.attr('name', props.name);
+        if (!props.placeholder) props.placeholder = props.label || props.name;
         //
         // add this model to the form inputs object
-        model.form.inputs[data.name] = model;
+        props.form.inputs[this.props.name] = model;
         //
         // give name to model (for debugging info messages)
-        model.name = data.name;
+        model.name = props.name;
         //
         // bind to the value property (two-way binding when used with d3-value)
         model.$on('value', () => {
@@ -105,23 +122,10 @@ export default assign({}, formElement, {
             }
             // trigger a change event in the form
             // required for form method such as $isValid
-            model.form.$change();
+            props.form.$change();
             model.$emit('formFieldChange', model);
         });
-        return data;
+        return el;
     }
 
 });
-
-
-function addAttributes(el, model, attributes) {
-    var expr, attr;
-
-    if (!isObject(attributes)) return;
-
-    for (attr in attributes) {
-        expr = attributes[attr];
-        if (isObject(expr)) expr = JSON.stringify(expr);
-        el.attr(attr, expr || '');
-    }
-}
