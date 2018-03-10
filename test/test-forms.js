@@ -1,4 +1,4 @@
-import {isObject, isFunction, isArray} from 'd3-let';
+import {isObject, isFunction} from 'd3-let';
 
 import view, {test, nextTick, logger} from './utils';
 import {viewForms} from '../index';

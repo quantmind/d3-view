@@ -3,7 +3,6 @@ import {viewForms, viewElement, viewBootstrapForms} from '../index';
 import jsonform4 from './fixtures/jsonform4';
 
 import {isEmail} from 'validator';
-import {isObject, isFunction, isArray} from 'd3-let';
 
 
 describe('Bootstrap plugin -', () => {

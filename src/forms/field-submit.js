@@ -9,7 +9,7 @@ export default assign({}, formElement, {
     model: {
         $submit (e) {
             if (e && e.defaultPrevented) return;
-            this.props.form.actions.submit.call(this, event);
+            this.props.form.actions.submit.call(this, e);
         }
     },
 
