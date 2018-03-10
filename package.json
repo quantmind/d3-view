@@ -79,7 +79,7 @@
         "test:unit": "karma start test/karma/karma.unit.js",
         "test:require": "./bin/view-require -h",
         "rollup": "rollup -c --banner \"$(preamble)\" && chmod +x bin/view-require",
-        "dev": "rollup -c -w",
+        "watch": "rollup -c -w",
         "debug": "karma start test/karma/karma.debug.js",
         "debug:firefox": "karma start test/karma/karma.debug.firefox.js",
         "debug:safari": "karma start test/karma/karma.debug.safari.js",

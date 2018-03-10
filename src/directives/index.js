@@ -4,12 +4,10 @@ import value from './value';
 import on from './on';
 import d3For from './for';
 import d3If from './if';
-import prop from './prop';
 
 
 export default {
     attr,
-    prop,
     html,
     value,
     on,

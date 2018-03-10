@@ -1,4 +1,3 @@
-
 import validators from './validators';
 
 
@@ -14,11 +13,9 @@ function validate () {
     var vm = this.$$view,
         value = this.value,
         el = vm.sel.attr('id') === this.props.id ? vm.sel : vm.sel.select(`#${this.props.id}`),
-        validator,
         msg;
 
-    for (var i=0; i<validators.length; ++i) {
-        validator = validators[i];
+    for (let validator of validators.values()) {
         msg = validator.validate(el, value);
         if (msg) {
             if (msg === true) msg = '';

@@ -54,7 +54,7 @@ export const formElement = {
     },
 
     wrapTemplate (sel, template) {
-        var outer = this.viewElement(template),
+        var outer = this.createElement('div').html(template),
             slot = outer.select('slot');
 
         if (!slot.size()) {
@@ -66,7 +66,7 @@ export const formElement = {
             target.insert(() => {return node;}, 'slot');
         });
         slot.remove();
-        return outer;
+        return this.selectAll(outer.node().children);
     },
 };
 

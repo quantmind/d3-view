@@ -145,7 +145,7 @@ describe('Components -', () => {
         expect(b.children[0].tagName).toBe('SPAN');
         expect(b.children[1].tagName).toBe('P');
         expect(vm.select(b.children[1]).html()).toBe('This is a test');
-        expect(count_created).toBe(4);
+        expect(count_created).toBe(3);
         expect(count_mount).toBe(4);
         expect(count_mounted).toBe(4);
 

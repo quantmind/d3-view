@@ -8,7 +8,7 @@ export default assign({}, formElement, {
 
     render () {
         const tag = this.props.tag || 'fieldset',
-            el = this.init(this.createElement(tag));
+            el = this.init(this.createElement(tag, true));
         return this.addChildren(el);
     }
 

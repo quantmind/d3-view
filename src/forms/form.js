@@ -100,7 +100,7 @@ export default assign({}, formElement, {
 
     build (props) {
         if (props) this.props = assign(this.props, props);
-        const form = this.init(this.createElement('form').attr('novalidate', '')),
+        const form = this.init(this.createElement('form', true).attr('novalidate', '')),
             model = this.model;
         //
         model.$formExtensions = this.root.$formExtensions || [];

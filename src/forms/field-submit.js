@@ -15,7 +15,7 @@ export default assign({}, formElement, {
 
     render () {
         const tag = this.props.tag || 'button',
-            el = this.init(this.createElement(tag));
+            el = this.init(this.createElement(tag, true));
 
         el.attr('type', this.props.type || 'submit')
             .attr('name', this.props.name || '_submit_')

@@ -8,7 +8,7 @@ import validators from './validate';
 export default assign({}, field, {
 
     render () {
-        var el = this.init(this.createElement('textarea'));
+        var el = this.init(this.createElement('textarea', true));
         el.attr('placeholder', this.props.placeholder)
             .attr('d3-value', 'value');
 

@@ -9,8 +9,12 @@ export default function (field, wrappedEl, fieldEl) {
 
 
 function groupTpl(gid, group) {
-    return `<div class="input-group" :class="bootstrapStatus()">
-<span class="input-group-addon" id="${gid}">${group}</span>
-<slot></slot>
-</div>`;
+    return (`
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="${gid}">${group}</span>
+            </div>
+            <slot></slot>
+        </div>
+    `);
 }

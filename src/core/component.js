@@ -98,16 +98,17 @@ const protoComponent = {
         // create the new element from the render function
         if (!props.id) props.id = model.uid;
         this.props = props;
-        // Add once only directive values
-        directives.once(this.model, props);
         //
         return this.doMount(el);
     },
 
-    createElement (tag) {
+    createElement (tag, props) {
         const doc = this.ownerDocument || document;
-        const sel = this.select(doc.createElement(tag)).attr('id', this.props.id);
-        if (this.props.class) sel.classed(this.props.class, true);
+        const sel = this.select(doc.createElement(tag));
+        if (props) {
+            sel.attr('id', this.props.id);
+            if (this.props.class) sel.classed(this.props.class, true);
+        }
         return sel;
     },
 
@@ -289,9 +290,11 @@ const vmMounted = (vm) => {
     vm.childrenMounted();
     if (parent && !parent.isMounted) {
         const event = `mounted.${vm.uid}`;
-        vm.events.on(event, () => {
-            vm.events.on(event, null);
-            mounted(vm);
+        vm.events.on(event, cm => {
+            if (cm === parent) {
+                vm.events.on(event, null);
+                mounted(vm);
+            }
         });
     }
     else
