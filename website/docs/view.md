@@ -33,7 +33,7 @@ To bind a view object into an HTML ``element`` one uses the **view.mount** metho
 The view only affect ``element`` and its children.
 This method should be called **once only** for a given view object:
 ```javascript
-vm.mount('#app').then(() => () {
+vm.mount('#app').then(() => {
     vm.logWarn('View mounted');
     vm.isMounted    //  true
 });
