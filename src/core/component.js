@@ -49,6 +49,7 @@ const protoComponent = {
             value, model, parentModel;
 
         if (isObject(extra)) props = assign(extra, props);
+        else if(this.parent && this.parent.props[extra]) props = assign({}, this.parent.props[extra], props);
 
         // fire mount event
         this.events.call('mount', undefined, this, el, props);

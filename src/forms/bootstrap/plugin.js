@@ -1,3 +1,4 @@
+import error from './error';
 import label from './label';
 import formGroup from './form-group';
 import inputGroup from './input-group';
@@ -8,12 +9,13 @@ import help from './help';
 
 const bootstrap = {
 
-    input: ['inputGroup', 'label', 'help', 'formGroup'],
-    checkbox: ['formCheck', 'help', 'formGroup'],
-    textarea: ['label', 'help', 'formGroup'],
-    select: ['label', 'help', 'formGroup'],
+    input: ['error', 'inputGroup', 'label', 'help', 'formGroup'],
+    checkbox: ['error', 'formCheck', 'help', 'formGroup'],
+    textarea: ['error', 'label', 'help', 'formGroup'],
+    select: ['error', 'label', 'help', 'formGroup'],
     submit: ['submit'],
     wrappers: {
+        error,
         label,
         formGroup,
         inputGroup,

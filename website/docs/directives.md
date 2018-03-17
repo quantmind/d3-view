@@ -35,9 +35,9 @@ the HTML element they belong to.
 
 Directive attribute values are one of
 
+* empty
 * binding [expressions](#expressions)
 * JSON string
-* empty
 
 A directive attribute value can be a non binding expression provided the [create][] method
 returns nothing and set the ``active`` attribute to ``true``.
