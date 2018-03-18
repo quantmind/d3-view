@@ -5,6 +5,7 @@
 
 
 - [Installing](#installing)
+- [A simple App](#a-simple-app)
 - [Dependencies](#dependencies)
 - [Creating a view](#creating-a-view)
 

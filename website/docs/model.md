@@ -18,6 +18,7 @@
   - [model.root](#modelroot)
   - [model.uid](#modeluid)
   - [model.$change ([attribute])](#modelchange-attribute)
+  - [model.$connect(attr, [ownerAttr], [owner])](#modelconnectattr-ownerattr-owner)
   - [model.$data ()](#modeldata-)
   - [model.$emit (eventName, [data])](#modelemit-eventname-data)
   - [model.$isReactive (attribute)](#modelisreactive-attribute)
