@@ -46,7 +46,7 @@ export function getWaiter () {
 }
 
 export function trigger (target, event, process) {
-    var e = document.createEvent('HTMLEvents');
+    var e = target.ownerDocument.createEvent('HTMLEvents');
     e.initEvent(event, true, true);
     if (process) process(e);
     target.dispatchEvent(e);

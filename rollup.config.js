@@ -10,7 +10,8 @@ import uglify from 'rollup-plugin-uglify';
 const pkg = require('./package.json');
 const external = Object.keys(pkg.dependencies).filter(d => d !== 'd3-require');
 const globals = external.reduce((g, name) => {g[name] = 'd3'; return g;}, {});
-
+const year = (new Date).getFullYear();
+const preamble = `// ${pkg.homepage || pkg.name} v${pkg.version} Copyright ${year} ${pkg.author.name}`;
 
 export default [
     {
@@ -22,7 +23,8 @@ export default [
             extend: true,
             sourcemap: true,
             name: 'd3',
-            globals: globals
+            globals: globals,
+            banner: preamble
         },
         plugins: [
             json(),
@@ -44,7 +46,8 @@ export default [
             extend: true,
             sourcemap: true,
             name: 'd3',
-            globals: globals
+            globals: globals,
+            banner: preamble
         },
         plugins: [
             json(),
@@ -65,7 +68,8 @@ export default [
             format: 'umd',
             extend: true,
             name: 'd3',
-            globals: globals
+            globals: globals,
+            banner: preamble
         },
         plugins: [
             json(),
@@ -82,7 +86,8 @@ export default [
             format: 'umd',
             sourcemap: false,
             extend: true,
-            name: 'd3'
+            name: 'd3',
+            banner: preamble
         },
         plugins: [
             resolve({
@@ -99,7 +104,7 @@ export default [
         output: {
             file: 'bin/view-require',
             format: 'cjs',
-            banner: '#!/usr/bin/env node'
+            banner: `#!/usr/bin/env node\n${preamble}`
         },
         plugins: [
             json(),

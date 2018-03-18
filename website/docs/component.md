@@ -9,7 +9,7 @@
 - [Creating a Component](#creating-a-component)
   - [props](#props)
   - [model](#model)
-  - [render (props, HTMLAttrs, HTMLElement)](#render-props-htmlattrs-htmlelement)
+  - [render (HTMLAttrs, HTMLElement)](#render-htmlattrs-htmlelement)
   - [childrenMounted ()](#childrenmounted-)
   - [mounted ()](#mounted-)
   - [destroy ()](#destroy-)

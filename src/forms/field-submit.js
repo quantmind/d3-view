@@ -7,9 +7,9 @@ import {formElement} from './field';
 export default assign({}, formElement, {
 
     model: {
-        $submit (e) {
-            if (e && e.defaultPrevented) return;
-            this.props.form.actions.submit.call(this, e);
+        $submit () {
+            if (this.$event && this.$event.defaultPrevented) return;
+            this.props.form.actions.submit.call(this, this.$event);
         }
     },
 

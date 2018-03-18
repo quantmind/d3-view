@@ -77,7 +77,7 @@ export default {
                     forComponent({
                         model: x,
                         parent: vm
-                    }).mount(this).then(fv => {
+                    }).mount(this, {model: vm.model}).then(fv => {
                         fv.sel.classed(itemClass, true);
                         // replace the item with a property from the model
                         // This allow for reactivity when d is an object
