@@ -105,9 +105,6 @@ export default assign({}, formElement, {
         el.attr('name', props.name);
         if (!props.placeholder) props.placeholder = props.label || props.name;
         //
-        // add this model to the form inputs object
-        props.form.inputs[this.props.name] = model;
-        //
         // give name to model (for debugging info messages)
         model.name = props.name;
         //
@@ -126,6 +123,11 @@ export default assign({}, formElement, {
             model.$emit('formFieldChange', model);
         });
         return el;
+    },
+
+    mounted () {
+        // add this model to the form inputs object
+        this.props.form.inputs[this.props.name] = this.model;
     }
 
 });

@@ -7,7 +7,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: yarn install
+              command: npm install -g yarn && yarn install
           - run:
               name: test
               command: yarn test
@@ -30,7 +30,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: cd packages/d3-view-test && yarn install
+              command: npm install -g yarn && cd packages/d3-view-test && yarn install
           - run:
               name: test
               command: cd packages/d3-view-test && yarn test
@@ -41,7 +41,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: yarn install
+              command: npm install -g yarn && yarn install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh
@@ -55,7 +55,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: cd packages/d3-view-test && yarn install
+              command: npm install -g yarn && cd packages/d3-view-test && yarn install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh

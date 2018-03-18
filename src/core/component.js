@@ -58,7 +58,8 @@ const protoComponent = {
         if (this.parent) {
             //
             parentModel = this.parent.model;
-            if (props.model) model = parentModel[pop(props, 'model')];
+            model = pop(props, 'model');
+            if (model && !model.$child) model = parentModel[model];
             if (!model) model = parentModel.$new();
             else model = model.$child();
             //
@@ -319,7 +320,8 @@ const compile = (cm, origEl, element) => {
     // mark the original element as component
     origEl.__d3_component__ = true;
     // Insert before the component element
-    origEl.parentNode.insertBefore(element, origEl);
+    if (origEl.parentNode)
+        origEl.parentNode.insertBefore(element, origEl);
     // remove the component element
     cm.select(origEl).remove();
     //

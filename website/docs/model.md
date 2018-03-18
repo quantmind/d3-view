@@ -219,6 +219,17 @@ var model = d3.viewModel({
 model.data.push(4);
 model.$change('data');
 ```
+### model.$connect(attr, [ownerAttr], [owner])
+
+Connect a model attribute ``attr`` with another model attribute ```ownerAttr``.
+If ``ownerAttr`` is not specified or it is ``null`` it is assumed to be ``attr``.
+If the ``owner`` model is not specified, it is avaluated via the [$owner](#modelowner-attribute) method:
+```javascript
+owner = model.$owner(ownerAttr)
+```
+The ``attr`` attribute is read-only on the model an it reacts on ``ownerAttr`` changes.
+This method is usefule when you need to add a reactive property to a model which depends on other models.
+
 
 ### model.$data ()
 
