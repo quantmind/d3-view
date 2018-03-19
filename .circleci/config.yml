@@ -7,13 +7,13 @@ jobs:
           - checkout
           - run:
               name: install
-              command: sudo npm install -g yarn && yarn install
+              command: npm install
           - run:
               name: test
-              command: yarn test
+              command: npm test
           - run:
               name: coverage
-              command: yarn test:cover
+              command: npm run-script test:cover
           - run:
               name: upload coverage
               command: bash <(curl -s https://codecov.io/bash)
@@ -22,7 +22,7 @@ jobs:
               command: npm prune --production
           - run:
               name: run view-require
-              command: yarn test:require
+              command: npm run-script test:require
     tests-d3-view-test:
         docker:
           - image: circleci/node:latest
@@ -30,10 +30,10 @@ jobs:
           - checkout
           - run:
               name: install
-              command: sudo npm install -g yarn && cd packages/d3-view-test && yarn install
+              command: cd packages/d3-view-test && npm install
           - run:
               name: test
-              command: cd packages/d3-view-test && yarn test
+              command: cd packages/d3-view-test && npm test
     release:
         docker:
           - image: circleci/node:latest
@@ -41,7 +41,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: sudo npm install -g yarn && yarn install
+              command: npm install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh
@@ -55,7 +55,7 @@ jobs:
           - checkout
           - run:
               name: install
-              command: sudo npm install -g yarn && cd packages/d3-view-test && yarn install
+              command: cd packages/d3-view-test && npm install
           - run:
               name: authenticate
               command: .circleci/authenticate.sh
