@@ -68,19 +68,19 @@ const mountElement = (element, vm, data) => {
 
     var component = getComponent(element, vm),
         directives = select(element).directives(vm),
-        preMount = directives ? directives.preMount() : null;
+        preMount = directives.preMount();
 
     if (preMount)
         return preMount.execute(vm.model);
     else {
         if (component) {
             return component({parent: vm}).mount(element, data).then(cm => {
-                if (directives) directives.execute(cm.model);
+                directives.execute(cm.model);
                 return cm;
             });
         }
         else {
-            if (directives) directives.execute(vm.model);
+            directives.execute(vm.model);
             return Promise.all(slice(element.children).map(c => mountElement(c, vm, data)));
         }
     }

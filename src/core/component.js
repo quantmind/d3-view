@@ -11,6 +11,7 @@ import map from '../utils/map';
 import dataAttributes from '../utils/data';
 import viewModel from '../model/main';
 import Cache from './cache';
+import dashify from '../utils/dashify';
 
 
 export const protoView = {
@@ -134,12 +135,14 @@ const protoComponent = {
     },
 
     addComponent (name, obj) {
+        name = dashify(name);
         var component = createComponent(name, obj);
         this.components.set(name, component);
         return component;
     },
 
     addDirective (name, obj) {
+        name = dashify(name);
         var directive = createDirective(obj);
         this.directives.set(name, directive);
         return directive;
@@ -235,6 +238,7 @@ export const createComponent = (name, o, coreDirectives, coreComponents) => {
 
 export const extendComponents = (container, components) => {
     map(components).forEach((obj, key) => {
+        key = dashify(key);
         container.set(key, createComponent(key, obj, protoComponent));
     });
     return container;
@@ -242,6 +246,7 @@ export const extendComponents = (container, components) => {
 
 export const extendDirectives = (container, directives) => {
     map(directives).forEach((obj, key) => {
+        key = dashify(key);
         container.set(key, createDirective(obj));
     });
     return container;
