@@ -11,6 +11,7 @@ export {default as viewSelect} from './src/utils/select';
 export {default as viewUid} from './src/utils/uid';
 export {default as viewDebounce} from './src/utils/debounce';
 export {default as viewSlugify} from './src/utils/slugify';
+export {default as viewDashify} from './src/utils/dashify';
 export {default as jsep} from './src/parser/jsep';
 export {version as viewVersion} from './package.json';
 

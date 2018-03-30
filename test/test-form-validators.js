@@ -5,7 +5,7 @@ import jsonform4 from './fixtures/jsonform4';
 import {isEmail} from 'validator';
 
 
-describe('Bootstrap plugin -', () => {
+describe('Form validation -', () => {
 
     let el;
 
@@ -19,14 +19,31 @@ describe('Bootstrap plugin -', () => {
         el = viewElement(`<div><d3form props='${jsonform4}'></d3form></div>`);
     });
 
-    test('help', async () => {
+    test('email', async () => {
         var vm = view().use(viewForms).use(viewBootstrapForms);
         await vm.mount(el);
         var form = vm.sel.select('form').model();
         form.inputs.email.value = 'bjhbdfjhv';
+        form.inputs.age.value = 20;
         await nextTick();
         expect(form.$isValid()).toBe(false);
         form.inputs.email.value = 'bla@foo.com';
+        await nextTick();
+        expect(form.$isValid()).toBe(true);
+    });
+
+    test('number min - max', async () => {
+        var vm = view().use(viewForms).use(viewBootstrapForms);
+        await vm.mount(el);
+        var form = vm.sel.select('form').model();
+        form.inputs.email.value = 'bla@foo.com';
+        form.inputs.age.value = 17;
+        await nextTick();
+        expect(form.$isValid()).toBe(false);
+        form.inputs.age.value = 40;
+        await nextTick();
+        expect(form.$isValid()).toBe(false);
+        form.inputs.age.value = 30;
         await nextTick();
         expect(form.$isValid()).toBe(true);
     });

@@ -1,16 +1,10 @@
-import {isString} from 'd3-let';
-
 import map from '../utils/map';
 
 
 const required = {
 
     set (el, data) {
-        var value = data.required;
-        if (isString(value))
-            el.attr(`d3-required`, value);
-        else
-            el.property('required', value || false);
+        if (data.required) el.property('required', true);
     },
 
     validate (el, value) {
@@ -27,11 +21,8 @@ const required = {
 const minLength = {
 
     set (el, data) {
-        var value = data.minLength;
-        if (isString(value))
-            el.attr(`d3-attr-minlength`, value);
-        else if (value !== undefined)
-            el.attr('minlength', value);
+        var value = +data.minLength;
+        if (value === value) el.attr('minlength', value);
     },
 
     validate (el, value) {
@@ -45,11 +36,8 @@ const minLength = {
 const maxLength = {
 
     set (el, data) {
-        var value = data.maxLength;
-        if (isString(value))
-            el.attr(`d3-attr-maxlength`, value);
-        else if (value !== undefined)
-            el.attr('maxlength', value);
+        var value = +data.maxLength;
+        if (value === value) el.attr('maxlength', value);
     },
 
     validate (el, value) {
@@ -63,11 +51,8 @@ const maxLength = {
 const minimum = {
 
     set (el, data) {
-        var value = data.minimum;
-        if (isString(value))
-            el.attr(`d3-attr-min`, value);
-        else if (value !== undefined)
-            el.attr('min', value);
+        var value = +data.minimum;
+        if (value === value) el.attr('min', value);
     },
 
     validate (el, value) {
@@ -81,11 +66,8 @@ const minimum = {
 const maximum = {
 
     set (el, data) {
-        var value = data.maximum;
-        if (isString(value))
-            el.attr(`d3-attr-max`, value);
-        else if (value !== undefined)
-            el.attr('max', value);
+        var value = +data.maximum;
+        if (value === value) el.attr('max', value);
     },
 
     validate (el, value) {

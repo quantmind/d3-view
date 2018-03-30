@@ -9,6 +9,13 @@ export default JSON.stringify({
             group: "@"
         },
         {
+            type: "number",
+            name: "age",
+            required: true,
+            minimum: 18,
+            maximum: 35
+        },
+        {
             type: "submit",
             label: "Login",
             name: "login"
