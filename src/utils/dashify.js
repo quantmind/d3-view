@@ -1,6 +1,6 @@
 export default (str, options) => {
     if (typeof str !== 'string') {
-      throw new TypeError('expected a string');
+        throw new TypeError('expected a string');
     }
 
     return str.trim()
