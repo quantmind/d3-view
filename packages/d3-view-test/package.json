@@ -28,6 +28,7 @@
         "jsdom": "11.6"
     },
     "devDependencies": {
+        "babel-eslint": "8.2",
         "eslint": "4.19",
         "jest": "22.4",
         "publish": "0.6"
