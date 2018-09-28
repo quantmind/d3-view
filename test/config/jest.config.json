@@ -1,0 +1,23 @@
+{
+  "rootDir": "../../",
+  "collectCoverage": false,
+  "automock": false,
+  "coverageReporters": ["json", "html", "lcov", "text", "text-summary"],
+  "collectCoverageFrom": ["**/*.js"],
+  "coveragePathIgnorePatterns": [
+    "build/*",
+    "static/*",
+    "coverage/*",
+    ".eslintrc.js"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 0,
+      "functions": 0,
+      "lines": 0,
+      "statements": 0
+    }
+  },
+  "setupTestFrameworkScriptFile": "<rootDir>/test/config/setupTests.js",
+  "testPathIgnorePatterns": ["<rootDir>/build/", "<rootDir>/node_modules/"]
+}
