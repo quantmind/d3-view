@@ -1,6 +1,5 @@
 const modelStr = "[object d3Model]";
 
-
-export default function () {
-    return modelStr;
+export default function() {
+  return modelStr;
 }

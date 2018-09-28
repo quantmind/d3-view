@@ -1,11 +1,10 @@
-import {logger, inBrowser, isFunction, assign} from 'd3-let';
-import {viewResolve, viewRequire} from '../require';
-
+import { assign, inBrowser, isFunction, logger } from "d3-let";
+import { viewRequire, viewResolve } from "../require";
 
 logger.debug = null;
 
-
-export default assign({
+export default assign(
+  {
     //
     require: viewRequire,
     //
@@ -17,22 +16,25 @@ export default assign({
     // callbacks when page is loaded in browser
     readyCallbacks: [],
     // Set/unset debug
-    setDebug (active) {
-        if (!arguments.length || active)
-            this.logger.debug = isFunction(active) ? active : defaultDebug;
-        else
-            this.logger.debug = null;
+    setDebug(active) {
+      if (!arguments.length || active)
+        this.logger.debug = isFunction(active) ? active : defaultDebug;
+      else this.logger.debug = null;
     }
-}, function () {
+  },
+  (function() {
     if (inBrowser) {
-        return assign({
-            fetch: window.fetch,
-            location: window.location
-        }, window.d3);
+      return assign(
+        {
+          fetch: window.fetch,
+          location: window.location
+        },
+        window.d3
+      );
     }
-}());
+  })()
+);
 
-
-function defaultDebug (msg) {
-    this.info(msg);
+function defaultDebug(msg) {
+  this.info(msg);
 }

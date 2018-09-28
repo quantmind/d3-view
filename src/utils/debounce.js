@@ -1,4 +1,4 @@
-import {timeout} from 'd3-timer';
+import { timeout } from "d3-timer";
 
 //
 // Evaluate a callback (optional) with given delay (optional)
@@ -7,33 +7,33 @@ import {timeout} from 'd3-timer';
 // of the event loop.
 // Calling this method multiple times in the same event loop tick produces
 // always the initial promise
-export default function (callback, delay) {
-    let promise = null,
-        self, args;
+export default function(callback, delay) {
+  let promise = null,
+    self,
+    args;
 
-    function debounce () {
-        self = this;
-        args = arguments;
-        if (promise !== null) return promise;
+  function debounce() {
+    self = this;
+    args = arguments;
+    if (promise !== null) return promise;
 
-        promise = new Promise((resolve, reject) => {
+    promise = new Promise((resolve, reject) => {
+      timeout(() => {
+        promise = null;
+        try {
+          resolve(callback ? callback.apply(self, args) : undefined);
+        } catch (err) {
+          reject(err);
+        }
+      }, delay);
+    });
 
-            timeout(() => {
-                promise = null;
-                try {
-                    resolve(callback ? callback.apply(self, args) : undefined);
-                } catch (err) {
-                    reject(err);
-                }
-            }, delay);
-        });
+    return promise;
+  }
 
-        return promise;
-    }
+  debounce.promise = function() {
+    return promise;
+  };
 
-    debounce.promise = function () {
-        return promise;
-    };
-
-    return debounce;
+  return debounce;
 }
