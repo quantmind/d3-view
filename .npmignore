@@ -11,3 +11,4 @@ contributing.md
 rollup.config.js
 Makefile
 .eslintrc
+.env
