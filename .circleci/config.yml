@@ -1,83 +1,73 @@
 version: 2
 jobs:
-    tests:
-        docker:
-          - image: circleci/node:latest-browsers
-        steps:
-          - checkout
-          - run:
-              name: install
-              command: npm install
-          - run:
-              name: test
-              command: npm test
-          - run:
-              name: coverage
-              command: npm run-script test:cover
-          - run:
-              name: upload coverage
-              command: bash <(curl -s https://codecov.io/bash)
-          - run:
-              name: remove dev dependencies
-              command: npm prune --production
-          - run:
-              name: run view-require
-              command: npm run-script test:require
-    tests-d3-view-test:
-        docker:
-          - image: circleci/node:latest
-        steps:
-          - checkout
-          - run:
-              name: install
-              command: cd packages/d3-view-test && npm install
-          - run:
-              name: test
-              command: cd packages/d3-view-test && npm test
-    release:
-        docker:
-          - image: circleci/node:latest
-        steps:
-          - checkout
-          - run:
-              name: install
-              command: npm install
-          - run:
-              name: authenticate
-              command: .circleci/authenticate.sh
-          - run:
-              name: release d3-view
-              command: npm run-script release
-    release-d3-view-test:
-        docker:
-          - image: circleci/node:latest
-        steps:
-          - checkout
-          - run:
-              name: install
-              command: cd packages/d3-view-test && npm install
-          - run:
-              name: authenticate
-              command: .circleci/authenticate.sh
-          - run:
-              name: release d3-view-test
-              command: cd packages/d3-view-test && npm run-script release
+  tests:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: npm install
+      - run:
+          name: test
+          command: npm test
+      - run:
+          name: upload coverage
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: remove dev dependencies
+          command: npm prune --production
+      - run:
+          name: run view-require
+          command: npm run-script test:require
+  tests-d3-view-test:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: cd packages/d3-view-test && npm install
+      - run:
+          name: test
+          command: cd packages/d3-view-test && npm test
+  release:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: npm install
+      - run:
+          name: authenticate
+          command: .circleci/authenticate.sh
+      - run:
+          name: release d3-view
+          command: npm run-script release
+  release-d3-view-test:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: install
+          command: cd packages/d3-view-test && npm install
+      - run:
+          name: authenticate
+          command: .circleci/authenticate.sh
+      - run:
+          name: release d3-view-test
+          command: cd packages/d3-view-test && npm run-script release
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - tests
-      - tests-d3-view-test
       - release:
           requires:
             - tests
-          filters:
-            branches:
-              only: master
-      - release-d3-view-test:
-          requires:
-            - tests-d3-view-test
           filters:
             branches:
               only: master

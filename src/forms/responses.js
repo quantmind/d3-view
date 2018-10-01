@@ -10,23 +10,26 @@
 //      ...
 //  }
 export default {
-    "default": defaultResponse,
-    redirect
+  default: defaultResponse,
+  redirect
 };
 
-
 // The default response emit a formMessage to event to parent models
-function defaultResponse (response) {
-    var level = response.status < 300 ? 'info' : (response.status < 500 ? 'warning' : 'error');
-    this.$emit('formMessage', {
-        level: level,
-        data: response.data,
-        response: response
-    });
+function defaultResponse(response) {
+  var level =
+    response.status < 300
+      ? "info"
+      : response.status < 500
+        ? "warning"
+        : "error";
+  this.$emit("formMessage", {
+    level: level,
+    data: response.data,
+    response: response
+  });
 }
 
-
-function redirect (response) {
-    var location = this.$$view.providers.location;
-    location.href = response.data.redirectTo || '/';
+function redirect(response) {
+  var location = this.$$view.providers.location;
+  location.href = response.data.redirectTo || "/";
 }

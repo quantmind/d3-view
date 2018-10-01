@@ -9,4 +9,5 @@ coverage
 packages
 contributing.md
 rollup.config.js
+Makefile
 .eslintrc

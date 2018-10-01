@@ -1,127 +1,93 @@
-import json from 'rollup-plugin-json';
-import babel from 'rollup-plugin-babel';
-import eslint from 'rollup-plugin-eslint';
-import sourcemaps from 'rollup-plugin-sourcemaps';
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
-import uglify from 'rollup-plugin-uglify';
+import commonjs from "rollup-plugin-commonjs";
+import json from "rollup-plugin-json";
+import resolve from "rollup-plugin-node-resolve";
+import sourcemaps from "rollup-plugin-sourcemaps";
+import { terser } from "rollup-plugin-terser";
 
+const pkg = require("./package.json");
+const d3deps = ["d3-dispatch", "d3-selection", "d3-timer"].concat(
+  Object.keys(pkg.dependencies).filter(key => /^d3-/.test(key))
+);
+const year = new Date().getFullYear();
+const preamble = `// ${pkg.homepage || pkg.name} v${
+  pkg.version
+} Copyright ${year} ${pkg.author.name}`;
 
-const pkg = require('./package.json');
-const external = Object.keys(pkg.dependencies).filter(d => d !== 'd3-require');
-const globals = external.reduce((g, name) => {g[name] = 'd3'; return g;}, {});
-const year = (new Date).getFullYear();
-const preamble = `// ${pkg.homepage || pkg.name} v${pkg.version} Copyright ${year} ${pkg.author.name}`;
+const config = {
+  input: "index.js",
+  external: d3deps,
+  output: {
+    file: `build/${pkg.name}.js`,
+    format: "umd",
+    indent: false,
+    extend: true,
+    sourcemap: true,
+    name: "d3",
+    globals: d3deps.reduce((o, d) => {
+      o[d] = "d3";
+      return o;
+    }, {}),
+    banner: preamble
+  },
+  plugins: [json(), sourcemaps()]
+};
 
 export default [
-    {
-        input: 'index.js',
-        external: external,
-        output: {
-            file: 'build/d3-view-legacy.js',
-            format: 'umd',
-            extend: true,
-            sourcemap: true,
-            name: 'd3',
-            globals: globals,
-            banner: preamble
-        },
-        plugins: [
-            json(),
-            babel({
-                plugins: ['external-helpers'],
-                presets: ['es2015-rollup'],
-                externalHelpers: true
-            }),
-            sourcemaps(),
-            resolve()
-        ]
+  config,
+  {
+    ...config,
+    output: {
+      ...config.output,
+      file: `build/${pkg.name}.min.js`
     },
-    {
-        input: 'index.js',
-        external: external,
+    plugins: [
+      json(),
+      terser({
         output: {
-            file: 'build/d3-view.js',
-            format: 'umd',
-            extend: true,
-            sourcemap: true,
-            name: 'd3',
-            globals: globals,
-            banner: preamble
-        },
-        plugins: [
-            json(),
-            sourcemaps(),
-            eslint({
-                exclude: ['*.json', 'node_modules/**']
-            }),
-            resolve({
-                browser: true
-            })
-        ]
+          preamble: config.output.banner
+        }
+      })
+    ]
+  },
+  {
+    input: "index-require.js",
+    output: {
+      file: "build/d3-require.js",
+      format: "umd",
+      sourcemap: false,
+      extend: true,
+      name: "d3",
+      banner: preamble
     },
-    {
-        input: 'index.js',
-        external: external,
-        output: {
-            file: 'build/d3-view.min.js',
-            format: 'umd',
-            extend: true,
-            name: 'd3',
-            globals: globals,
-            banner: preamble
-        },
-        plugins: [
-            json(),
-            resolve({
-                browser: true
-            }),
-            uglify()
-        ]
+    plugins: [
+      resolve({
+        browser: true
+      })
+    ]
+  },
+  {
+    input: "src/bin/index.js",
+    output: {
+      file: "bin/view-require",
+      format: "cjs",
+      banner: `#!/usr/bin/env node\n${preamble}`
     },
-    {
-        input: 'index-require.js',
-        output: {
-            file: 'build/d3-require.js',
-            format: 'umd',
-            sourcemap: false,
-            extend: true,
-            name: 'd3',
-            banner: preamble
-        },
-        plugins: [
-            resolve({
-                browser: true
-            }),
-            babel({
-                plugins: ['external-helpers'],
-                presets: ['es2015-rollup']
-            })
-        ]
-    },
-    {
-        input: 'src/bin/index.js',
-        output: {
-            file: 'bin/view-require',
-            format: 'cjs',
-            banner: `#!/usr/bin/env node\n${preamble}`
-        },
-        plugins: [
-            json(),
-            commonjs({
-                include: 'node_modules/**'
-            })
-        ],
-        external: [
-            'fs',
-            'child_process',
-            'commander',
-            'console',
-            'path',
-            'module',
-            'events',
-            'assert',
-            'os'
-        ]
-    }
+    plugins: [
+      json(),
+      commonjs({
+        include: "node_modules/**"
+      })
+    ],
+    external: [
+      "fs",
+      "child_process",
+      "commander",
+      "console",
+      "path",
+      "module",
+      "events",
+      "assert",
+      "os"
+    ]
+  }
 ];

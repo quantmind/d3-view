@@ -1,40 +1,37 @@
 {
-    "version": "0.4.0",
-    "name": "d3-view-test",
-    "description": "Testing utilities for d3-view",
-    "author": {
-        "name": "quantmind.com",
-        "email": "message@quantmind.com"
-    },
-    "keywords": [
-        "d3",
-        "d3-module",
-        "reactive",
-        "test"
-    ],
-    "license": "BSD-3-Clause",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/quantmind/d3-view.git"
-    },
-    "engines": {
-        "node": ">= 6.0"
-    },
-    "main": "index.js",
-    "module": "index",
-    "jsnext:main": "index",
-    "dependencies": {
-        "d3-view": "1.4",
-        "jsdom": "11.6"
-    },
-    "devDependencies": {
-        "babel-eslint": "8.2",
-        "eslint": "4.19",
-        "jest": "22.4",
-        "publish": "0.6"
-    },
-    "scripts": {
-        "test": "eslint *.js && jest --coverage",
-        "release": "publish"
-    }
+  "version": "0.4.0",
+  "name": "d3-view-test",
+  "description": "Testing utilities for d3-view",
+  "author": {
+    "name": "quantmind.com",
+    "email": "message@quantmind.com"
+  },
+  "keywords": [
+    "d3",
+    "d3-module",
+    "reactive",
+    "test"
+  ],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quantmind/d3-view.git"
+  },
+  "engines": {
+    "node": ">= 6.0"
+  },
+  "main": "index.js",
+  "module": "index",
+  "dependencies": {
+    "d3-view": "1.4"
+  },
+  "devDependencies": {
+    "eslint": "5.6",
+    "jest": "23",
+    "publish": "0.6"
+  },
+  "scripts": {
+    "test": "eslint *.js && jest --coverage",
+    "release": "publish"
+  }
 }

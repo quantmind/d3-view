@@ -1,39 +1,21 @@
 {
-    "private": true,
-    "license": "BSD-3-Clause",
-    "scripts": {
-        "dev": "rollup -c -w",
-        "reload": "livereload static",
-        "watch": "export NODE_ENV=DEV && npm-run-all --parallel reload serve dev",
-        "prepare": "view-require -c require.config.js && rollup -c",
-        "serve": "nodemon -w siteConfig.js ./node_modules/.bin/d3fluid -- --debug"
-    },
-    "dependencies": {
-        "handlebars": "4.0"
-    },
-    "devDependencies": {
-        "bootstrap": "4.0",
-        "cssnano": "3.10",
-        "d3-fluid": "^0.2.5",
-        "d3-view": "1.3",
-        "d3-view-components": "0.2",
-        "node-sass": "4.7",
-        "nodemon": "1.17",
-        "npm-run-all": "4.1",
-        "postcss-cssnext": "3.1",
-        "postcss-nested": "3.0",
-        "postcss-scss": "1.0",
-        "postcss-simple-vars": "4.1",
-        "raw-loader": "0.5",
-        "rollup": "0.56",
-        "rollup-plugin-babel": "3.0",
-        "rollup-plugin-json": "2.3",
-        "rollup-plugin-node-resolve": "3.2",
-        "rollup-plugin-postcss": "1.3",
-        "rollup-plugin-sass": "0.6",
-        "rollup-plugin-sourcemaps": "0.4",
-        "rollup-plugin-string": "2.0",
-        "rollup-plugin-uglify": "3.0",
-        "rollup-watch": "4.3"
-    }
+  "private": true,
+  "scripts": {
+    "dev": "rollup -c -w",
+    "reload": "livereload static",
+    "watch": "export NODE_ENV=DEV && npm-run-all --parallel reload serve dev",
+    "prepare": "view-require -c require.config.js && rollup -c",
+    "serve": "nodemon -w siteConfig.js ./node_modules/.bin/d3fluid -- --debug"
+  },
+  "dependencies": {
+    "handlebars": "4.0",
+    "d3-fluid": "0.3"
+  },
+  "devDependencies": {
+    "bootstrap": "4.1",
+    "node-sass": "4.9",
+    "nodemon": "1.18",
+    "npm-run-all": "4.1",
+    "raw-loader": "0.5"
+  }
 }
