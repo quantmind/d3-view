@@ -61,7 +61,7 @@
     "whatwg-fetch": "3.0"
   },
   "scripts": {
-    "pretest": "rollup -c",
+    "pretest": "rollup -c && chmod +x bin/view-require",
     "lint": "eslint *.js test src packages website",
     "test": "jest -c test/config/jest.config.json --coverage --detectOpenHandles --forceExit",
     "unit": "jest -c test/config/jest.config.json",
@@ -69,7 +69,7 @@
     "watch": "rollup -c -w",
     "docs": "doctoc website/docs/",
     "asset": "cd build && POST https://<upload_url>/repos/quantmind/d3-view/releases/:id/assets?name=d3-view.zip",
-    "prepublishOnly": "rm -rf build && yarn test && chmod +x bin/view-require",
+    "prepublishOnly": "rm -rf build && yarn test",
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git tag -am \"Release $VERSION.\" v${VERSION} && git push --tags && mkdir -p ../giottojs.org/latest && mkdir -p ../giottojs.org/d3-view/${VERSION} && cp build/* ../giottojs.org/d3-view/${VERSION}/ && cp build/* ../giottojs.org/latest/ && cd ../giottojs.org && git add d3-view/${VERSION} latest && git commit -a -m \"d3-view ${VERSION}\" && git push",
     "release": "publish"
   }
