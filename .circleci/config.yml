@@ -41,13 +41,13 @@ jobs:
           command: sudo npm i --global yarn && yarn
       - run:
           name: test
-          command: yarn test
+          command: npm run-script test
       - run:
           name: authenticate
           command: .circleci/authenticate.sh
       - run:
           name: release d3-view
-          command: yarn release
+          command: npm run-script release
   release-d3-view-test:
     docker:
       - image: circleci/node:latest
