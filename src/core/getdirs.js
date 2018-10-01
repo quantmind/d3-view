@@ -8,7 +8,7 @@ const attributes = [
   "href"
 ];
 
-export default function(element, vm) {
+export default (element, vm) => {
   const dirs = new Directives();
 
   for (let i = 0; i < element.attributes.length; ++i) {
@@ -37,7 +37,7 @@ export default function(element, vm) {
   }
 
   return dirs;
-}
+};
 
 // Directives container
 function Directives() {

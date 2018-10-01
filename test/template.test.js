@@ -1,4 +1,5 @@
 import { viewProviders, viewTemplate } from "../index";
+import "./utils";
 
 describe("templates", () => {
   const compileTemplate = viewProviders.compileTemplate,

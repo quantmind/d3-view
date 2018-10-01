@@ -1,9 +1,9 @@
-import { view, viewLibs, viewRequire, viewResolve } from "../index";
+import { viewLibs, viewResolve } from "../index";
 
-describe("d3.resolve -", () => {
+describe("d3.resolve", () => {
   var origin = window.location.origin;
 
-  it("no dist", () => {
+  test("no dist", () => {
     expect(viewResolve("foo")).toBe("https://unpkg.com/foo");
     expect(viewResolve("foo", { path: "bla" })).toBe(
       "https://unpkg.com/foo/bla"
@@ -16,7 +16,7 @@ describe("d3.resolve -", () => {
     expect(viewResolve("http://bla.com/foo")).toBe("http://bla.com/foo");
   });
 
-  it("dist", () => {
+  test("dist", () => {
     viewLibs.set("d3-selection", {
       version: 1.1
     });
@@ -25,7 +25,7 @@ describe("d3.resolve -", () => {
     );
   });
 
-  it("dist main", () => {
+  test("dist main", () => {
     viewLibs.set("pippo", {
       main: "lib/pippo.js",
       version: 1.4
@@ -45,7 +45,7 @@ describe("d3.resolve -", () => {
     );
   });
 
-  it("dist local", () => {
+  test("dist local", () => {
     viewLibs.set("pluto", {
       main: "lib/pluto.js",
       origin: "/"
@@ -54,18 +54,5 @@ describe("d3.resolve -", () => {
     expect(viewResolve("pluto", { path: "lib/pluto.html" })).toBe(
       `${origin}/lib/pluto.html`
     );
-  });
-
-  test("viewRequire", async () => {
-    const o = await viewRequire("d3-selection");
-    expect(o.select).toBeTruthy();
-  });
-
-  test("viewRequire merge", async () => {
-    var vm = view();
-    await vm.mount(vm.select("body").append("div"));
-    const o = await vm.require("d3-selection", "d3-transition");
-    expect(o.select).toBeTruthy();
-    expect(o.transition).toBeTruthy();
   });
 });

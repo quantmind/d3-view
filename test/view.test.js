@@ -35,7 +35,7 @@ describe("view -", () => {
     await vm.mount(el);
     expect(vm.el).toBe(el);
     expect(vm.sel.node()).toBe(el);
-    expect(vm.uid).toBeGreaterThan("d3v0");
+    expect(vm.uid).toBe("d3v1");
     expect(vm.model.uid).toBe(vm.uid);
     expect(vm.isMounted).toBe(true);
     expect(vm.root).toBe(vm);

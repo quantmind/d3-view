@@ -1,5 +1,3 @@
-import "d3-transition";
-import "es6-promise";
 import { view, viewDebounce, viewProviders } from "../index";
 import testFetch from "./fixtures/fetch";
 
@@ -35,13 +33,13 @@ export const logger = {
 
 //
 //  Return an object with a promise and the resolve function for the promise
-export function getWaiter() {
+export const getWaiter = () => {
   var waiter = {};
   waiter.promise = new Promise(function(resolve) {
     waiter.resolve = resolve;
   });
   return waiter;
-}
+};
 
 export function trigger(target, event, process) {
   var e = target.ownerDocument.createEvent("HTMLEvents");
@@ -61,7 +59,7 @@ viewProviders.logger = logger;
 
 export default view;
 
-function popLogs(logs, num) {
+const popLogs = (logs, num) => {
   if (num !== undefined) return logs.splice(logs.length - num);
   else return logs.splice(0);
-}
+};

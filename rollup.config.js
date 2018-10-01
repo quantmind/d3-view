@@ -2,8 +2,12 @@ import commonjs from "rollup-plugin-commonjs";
 import json from "rollup-plugin-json";
 import resolve from "rollup-plugin-node-resolve";
 import sourcemaps from "rollup-plugin-sourcemaps";
+import { terser } from "rollup-plugin-terser";
 
 const pkg = require("./package.json");
+const d3deps = ["d3-dispatch", "d3-selection", "d3-timer"].concat(
+  Object.keys(pkg.dependencies).filter(key => /^d3-/.test(key))
+);
 const year = new Date().getFullYear();
 const preamble = `// ${pkg.homepage || pkg.name} v${
   pkg.version
@@ -11,7 +15,7 @@ const preamble = `// ${pkg.homepage || pkg.name} v${
 
 const config = {
   input: "index.js",
-  external: Object.keys(pkg.dependencies).filter(key => /^d3-/.test(key)),
+  external: d3deps,
   output: {
     file: `build/${pkg.name}.js`,
     format: "umd",
@@ -19,12 +23,10 @@ const config = {
     extend: true,
     sourcemap: true,
     name: "d3",
-    globals: Object.assign(
-      {},
-      ...Object.keys(pkg.dependencies || {})
-        .filter(key => /^d3-/.test(key))
-        .map(key => ({ [key]: "d3" }))
-    ),
+    globals: d3deps.reduce((o, d) => {
+      o[d] = "d3";
+      return o;
+    }, {}),
     banner: preamble
   },
   plugins: [json(), sourcemaps()]
@@ -38,7 +40,14 @@ export default [
       ...config.output,
       file: `build/${pkg.name}.min.js`
     },
-    plugins: [json()]
+    plugins: [
+      json(),
+      terser({
+        output: {
+          preamble: config.output.banner
+        }
+      })
+    ]
   },
   {
     input: "index-require.js",

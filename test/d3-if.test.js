@@ -1,7 +1,7 @@
 import { viewUid } from "../index";
 import view, { nextTick, sleep } from "./utils";
 
-describe("d3-if -", () => {
+describe("d3-if", () => {
   test("block", async () => {
     var uid = "test" + viewUid(),
       vm = view({

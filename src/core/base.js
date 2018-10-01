@@ -1,4 +1,5 @@
 import { event, select, selectAll } from "d3-selection";
+import "d3-transition";
 import { viewRequireFrom, viewResolve } from "../require";
 import { jsonResponse, textResponse } from "../utils/http";
 import providers from "../utils/providers";
@@ -121,6 +122,5 @@ export default {
   }
 };
 
-function render(text, context, asElement) {
-  return asElement ? htmlElement(text, context) : template(text, context);
-}
+const render = (text, context, asElement) =>
+  asElement ? htmlElement(text, context) : template(text, context);

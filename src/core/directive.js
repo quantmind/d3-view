@@ -1,4 +1,4 @@
-import { assign, isFunction, isObject } from "d3-let";
+import { isFunction, isObject } from "d3-let";
 import viewModel from "../model/main";
 import viewExpression from "../parser/expression";
 import sel from "../utils/sel";
@@ -180,7 +180,7 @@ export default function(obj) {
       this.active = Boolean(!attr.value || this.expression || this.data);
   }
 
-  Directive.prototype = assign({}, base, prototype, obj);
+  Directive.prototype = { ...base, ...prototype, ...obj };
 
   function directive(el, attr, arg) {
     return new Directive(el, attr, arg);

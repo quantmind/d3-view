@@ -83,7 +83,7 @@ describe("directive -", () => {
     //
     // remove element
     vm.sel.remove();
-    await gone.promise;
+    //await gone.promise;
   });
 
   // d3-if='$active(show, rootShow)'

@@ -8,6 +8,12 @@
     "build/*",
     "static/*",
     "coverage/*",
+    "website/*",
+    "src/bin/*",
+    "packages/*",
+    "index-require.js",
+    "rollup.config.js",
+    "src/core/clean.js",
     ".eslintrc.js"
   ],
   "coverageThreshold": {

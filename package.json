@@ -1,5 +1,5 @@
 {
-  "version": "1.4.2",
+  "version": "1.5.0",
   "name": "d3-view",
   "description": "View-model d3 plugin for building interactive data-driven web interfaces",
   "author": {
@@ -20,17 +20,16 @@
     "node": ">= 6.0"
   },
   "main": "build/d3-view.js",
+  "unpkg": "dist/d3-view.min.js",
+  "jsdelivr": "dist/d3-view.min.js",
   "module": "index",
-  "jsnext:main": "index",
   "bin": {
     "view-require": "bin/view-require"
   },
   "dependencies": {
     "commander": "2.18",
-    "d3-dispatch": "1",
     "d3-let": "0",
-    "d3-selection": "1",
-    "d3-timer": "1"
+    "d3-transition": "1.1"
   },
   "devDependencies": {
     "@babel/core": "latest",
@@ -44,20 +43,18 @@
     "babelify": "10.0",
     "browserify": "16.2",
     "browserify-istanbul": "3.0",
-    "d3-transition": "1.1",
     "eslint": "5.6",
     "handlebars": "4",
     "jasmine-core": "3.2",
     "jest": "23",
-    "jsdom": "12.0",
+    "jsdom": "12",
     "publish": "0.6",
     "rollup": "0.66",
     "rollup-plugin-commonjs": "9.1",
-    "rollup-plugin-eslint": "5.0",
     "rollup-plugin-json": "3.1",
     "rollup-plugin-node-resolve": "3.4",
     "rollup-plugin-sourcemaps": "0.4",
-    "rollup-plugin-uglify": "6.0",
+    "rollup-plugin-terser": "3",
     "rollup-watch": "4.3",
     "validator": "10.8",
     "watchify": "3.11",

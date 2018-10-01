@@ -1,4 +1,3 @@
-import { assign, isFunction } from "d3-let";
 import providers from "../utils/providers";
 import base from "./base";
 
@@ -6,7 +5,7 @@ providers.transition = {
   duration: 0
 };
 
-export default assign(base, {
+export default Object.assign(base, {
   //
   // return a transition object if possible
   transition(sel) {
@@ -17,9 +16,9 @@ export default assign(base, {
 
   transitionDuration(sel) {
     if (!arguments.length) sel = this.sel;
-    if (sel && isFunction(sel.transition) && sel.size()) {
+    if (sel && sel.size()) {
       var duration = sel.attr("data-transition-duration");
-      return +(duration === null ? providers.transition.duration : duration);
+      return +(duration || providers.transition.duration);
     }
     return 0;
   }

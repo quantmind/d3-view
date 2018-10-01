@@ -56,15 +56,6 @@ describe("Utils -", () => {
     expect(vm.sel.select("p").html()).toBe("Bye");
   });
 
-  test("require", async () => {
-    var p = viewProviders.require("balbla");
-    try {
-      await p;
-    } catch (e) {
-      expect("" + e).toBe("Error: unable to load module");
-    }
-  });
-
   test("viewSlugify", async () => {
     expect(viewSlugify("ABC")).toBe("abc");
     expect(viewSlugify("A c")).toBe("a-c");

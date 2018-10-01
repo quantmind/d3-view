@@ -1,7 +1,7 @@
 import view, { nextTick, sleep } from "./utils";
 
-describe("d3-html -", function() {
-  test("simple", async () => {
+describe("d3-html", () => {
+  test("transition", async () => {
     var vm = view({
         model: {
           test: "This is a test"
@@ -38,13 +38,13 @@ describe("d3-html -", function() {
     expect(callback).toBeTruthy();
     //
     // Remove the element
-    p.remove();
+    // p.remove();
     //
-    while (callback) {
-      await nextTick();
-      callback = event.on(`change.${dir.uid}`);
-    }
-    vm.destroy();
+    //while (callback) {
+    //  await nextTick();
+    //  callback = event.on(`change.${dir.uid}`);
+    //}
+    //vm.destroy();
   });
 
   test("nested one level", async () => {

@@ -4,7 +4,7 @@ import { select } from "d3-selection";
 if (inBrowser && window.MutationObserver) {
   // DOM observer
   // Check for changes in the DOM that leads to visual actions
-  const observer = new window.MutationObserver(visualManager);
+  const observer = new window.MutationObserver(Manager);
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true
@@ -13,7 +13,7 @@ if (inBrowser && window.MutationObserver) {
 
 //
 //  Clears element going out of scope
-function visualManager(records) {
+function Manager(records) {
   let sel, nodes, node, vm;
 
   records.forEach(record => {

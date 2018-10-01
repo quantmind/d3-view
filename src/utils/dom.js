@@ -13,16 +13,16 @@ export default callback => {
 };
 
 /* istanbul ignore next */
-function _completed() {
+const _completed = () => {
   document.removeEventListener("DOMContentLoaded", _completed);
   window.removeEventListener("load", _completed);
   domReady();
-}
+};
 
-function domReady() {
+const domReady = () => {
   let callback;
   while (providers.readyCallbacks.length) {
     callback = providers.readyCallbacks.shift();
     timeout(callback);
   }
-}
+};
