@@ -2,7 +2,7 @@ version: 2
 jobs:
   tests:
     docker:
-      - image: circleci/node:latest-browsers
+      - image: circleci/node:latest
     steps:
       - checkout
       - run:
@@ -38,7 +38,7 @@ jobs:
       - checkout
       - run:
           name: install
-          command: npm i --global yarn && yarn
+          command: sudo npm i --global yarn && yarn
       - run:
           name: test
           command: yarn test
