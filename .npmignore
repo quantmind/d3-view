@@ -3,6 +3,7 @@
 *.log
 *.lock
 *.sublime-project
+.vscode
 website
 test
 coverage
@@ -10,5 +11,6 @@ packages
 contributing.md
 rollup.config.js
 Makefile
+.babelrc
 .eslintrc
 .env

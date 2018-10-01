@@ -40,6 +40,9 @@ jobs:
           name: install
           command: npm install
       - run:
+          name: test
+          command: npm run-script test
+      - run:
           name: authenticate
           command: .circleci/authenticate.sh
       - run:
