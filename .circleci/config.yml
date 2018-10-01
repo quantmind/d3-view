@@ -38,16 +38,16 @@ jobs:
       - checkout
       - run:
           name: install
-          command: npm install
+          command: npm i --global yarn && yarn
       - run:
           name: test
-          command: npm run-script test
+          command: yarn test
       - run:
           name: authenticate
           command: .circleci/authenticate.sh
       - run:
           name: release d3-view
-          command: npm run-script release
+          command: yarn release
   release-d3-view-test:
     docker:
       - image: circleci/node:latest

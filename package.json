@@ -1,5 +1,5 @@
 {
-  "version": "1.5.1",
+  "version": "1.5.2",
   "name": "d3-view",
   "description": "View-model d3 plugin for building interactive data-driven web interfaces",
   "author": {
@@ -20,8 +20,8 @@
     "node": ">= 6.0"
   },
   "main": "build/d3-view.js",
-  "unpkg": "dist/d3-view.min.js",
-  "jsdelivr": "dist/d3-view.min.js",
+  "unpkg": "build/d3-view.min.js",
+  "jsdelivr": "build/d3-view.min.js",
   "module": "index",
   "bin": {
     "view-require": "bin/view-require"
