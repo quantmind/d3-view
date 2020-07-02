@@ -8,7 +8,7 @@
     "serve": "nodemon -w siteConfig.js ./node_modules/.bin/d3fluid -- --debug"
   },
   "dependencies": {
-    "handlebars": "4.0",
+    "handlebars": "4.3",
     "d3-fluid": "0.3"
   },
   "devDependencies": {
